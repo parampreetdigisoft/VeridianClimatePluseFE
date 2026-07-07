@@ -1,0 +1,78 @@
+<ng-container *ngIf="!isLoader">
+  <div class="city_piller">
+    <div class="row justify-content-between align-items-end">
+      <div class="col-md-auto">
+        <div class="input_field">
+          <label>Select Country *</label>
+          <ng-select [items]="countries" bindValue="countryID" bindLabel="countryName" class="form-control analyst_multi_select"
+            [searchable]="true" [placeholder]="selectedCountries == '' ? 'Select Country' : ''" [(ngModel)]="selectedCountries"
+            (change)="getCountryPillarHistory()">
+            <ng-template ng-label-tmp let-item="item " class="select_item">
+              {{ item.countryName }}
+            </ng-template>
+
+            <ng-template ng-option-tmp let-item="item">
+              {{ item.countryName }}, {{ item.continent }}
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-md-auto">
+        <div class="input_field">
+          <label>Select Year *</label>
+          <select [(ngModel)]="selectedYear" name="selectedYear" class="form-control" (change)="yearChanged()">
+            <option *ngFor="let year of commonService.applicateYears" [value]="year">
+              {{ year }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md d-flex justify-content-end gap-2 mb-3">
+				<button *ngIf="countryQuestionHistoryReponse?.pillars?.length"
+					[matTooltip]=" 'Go to the AI analysis page to review detailed country insights and scores'"
+					(click)="goToCountryAnalysis()"
+					class="common_button">
+					AI Country Insights
+					<svg xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						fill="currentColor"
+						class="bi bi-box-arrow-up-right"
+						viewBox="0 0 16 16">
+						<path fill-rule="evenodd"
+							d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"></path>
+						<path fill-rule="evenodd"
+							d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"></path>
+					</svg>
+				</button>				
+			</div>
+    </div>
+      <div id="chartPillar" *ngIf="chartPillarOptions && chartPillarOptions.series" class="ahi-chart-panel">
+        <apx-chart class="cus_chart_right" [series]="chartPillarOptions.series!" [chart]="chartPillarOptions.chart!" [xaxis]="chartPillarOptions.xaxis!"
+          [yaxis]="chartPillarOptions.yaxis!" [colors]="chartPillarOptions.colors!" [tooltip]="chartPillarOptions.tooltip!"
+          [plotOptions]="chartPillarOptions.plotOptions!" [legend]="chartPillarOptions.legend!" [fill]="chartPillarOptions.fill!"
+          [states]="chartPillarOptions.states!" [dataLabels]="chartPillarOptions.dataLabels!" [stroke]="chartPillarOptions.stroke!"
+          [markers]="chartPillarOptions.markers!" [grid]="chartPillarOptions.grid!"></apx-chart>
+      </div>
+  </div>
+  <div class="apx_chart_new" *ngIf="chartOptions.series">
+    <div class="card_heading">
+      <h3>Country Overview</h3>
+    </div>
+    <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [plotOptions]="chartOptions.plotOptions!"
+      [labels]="chartOptions.labels!" [legend]="chartOptions.legend!" [colors]="chartOptions.colors!">
+    </apx-chart>
+  </div>
+  <div class="outer_graph" *ngIf="apexchartOptions && apexchartOptions.series!">
+    <div id="apexchart">
+      <apx-chart [series]="apexchartOptions.series!" [chart]="apexchartOptions.chart!" [xaxis]="apexchartOptions.xaxis!"
+        [stroke]="apexchartOptions.stroke!" [tooltip]="apexchartOptions.tooltip!"
+        [dataLabels]="apexchartOptions.dataLabels!"></apx-chart>
+    </div>
+
+  </div>
+</ng-container>
+
+<div *ngIf="isLoader" class="loader_main">
+  <div class="loader"></div>
+</div>

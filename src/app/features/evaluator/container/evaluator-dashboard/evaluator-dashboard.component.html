@@ -1,0 +1,85 @@
+<ng-container *ngIf="!isLoader">
+	<div class="city_piller">
+		<div class="row justify-content-between align-items-end">
+			<div class="col-md-auto">
+				<div class="input_field">
+					<label>Select Country *</label>
+					<ng-select [items]="countries"
+						[searchable]="true"
+						[placeholder]="selectedCountries == '' ? 'Select Country' : ''"
+						[(ngModel)]="selectedCountries"
+						(change)="getCountryQuestionHistory()"
+						bindValue="countryID"
+						bindLabel="countryName"
+						class="form-control analyst_multi_select">
+						<ng-template ng-label-tmp
+							let-item="item "
+							class="select_item">
+							{{ item.countryName }} ({{item?.assignedBy || ''}})
+						</ng-template>
+
+
+						<ng-template ng-option-tmp
+							let-item="item">
+							{{ item.countryName }}, {{ item.continent }} ({{item?.assignedBy || ''}})
+						</ng-template>
+					</ng-select>
+				</div>
+			</div>
+			<div class="col-md-auto">
+				<div class="input_field">
+					<label>Select Year*</label>
+					<select [(ngModel)]="selectedYear"
+						(change)="yearChanged()"
+						name="selectedYear"
+						class="form-control">
+						<option *ngFor="let year of commonService.applicateYears"
+							[value]="year">
+							{{ year }}
+						</option>
+					</select>
+				</div>
+			</div>			
+		</div>
+
+
+		<div *ngIf="chartPillarOptions && chartPillarOptions?.series"
+			id="chartPillar"
+			class="ahi-chart-panel">
+			<apx-chart [series]="chartPillarOptions.series"
+				[chart]="chartPillarOptions.chart"
+				[xaxis]="chartPillarOptions.xaxis"
+				[yaxis]="chartPillarOptions.yaxis"
+				[colors]="chartPillarOptions.colors"
+				[tooltip]="chartPillarOptions.tooltip"
+				[plotOptions]="chartPillarOptions.plotOptions"
+				[legend]="chartPillarOptions.legend"
+				[fill]="chartPillarOptions.fill"
+				[states]="chartPillarOptions.states"
+				[dataLabels]="chartPillarOptions.dataLabels"
+				[stroke]="chartPillarOptions.stroke"
+				[grid]="chartPillarOptions.grid"
+				class="cus_chart_right">
+			</apx-chart>
+		</div>
+	</div>
+	<div class="apx_chart_new">
+		<div *ngIf="chartOptions?.series"
+			class="card_heading">
+			<h3>Country Overview</h3>
+		</div>
+		<apx-chart [series]="chartOptions.series!"
+			[chart]="chartOptions.chart!"
+			[plotOptions]="chartOptions.plotOptions!"
+			[labels]="chartOptions.labels!"
+			[legend]="chartOptions.legend!"
+			[colors]="chartOptions.colors!">
+		</apx-chart>
+	</div>
+</ng-container>
+
+
+<div *ngIf="isLoader"
+	class="loader_main">
+	<div class="loader"></div>
+</div>
