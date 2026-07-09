@@ -24,7 +24,7 @@
                             <!-- Question -->
                             <div class="input_field">
                                 <label>Question *</label>
-                                <input type="text" formControlName="questionText" placeholder="Enter question text"
+                                <input type="text" formControlName="questionText" placeholder="Enter Question Text"
                                     class="form-control" />
                                 <div class="error-msg"
                                     *ngIf="questionForm.get('questionText')?.invalid && (questionForm.get('questionText')?.touched || isSubmitted)">
@@ -33,18 +33,41 @@
                             </div>
 
                             <!-- Pillar -->
-                            <div class="input_field">
-                                <label>Pillar *</label>
-                                <select formControlName="pillarID" class="form-control">
-                                    <option value="null">Select Pillar</option>
-                                    <option *ngFor="let pillar of pillers" [value]="pillar.pillarID">
-                                        {{ pillar.pillarName }}
-                                    </option>
-                                </select>
-                                <div class="error-msg"
-                                    *ngIf="questionForm.get('pillarID')?.invalid && (questionForm.get('pillarID')?.touched || isSubmitted)">
-                                    Pillar is required.
-                                </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                        <label>Pillar *</label>
+                                        <select formControlName="pillarID" class="form-control">
+                                            <option [ngValue]="null">Select Pillar</option>
+                                            <option *ngFor="let pillar of pillars" [ngValue]="pillar.pillarID">
+                                                 {{ pillar.pillarName }}
+                                                </option>
+                                            </select>
+                                            <div class="error-msg" *ngIf="questionForm.get('pillarID')?.invalid && (questionForm.get('pillarID')?.touched || isSubmitted)">
+                                                 Pillar is required.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input_field">
+                                                <label>Weight *</label>
+                                                <div class="weight-select-wrapper">
+                                                    <select formControlName="weightID" class="form-control weight-select" [ngClass]="getWeightTierClass()">
+                                                        <option [ngValue]="null">Select Weight</option>
+                                                        <option *ngFor="let w of weightOptions" [ngValue]="w.id">
+                                                             {{ w.value }}
+                                                            </option>
+                                                         </select>
+                                                         <span class="tier-dot" [ngClass]="getWeightTierClass()" *ngIf="getSelectedWeight()">
+                                                             {{ getSelectedWeight()?.stars }}
+                                                             </span>
+                                                            </div>
+                                                            <div class="error-msg" *ngIf="questionForm.get('weightID')?.invalid && (questionForm.get('weightID')?.touched || isSubmitted)">
+                                                                Weight is required.
+                                                            </div>
+                                                        </div>
+                                                    </div>
                             </div>
                             <div formArrayName="questionOptions" class="input_field mt-3">
                                 <label>Options *</label>
@@ -104,8 +127,7 @@
 
                                     </div>
                                 </div>
-                                <button type="button" class="btn add_btn btn-primary mt-2" (click)="addOption()"
-                                    [disabled]="this.questionOptions.length>=5">Add</button>
+                                <button type="button" class="btn add_btn btn-primary mt-2" (click)="addOption()">Add</button>
                             </div>
 
                             <!-- Submit -->

@@ -64,3 +64,42 @@ line-height: normal;
     margin-left: 5px;
     color: red;
 }
+
+.weight-select-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+.weight-select {
+    width: 100%;
+    padding-right: 40px; /* room so the number doesn't sit under the star */
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.tier-dot {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Only the star gets colored — nothing here targets the select's text anymore */
+.tier-dot.weight-critical {
+  font-weight: 600;
+    color: #dc3545;
+}
+
+.tier-dot.weight-high {
+  font-weight: 600;
+    color: #b38600;
+}
+
+.tier-dot.weight-standard {
+    font-weight: 600;
+    color: #28a745;
+}

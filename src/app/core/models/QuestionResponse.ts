@@ -28,7 +28,7 @@ export interface QuestionOption {
   optionID: number;
   questionID: number;
   optionText: string;
-  scoreValue?: number;
+  scoreValue?: string | null;
   displayOrder?: number;
 }
 
@@ -37,6 +37,7 @@ export interface AddQuestionRequest {
   pillarID: number;
   questionText: string;
   questionOptions: QuestionOption[];
+  weightID: number;
 }
 export interface AddBulkQuestionsDto {
   questions: AddQuestionRequest[]

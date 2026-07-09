@@ -81,7 +81,7 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
         pillar?.displayOrder ?? this.nextDisplayOrder,
         [Validators.required, Validators.min(1)],
       ],
-      weight: [pillar?.weight ?? 1, [Validators.required, Validators.min(0.01)]],
+      weight: [1, [Validators.required, Validators.min(0.01)]],
       reliability: [pillar?.reliability ?? true, [Validators.required]],
       description: [this.decodeDescription(pillar?.description), Validators.required],
       imageFile: [null],

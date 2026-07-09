@@ -15,7 +15,7 @@ declare var bootstrap: any;
 export class QuestionComponent implements OnInit, OnDestroy {
   selectedQuestion: GetQuestionResponse | null = null;
   selectedPiller: PillarsVM | null = null;
-  pillers: PillarsVM[] = [];
+  pillars: PillarsVM[] = [];
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1
@@ -34,7 +34,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   GetAllPillars() {
     this.adminService.getAllPillars().subscribe(p => {
-      this.pillers = p;
+      this.pillars = p;
     });
   }
   GetQuestions(currentPage: number = 1) {
