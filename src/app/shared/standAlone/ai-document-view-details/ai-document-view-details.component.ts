@@ -1,10 +1,10 @@
 import { Component, computed, EventEmitter, input, Input, OnChanges, OnInit, Output, output, signal, SimpleChanges } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CommonModule } from '@angular/common';
-import { GetCountryDocumentResponseDto, GetCountryPillarDocumentResponseDto } from 'src/app/core/models/aiVm/GetCountryDocumentResponseDto';
+import { GetProgramDocumentResponseDto, GetProgramPillarDocumentResponseDto } from 'src/app/core/models/aiVm/GetProgramDocumentResponseDto';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { FormsModule } from '@angular/forms';
-import { DeleteCountryDocumentRequestDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestDto';
+import { DeleteProgramDocumentRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
 import { PromptComponent } from '../../prompt/prompt.component';
 
 export interface SelectedFileModel {
@@ -23,19 +23,19 @@ export interface SelectedFileModel {
 
 export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
 
-  selectCountryDocuemnt?: number | string;
-  totalFiles = computed(() => (this.selectedCountry()?.noOfFiles ?? 0) + this.selectedFiles().length);
-  selectedCountry = input<GetCountryDocumentResponseDto | null | undefined>(null);
-  documents = input<GetCountryPillarDocumentResponseDto[]>([]);
+  selectProgramDocuemnt?: number | string;
+  totalFiles = computed(() => (this.selectedProgram()?.noOfFiles ?? 0) + this.selectedFiles().length);
+  selectedProgram = input<GetProgramDocumentResponseDto | null | undefined>(null);
+  documents = input<GetProgramPillarDocumentResponseDto[]>([]);
   pillars = input<PillarsVM[]>([]);
   isUploadModalOpen = false;
   selectedFiles = signal<SelectedFileModel[]>([]);
   selectedPillarID?: number;
   @Output() uploadedDocuments = new EventEmitter<FormData>();
-  @Output() deleteDocument = new EventEmitter<DeleteCountryDocumentRequestDto>();
-  @Output() downloadDocument = new EventEmitter<GetCountryPillarDocumentResponseDto>();
+  @Output() deleteDocument = new EventEmitter<DeleteProgramDocumentRequestDto>();
+  @Output() downloadDocument = new EventEmitter<GetProgramPillarDocumentResponseDto>();
   @Input() saveDocumentLoader: boolean = false;
-  countryDocuments = computed(() =>
+  programDocuments = computed(() =>
     this.documents().filter(x => !x.pillarID)
   );
 
@@ -49,7 +49,7 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedFiles.set([]);
-    this.selectCountryDocuemnt = this.selectedCountry()?.countryID
+    this.selectProgramDocuemnt = this.selectedProgram()?.climateProgramID
   }
   onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/Frame 1321315029.png';
@@ -102,8 +102,8 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
 
   uploadDocuments() {
     const formData = new FormData();
-    if (this.selectCountryDocuemnt && this.selectCountryDocuemnt != undefined && this.selectCountryDocuemnt != "undefined") {
-      formData.append('CountryID', this.selectCountryDocuemnt.toString());
+    if (this.selectProgramDocuemnt && this.selectProgramDocuemnt != undefined && this.selectProgramDocuemnt != "undefined") {
+      formData.append('climateProgramID', this.selectProgramDocuemnt.toString());
     }
     this.selectedFiles().forEach((item, index) => {
       formData.append('Files', item.file); 
@@ -127,16 +127,16 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
     this.selectedPillarID = undefined;
   }
 
-  deleteCountryDocument(doc: GetCountryPillarDocumentResponseDto) {
-    let payload: DeleteCountryDocumentRequestDto = {
-      countryID: this.selectedCountry()?.countryID ?? 0,
-      countryDocumentID: doc?.countryDocumentID,
+  deleteProgramDocument(doc: GetProgramPillarDocumentResponseDto) {
+    let payload: DeleteProgramDocumentRequestDto = {
+      climateProgramID: this.selectedProgram()?.climateProgramID ?? 0,
+      programDocumentID: doc?.programDocumentID,
       isAll: false
     }
     this.deleteDocument.emit(payload);
   }
 
-  download(doc: GetCountryPillarDocumentResponseDto) {
+  download(doc: GetProgramPillarDocumentResponseDto) {
     this.downloadDocument.emit(doc);
   }
 }

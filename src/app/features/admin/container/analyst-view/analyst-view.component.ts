@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AdminService } from "../../admin.service";
-import { CountryVM } from "../../../../core/models/CountryVM";
+import { ProgramVM } from "../../../../core/models/ProgramVM";
 import { PaginationResponse } from "src/app/core/models/PaginationResponse";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
@@ -15,7 +15,9 @@ import {
 } from "../../../../core/models/AnalystVM";
 import { SortDirection } from "src/app/core/enums/SortDirection";
 import { ActivatedRoute } from "@angular/router";
+import { ProgramUserRow } from "src/app/core/models/ProgramUserRow";
 declare var bootstrap: any;
+
 @Component({
   selector: "app-analyst-view",
   templateUrl: "./analyst-view.component.html",
@@ -24,12 +26,12 @@ declare var bootstrap: any;
 export class AnalystViewComponent implements OnInit, OnDestroy {
   isLoader: boolean = false;
   selectedAnalyst: GetUserByRoleResponse | null = null;
-  selectedCity: CountryVM | null = null;
-  analystResponse: PaginationResponse<GetUserByRoleResponse> | undefined;
+  selectedProgram: ProgramVM | null = null;
+  analystResponse: PaginationResponse<ProgramUserRow> | undefined;
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
-  countries: CountryVM[] | null = [];
+  programs: ProgramVM[] | null = [];
   loading: boolean = false;
   isOpendialog: boolean = false;
   roleId: number | any = 0;
@@ -37,7 +39,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
   selectedIndex?:number;
   rolesList = [
     { name: "Evaluator", role: UserRoleValue.Evaluator },
-    { name: "CountryUser", role: UserRoleValue.CountryUser },
+    { name: "ProgramUser", role: UserRoleValue.ProgramUser },
   ];
 
   constructor(
@@ -53,18 +55,19 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       this.selectedRoleID = this.roleId;
     });
     this.getAnalyst();
-    this.getAllCountriesByUserId();
+    this.getAllProgramsByUserId();
   }
 
-  getAllCountriesByUserId() {
+  getAllProgramsByUserId() {
     this.adminService
-      .getAllCountriesByUserId(this.userService?.userInfo?.userID)
+      .getAllProgramsByUserId(this.userService?.userInfo?.userID)
       .subscribe({
         next: (res) => {
-          this.countries = res.result;          
+          this.programs = res.result;          
         },
       });
   }
+
   getAnalyst(currentPage: number = 1) {
     this.analystResponse = undefined;
     this.isLoader = true;
@@ -79,7 +82,10 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       payload.getUserRole = UserRoleValue.Analyst;
     }
     this.adminService.getUserListByRole(payload).subscribe((anaylist) => {
-      this.analystResponse = anaylist;
+      this.analystResponse = {
+        ...anaylist,
+        data: (anaylist.data ?? []).map((user) => this.mapProgramUserRow(user)),
+      };
       this.totalRecords = anaylist.totalRecords;
       this.currentPage = currentPage;
       this.pageSize = anaylist.pageSize;
@@ -122,7 +128,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       password: "",
       role: UserRoleValue.Analyst,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-      countryID: analyst.countries.map((x) => x.countryID),
+      climateProgramID: analyst.climatePrograms.map((x) => x.climateProgramID),
       userID: analyst.userID,
     };
     this.addUpdateAnalyst(payload);
@@ -140,7 +146,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       password: analyst.password,
       role: UserRoleValue.Analyst,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-      countryID: analyst.countryID,
+      climateProgramID: analyst.climateProgramID,
       userID: analyst.userID,
     };
 
@@ -229,4 +235,34 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+     private mapProgramUserRow(user: GetUserByRoleResponse): ProgramUserRow {
+    const programsText = this.getProgramsText(user);
+    return {
+      ...user,
+      programsText,
+      programsExpand: false,
+      showProgramsToggle: this.isLongProgramsText(programsText),
+    };
+  }
+
+   getProgramsText(user: GetUserByRoleResponse): string {
+    return (user.climatePrograms ?? [])
+      .map((program) => program?.programName)
+      .filter((name): name is string => !!name)
+      .join(", ");
+  }
+
+  isLongProgramsText(text: string): boolean {
+    if (!text) {
+      return false;
+    }
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    return words.length > 16 || text.length > 72;
+  }
+
+    togglePrograms(programuser: ProgramUserRow): void {
+    programuser.programsExpand = !programuser.programsExpand;
+  }
+
 }

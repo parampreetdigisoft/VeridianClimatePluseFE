@@ -8,10 +8,10 @@
     <div class="col-lg-auto">
       <div class="header_btns">
         <div class="input_field">
-          <select [(ngModel)]="selectedUserCountryMappingID" name="countryID" class="form-control" (change)="countryChanged()">
-            <option value="0">Select Country-Analyst</option>
-            <option *ngFor="let country of countries" [value]="country.userCountryMappingID">
-              {{ country.countryName }} - {{ country.assignedBy }}
+          <select [(ngModel)]="selectedUserProgramMappingID" name="programID" class="form-control" (change)="programChanged()">
+            <option value="0">Select Program-Analyst</option>
+            <option *ngFor="let program of programs" [value]="program.staffProgramMappingID">
+              {{ program.programName }} - {{ program.assignedBy }}
             </option>
           </select>
         </div>
@@ -34,7 +34,7 @@
           <span *ngIf="isUploading" class="spinner-border spinner-border-sm ms-2"></span>
         </a>
         <div class="next_btn">
-          <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" style="cursor: pointer" [disabled]="!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0"
+          <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" style="cursor: pointer" [disabled]="!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0"
             class="common_button" (click)="isAssessementFinalized=true">
             {{'Submit Assesment' }}
           </button>
@@ -49,10 +49,10 @@
     <div class="faq_sidebar">
       <div class="faq_sidebar_inner">
         <div class="faq_sidebar_item" *ngFor="let piller of pillars; let i = index"
-          [class.active]="piller.displayOrder <= pillarDisplayOrder">
+          [class.active]="makePillarActive(piller)">
           <div class="faq_sidebar_item_inner"
             (click)="selectedPillar?.displayOrder == piller.displayOrder ? $event.stopPropagation() :pillarChanged(piller) "
-            [ngClass]="selectedPillar?.displayOrder == piller.displayOrder ? 'current-active' : ''">
+            [ngClass]="activeClass(piller) ? 'current-active' : ''">
             <span class="faq_inner_svg">
               <img [src]="urlBase + '/' + piller.imagePath" [alt]="'No image found'" />
             </span>
@@ -74,14 +74,27 @@
             <div class="faq_main_item_inner">
               <p>{{ i + 1 }}. {{ questions[i].questionText }}</p>
 
-              <select class="form-select faq_select" formControlName="questionOptionID"
+              <ng-select class="faq_select assessment_select"
+                [items]="questions[i].questionOptions"
+                bindValue="optionID"
+                formControlName="questionOptionID"
+                placeholder="Select option"
+                [searchable]="false"
+                [clearable]="true"
+                dropdownPosition="auto"
                 (change)="onOptionChange($event, i)">
-                <option value="">Select option</option>
-                <option *ngFor="let o of questions[i].questionOptions" [value]="o.optionID">
-                  {{ o.scoreValue != null ? o.scoreValue + " - " : "" }}
-                  {{ o.optionText }}
-                </option>
-              </select>
+                <ng-template ng-label-tmp let-item="item">
+                  <span class="assessment_select_label" [title]="item.optionText">
+                    <span *ngIf="item.scoreValue != null">{{ item.scoreValue }} - </span>{{ item.optionText }}
+                  </span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="assessment_option">
+                    <span *ngIf="item.scoreValue != null" class="assessment_option_score">{{ item.scoreValue }}</span>
+                    <span class="assessment_option_text">{{ item.optionText }}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
               <div class="faqtextarea">
                 <textarea class="form-control" formControlName="justification" rows="3"
                   (blur)="autoSaveSingleAssessemnt(i)" placeholder="Add Comment . . ."></textarea>
@@ -94,9 +107,9 @@
           </div>
         </div>
 
-        <div class="next_btn"  [class.loading-bottom]="isLoader" *ngIf="this.selectedUserCountryMappingID || !(this.selectedUserCountryMappingID == 0)">
+        <div class="next_btn"  [class.loading-bottom]="isLoader" *ngIf="this.selectedUserProgramMappingID || !(this.selectedUserProgramMappingID == 0)">
           <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" style="cursor: pointer"
-            class="common_button" [disabled]="!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0">
+            class="common_button" [disabled]="!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0">
             {{pillerQuestions?.displayOrder == 14 ? 'Submit' :'Save & NEXT' }}
           </button>
         </div>
@@ -113,7 +126,7 @@
     pillerQuestions?.displayOrder == 14 || isAssessementFinalized? 'Submit Pillar' : 'Save Pillar'
   " [message]="
     pillerQuestions?.displayOrder == 14 || isAssessementFinalized
-      ? 'Are you sure you want to submit this country? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Admin.'
+      ? 'Are you sure you want to submit this program? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Admin.'
       : 'Are you sure you want to save this pillar?'
   " [confirmText]="pillerQuestions?.displayOrder == 14 || isAssessementFinalized ? 'Submit' : 'Save'"
   [cancelText]="'Cancel'" (confirm)="SaveAssessment()" (cancel)="isAssessementFinalized=false">

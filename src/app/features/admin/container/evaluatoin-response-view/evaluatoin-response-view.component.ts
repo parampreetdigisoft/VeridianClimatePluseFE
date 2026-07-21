@@ -69,11 +69,11 @@ export class EvaluatoinResponseViewComponent implements OnInit {
       assessmentID:this.assessmentID,
       pillarID:this.selectedPillarId
     }
-    this.adminService.getAssessmentQuestoins(payload).subscribe(countries => {
-      this.questionResponse = countries;
-      this.totalRecords = countries.totalRecords;
+    this.adminService.getAssessmentQuestoins(payload).subscribe(programs => {
+      this.questionResponse = programs;
+      this.totalRecords = programs.totalRecords;
       this.currentPage = currentPage;
-      this.pageSize = countries.pageSize;
+      this.pageSize = programs.pageSize;
       this.isLoader = false;
     });
   }

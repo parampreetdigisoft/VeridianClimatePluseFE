@@ -169,7 +169,7 @@ app-kpianalysis app-ag-bar:nth-child(3) {
 }
 .faq_inner_svg img
 {
-    width: 27px;
+    width: 44px;
 }
 .faq_sidebar_item:nth-child(1) .faq_inner_svg { background-color: #5DADE2; } /* Soft Blue */
 .faq_sidebar_item:nth-child(2) .faq_inner_svg { background-color: #45B39D; } /* Sage Teal */

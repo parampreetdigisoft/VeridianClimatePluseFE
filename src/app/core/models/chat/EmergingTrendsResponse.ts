@@ -1,6 +1,6 @@
-export interface EmergingTrendCountryCard {
-  country: string;
-  countryCode: string;
+export interface EmergingTrendProgramCard {
+  program: string;
+  programCode: string;
   region: string;
   type: 'risk' | 'trend';
   title: string;
@@ -18,5 +18,5 @@ export interface ChatEmergingTrendsResponse {
   updatedAt: string;
   headline: string;
   subHeadline: string;
-  countries: EmergingTrendCountryCard[];
+  programs: EmergingTrendProgramCard[];
 }

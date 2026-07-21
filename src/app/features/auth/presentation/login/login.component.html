@@ -2,12 +2,12 @@
     <section class="vui_before_login vui_auth_page">
         <div class="vui_before_login_cards ahi_auth_card ahi_auth_card--narrow">
             <figure class="vui_logo">
-                <a><img src="assets/images/Logo-health-large.png" alt="Africa Health Intelligence"></a>
+                <a><img src="assets/images/Logo-climate-pulse.png" alt="Veridian Climate Pulse"></a>
             </figure>
-            <h4 class="before_login_card_head text-center">Welcome {{role =='3' ? 'to the Africa Health Intelligence System' : ''}}</h4>
-            <p class="before_login_card_desc text-center">{{role =='3' ? 'Your health intelligence copilot for national insights.' : 'Log in to your account.'}}</p>
+            <h4 class="before_login_card_head text-center">Welcome {{role =='3' ? 'to the Veridian Climate Pulse System' : ''}}</h4>
+            <p class="before_login_card_desc text-center">{{role =='3' ? 'Your climate pulse copilot for national insights.' : 'Log in to your account.'}}</p>
             <div class="input_field">
-                <label for="">Username *</label>
+                <label for="">Email *</label>
                 <input type="text" formControlName="email" placeholder="Enter Username" class="form-control">
                 <div *ngIf="(email?.touched || (email?.invalid && isSubmitted))  " class="error-msg">
                     <div *ngIf="email?.errors?.['required']">

@@ -11,13 +11,13 @@ import {
   ApexXAxis,
   ApexYAxis,
 } from 'ng-apexcharts';
-import { CountryVM } from 'src/app/core/models/CountryVM';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { TieredAccessPlanValue } from 'src/app/core/enums/TieredAccessPlan';
 import {
   DashboardInterpretationDto,
   DashboardModeResponseDto,
   DashboardQuestionScoreDto,
-} from 'src/app/core/models/CountrySignalDashboardDto';
+} from 'src/app/core/models/ProgramSignalDashboardDto';
 import { AHI_CHART, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { ToasterService } from 'src/app/core/services/toaster.service';
@@ -58,8 +58,8 @@ type SignalTab = 'stress' | 'warning' | 'resilience';
 })
 
 export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
-  countries: CountryVM[] = [];
-  selectedCountryID: number | null = null;
+  programs: ProgramVM[] = [];
+  selectedclimateProgramID: number | null = null;
   activeTab: SignalTab = 'stress';
 
   tier: TieredAccessPlanValue = TieredAccessPlanValue.Pending;
@@ -85,42 +85,42 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getAllCountriesByUserID();
+    this.getAllProgramsByUserID();
   }
 
   ngOnDestroy(): void {
   
   }
 
-  getAllCountriesByUserID(): void {
+  getAllProgramsByUserID(): void {
    this.isLoading = true;
    this.adminService
-      .getAllCountriesByUserId(this.userService?.userInfo?.userID)
+      .getAllProgramsByUserId(this.userService?.userInfo?.userID)
       .subscribe({
       next: (res) => {
         this.isLoading = false;
         if (res.succeeded) {
-          this.countries = res.result ?? [];
-          if (this.countries.length) {
-            this.selectedCountryID = this.countries[0].countryID;
+          this.programs = res.result ?? [];
+          if (this.programs.length) {
+            this.selectedclimateProgramID = this.programs[0].climateProgramID;
             this.loadActiveTabData();
           } else {
-            this.selectedCountryID = null;
+            this.selectedclimateProgramID = null;
             this.getAllPillars();
             this.opendialog();
           }
         } else {
-          this.toaster.showWarning(res.errors?.[0] || 'Failed to load countries.');
+          this.toaster.showWarning(res.errors?.[0] || 'Failed to load programs.');
         }
       },
       error: () => {
         this.isLoading = false;
-        this.toaster.showError('Failed to load country list.');
+        this.toaster.showError('Failed to load program list.');
       },
     });
   }
 
-  onCountryChanged(): void {
+  onProgramsChanged(): void {
     this.loadActiveTabData();
   }
 
@@ -131,8 +131,8 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   loadActiveTabData(): void {
-    if (!this.selectedCountryID) {
-      this.toaster.showWarning('Please select a country.');
+    if (!this.selectedclimateProgramID) {
+      this.toaster.showWarning('Please select a program.');
       return;
     }
 
@@ -148,9 +148,9 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   loadStressDashboard(): void {
-    if (!this.selectedCountryID) return;
+    if (!this.selectedclimateProgramID) return;
     this.isLoading = true;
-    this.adminService. getPeaceStressTestDashboard(this.selectedCountryID).subscribe({
+    this.adminService. getPeaceStressTestDashboard(this.selectedclimateProgramID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
@@ -170,9 +170,9 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   loadEarlyWarningDashboard(isSilent = false): void {
-    if (!this.selectedCountryID) return;
+    if (!this.selectedclimateProgramID) return;
     if (!isSilent) this.isLoading = true;
-    this.adminService.getEarlyWarningDashboard(this.selectedCountryID).subscribe({
+    this.adminService.getEarlyWarningDashboard(this.selectedclimateProgramID).subscribe({
       next: (res) => {
         if (!isSilent) this.isLoading = false;
         if (!res.succeeded) {
@@ -195,9 +195,9 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   loadResilienceDashboard(): void {
-    if (!this.selectedCountryID) return;
+    if (!this.selectedclimateProgramID) return;
     this.isLoading = true;
-    this.adminService.getResilienceScorecard(this.selectedCountryID).subscribe({
+    this.adminService.getResilienceScorecard(this.selectedclimateProgramID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
@@ -274,10 +274,10 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
     return dashboard?.questions?.length ?? 0;
   }
 
-  getCountryName(): string {
+  getProgramsName(): string {
     return (
-      this.countries.find((x) => x.countryID === this.selectedCountryID)?.countryName ||
-      'Selected Country'
+      this.programs.find((x) => x.climateProgramID === this.selectedclimateProgramID)?.programName ||
+      'Selected Programs'
     );
   }
   

@@ -13,7 +13,7 @@ import { TieredAccessPlanValue } from '../core/enums/TieredAccessPlan';
 })
 export class HomeComponent implements OnInit {
   currentUser = signal<UserInfo | null>(null);
-  cityUser = UserRole.CountryUser;
+  programUser = UserRole.ProgramUser;
   evaluator = UserRole.Evaluator;
   pendingTier= TieredAccessPlanValue.Pending;
   constructor(

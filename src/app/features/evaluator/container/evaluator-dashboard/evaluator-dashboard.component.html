@@ -3,25 +3,25 @@
 		<div class="row justify-content-between align-items-end">
 			<div class="col-md-auto">
 				<div class="input_field">
-					<label>Select Country *</label>
-					<ng-select [items]="countries"
+					<label>Select Program *</label>
+					<ng-select [items]="programs"
 						[searchable]="true"
-						[placeholder]="selectedCountries == '' ? 'Select Country' : ''"
-						[(ngModel)]="selectedCountries"
-						(change)="getCountryQuestionHistory()"
-						bindValue="countryID"
-						bindLabel="countryName"
+						[placeholder]="selectedPrograms == '' ? 'Select Program' : ''"
+						[(ngModel)]="selectedPrograms"
+						(change)="getProgramQuestionHistory()"
+						bindValue="climateProgramID"
+						bindLabel="programName"
 						class="form-control analyst_multi_select">
 						<ng-template ng-label-tmp
 							let-item="item "
 							class="select_item">
-							{{ item.countryName }} ({{item?.assignedBy || ''}})
+							{{ item.programName }} ({{item?.assignedBy || ''}})
 						</ng-template>
 
 
 						<ng-template ng-option-tmp
 							let-item="item">
-							{{ item.countryName }}, {{ item.continent }} ({{item?.assignedBy || ''}})
+							{{ item.programName }}, {{ item.continent }} ({{item?.assignedBy || ''}})
 						</ng-template>
 					</ng-select>
 				</div>
@@ -66,7 +66,7 @@
 	<div class="apx_chart_new">
 		<div *ngIf="chartOptions?.series"
 			class="card_heading">
-			<h3>Country Overview</h3>
+			<h3>Program Overview</h3>
 		</div>
 		<apx-chart [series]="chartOptions.series!"
 			[chart]="chartOptions.chart!"

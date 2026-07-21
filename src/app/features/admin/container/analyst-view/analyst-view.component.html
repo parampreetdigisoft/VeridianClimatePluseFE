@@ -60,7 +60,7 @@
           <th>Role</th>
           <th>Analyst</th>
         </ng-container>
-        <th>Assigned Country</th>
+        <th>Assigned Program</th>
         <th *ngIf="!roleId">Mail Status</th>
         <!-- <th>Assigned By</th> -->
         <th class="action_th" *ngIf="!roleId">Actions</th>
@@ -77,11 +77,14 @@
           <td>{{ analyst.createdByName }}</td>
         </ng-container>
 
-        <td>
-          <span *ngFor="let country of analyst?.countries; let last = last">
-            {{ country?.countryName }}{{ last ? "" : ", " }}
-          </span>
-          <!-- <td>{{analyst.createdByName}}</td> -->
+         <td>
+          <div class="program-list desc" [class.collapsed]="!analyst.programsExpand">
+            {{ analyst.programsText }}
+          </div>
+          <a *ngIf="analyst.showProgramsToggle" class="read-more" href="javascript:void(0)"
+            (click)="togglePrograms(analyst)">
+            {{ analyst.programsExpand ? 'Read Less' : 'Read More' }}
+          </a>
         </td>
         <td *ngIf="!roleId">
           <button *ngIf="!analyst.isEmailConfirmed"
@@ -168,7 +171,7 @@
   >
     <app-add-update-analyst
       [analyst]="selectedAnalyst"
-      [countries]="countries"
+      [programs]="programs"
       (analystChange)="addUpdateAnalyst($event)"
       (bulkImportChange)="addBulkAnalyst($event)"
       (closeAnalystModel)="closeModal()"

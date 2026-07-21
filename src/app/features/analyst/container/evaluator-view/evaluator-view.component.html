@@ -37,7 +37,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Phone No</th>
-        <th>Country</th>
+        <th>Program</th>
         <th>Mail Status</th>
         <th class="action_th">Actions</th>
       </tr>
@@ -49,8 +49,8 @@
         <td>{{ evaluator.email }}</td>
         <td>{{ evaluator.phone }}</td>
         <td>
-          <span *ngFor="let country of evaluator?.countries; let last = last">
-            {{ country?.countryName }}{{ last ? "" : ", " }}
+          <span *ngFor="let program of evaluator?.climatePrograms; let last = last">
+            {{ program?.programName }}{{ last ? "" : ", " }}
           </span>
         </td>
         <td>
@@ -136,7 +136,7 @@
   >
     <app-add-update-evaluator
       [evaluator]="selectedEvaluator"
-      [countries]="countries"
+      [programs]="programs"
       [loading]="loading"
       (closeModal)="closeModal()"
       (evaluatorChange)="addUpdateEvaluator($event)"
@@ -146,8 +146,8 @@
 </ng-container>
 
 <app-prompt
-  [title]="'Unassign Country/Countries'"
-  [message]="'Are you sure you want to unassign country/countries from this evaluator?'"
+  [title]="'Unassign Program/Programs'"
+  [message]="'Are you sure you want to unassign program/programs from this evaluator?'"
   [confirmText]="'Unassign'"
   [cancelText]="'Cancel'"
   (confirm)="deleteEvaluator()"

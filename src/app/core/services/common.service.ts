@@ -6,58 +6,87 @@ import { UserService } from "./user.service";
 import { BehaviorSubject, catchError, from, map, Observable, switchMap, tap } from "rxjs";
 import { HttpService } from "../http/http.service";
 import { UpdateUserResponseDto, UserInfo } from "../models/UserInfo";
-import { CountryVM } from "../models/CountryVM";
-import { GetNearestCountryRequestDto } from "../models/GetNearestCountryRequestDto";
+import { ProgramVM } from "../models/ProgramVM";
+import { GetNearestProgramRequestDto } from "../models/GetNearestProgramRequestDto";
 import { ToasterService } from "./toaster.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class CommonService {
-  latitude = 0;
-  longitude = 0;
+  location: string | null = null;
 
   private years = new BehaviorSubject<number[]>(this.getYearList(2025));
 
   constructor(private http: HttpService, private userService: UserService, private toaster: ToasterService) { }
 
-  public getAllCountryByLocation(): Observable<ResultResponseDto<CountryVM[]>> {
-    const payload: GetNearestCountryRequestDto = {
+  public getAllProgramsByLocation(): Observable<ResultResponseDto<ProgramVM[]>> {
+    const payload: GetNearestProgramRequestDto = {
       userID: this.userService.userInfo.userID,
-      latitude: this.latitude,
-      longitude: this.longitude,
+      location: this.location,
     };
 
     return this.http
-      .getWithQueryParams('Country/getAllCountryByLocation', payload)
-      .pipe(map((x) => x as ResultResponseDto<CountryVM[]>));
+      .getWithQueryParams('Program/getAllProgramsByLocation', payload)
+      .pipe(map((x) => x as ResultResponseDto<ProgramVM[]>));
   }
 
-  public getUserNearestCountry(): Observable<ResultResponseDto<CountryVM[]>> {
-    if (navigator.geolocation) {
-      return from(
-        new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        })
-      ).pipe(
-        switchMap((position) => {
-          this.latitude = position.coords.latitude;
-          this.longitude = position.coords.longitude;
-          return this.getAllCountryByLocation();
-        }),
-        catchError((error) => {
-          console.error('Geolocation error:', error);
-          this.toaster.showError(
-            'Location access denied or unavailable. Showing all countries.'
-          );
-          return this.getAllCountryByLocation(); // fallback
-        })
-      );
-    } else {
-      this.toaster.showError('Geolocation not supported by this browser.');
-      return this.getAllCountryByLocation();
-    }
+  // public getUserNearestProgram(): Observable<ResultResponseDto<ProgramVM[]>> {
+  //   if (navigator.geolocation) {
+  //     return from(
+  //       new Promise<GeolocationPosition>((resolve, reject) => {
+  //         navigator.geolocation.getCurrentPosition(resolve, reject);
+  //       })
+  //     ).pipe(
+  //       switchMap((position) => {
+  //         this.location = `${position.coords.latitude},${position.coords.longitude}`;
+  //         return this.getAllProgramsByLocation();
+  //       }),
+  //       catchError((error) => {
+  //         console.error('Geolocation error:', error);
+  //         this.toaster.showError(
+  //           'Location access denied or unavailable. Showing all programs.'
+  //         );
+  //         return this.getAllProgramsByLocation(); // fallback
+  //       })
+  //     );
+  //   } else {
+  //     this.toaster.showError('Geolocation not supported by this browser.');
+  //     return this.getAllProgramsByLocation();
+  //   }
+  // }
+  public getUserNearestProgram(): Observable<ResultResponseDto<ProgramVM[]>> {
+  if (!navigator.geolocation) {
+    this.toaster.showError('Geolocation not supported by this browser.');
+    return this.getAllProgramsByLocation();
   }
+
+  return from(
+    new Promise<GeolocationPosition>((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        timeout: 5000, 
+        enableHighAccuracy: true
+      });
+    })
+  ).pipe(
+    switchMap((position: GeolocationPosition) => {
+      const location = `${position.coords.latitude},${position.coords.longitude}`;
+      this.location = location;
+      return this.getAllProgramsByLocation();
+    }),
+
+    catchError((error) => {
+      console.error('Geolocation error:', error);
+
+      this.toaster.showError(
+        'Location access denied or unavailable. Showing all programs.'
+      );
+
+      // ✅ fallback without location
+      return this.getAllProgramsByLocation();
+    })
+  );
+}
 
   public getUserInfo() {
     return this.http
@@ -70,12 +99,14 @@ export class CommonService {
       .UploadFile(`Auth/updateUser`, formData)
       .pipe(map((x) => x as ResultResponseDto<UpdateUserResponseDto>));
   }
+
   public refreshToken() {
     this.userService.isTokenRefresh = new Date(Date.now() + 35 * 60 * 1000);
     let userRes = this.userService?.userInfo;
     if (userRes == null) {
       this.userService.RedirectBasedOnRole();
     }
+
     return this.http.post(`Auth/refreshToken`, { userID: userRes?.userID })
       .pipe(
         map(x => x as ResultResponseDto<UserInfo | any>),
@@ -149,6 +180,7 @@ export class CommonService {
     }
     return { paddingInner, paddingOuter };
   }
+
   getYearList(startYear: number): number[] {
     const currentYear = new Date().getFullYear();
     const years: number[] = [];
@@ -158,9 +190,10 @@ export class CommonService {
     }
     return years;
   }
-  public getLatitudeLongitude(country: any) {
+  
+  public getLatitudeLongitude(Program: any) {
   const params = {
-    q: country,
+    q: Program,
     format: 'json',
     limit: 1
   };
@@ -257,23 +290,23 @@ isValidDate(date: any): boolean {
 }
  get PillarColors() {
       return [
-      "#003F4A" , // 10 - darkest
+     "#003F4A", // 10 - darkest
       "#8FD0A8", // 3
       "#2D9590", // 6
       "#005D68", // 9
       "#67BC8D", // 4
       "#45A88D", // 5
-      "#D8F1E0", // 1 - very light green      
-      "#B7E3C4", // 2
+      "#8bebaa", // 1 - very light green      
+      "#5eb478", // 2
       "#1E8189", // 7
       "#0F6E78", // 8
-      "#003F4A" , // 10 - darkest
-      "#8FD0A8", // 3
+      "#003F4A", // 10 - darkest
+      "#7dcf9d", // 3
       "#2D9590", // 6
       "#005D68", // 9
       "#67BC8D", // 4
       "#45A88D", // 5
-      "#D8F1E0", // 1 - very light green      
+      "#46fa7f", // 1 - very light green      
       "#B7E3C4", // 2
       "#1E8189", // 7
       "#0F6E78", // 8

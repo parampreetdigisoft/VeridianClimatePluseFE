@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CountryVM } from '../../../../core/models/CountryVM';
+import { ProgramVM } from '../../../../core/models/ProgramVM';
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -21,7 +21,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1
-  countries: CountryVM[] | null = [];
+  programs: ProgramVM[] | null = [];
   isLoader: boolean = false;
   isOpendialog: boolean = false;
   selectedIndex?:number;
@@ -29,13 +29,13 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getEvaluator();
-    this.getAllCountriesByUserId();
+    this.getAllProgramsByUserId();
   }
 
-  getAllCountriesByUserId() {
-    this.analystService.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
+  getAllProgramsByUserId() {
+    this.analystService.getAllProgramsByUserId(this.userService?.userInfo?.userID).subscribe({
       next: (res) => {
-        this.countries = res.result;     
+        this.programs = res.result;     
       }
     });
   }
@@ -73,7 +73,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       userId: this.selectedEvaluator?.userID,
       assignedByUserId: this.userService.userInfo.userID
     }
-    this.analystService.unAssignCountry(payload).subscribe({
+    this.analystService.unAssignProgram(payload).subscribe({
       next: (res) => {
         if (res.succeeded) {
           this.getEvaluator();
@@ -83,7 +83,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
         }
       },
       error: () => {
-        this.toaster.showError('Failed to un-assigned country');
+        this.toaster.showError('Failed to un-assigned program');
       }
     });
   }
@@ -97,7 +97,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       password: "",
       role: UserRoleValue.Evaluator,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-      countryID: analyst.countries.map((x) => x.countryID),
+      climateProgramID: analyst.climatePrograms.map((x) => x.climateProgramID),
       userID: analyst.userID,
     };
     this.addUpdateEvaluator(payload);
@@ -114,7 +114,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       password: evaluator.password,
       role: UserRoleValue.Evaluator,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-      countryID: evaluator.countryID,
+      climateProgramID: evaluator.climateProgramID,
       userID: evaluator.userID
     }
 

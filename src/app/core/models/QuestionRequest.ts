@@ -1,12 +1,12 @@
 
-export interface CountryPillerRequestDto {
-  countryID :number;
+export interface ProgramPillerRequestDto {
+  climateProgramID :number;
   userID: number;
   pillarID?: number;
 }
 
 
-export interface CountryMappingPillerRequestDto {
-  userCountryMappingID: number;
+export interface ProgramMappingPillerRequestDto {
+  staffProgramMappingID: number;
   pillarID?: number;
 }

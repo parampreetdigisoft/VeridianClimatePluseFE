@@ -21,15 +21,15 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { ChatMessage } from 'src/app/core/models/chat/ChatMessage';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
-import { CountryVM } from 'src/app/core/models/CountryVM';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { AIAssistantFAQDto } from 'src/app/core/models/chat/AIAssistantFAQDto';
 import {
-  CountryExecutiveSlidesResult,
+  ProgramExecutiveSlidesResult,
   PillarsUserHistroyResponseDto,
-} from 'src/app/core/models/chat/ChatCountryExecutiveSlidesResponse';
+} from 'src/app/core/models/chat/ChatProgramExecutiveSlidesResponse';
 import {
   ChatEmergingTrendsResponse,
-  EmergingTrendCountryCard
+  EmergingTrendProgramCard
 } from 'src/app/core/models/chat/EmergingTrendsResponse';
 import {
   PillarLiveSignalCard,
@@ -63,8 +63,8 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   showSuggestions = signal(false);
   showContextPanel = signal(true);
   unreadCount = signal(0);
-  contrySlide: CountryExecutiveSlidesResult | null = null;
-  countrySlidesLoading = signal(false);
+  programSlide: ProgramExecutiveSlidesResult | null = null;
+  programSlidesLoading = signal(false);
   emergingTrends = signal<ChatEmergingTrendsResponse | null>(null);
   emergingTrendsLoading = signal(false);
   emergingTrendsError = signal<string | null>(null);
@@ -79,20 +79,20 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   protected isOpen = this.chatService.isOpen;
   protected isTyping = this.chatService.isTyping;
   protected messages = this.chatService.messages;
-  protected selectedCountry = this.chatService.selectedCountry;
+  protected selectedProgram = this.chatService.selectedProgram;
   protected selectedPillar = this.chatService.selectedPillar;
   isExpanded = true;
 
   // ─── Computed ─────────────────────────────────────────────────────────────
   protected hasContext = computed(() =>
-    !!this.chatService.selectedCountry() || !!this.chatService.selectedPillar()
+    !!this.chatService.selectedProgram() || !!this.chatService.selectedPillar()
   );
 
   protected contextLabel = computed<string | null>(() => {
-    const c = this.chatService.selectedCountry();
+    const c = this.chatService.selectedProgram();
     const p = this.chatService.selectedPillar();
-    if (c && p) return `${c.countryName} · ${p.pillarName}`;
-    if (c) return c.countryName;
+    if (c && p) return `${c.programName} · ${p.pillarName}`;
+    if (c) return c.programName;
     if (p) return p.pillarName;
     return null;
   });
@@ -112,16 +112,16 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   readonly rotatingHeadlines = [
     'Welcome to AHI',
     'Surface stability signals across regions',
-    'Interrogate country risk with pillar context',
+    'Interrogate program risk with pillar context',
     'Compare indices and emerging pressure points',
     'Brief on conflict trajectories and early warnings',
   ];
 
   readonly rotatingPlaceholders = [
-    'Frame a country intelligence question…',
+    'Frame a program intelligence question…',
     'Which stability indicators matter for your decision?',
     'Ask about governance, security, or humanitarian drivers…',
-    'Request a cross-country or regional assessment…',
+    'Request a cross-program or regional assessment…',
   ];
 
   rotatingIndex = signal(0);
@@ -175,46 +175,46 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     this.clearHistory();
     this.closeChat();
     this.clearContext();
-    this.chatService.getAllCountries();
+    this.chatService.getAllPrograms();
     this.chatService.getPillars();
     this.chatService.getFAQDs();
     this.loadEmergingTrends();
     this.loadPillarLiveSignals();
     this.startSlider();
     this.startPromptRotation();
-    if (this.chatService.crossComparisionCountryIDs.value.length > 0) {
-      this.getContriesCrossComparision()
+    if (this.chatService.crossComparisionprogramIDs.value.length > 0) {
+      this.getProgramsCrossComparision()
     }
   }
 
-  onCountryChange(city: CountryVM | null): void {
+  onProgramChange(city: ProgramVM | null): void {
     this.analysisModalOpen.set(false);
     this.sliderItems = [];
     this.currentSlide = 0;
     clearInterval(this.intervalId);
-    this.chatService.selectedCountry.set(city ?? null);
+    this.chatService.selectedProgram.set(city ?? null);
 
-    if (!city?.countryID) {
-      this.contrySlide = null;
-      this.countrySlidesLoading.set(false);
+    if (!city?.climateProgramID) {
+      this.programSlide = null;
+      this.programSlidesLoading.set(false);
       this.cdr.markForCheck();
       return;
     }
 
-    this.contrySlide = null;
-    this.countrySlidesLoading.set(true);
+    this.programSlide = null;
+    this.programSlidesLoading.set(true);
     this.cdr.markForCheck();
 
-    this.chatService.getCountrySlides(city.countryID).pipe(
+    this.chatService.getProgramSlides(city.climateProgramID).pipe(
       takeUntil(this.destroy$),
       finalize(() => {
-        this.countrySlidesLoading.set(false);
+        this.programSlidesLoading.set(false);
         this.cdr.markForCheck();
       })
     ).subscribe({
       next: res => {
         const data = res?.result?.result;
-        this.contrySlide = data ?? null;
+        this.programSlide = data ?? null;
 
         if (!data) return;
 
@@ -228,7 +228,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
 
         this.sliderItems = [
           {
-            title: `${data.country.countryName} recent performance`,
+            title: `${data.program.programName} recent performance`,
             subtitle: data.recentPerformance?.summary,
             trend: "Recent"
           },
@@ -249,7 +249,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.contrySlide = null;
+        this.programSlide = null;
         this.sliderItems = [];
         this.cdr.markForCheck();
       },
@@ -296,14 +296,14 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   // ─── Send ─────────────────────────────────────────────────────────────────
-  getContriesCrossComparision(): void {
+  getProgramsCrossComparision(): void {
 
     this.inputText.set('');
     this.showSuggestions.set(false);
     this.suggestions.set([]);
 
     this.chatService
-      .getContriesCrossComparision()
+      .getProgramsCrossComparision()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => { this.scrollToBottom(); this.cdr.markForCheck(); },
@@ -376,7 +376,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   clearContext(): void {
-    this.chatService.selectedCountry.set(null);
+    this.chatService.selectedProgram.set(null);
     this.chatService.selectedPillar.set(null);
     this.chatService.selectedfaq.set(null);
   }
@@ -400,9 +400,9 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Pillars from country slide, ordered for sidebar display. */
+  /** Pillars from program slide, ordered for sidebar display. */
   get sidebarPillars(): PillarsUserHistroyResponseDto[] {
-    const pillars = this.contrySlide?.country?.pillars;
+    const pillars = this.programSlide?.program?.pillars;
     if (!pillars?.length) return [];
     return [...pillars].sort(
       (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
@@ -499,9 +499,9 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: res => {
         const payload = res?.succeeded ? res.result : null;
-        const countries = payload?.countries?.filter(c => c?.country && c?.sourceUrl) ?? [];
+        const programs = payload?.programs?.filter(c => c?.program && c?.sourceUrl) ?? [];
 
-        if (!payload || !countries.length) {
+        if (!payload || !programs.length) {
           this.emergingTrends.set(null);
           this.emergingTrendsError.set(
             res?.errors?.[0] ?? res?.messages?.join(", ") ?? 'Unable to load global trends right now.'
@@ -509,8 +509,8 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.emergingTrends.set({ ...payload, countries });
-        this.selectedTrendCode.set(countries[0]?.countryCode ?? null);
+        this.emergingTrends.set({ ...payload, programs });
+        this.selectedTrendCode.set(programs[0]?.programCode ?? null);
         this.emergingTrendsError.set(null);
         this.cdr.markForCheck();
       },
@@ -526,17 +526,17 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     this.loadEmergingTrends();
   }
 
-  selectTrendCard(card: EmergingTrendCountryCard): void {
-    this.selectedTrendCode.set(card.countryCode);
+  selectTrendCard(card: EmergingTrendProgramCard): void {
+    this.selectedTrendCode.set(card.programCode);
     this.cdr.markForCheck();
   }
 
-  isTrendSelected(card: EmergingTrendCountryCard): boolean {
-    return this.selectedTrendCode() === card.countryCode;
+  isTrendSelected(card: EmergingTrendProgramCard): boolean {
+    return this.selectedTrendCode() === card.programCode;
   }
 
-  trackTrendCard(_: number, card: EmergingTrendCountryCard): string {
-    return card.countryCode;
+  trackTrendCard(_: number, card: EmergingTrendProgramCard): string {
+    return card.programCode;
   }
 
   trendAccentColor(color: string | null | undefined): string {
@@ -622,12 +622,12 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Search both country name and alias (also used as a fallback for pillar name) */
+  /** Search both program name and alias (also used as a fallback for pillar name) */
   customSearchFn(term: string, item: any): boolean {
     const t = term.toLowerCase();
     return (
-      item.countryName?.toLowerCase().includes(t) ||
-      item.countryAliasName?.toLowerCase().includes(t) ||
+      item.programName?.toLowerCase().includes(t) ||
+      item.programAliasName?.toLowerCase().includes(t) ||
       item.region?.toLowerCase().includes(t) ||
       item.pillarName?.toLowerCase().includes(t) ||
       false

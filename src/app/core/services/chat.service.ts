@@ -3,19 +3,19 @@ import { Observable, interval, Subject, takeUntil, BehaviorSubject, map, Subscri
 import {
   ChatMessage,
   ChatResponseDto,
-  CountryChatRequestDto,
+  ProgramChatRequestDto,
   CrossComparisionChatRequestDto,
   GlobalChatRequestDto
 } from '../models/chat/ChatMessage';
 import { UserService } from './user.service';
-import { CountryVM } from '../models/CountryVM';
+import { ProgramVM } from '../models/ProgramVM';
 import { PillarsVM } from '../models/PillersVM';
 import { HttpService } from '../http/http.service';
 import { ToasterService } from './toaster.service';
 import { ResultResponseDto } from '../models/ResultResponseDto';
 import { AIAssistantFAQDto } from '../models/chat/AIAssistantFAQDto';
 import { UserRole } from '../enums/UserRole';
-import { ChatCountryExecutiveSlidesResponse } from '../models/chat/ChatCountryExecutiveSlidesResponse';
+import { ChatProgramExecutiveSlidesResponse } from '../models/chat/ChatProgramExecutiveSlidesResponse';
 import { ChatEmergingTrendsResponse } from '../models/chat/EmergingTrendsResponse';
 import { PillarLiveSignalsResult } from '../models/chat/PillarLiveSignalsResponse';
 
@@ -25,18 +25,15 @@ export class ChatService {
   // ─── State ────────────────────────────────────────────────────────────────
   isOpen = signal(false);
   isTyping = signal(false);
-  selectedCountry = signal<CountryVM | null>(null);
+  selectedProgram = signal<ProgramVM | null>(null);
   selectedPillar = signal<PillarsVM | null>(null);
   selectedfaq = signal<AIAssistantFAQDto | null>(null);
   messages = signal<ChatMessage[]>([]);
-
-  countries = new BehaviorSubject<CountryVM[]>([]);
+  programs = new BehaviorSubject<ProgramVM[]>([]);
   pillars = new BehaviorSubject<PillarsVM[]>([]);
   faqs = new BehaviorSubject<AIAssistantFAQDto[]>([]);
-
-  crossComparisionCountryIDs = new BehaviorSubject<number[]>([]);
-
-  quickQuestions = computed(() => this.selectedCountry() ? this.countryQuickQuestions : this.globalQuickQuestions)
+  crossComparisionprogramIDs = new BehaviorSubject<number[]>([]);
+  quickQuestions = computed(() => this.selectedProgram() ? this.ProgramQuickQuestions : this.globalQuickQuestions)
 
   // ─── Cancellation tokens ──────────────────────────────────────────────────
   /**
@@ -75,8 +72,8 @@ export class ChatService {
 
   // ─── Public API ───────────────────────────────────────────────────────────
 
-  openWithContext(country?: CountryVM, pillar?: PillarsVM): void {
-    if (country) this.selectedCountry.set(country);
+  openWithContext(program?: ProgramVM, pillar?: PillarsVM): void {
+    if (program) this.selectedProgram.set(program);
     if (pillar) this.selectedPillar.set(pillar);
     this.isOpen.set(true);
   }
@@ -130,7 +127,7 @@ export class ChatService {
   filterQuestions(query: string): AIAssistantFAQDto[] {
     if (!query || query.trim().length < 2) return [];
     const q = query.toLowerCase();
-    if (this.selectedCountry()) {
+    if (this.selectedProgram()) {
       return this.faqs.value
         .filter(pq => pq.questionText.toLowerCase().includes(q) && !pq.related.includes('global'))
       //.slice(0, 4);
@@ -156,7 +153,7 @@ export class ChatService {
     // New cancel token per message
     this.cancelStream$ = new Subject<void>();
 
-    const country = this.selectedCountry();
+    const program = this.selectedProgram();
     const pillar = this.selectedPillar();
 
     const histories = this.messages()
@@ -194,16 +191,16 @@ export class ChatService {
       };
       this.messages.update(msgs => [...msgs, placeholder]);
 
-      if (country) {
-        const payload: CountryChatRequestDto = {
-          countryID: country.countryID,
+      if (program) {
+        const payload: ProgramChatRequestDto = {
+          climateProgramID: program.climateProgramID,
           pillarID: pillar?.pillarID ?? 0,
           questionText: userText,
           fAQID: this.selectedfaq()?.faqid,
           historyText: histories,
         };
 
-        this.activeRequest$ = this.askAboutCountry(payload).subscribe({
+        this.activeRequest$ = this.askAboutProgram(payload).subscribe({
           next: res => {
             this.activeRequest$ = null; // HTTP done; typewriter phase begins
 
@@ -257,10 +254,10 @@ export class ChatService {
     });
   }
 
-  getAllCountries(): void {
-    if (this.countries.value.length > 0) return;
-    this.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
-      next: res => this.countries.next(res.result ?? []),
+  getAllPrograms(): void {
+    if (this.programs.value.length > 0) return;
+    this.getAllProgramsByUserId(this.userService?.userInfo?.userID).subscribe({
+      next: res => this.programs.next(res.result ?? []),
     });
   }
 
@@ -271,8 +268,8 @@ export class ChatService {
     });
   }
 
-  getContriesCrossComparision() {
-    let userText = "Provide a detailed comparative analysis of the selected countries across all PEM pillars, including key risks, opportunities, structural vulnerabilities, resilience indicators, emerging trends, and strategic observations for each pillar."
+  getProgramsCrossComparision() {
+    let userText = "Provide a detailed comparative analysis of the selected programs across all PEM pillars, including key risks, opportunities, structural vulnerabilities, resilience indicators, emerging trends, and strategic observations for each pillar."
 
     if (this.isTyping()) {
       this.stopGeneration();
@@ -316,9 +313,9 @@ export class ChatService {
 
       this.messages.update(msgs => [...msgs, placeholder]);
 
-      if (this.crossComparisionCountryIDs.value.length > 0) {
+      if (this.crossComparisionprogramIDs.value.length > 0) {
         const payload: CrossComparisionChatRequestDto = {
-          countryIDs: this.crossComparisionCountryIDs.value,
+          climateProgramIDs: this.crossComparisionprogramIDs.value,
           questionText: userText,
           historyText: histories,
         };
@@ -331,7 +328,7 @@ export class ChatService {
               const fullText = res.result?.responseText ?? '';
               this.pendingFullText = fullText;
               this.typewriterStream(fullText, assistantId, observer);
-              this.crossComparisionCountryIDs.next([]);
+              this.crossComparisionprogramIDs.next([]);
             } else {
               this.handleError(assistantId, observer, res.errors?.join(', ') ?? 'Unknown error');
             }
@@ -410,17 +407,17 @@ export class ChatService {
 
   // ─── HTTP ─────────────────────────────────────────────────────────────────
 
-  getCountrySlides(countryId: number): Observable<ResultResponseDto<ChatCountryExecutiveSlidesResponse>> {
+  getProgramSlides(climateProgramID: number): Observable<ResultResponseDto<ChatProgramExecutiveSlidesResponse>> {
 
-    return this.http.post<ResultResponseDto<ChatCountryExecutiveSlidesResponse>>(
-      `Chat/countrySlides`,
-      countryId as any
+    return this.http.post<ResultResponseDto<ChatProgramExecutiveSlidesResponse>>(
+      `Chat/ProgramSlides`,
+      climateProgramID as any
     );
   }
 
-  getEmergingTrendsAndIssues(countryCount = 6): Observable<ResultResponseDto<ChatEmergingTrendsResponse>> {
+  getEmergingTrendsAndIssues(ProgramCount = 6): Observable<ResultResponseDto<ChatEmergingTrendsResponse>> {
     return this.http
-      .getWithQueryParams('Public/emergingTrendsAndIssues', { countryCount })
+      .getWithQueryParams('Public/emergingTrendsAndIssues', { ProgramCount })
       .pipe(map(x => x as ResultResponseDto<ChatEmergingTrendsResponse>));
   }
 
@@ -430,16 +427,16 @@ export class ChatService {
       .pipe(map(x => x as ResultResponseDto<PillarLiveSignalsResult>));
   }
 
-  private getAllCountriesByUserId(userId: number) {
-    let url = this.userService.userInfo.role == UserRole.CountryUser ? 'CountryUser/getCountryUserCountries' : `Country/getAllCountryByUserId/${userId}`;
+  private getAllProgramsByUserId(userId: number) {
+    let url = this.userService.userInfo.role == UserRole.ProgramUser ? 'Client/getClientPrograms' : `Program/getAllProgramsByUserId/${userId}`;
 
     return this.http
       .get(url)
-      .pipe(map(x => x as ResultResponseDto<CountryVM[]>));
+      .pipe(map(x => x as ResultResponseDto<ProgramVM[]>));
   }
 
   private getAllPillars() {
-    let url = this.userService.userInfo.role == UserRole.CountryUser ? 'CountryUser/Pillars' : `Pillar/Pillars`;
+    let url = this.userService.userInfo.role == UserRole.ProgramUser ? 'Client/Pillars' : `Pillar/Pillars`;
     return this.http
       .get(url)
       .pipe(map(x => x as PillarsVM[]));
@@ -451,9 +448,9 @@ export class ChatService {
       .pipe(map(x => x as ResultResponseDto<AIAssistantFAQDto[]>));
   }
 
-  private askAboutCountry(request: CountryChatRequestDto) {
+  private askAboutProgram(request: ProgramChatRequestDto) {
     return this.http
-      .post('chat/askAboutCountry', request)
+      .post('chat/askAboutProgram', request)
       .pipe(map(x => x as ResultResponseDto<ChatResponseDto>));
   }
 
@@ -468,63 +465,63 @@ export class ChatService {
       .pipe(map(x => x as ResultResponseDto<ChatResponseDto>));
   }
 
-  // Questions for a single country
-  countryQuickQuestions = [
+  // Questions for a single Program
+  ProgramQuickQuestions = [
     {
       label: 'Health summary',
-      question: 'Summarize the recent health progress and overall stability of this country.'
+      question: 'Summarize the recent health progress and overall stability of this Program.'
     },
     {
       label: 'health initiatives',
-      question: 'What major health initiatives or diplomatic efforts are currently taking place in this country?'
+      question: 'What major health initiatives or diplomatic efforts are currently taking place in this Program?'
     },
     {
       label: 'Security risks',
-      question: 'What are the major security risks or conflict concerns affecting this country?'
+      question: 'What are the major security risks or conflict concerns affecting this Program?'
     },
     {
       label: 'Recommendations',
-      question: 'What recommendations can improve health, security, and stability in this country?'
+      question: 'What recommendations can improve health, security, and stability in this Program?'
     },
     {
       label: 'Recent improvements',
-      question: 'What recent improvements have been observed in this country’s health and stability indicators?'
+      question: 'What recent improvements have been observed in this Program’s health and stability indicators?'
     },
     {
       label: 'Risk factors',
-      question: 'What are the biggest political, social, or economic risks impacting this country?'
+      question: 'What are the biggest political, social, or economic risks impacting this Program?'
     },
     {
       label: 'health trends',
-      question: 'What are the latest health trends and international cooperation efforts related to this country?'
+      question: 'What are the latest health trends and international cooperation efforts related to this Program?'
     }
   ];
 
-  // Questions for all countries globally
+  // Questions for all programs globally
   globalQuickQuestions = [
     {
       label: 'health summary',
-      question: 'Summarize the health across all countries in recent days.'
+      question: 'Summarize the health across all programs in recent days.'
     },
     {
       label: 'health leaders',
-      question: 'Which countries are showing the strongest health initiatives recently?'
+      question: 'Which programs are showing the strongest health initiatives recently?'
     },
     {
       label: 'Security risks',
-      question: 'What are the major security risks affecting countries globally?'
+      question: 'What are the major security risks affecting programs globally?'
     },
     {
       label: 'Recommendations',
       question: 'What are the key recommendations for enhancing global health and stability?'
     },
     {
-      label: 'Improved countries',
+      label: 'Improved programs',
       question: 'Which nations have experienced the most significant improvement in health indicators recently?'
     },
     {
-      label: 'Risk countries',
-      question: 'Which countries are facing the highest conflict or instability risks?'
+      label: 'Risk programs',
+      question: 'Which programs are facing the highest conflict or instability risks?'
     },
     {
       label: 'health trends',

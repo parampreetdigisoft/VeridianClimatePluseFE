@@ -12,13 +12,13 @@
           </div>
           <div>
             <div class="cb__name">AHI Aevum</div>
-            <div class="cb__tagline">Africa Health Intelligence System</div>
+            <div class="cb__tagline">Veridian Climate Pulse System</div>
           </div>
         </div>
 
         <div class="cb__selectors">
           <div class="cb__selector-field">
-            <div class="cb__selector-group" [class.cb__selector-group--filled]="!!selectedCountry()">
+            <div class="cb__selector-group" [class.cb__selector-group--filled]="!!selectedProgram()">
               <div class="cb__selector-icon" aria-hidden="true">
               <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15 0C6.70945 0 0 6.70881 0 15C0 23.2905 6.70881 30 15 30C23.2905 30 30 23.2912 30 15C30 6.70945 23.2912 0 15 0ZM9.19605 3.091C8.74323 4.32379 8.36176 5.58163 8.05354 6.85828C7.15113 6.58393 6.2659 6.25597 5.40258 5.87613C6.50145 4.72166 7.78195 3.78164 9.19605 3.091ZM4.23855 7.27969C5.35408 7.79685 6.50556 8.23262 7.68398 8.58357C7.34379 10.3996 7.14926 12.2479 7.10309 14.1211H1.78723C1.94912 11.6343 2.79656 9.28066 4.23855 7.27969ZM4.23855 22.7203C2.79656 20.7193 1.94912 18.3657 1.78723 15.8789H7.10309C7.14926 17.7521 7.34379 19.6004 7.68398 21.4164C6.50556 21.7674 5.35408 22.2032 4.23855 22.7203ZM5.40258 24.1239C6.26588 23.744 7.15111 23.4161 8.05354 23.1418C8.36179 24.4184 8.74326 25.6763 9.19605 26.9091C7.78266 26.2188 6.50203 25.2789 5.40258 24.1239ZM14.1211 28.2128C13.198 28.1527 12.2931 27.9986 11.4179 27.7543C10.726 26.1158 10.1695 24.4233 9.75393 22.6939C11.1788 22.3754 12.6367 22.1891 14.1211 22.1364V28.2128ZM14.1211 20.3776C12.5128 20.4307 10.9333 20.6299 9.38959 20.9737C9.08291 19.3021 8.90619 17.6017 8.86148 15.8789H14.1211V20.3776ZM14.1211 14.1211H8.86148C8.90619 12.3983 9.08291 10.6979 9.38959 9.02625C10.9333 9.37008 12.5128 9.5693 14.1211 9.62244V14.1211ZM14.1211 7.86357C12.6367 7.8109 11.1788 7.62463 9.75393 7.30605C10.1695 5.57667 10.726 3.88423 11.4179 2.24572C12.2931 2.00139 13.198 1.84729 14.1211 1.78723V7.86357ZM25.7614 7.27969C27.2034 9.28066 28.0509 11.6343 28.2128 14.1211H22.8969C22.8507 12.2479 22.6562 10.3996 22.316 8.58357C23.4944 8.23261 24.6459 7.79684 25.7614 7.27969ZM24.5974 5.87607C23.7341 6.25597 22.8489 6.58394 21.9465 6.85822C21.6382 5.58158 21.2567 4.32374 20.8039 3.09094C22.2173 3.78123 23.498 4.72107 24.5974 5.87607ZM15.8789 1.78723C16.802 1.84729 17.7069 2.00139 18.5821 2.24572C19.274 3.88423 19.8305 5.57667 20.2461 7.30605C18.8212 7.62463 17.3633 7.8109 15.8789 7.86357V1.78723ZM15.8789 9.62244C17.4872 9.5693 19.0667 9.37008 20.6104 9.02625C20.9171 10.6979 21.0938 12.3983 21.1385 14.1211H15.8789V9.62244ZM18.5821 27.7542C17.7069 27.9986 16.802 28.1527 15.8789 28.2128V22.1364C17.3633 22.1891 18.8212 22.3754 20.2461 22.6939C19.8305 24.4233 19.274 26.1157 18.5821 27.7542ZM15.8789 20.3776V15.8789H21.1385C21.0938 17.6017 20.9171 19.3021 20.6104 20.9737C19.0667 20.6299 17.4872 20.4307 15.8789 20.3776ZM20.8039 26.909C21.2568 25.6762 21.6382 24.4184 21.9465 23.1417C22.8489 23.4161 23.7341 23.744 24.5974 24.1239C23.4986 25.2783 22.218 26.2184 20.8039 26.909ZM25.7614 22.7203C24.6459 22.2031 23.4944 21.7674 22.316 21.4164C22.6562 19.6004 22.8507 17.7521 22.8969 15.8789H28.2128C28.0509 18.3657 27.2034 20.7193 25.7614 22.7203Z" fill="#52AE28"/>
@@ -26,13 +26,13 @@
 
             </div>
         <div class="cb__selector-inner">
-          <ng-select [items]="chatService.countries | async" [searchable]="true" [searchFn]="customSearchFn"
-            [clearable]="true" appendTo="body" [ngModel]="selectedCountry()" (ngModelChange)="onCountryChange($event)"
-            class="analyst_multi_select pem-context-select" placeholder="Select country" bindLabel="countryName"
-            notFoundText="No countries match your search" typeToSearchText="Type to search countries">
-            <ng-template ng-label-tmp let-item="item">{{ item?.countryName }}</ng-template>
+          <ng-select [items]="chatService.programs | async" [searchable]="true" [searchFn]="customSearchFn"
+            [clearable]="true" appendTo="body" [ngModel]="selectedProgram()" (ngModelChange)="onProgramChange($event)"
+            class="analyst_multi_select pem-context-select" placeholder="Select program" bindLabel="programName"
+            notFoundText="No programs match your search" typeToSearchText="Type to search programs">
+            <ng-template ng-label-tmp let-item="item">{{ item?.programName }}</ng-template>
             <ng-template ng-option-tmp let-item="item">
-              <span class="option-main">{{ item.countryName }}</span>
+              <span class="option-main">{{ item.programName }}</span>
               <span class="option-sub">{{ item.continent }}</span>
             </ng-template>
           </ng-select>
@@ -83,17 +83,17 @@
 
 <div class="pem-chat">
 <div class="pem-chat-inner"
-  [class.pem-chat-inner--has-hero]="sliderItems.length > 0 && selectedCountry()"
-  [class.pem-chat-inner--hero-expanded]="isExpanded && sliderItems.length > 0 && selectedCountry()"
-  [class.pem-chat-inner--hero-collapsed]="!isExpanded && sliderItems.length > 0 && selectedCountry()"
+  [class.pem-chat-inner--has-hero]="sliderItems.length > 0 && selectedProgram()"
+  [class.pem-chat-inner--hero-expanded]="isExpanded && sliderItems.length > 0 && selectedProgram()"
+  [class.pem-chat-inner--hero-collapsed]="!isExpanded && sliderItems.length > 0 && selectedProgram()"
   [class.pem-chat-inner--has-chat]="displayMessages().length > 0 || isTyping()">
     <div class="per-chat-slides"
-      [class.per-chat-slides--expanded]="isExpanded && sliderItems.length > 0 && selectedCountry()"
-      [class.per-chat-slides--collapsed]="!isExpanded && sliderItems.length > 0 && selectedCountry()">
-        <section class="flip-hero"  aria-label="Country intelligence highlights">
+      [class.per-chat-slides--expanded]="isExpanded && sliderItems.length > 0 && selectedProgram()"
+      [class.per-chat-slides--collapsed]="!isExpanded && sliderItems.length > 0 && selectedProgram()">
+        <section class="flip-hero"  aria-label="Program intelligence highlights">
           <div class="flip-hero__viewport">
             <div class="flip-hero__slider" [class.slide]="animate">
-              <article class="flip-hero__card" *ngIf="sliderItems.length > 0 && selectedCountry()">
+              <article class="flip-hero__card" *ngIf="sliderItems.length > 0 && selectedProgram()">
                 <header class="flip-hero__header flip-hero__header--clickable" (click)="toggleSlide()">
                   <div class="flip-hero__title-wrapper">
                     <div class="flip-hero__title-content">
@@ -260,7 +260,7 @@
           <path d="M14 3.5C16.2719 6.52918 17.5 10.2135 17.5 14C17.5 17.7865 16.2719 21.4708 14 24.5" stroke="#77BD3E" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M14 3.5C11.7281 6.52918 10.5 10.2135 10.5 14C10.5 17.7865 11.7281 21.4708 14 24.5" stroke="#77BD3E" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </span>Cross-country comparison</li>
+        </span>Cross-program comparison</li>
       </ul>
     </section>
 
@@ -396,17 +396,17 @@
   <aside class="pem-sidebar">
     <div class="pem-sidebar__scroll">
 
-    <!-- Country Overview Card -->
-    <section class="sidebar-card country-overview">
+    <!-- Program Overview Card -->
+    <section class="sidebar-card program-overview">
       <!-- dashboard-card.component.html -->
     <div class="stats-card">
       <h3 class="title">AT A GLANCE</h3>
 
-      <ng-container *ngIf="selectedCountry(); else glanceNoCountry">
-      <ng-container *ngIf="countrySlidesLoading(); else glanceLoaded">
+      <ng-container *ngIf="selectedProgram(); else glanceNoProgram">
+      <ng-container *ngIf="programSlidesLoading(); else glanceLoaded">
         <div class="sidebar-loading" aria-live="polite" aria-busy="true">
           <div class="sidebar-loading__spinner" aria-hidden="true"></div>
-          <p class="sidebar-loading__text">Loading country intelligence…</p>
+          <p class="sidebar-loading__text">Loading program intelligence…</p>
           <div class="sidebar-loading__skeleton">
             <span class="sidebar-loading__bar"></span>
             <span class="sidebar-loading__bar"></span>
@@ -415,23 +415,23 @@
         </div>
       </ng-container>
       <ng-template #glanceLoaded>
-      <ng-container *ngIf="contrySlide; else glanceLoadFailed">
+      <ng-container *ngIf="programSlide; else glanceLoadFailed">
       <!-- Health Score -->
       <div class="stat-row">
         <div class="left">
           <p class="label">Health Score</p>
 
           <div class="score-line">
-            <span class="score">{{contrySlide.country.countryAIScore}}</span>
+            <span class="score">{{programSlide.program.programAIScore}}</span>
             <span>/</span>
             <span class="max">100</span>
           </div>
 
-          <p class="sub-text">{{ peaceLevelLabel(contrySlide.country.countryAIScore) }}</p>
+          <p class="sub-text">{{ peaceLevelLabel(programSlide.program.programAIScore) }}</p>
         </div>
 
         <div class="chart chart--dynamic"
-          [style.--chart-color]="scoreToColor(contrySlide.country.countryAIScore)">
+          [style.--chart-color]="scoreToColor(programSlide.program.programAIScore)">
           <svg viewBox="0 0 120 60" preserveAspectRatio="none">
             <path
               d="M5 50
@@ -452,15 +452,15 @@
           <p class="label">Continent Rank</p>
 
           <div class="rank-line">
-            <span class="rank">{{contrySlide.country.countryRank}}</span>
-            <sup>{{ getOrdinalSuffix(contrySlide.country.countryRank) }}</sup>
+            <span class="rank">{{programSlide.program.programRank}}</span>
+            <sup>{{ getOrdinalSuffix(programSlide.program.programRank) }}</sup>
           </div>
 
-          <p class="sub-text">Out of {{contrySlide.country.totalCountry}} countries</p>
+          <p class="sub-text">Out of {{programSlide.program.totalProgram}} programs</p>
         </div>
 
         <div class="chart chart--dynamic"
-          [style.--chart-color]="scoreToColor(rankPeaceIndex(contrySlide.country.countryRank, contrySlide.country.totalCountry))">
+          [style.--chart-color]="scoreToColor(rankPeaceIndex(programSlide.program.programRank, programSlide.program.totalProgram))">
           <svg viewBox="0 0 120 60" preserveAspectRatio="none">
             <path
               d="M5 52
@@ -480,13 +480,13 @@
         <div class="left">
           <p class="label">Trend</p>
 
-          <div class="trend">{{contrySlide.recentPerformance.trend}}</div>
+          <div class="trend">{{programSlide.recentPerformance.trend}}</div>
 
           <p class="sub-text">vs last year</p>
         </div>
 
         <div class="chart chart--dynamic"
-          [style.--chart-color]="trendChartColor(contrySlide.recentPerformance.trend)">
+          [style.--chart-color]="trendChartColor(programSlide.recentPerformance.trend)">
           <svg viewBox="0 0 120 60" preserveAspectRatio="none">
             <path
               d="M5 50
@@ -505,12 +505,12 @@
       </ng-template>
       <ng-template #glanceLoadFailed>
         <div class="sidebar-empty-state">
-          <p class="sidebar-empty-state__text">No data available for this country.</p>
+          <p class="sidebar-empty-state__text">No data available for this program.</p>
         </div>
       </ng-template>
       </ng-container>
 
-      <ng-template #glanceNoCountry>
+      <ng-template #glanceNoProgram>
             <div class="stats-card emerging-trends">
       <ng-container *ngIf="emergingTrendsLoading(); else emergingTrendsReady">
         <div class="sidebar-loading emerging-trends__loading" aria-live="polite" aria-busy="true">
@@ -536,7 +536,7 @@
               type="button"
               class="trend-card"
               role="listitem"
-              *ngFor="let card of feed.countries; trackBy: trackTrendCard"
+              *ngFor="let card of feed.programs; trackBy: trackTrendCard"
               [class.trend-card--active]="isTrendSelected(card)"
               [attr.aria-expanded]="isTrendSelected(card)"
               [style.--trend-accent]="trendAccentColor(card.color)"
@@ -544,8 +544,8 @@
             >
               <span class="trend-card__accent" aria-hidden="true"></span>
               <div class="trend-card__row">
-                <span class="trend-card__code">{{ card.countryCode }}</span>
-                <span class="trend-card__country">{{ card.country }}</span>
+                <span class="trend-card__code">{{ card.programCode }}</span>
+                <span class="trend-card__program">{{ card.program }}</span>
                 <span class="trend-card__badge" [class.trend-card__badge--risk]="card.type === 'risk'">
                   {{ card.type === 'risk' ? 'Risk' : 'Trend' }}
                 </span>
@@ -600,7 +600,7 @@
           </div>
         </div>
 
-        <ng-container *ngIf="!selectedCountry()">
+        <ng-container *ngIf="!selectedProgram()">
           <ng-container *ngIf="pillarLiveSignalsLoading(); else pillarSignalsReady">
             <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
               <div class="sidebar-loading__spinner" aria-hidden="true"></div>
@@ -680,11 +680,11 @@
         </ng-container>
         
 
-        <ng-container *ngIf="selectedCountry()">
+        <ng-container *ngIf="selectedProgram()">
           <div class="pillar-signals__divider">
-            <span>Country pillar scores</span>
+            <span>Program pillar scores</span>
           </div>
-          <ng-container *ngIf="countrySlidesLoading(); else pillarsLoaded">
+          <ng-container *ngIf="programSlidesLoading(); else pillarsLoaded">
             <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
               <div class="sidebar-loading__spinner" aria-hidden="true"></div>
               <p class="sidebar-loading__text">Loading pillars…</p>
@@ -723,7 +723,7 @@
           </div>
         </div>
         <ng-template #noPillarData>
-          <p class="pillar-empty">No pillar data available for this country.</p>
+          <p class="pillar-empty">No pillar data available for this program.</p>
         </ng-template>
           </ng-template>
         </ng-container>
@@ -739,7 +739,7 @@
     <div class="analysis-modal__panel" (click)="$event.stopPropagation()">
       <header class="analysis-modal__header">
         <div class="analysis-modal__header-main">
-          <span class="analysis-modal__eyebrow">Country intelligence brief</span>
+          <span class="analysis-modal__eyebrow">Program intelligence brief</span>
           <h2 id="analysis-modal-title" class="analysis-modal__title">{{ activeAnalysisSlide?.title }}</h2>
           <span class="trend-badge analysis-modal__badge" *ngIf="getTrendLabel(activeAnalysisSlide)">
             <span class="trend-dot"></span>
@@ -754,8 +754,8 @@
         </button>
       </header>
 
-      <div class="analysis-modal__meta" *ngIf="selectedCountry() as country">
-        <span class="analysis-modal__country">{{ country.countryName }}</span>
+      <div class="analysis-modal__meta" *ngIf="selectedProgram() as program">
+        <span class="analysis-modal__program">{{ program.programName }}</span>
         <span class="analysis-modal__slide-count" *ngIf="sliderItems.length > 1">
           Insight {{ currentSlide + 1 }} of {{ sliderItems.length }}
         </span>

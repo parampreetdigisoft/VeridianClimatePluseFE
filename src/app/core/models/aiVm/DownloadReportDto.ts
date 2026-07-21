@@ -1,7 +1,7 @@
 
 
 export interface DownloadReportDto{
-    countryIDs?:number[],
+    climateProgramIDs?:number[],
     format:string
 }
 

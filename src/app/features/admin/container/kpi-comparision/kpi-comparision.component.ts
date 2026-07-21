@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexGrid, ApexLegend, ApexMarkers, ApexStroke, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
-import { CountryVM } from 'src/app/core/models/CountryVM';
-import { CompareCountryRequestDto } from 'src/app/core/models/CompareCountryRequestDto';
-import { CompareCountryResponseDto, ChartTableRowDto } from 'src/app/core/models/CompareCountryResponseDto';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
+import { CompareProgramRequestDto } from 'src/app/core/models/CompareProgramRequestDto';
+import { CompareProgramResponseDto, ChartTableRowDto } from 'src/app/core/models/CompareProgramResponseDto';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
@@ -17,7 +17,7 @@ import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score
 import { AiButtonComponent } from 'src/app/shared/standAlone/ai-button/ai-button.component';
 import { GetMutiplekpiLayerRequestDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerRequestDto';
 import { GetMutiplekpiLayerResultsDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto';
-import { CompareCountryKpiDetailComponent } from 'src/app/shared/standAlone/compare-country-kpi-detail/compare-country-kpi-detail.component';
+import { CompareProgramKpiDetailComponent } from 'src/app/shared/standAlone/compare-program-kpi-detail/compare-program-kpi-detail.component';
 declare var bootstrap: any; // 👈 use Bootstrap JS API
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -38,28 +38,28 @@ export type ChartOptions = {
   selector: 'app-kpi-comparision',
   templateUrl: './kpi-comparision.component.html',
   styleUrl: './kpi-comparision.component.css',
-  imports: [CommonModule, SharedModule, CircularScoreComponent, AiButtonComponent, CompareCountryKpiDetailComponent]
+  imports: [CommonModule, SharedModule, CircularScoreComponent, AiButtonComponent, CompareProgramKpiDetailComponent]
 
 })
 export class KpiComparisionComponent implements OnInit {
   selectedYear = new Date().getFullYear();
   pillers: PillarsVM[] = [];
-  selectedCountries: number[] = [];
+  selectedPrograms: number[] = [];
   selectedKpis: number[] = [];
-  countries: CountryVM[] | null = [];
+  programs: ProgramVM[] | null = [];
   pageSize: number = 10;
   currentPage: number = 1;
   totalRecords: number = 10;
   kpis: AnalyticalLayerResponseDto[] = [];
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions> = {};
-  compareCountryResponseDto: CompareCountryResponseDto | null = null;
+  compareProgramResponseDto: CompareProgramResponseDto | null = null;
   isLoader: boolean = false;
   environment = environment.apiUrl;
   chartTableData: ChartTableRowDto[] = [];
   $kpiChanged = new Subject();
   isAiViewEnabled: boolean = false;
-  mutipleCountrykpiLayerResults: GetMutiplekpiLayerResultsDto | null = null;
+  mutipleProgramkpiLayerResults: GetMutiplekpiLayerResultsDto | null = null;
   viewDetailIndex = -1;
   downloadkpiSpinnerEnable =false;
   constructor(
@@ -74,9 +74,9 @@ export class KpiComparisionComponent implements OnInit {
   ngOnInit(): void {
     this.isLoader = true;
     this.GetAllKpi();
-    this.getCountryUserCountries();
+    this.getProgramUserPrograms();
     this.$kpiChanged.pipe(debounceTime(1000)).subscribe(x => {
-      this.compareCountries();
+      this.comparePrograms();
     });
   }
   onAiViewToggle(value: boolean) {
@@ -96,29 +96,29 @@ export class KpiComparisionComponent implements OnInit {
       }
     });
   }
-  getCountryUserCountries() {
-    this.adminService.getAllCountriesByUserId(this.userService.userInfo.userID ?? 0).subscribe((p) => {
+  getProgramUserPrograms() {
+    this.adminService.getAllProgramsByUserId(this.userService.userInfo.userID ?? 0).subscribe((p) => {
       this.isLoader = false;
-      this.countries = p.result || [];
-      if (this.countries?.length && this.selectedCountries.length < 2) {
-        this.selectedCountries = this.countries.slice(0, 2).map(x => x.countryID);
-        this.compareCountries();
+      this.programs = p.result || [];
+      if (this.programs?.length && this.selectedPrograms.length < 2) {
+        this.selectedPrograms = this.programs.slice(0, 2).map(x => x.climateProgramID);
+        this.comparePrograms();
       }
     });
   }
   getMutiplekpiLayerResults(layerID: number, viewDetailIndex: number) {
 
-    if (this.selectedCountries.length < 1) {
-      this.compareCountryResponseDto = null;
+    if (this.selectedPrograms.length < 1) {
+      this.compareProgramResponseDto = null;
       this.getChartOptions();
-      this.toaster.showWarning("Please select at least one country to view data.");
+      this.toaster.showWarning("Please select at least one program to view data.");
       return;
     }
 
     this.viewDetailIndex = viewDetailIndex;
 
     let payload: GetMutiplekpiLayerRequestDto = {
-      countryIDs: this.selectedCountries,
+      climateProgramIDs: this.selectedPrograms,
       year: this.selectedYear,
       layerID: layerID
     }
@@ -126,13 +126,13 @@ export class KpiComparisionComponent implements OnInit {
       next: (res) => {
         this.viewDetailIndex = -1;
         if (res.succeeded) {
-          this.mutipleCountrykpiLayerResults = res.result || null;
+          this.mutipleProgramkpiLayerResults = res.result || null;
           const sidebarEl = document.getElementById('kpiLayerSidebar');
           const offcanvas = new bootstrap.Offcanvas(sidebarEl);
           offcanvas.show();
         }
         else {
-          this.toaster.showInfo("No comparison data available for the selected countries.");
+          this.toaster.showInfo("No comparison data available for the selected programs.");
         }
       },
       error: (err) => {
@@ -141,31 +141,31 @@ export class KpiComparisionComponent implements OnInit {
       }
     });
   }
-  compareCountries(currentPage = 1) {
-    if (this.selectedCountries.length < 1) {
-      this.compareCountryResponseDto = null;
+  comparePrograms(currentPage = 1) {
+    if (this.selectedPrograms.length < 1) {
+      this.compareProgramResponseDto = null;
       this.getChartOptions();
-      this.toaster.showWarning("Please select at least one country to view data.");
+      this.toaster.showWarning("Please select at least one program to view data.");
       return;
     }
     this.isLoader = true;
     this.currentPage = currentPage;
 
-    let payload: CompareCountryRequestDto = {
-      countries: this.selectedCountries,
+    let payload: CompareProgramRequestDto = {
+      programs: this.selectedPrograms,
       pageNumber: this.currentPage,
       pageSize: this.pageSize,
       Kpis: this.selectedKpis
     }
-    this.adminService.compareCountries(payload).subscribe({
+    this.adminService.comparePrograms(payload).subscribe({
       next: (res) => {
         this.isLoader = false;
         if (res.succeeded) {
-          this.compareCountryResponseDto = res.result || null;
+          this.compareProgramResponseDto = res.result || null;
           this.getChartOptions();
         }
         else {
-          this.toaster.showInfo("No comparison data available for the selected countries.");
+          this.toaster.showInfo("No comparison data available for the selected programs.");
         }
       },
       error: (err) => {
@@ -176,7 +176,7 @@ export class KpiComparisionComponent implements OnInit {
   }
 
   getChartOptions() {
-    this.chartTableData = this.compareCountryResponseDto?.tableData ?? [];
+    this.chartTableData = this.compareProgramResponseDto?.tableData ?? [];
 
     if (!this.chartTableData?.length) {
       this.totalRecords = 0;
@@ -193,9 +193,9 @@ export class KpiComparisionComponent implements OnInit {
     let series: any[] = [];
     let strokeDashArray: number[] = [];
 
-    (this.compareCountryResponseDto?.series ?? []).forEach((countryData, index) => {
-      // Skip the last country if AI View is enabled (assuming last country is AI benchmark)
-      if (index === (this.compareCountryResponseDto?.series ?? []).length - 1 && this.isAiViewEnabled) {
+    (this.compareProgramResponseDto?.series ?? []).forEach((programData, index) => {
+      // Skip the last program if AI View is enabled (assuming last program is AI benchmark)
+      if (index === (this.compareProgramResponseDto?.series ?? []).length - 1 && this.isAiViewEnabled) {
         return;
       }
 
@@ -203,18 +203,18 @@ export class KpiComparisionComponent implements OnInit {
 
       // Evaluation series (solid line)
       series.push({
-        name: `${countryData.name} (Evaluation)`,
-        data: countryData.data,
+        name: `${programData.name} (Evaluation)`,
+        data: programData.data,
         color: baseColor,
         type: 'line'
       });
       strokeDashArray.push(0); // Solid line
 
       // AI series (dashed line) - only if AI view is enabled
-      if (this.isAiViewEnabled && countryData.aiData) {
+      if (this.isAiViewEnabled && programData.aiData) {
         series.push({
-          name: `${countryData.name} (AI)`,
-          data: countryData.aiData,
+          name: `${programData.name} (AI)`,
+          data: programData.aiData,
           color: this.lightenColor(baseColor, 20), // Slightly lighter shade
           type: 'line'
         });
@@ -312,7 +312,7 @@ export class KpiComparisionComponent implements OnInit {
       },
       xaxis: {
         type: "category",
-        categories: this.compareCountryResponseDto?.categories,
+        categories: this.compareProgramResponseDto?.categories,
         labels: {
           rotate: -15,
           rotateAlways: true,
@@ -365,7 +365,7 @@ export class KpiComparisionComponent implements OnInit {
         shared: true,
         intersect: false,
         custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-          const layerCode = this.compareCountryResponseDto?.categories?.[dataPointIndex] ?? "";
+          const layerCode = this.compareProgramResponseDto?.categories?.[dataPointIndex] ?? "";
           const layerName = kpiMap.get(layerCode) ?? "";
 
           let tooltipHtml = `
@@ -376,22 +376,22 @@ export class KpiComparisionComponent implements OnInit {
         `;
 
           // Group evaluation and AI values together
-          const countries = this.compareCountryResponseDto?.series ?? [];
-          countries.forEach((country, idx) => {
-            // Skip last country if it's the AI benchmark
-            if (idx === countries.length - 1 && this.isAiViewEnabled) {
+          const programs = this.compareProgramResponseDto?.series ?? [];
+          programs.forEach((program, idx) => {
+            // Skip last program if it's the AI benchmark
+            if (idx === programs.length - 1 && this.isAiViewEnabled) {
               return;
             }
 
-            const evalValue = country.data[dataPointIndex];
-            const aiValue = country.aiData?.[dataPointIndex];
+            const evalValue = program.data[dataPointIndex];
+            const aiValue = program.aiData?.[dataPointIndex];
             const color = colorPalette[idx % colorPalette.length];
             const difference = aiValue != null ? (evalValue - aiValue) : 0;
 
             tooltipHtml += `
             <div style="margin: 8px 0; padding: 8px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 6px; border-left: 3px solid ${color};">
               <div style="font-weight: 600; color: ${color}; margin-bottom: 6px; font-size: 12px;">
-                ${country.name}
+                ${program.name}
               </div>
               <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
                 <span style="color: #666;">📊 Evaluation:</span>
@@ -440,25 +440,25 @@ export class KpiComparisionComponent implements OnInit {
       (B < 255 ? (B < 1 ? 0 : B) : 255)
     ).toString(16).slice(1);
   }
-  getCountryScore(countryID: number, isAi: boolean = false): string {
-    const country = this.countries?.find(c => c.countryID === countryID);
+  getProgramScore(climateProgramID: number, isAi: boolean = false): string {
+    const program = this.programs?.find(c => c.climateProgramID === climateProgramID);
     if (isAi) {
-      return country?.aiScore?.toFixed(2) || '0';
+      return program?.aiScore?.toFixed(2) || '0';
     }
-    return country?.score?.toFixed(2) || '0';
+    return program?.score?.toFixed(2) || '0';
   }
 
-  getCountryImage(countryID: number): string {
-    return this.countries?.find(c => c.countryID === countryID)?.image || '';
+  getProgramImage(climateProgramID: number): string {
+    return this.programs?.find(c => c.climateProgramID === climateProgramID)?.image || '';
   }
 
-  getCountry(countryID: number): string {
-    return this.countries?.find(c => c.countryID === countryID)?.countryName || '';
+  getProgram(climateProgramID: number): string {
+    return this.programs?.find(c => c.climateProgramID === climateProgramID)?.programName || '';
   }
 
-  getCountryContinent(countryID: number): string {
-    return this.countries?.find(c => c.countryID === countryID)?.continent || '';
-  }
+  // getProgramContinent(climateProgramID: number): string {
+  //   return this.programs?.find(c => c.climateProgramID === climateProgramID)?.continent || '';
+  // }
 
   onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/Frame 1321315029.png';
@@ -468,16 +468,16 @@ export class KpiComparisionComponent implements OnInit {
 
     if (!this.chartTableData?.length) return 'NA';
 
-    const peerCountries = this.countries?.filter(country =>
-      this.chartTableData[0].countryValues?.some(row => row.countryID === country.countryID)
+    const peerPrograms = this.programs?.filter(program =>
+      this.chartTableData[0].programValues?.some(row => row.climateProgramID === program.climateProgramID)
     ) ?? [];
 
-    const avgPeerCountryScore =
-      peerCountries.length > 0
-        ? peerCountries.reduce((sum, row) => sum + (row.score ?? 0), 0) / peerCountries.length
+    const avgPeerProgramScore =
+      peerPrograms.length > 0
+        ? peerPrograms.reduce((sum, row) => sum + (row.score ?? 0), 0) / peerPrograms.length
         : 0;
 
-    return avgPeerCountryScore.toFixed(2);
+    return avgPeerProgramScore.toFixed(2);
   }
   customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
@@ -488,24 +488,24 @@ export class KpiComparisionComponent implements OnInit {
   }
 
   exportData() {
-    if (!this.selectedCountries.length) {
-      this.toaster.showWarning("Please select countries");
+    if (!this.selectedPrograms.length) {
+      this.toaster.showWarning("Please select programs");
       return;
     }
     const params = {
-      countries: this.selectedCountries.join(','),
+      programs: this.selectedPrograms.join(','),
       kpis: null,
       updatedAt: new Date().toISOString()
     };
 
     this.downloadkpiSpinnerEnable = true;
-    this.adminService.exportCompareCountries(params)
+    this.adminService.exportComparePrograms(params)
       .subscribe({
         next: (res: Blob) => {
           const url = window.URL.createObjectURL(res);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "Country_Comparison.xlsx";
+          a.download = "Program_Comparison.xlsx";
           a.click();
           window.URL.revokeObjectURL(url); // good practice
           this.downloadkpiSpinnerEnable = false;

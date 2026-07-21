@@ -1,5 +1,5 @@
 /**
- * AHI (Africa Health Intelligence System) chart palette — aligned with brand logo.
+ * VCP (Veridian Climate Pulse System) chart palette — aligned with brand logo.
  */
 export const AHI_CHART = {
   primary: '#006D77',

@@ -1,32 +1,33 @@
 import { map, Subject, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { CountryVM } from '../../core/models/CountryVM';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { PillarKpiMappingDto } from 'src/app/core/models/PillarKpiMappingDto';
 import { HttpService } from 'src/app/core/http/http.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
-import { CountryPillerRequestDto } from 'src/app/core/models/QuestionRequest';
-import { PaginationCountryRequest, PaginationUserRequest } from 'src/app/core/models/PaginationRequest';
+import { ProgramPillerRequestDto } from 'src/app/core/models/QuestionRequest';
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
-import { CompareCountryRequestDto } from 'src/app/core/models/CompareCountryRequestDto';
-import { CompareCountryResponseDto } from 'src/app/core/models/CompareCountryResponseDto';
+import { CompareProgramRequestDto } from 'src/app/core/models/CompareProgramRequestDto';
+import { CompareProgramResponseDto } from 'src/app/core/models/CompareProgramResponseDto';
 import { GetAssignUserDto, PublicUserResponse } from 'src/app/core/models/UserInfo';
 import { PillarsHistoryResponse } from 'src/app/core/models/PillarsUserHistoryResponse';
 import { InviteBulkUserDto, InviteUserDto, UpdateInviteUserDto } from '../../core/models/AnalystVM';
-import { CountryHistoryDto, UserCountryPillarDashboardRequestDto } from '../../core/models/countryHistoryDto';
+import { ProgramHistoryDto, UserProgramPillarDashboardRequestDto } from '../../core/models/ProgramHistoryDto';
 import { QuestionsByUserPillarsResponsetDto } from 'src/app/core/models/GetQuestionHistoryResponseDto ';
-import { AiCountryPillarDashboardResponseDto } from 'src/app/core/models/AiCountryPillarDashboardResponseDto';
+import { AiProgramPillarDashboardResponseDto } from 'src/app/core/models/AiProgramPillarDashboardResponseDto';
 import { GetUserByRoleRequestDto, GetUserByRoleResponse } from '../../core/models/GetUserByRoleResponse';
 import { AddBulkQuestionsDto, AddQuestionRequest, GetQuestionRequest, GetQuestionResponse } from 'src/app/core/models/QuestionResponse';
 import { AssessmentWithProgressVM, GetAssessmentQuestionResponseDto, GetAssessmentResponse } from 'src/app/core/models/AssessmentResponse';
 import { AnalyticalLayerResponseDto, GetAnalyticalLayerRequestDto, GetAnalyticalLayerResultDto } from 'src/app/core/models/GetAnalyticalLayerResultDto';
-import { ChangeAssessmentStatusRequestDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto, GetCountryPillarHistoryRequestDto, GetCountryPillarHistoryRequestNewDto, TransferAssessmentRequestDto } from 'src/app/core/models/AssessmentRequest';
+import { ChangeAssessmentStatusRequestDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto, GetProgramPillarHistoryRequestDto, GetProgramPillarHistoryRequestNewDto, TransferAssessmentRequestDto } from 'src/app/core/models/AssessmentRequest';
 import { GetMutiplekpiLayerRequestDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerRequestDto';
 import { GetMutiplekpiLayerResultsDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto';
 import { EmailExistDto } from 'src/app/core/models/EmailExistDto';
-import { ExportCountryWithOptionDto } from 'src/app/core/models/ExportCountryWithOptionDto';
-import { DashboardModeResponseDto } from 'src/app/core/models/CountrySignalDashboardDto';
+// import { ExportProgramWithOptionDto } from 'src/app/core/models/ExportProgramsWithOptionDto';
+import { DashboardModeResponseDto } from 'src/app/core/models/ProgramSignalDashboardDto';
+import { PaginationProgramRequest } from 'src/app/core/models/PaginationRequest';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
+import { ExportProgramsWithOptionDto } from 'src/app/core/models/ExportProgramsWithOptionDto';
 
 @Injectable({
   providedIn: "root",
@@ -45,51 +46,54 @@ export class AdminService {
     );
   }
 
-  public getCountries(request: PaginationCountryRequest) {
+ public getPrograms(request: PaginationProgramRequest) {
     return this.http
-      .getWithQueryParams(`Country/countries`, request)
-      .pipe(map((x) => x as PaginationResponse<CountryVM>));
-  }
-  public getAllCountriesByUserId(userId: number) {
-    return this.http
-      .get(`Country/getAllCountryByUserId/` + userId)
-      .pipe(map((x) => x as ResultResponseDto<CountryVM[]>));
+      .getWithQueryParams(`Program/programs`, request)
+      .pipe(map((x) => x as PaginationResponse<ProgramVM>));
   }
 
-  public addBulkCountry(data: any) {
+  public getAllProgramsByUserId(userId: number) {
     return this.http
-      .post(`Country/addBulkCountry`, data)
-      .pipe(map((x) => x as ResultResponseDto<string>));
+      .get(`Program/getAllProgramsByUserId/` + userId)
+      .pipe(map((x) => x as ResultResponseDto<ProgramVM[]>));
   }
-  public AddUpdateCountry(formdata: FormData) {
+
+  public addBulkPrograms(data: any) {
     return this.http
-      .UploadFile(`Country/AddUpdateCountry`, formdata)
+      .post(`Program/addBulkPrograms`, data)
       .pipe(map((x) => x as ResultResponseDto<string>));
   }
 
-  public editCountry(id: number, data: any) {
+  public addUpdateProgram(formdata: FormData) {
     return this.http
-      .put(`Country/edit/` + id, data)
-      .pipe(map((x) => x as ResultResponseDto<CountryVM>));
+      .UploadFile(`Program/addUpdateProgram`, formdata)
+      .pipe(map((x) => x as ResultResponseDto<string>));
   }
 
-  public deleteCountry(id: number) {
+  public editProgram(id: number, data: any) {
     return this.http
-      .delete(`Country/delete/` + id)
+      .put(`Program/edit/` + id, data)
+      .pipe(map((x) => x as ResultResponseDto<ProgramVM>));
+  }
+
+  public deleteProgram(id: number) {
+    return this.http
+      .delete(`Program/delete/` + id)
       .pipe(map((x) => x as ResultResponseDto<boolean>));
   }
-  public getCountryHistory(userID: number, updatedAt: string) {
+  public getProgramHistory(userID: number, updatedAt: string) {
     return this.http
-      .get(`Country/getCountryHistory/` + updatedAt)
-      .pipe(map((x) => x as ResultResponseDto<CountryHistoryDto>));
+      .get(`Program/getProgramHistory/` + updatedAt)
+      .pipe(map((x) => x as ResultResponseDto<ProgramHistoryDto>));
   }
-  public exportCountries(request: ExportCountryWithOptionDto) {
-    return this.http.ImportFile(`Country/exportCountries`, request);
+  public exportPrograms(request: ExportProgramsWithOptionDto) {
+    return this.http
+      .ImportFile(`Program/exportPrograms`, request);
   }
 
   public getUserListByRole(request: GetUserByRoleRequestDto) {
     return this.http
-      .getWithQueryParams(`User/GetUserByRoleWithAssignedCountry`, request)
+      .getWithQueryParams(`User/GetUserByRoleWithAssignedProgram`, request)
       .pipe(map((x) => x as PaginationResponse<GetUserByRoleResponse>));
   }
   public addAnalyst(data: InviteUserDto) {
@@ -148,15 +152,16 @@ export class AdminService {
       .pipe(map((x) => x as ResultResponseDto<boolean>));
   }
 
-  public getResponsesByUserId(request: GetCountryPillarHistoryRequestNewDto) {
+  public getResponsesByUserId(request: GetProgramPillarHistoryRequestNewDto) {
     return this.http.post(`Pillar/GetResponsesByUserId`, request).pipe(map(x => x as PaginationResponse<PillarsHistoryResponse>));
   }
-  public getPillarsHistoryByUserId(request: GetCountryPillarHistoryRequestDto) {
+  public getPillarsHistoryByUserId(request: GetProgramPillarHistoryRequestDto) {
     return this.http
       .post(`Pillar/GetPillarsHistoryByUserId`, request)
       .pipe(map((x) => x as ResultResponseDto<PillarsHistoryResponse[]>));
   }
-  public exportPillarsHistoryByUserId(request: GetCountryPillarHistoryRequestDto) {
+  
+  public exportPillarsHistoryByUserId(request: GetProgramPillarHistoryRequestDto) {
     return this.http.ImportFile(`Pillar/ExportPillarsHistoryByUserId`, request);
   }
   public getQuestions(data: GetQuestionRequest) {
@@ -180,14 +185,15 @@ export class AdminService {
       .delete(`Question/delete/` + id)
       .pipe(map((x) => x as boolean));
   }
-  public getQuestionsHistoryByPillar(request: GetCountryPillarHistoryRequestDto) {
+  public getQuestionsHistoryByPillar(request: GetProgramPillarHistoryRequestDto) {
     return this.http
       .getWithQueryParams(`Question/getQuestionsHistoryByPillar`, request)
       .pipe(
         map((x) => x as ResultResponseDto<QuestionsByUserPillarsResponsetDto[]>)
       );
   }
-  public saveAssessment(payload: CountryPillerRequestDto) {
+  
+  public saveAssessment(payload: ProgramPillerRequestDto) {
     return this.http
       .post(`AssessmentResponse/saveAssessment`, payload)
       .pipe(map((x) => x as ResultResponseDto<string>));
@@ -210,8 +216,8 @@ export class AdminService {
       .pipe(map((x) => x as ResultResponseDto<AssessmentWithProgressVM>));
   }
 
-  public getCountryPillarHistory(request: UserCountryPillarDashboardRequestDto) {
-    return this.http.getWithQueryParams(`AssessmentResponse/getCountryPillarHistory`, request).pipe(map(x => x as ResultResponseDto<AiCountryPillarDashboardResponseDto>));
+  public getProgramPillarHistory(request: UserProgramPillarDashboardRequestDto) {
+    return this.http.getWithQueryParams(`AssessmentResponse/getProgramPillarHistory`, request).pipe(map(x => x as ResultResponseDto<AiProgramPillarDashboardResponseDto>));
   }
   public changeAssessmentStatus(request: ChangeAssessmentStatusRequestDto) {
     return this.http
@@ -223,9 +229,9 @@ export class AdminService {
       .post(`AssessmentResponse/transferAssessment`, request)
       .pipe(map((x) => x as ResultResponseDto<string>));
   }
-  public getUsersAssignedToCountry(countryID: number) {
+  public getUsersAssignedToProgram(climateProgramID: number) {
     return this.http
-      .get(`User/getUsersAssignedToCountry/` + countryID)
+      .get(`User/getUsersAssignedToProgram/` + climateProgramID)
       .pipe(map((x) => x as ResultResponseDto<GetAssessmentResponse[]>));
   }
   public GetEvaluatorByAnalyst(payload: GetAssignUserDto) {
@@ -243,25 +249,25 @@ export class AdminService {
       .get(`Kpi/GetAllKpi`)
       .pipe(map((x) => x as ResultResponseDto<AnalyticalLayerResponseDto[]>));
   }
-  public compareCountries(request: CompareCountryRequestDto) {
-    return this.http.post(`Kpi/compareCountries`, request).pipe(map(x => x as ResultResponseDto<CompareCountryResponseDto>));
+  public comparePrograms(request: CompareProgramRequestDto) {
+    return this.http.post(`Kpi/comparePrograms`, request).pipe(map(x => x as ResultResponseDto<CompareProgramResponseDto>));
   }
   public getMutiplekpiLayerResults(payload: GetMutiplekpiLayerRequestDto) {
     return this.http.post(`Kpi/getMutiplekpiLayerResults`, payload).pipe(map(x => x as ResultResponseDto<GetMutiplekpiLayerResultsDto>));;
   }
-  public exportCompareCountries(params: any) {
-    return this.http.ImportFile(`Kpi/ExportCompareCountries`, params);
+  public exportComparePrograms(params: any) {
+    return this.http.ImportFile(`Kpi/ExportComparePrograms`, params);
   }
-  public getPeaceStressTestDashboard(countryID: number) {
-      return this.http.getWithQueryParams(`Dashboard/getPeaceStressTestDashboard`, { countryID })
+  public getPeaceStressTestDashboard(climateProgramID: number) {
+      return this.http.getWithQueryParams(`Dashboard/getPeaceStressTestDashboard`, { climateProgramID })
         .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
-  public getEarlyWarningDashboard(countryID: number) {
-    return this.http.getWithQueryParams(`Dashboard/getEarlyWarningDashboard`, { countryID })
+  public getEarlyWarningDashboard(climateProgramID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getEarlyWarningDashboard`, { climateProgramID })
     .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
-  public getResilienceScorecard(countryID: number) {
-    return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { countryID })
+  public getResilienceScorecard(climateProgramID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { climateProgramID })
     .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
 }

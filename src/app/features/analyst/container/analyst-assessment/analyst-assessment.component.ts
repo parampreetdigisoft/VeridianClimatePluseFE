@@ -6,25 +6,26 @@ import {
   ViewChild,
 } from "@angular/core";
 import { PillarsVM } from "src/app/core/models/PillersVM";
-import { CountryVM } from "src/app/core/models/CountryVM";
+import { ProgramVM } from "src/app/core/models/ProgramVM";
 import { UserService } from "src/app/core/services/user.service";
-import { CountryMappingPillerRequestDto } from "src/app/core/models/QuestionRequest";
-import { GetQuestionByCountryMappingResponse } from "src/app/core/models/QuestionResponse";
+import { ProgramMappingPillerRequestDto } from "src/app/core/models/QuestionRequest";
+import { AssessmentQuestionOptionResponse, GetQuestionByProgramMappingResponse, HistoryQuestionAnswerRawDto } from "src/app/core/models/QuestionResponse";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from "@angular/forms";
 import {
   AddAssessmentDto,
   AddAssessmentResponseDto,
-  GetCountryPillarHistoryRequestDto,
+  GetProgramPillarHistoryRequestDto,
 } from "src/app/core/models/AssessmentRequest";
 import { AnalystService } from "../../analyst.service";
 import { environment } from "src/environments/environment";
 import { CommonService } from "src/app/core/services/common.service";
-import { finalize } from "rxjs";
+import { debounceTime, finalize, Subject } from "rxjs";
 import { AiComputationService } from "src/app/core/services/ai-computation.service";
 import { AITransferAssessmentRequestDto } from "src/app/core/models/aiVm/AITransferAssessmentRequestDto";
 import { AdminService } from "src/app/features/admin/admin.service";
 import { ExportType } from "src/app/core/enums/exportEnum";
+import { AssessmentPhase } from "src/app/core/enums/AssessmentPhase";
 
 @Component({
   selector: "app-analyst-assessment",
@@ -33,13 +34,16 @@ import { ExportType } from "src/app/core/enums/exportEnum";
 })
 export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
-  countries: CountryVM[] = []; // ✅ fixed type
-  selectedUserCountryMappingID: number = 0;
-  pillerQuestions: GetQuestionByCountryMappingResponse | null = null;
+  programs: ProgramVM[] = [];
+  selectedUserProgramMappingID: number = 0;
+  selectedProgram!: ProgramVM ;
+  pillerQuestions: GetQuestionByProgramMappingResponse | null = null;
   form!: FormGroup;
   pillarDisplayOrder: number = 1;
+  checkAssessmentProgress = new Subject<void | null>();
   selectedPillar?: PillarsVM;
   @ViewChild("scrollContainer") scrollContainer!: ElementRef;
+  @ViewChild("scrollPillarContainer") scrollPillarContainer!: ElementRef;
   isloading = false;
   isUploading = false;
   isLoader: boolean = false;
@@ -47,6 +51,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   isAssessementFinalized = false;
   isAItransfer: boolean = false;
   selectedYear = new Date().getFullYear();
+  ROSEWPillarID =22;
   constructor(
     private analystService: AnalystService,
     private userService: UserService,
@@ -61,7 +66,10 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     this.isLoader = true;
     this.formInitialized();
     this.GetAllPillars();
-    this.getCountryByUserIdForAssessment();
+    this.getProgramByUserIdForAssessment();
+    this.checkAssessmentProgress.pipe(debounceTime(10000)).subscribe(() => {
+      this.getAssessmentProgressHistory();
+    });
   }
 
   get questions() {
@@ -87,35 +95,45 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           responseID: [q.responseID],
           assessmentID: [this.pillerQuestions?.assessmentID],
           questionOptionID: [
-            q.isSelected ? option?.optionID : "",
+            q.isSelected ? option?.optionID : null,
             Validators.required,
           ],
-          score: [q.isSelected ? option?.scoreValue : ""],
+          //score: [q.isSelected ? option?.scoreValue :null],
           justification: [
-            q.isSelected ? option?.justification : "",
+            q.isSelected ? option?.justification : null,
             Validators.required,
           ],
-          source: [q.isSelected ? option?.source : ""],
-          historyQuestionOptionID: [""],
+          source: [q.isSelected ? option?.source : null],
+          historyQuestionOptionID: [null],
         })
       );
     });
   }
 
-  onOptionChange(event: any, index: number) {
-    const optionId = +event.target.value;
-    const selectedOption = this.pillerQuestions?.questions[
-      index
-    ].questionOptions.find((o) => o.optionID === optionId);
-
+  onOptionChange(
+    selectedOption: AssessmentQuestionOptionResponse | null,
+    index: number
+  ) {
     if (selectedOption) {
       const formGroup = this.questionsArray.at(index) as FormGroup;
       formGroup.patchValue({
         questionOptionID: selectedOption.optionID,
-        score: selectedOption.scoreValue,
-        historyQuestionOptionID: ''
+        //score: selectedOption.scoreValue,
+        historyQuestionOptionID: null
       });
     }
+  }
+
+  makePillarActive(pillar:PillarsVM){
+    return (this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder ) 
+              || pillar?.pillarID == this.ROSEWPillarID;
+  }
+
+  activeClass(pillar:PillarsVM){
+    let con = this.selectedPillar?.displayOrder == pillar.displayOrder
+     &&  this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed 
+     && this.selectedPillar.pillarID != this.ROSEWPillarID;
+    return con;
   }
 
   GetAllPillars() {
@@ -123,43 +141,50 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       this.pillars = pillars;
     });
   }
+
   pillarChanged(pillar?: PillarsVM) {
-    if (!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0) {
-      this.toaster.showWarning("Please select country first");
+    if (!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0) {
+      this.toaster.showWarning("Please select program first");
       return;
     }
-
+    // if(this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
+    //   this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires administrator permission.");
+    //   return
+    // }
     this.isAssessementFinalized = false;
     if (pillar) {
       this.selectedPillar = pillar;
-      this.getQuestionsByCountryId();
+      this.getQuestionsByProgramId();
     }
-    else {
+    else if(!this.selectedPillar){
       this.selectedPillar = this.pillars.find((x) => x.pillarID == this.pillerQuestions?.pillarID);
       if (this.pillerQuestions && this.pillerQuestions?.submittedPillarDisplayOrder < (this.selectedPillar?.displayOrder ?? 0)) {
         this.pillarDisplayOrder = this.selectedPillar?.displayOrder ?? 1;
       }
     }
   }
-  countryChanged() {
+
+  programChanged() {
+    this.selectedProgram = this.programs.filter(x=>x.staffProgramMappingID == this.selectedUserProgramMappingID)[0]
     this.selectedPillar = undefined;
-    this.getQuestionsByCountryId();
+    this.getQuestionsByProgramId();
   }
 
-  getCountryByUserIdForAssessment() {
+  getProgramByUserIdForAssessment() {
     this.selectedPillar = undefined;
-    this.commonService.getUserNearestCountry()
+    this.commonService.getUserNearestProgram()
       .subscribe({
         next: (res) => {
-          this.countries = res.result ?? [];
-          if (this.countries.length > 0) {
-            this.selectedUserCountryMappingID = this.analystService.userCountryMappingIDSubject$.value != null ?
-              this.analystService.userCountryMappingIDSubject$.value
-              : this.countries[0].userCountryMappingID ?? 0;
+          this.programs = res.result ?? [];
+          if (this.programs.length > 0) {
+            this.selectedUserProgramMappingID = this.analystService.staffProgramMappingIDSubject$.value != null ?
+              this.analystService.staffProgramMappingIDSubject$.value
+              : this.programs[0].staffProgramMappingID ?? 0;
+              this.selectedProgram = this.programs.filter(x=>x.staffProgramMappingID == this.selectedUserProgramMappingID)[0]
             setTimeout(() => {
-              this.toaster.showInfo("You have rediredected to assgined country, please submit all pillars for the country");
-            }, 1000);
-            this.getQuestionsByCountryId();
+              this.toaster.showInfo("You have rediredected to assgined program, please submit all pillars for the program");
+            }, 500);
+            this.getQuestionsByProgramId();
           } else {
             this.toaster.showWarning(res.errors.join(", "));
           }
@@ -170,38 +195,50 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       });
   }
 
-  getQuestionsByCountryId() {
+  getQuestionsByProgramId() {
     if (
-      !this.selectedUserCountryMappingID ||
-      this.selectedUserCountryMappingID == 0
+      !this.selectedUserProgramMappingID ||
+      this.selectedUserProgramMappingID == 0
     ) {
-      this.toaster.showWarning("Please select country first");
+      this.toaster.showWarning("Please select program first");
       return;
     }
     this.formInitialized();
-    const payload: CountryMappingPillerRequestDto = {
-      userCountryMappingID: this.selectedUserCountryMappingID ?? 0,
+    const payload: ProgramMappingPillerRequestDto = {
+      staffProgramMappingID: this.selectedUserProgramMappingID ?? 0,
     };
     if (this.selectedPillar) {
       payload.pillarID = this.selectedPillar.pillarID;
     }
     this.pillerQuestions = null;
     this.isLoader = true;
-    this.analystService.getQuestionsByCountryId(payload).subscribe({
+    this.analystService.getQuestionsByProgramID(payload).subscribe({
       next: (res) => {
         this.isLoader = false;
         if (res.succeeded) {
           this.pillerQuestions = res.result;
-          this.pillarDisplayOrder = this.pillerQuestions?.submittedPillarDisplayOrder ?? 1;
+           setTimeout(() => {
+            if (this.pillerQuestions?.displayOrder && this.pillerQuestions?.pillarID) {
+              const container = this.scrollPillarContainer.nativeElement;
+              const element = container.querySelector('#pillar-' + this.pillerQuestions.pillarID);
+              if (element) {
+                 element.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'nearest' // or 'center'
+                  });
+              }
+            }
+          }, 300);      
+          this.pillarDisplayOrder = Math.max(this.pillerQuestions?.displayOrder ?? 0, this.pillerQuestions?.submittedPillarDisplayOrder ?? 0);
           if (this.pillerQuestions && this.pillerQuestions?.assessmentID > 0) {
-            this.getAssessmentProgressHistory();
+            this.checkAssessmentProgress.next();
           } else {
             this.userService.assessmentProgress.next(null);
           }
           this.pillarChanged();
           this.loadQuestions();
         } else {
-          this.toaster.showWarning("Country's assessment is already submitted");
+          this.toaster.showWarning("The program's assessment has already been submitted, or the selected pillar has no questions.");
         }
       },
     });
@@ -209,17 +246,17 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
 
   SaveAssessment() {
     if (
-      !this.selectedUserCountryMappingID ||
-      this.selectedUserCountryMappingID == 0
+      !this.selectedUserProgramMappingID ||
+      this.selectedUserProgramMappingID == 0
     ) {
-      this.toaster.showWarning("Please select country first");
+      this.toaster.showWarning("Please select program first");
       return;
     }
     const validQuestions = this.questionsArray.controls
       .filter((ctrl) => ctrl.valid)
       .map((ctrl) => ctrl.value as AddAssessmentResponseDto);
     const payload: AddAssessmentDto = {
-      userCountryMappingID: this.selectedUserCountryMappingID,
+      staffProgramMappingID: this.selectedUserProgramMappingID,
       assessmentID: this.pillerQuestions?.assessmentID ?? 0,
       pillarID: this.pillerQuestions?.pillarID ?? 0,
       responses: validQuestions ?? [],
@@ -239,13 +276,13 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
             });
           }, 300);
           if (res.succeeded) {
-            if (this.pillerQuestions?.displayOrder == 14 || this.isAssessementFinalized) {
-              this.analystService.userCountryMappingIDSubject$.next(null);
-              this.getCountryByUserIdForAssessment();
+            if (this.isAssessementFinalized) {
+              this.analystService.staffProgramMappingIDSubject$.next(null);
+              this.getProgramByUserIdForAssessment();
             } else {
               if (this.selectedPillar)
                 this.selectedPillar = this.pillars.find(x => x.displayOrder == (Number(this.selectedPillar?.displayOrder) + 1));
-              this.getQuestionsByCountryId();
+              this.getQuestionsByProgramId();
             }
             this.toaster.showSuccess(res.messages.join(", "));
           } else {
@@ -265,22 +302,23 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     this.userService.assessmentProgress.next(null);
   }
 
-  ImportQuestions() {
-    if (this.selectedUserCountryMappingID != 0) {
+  ImportAssessmentExcel() {
+
+    if (this.selectedUserProgramMappingID != 0) {
       this.isloading = true;
       this.analystService
-        .ExportQuestions(this.selectedUserCountryMappingID)
+        .ExportAssessment(this.selectedUserProgramMappingID)
         .subscribe({
           next: (res: any) => {
-            var country = this.countries?.find(
-              (x) => x.userCountryMappingID == this.selectedUserCountryMappingID
+            var program = this.programs?.find(
+              (x) => x.staffProgramMappingID == this.selectedUserProgramMappingID
             );
             this.isloading = false;
             const url = window.URL.createObjectURL(res);
             const a = document.createElement("a");
             a.href = url;
             a.download =
-              country?.countryName + "_" + country?.assignedBy + "_Questions.xlsx";
+              program?.programName + "_" + program?.assignedBy + "_Questions.xlsx";
             a.click();
             this.toaster.showSuccess("Questions downloaded successfully");
           },
@@ -290,7 +328,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           },
         });
     } else {
-      this.toaster.showWarning("Please select country to get questions");
+      this.toaster.showWarning("Please select program to get questions");
     }
   }
 
@@ -303,8 +341,10 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.isUploading = false;
         if (res.succeeded) {
-           this.selectedPillar = this.pillars[0];
-           this.getQuestionsByCountryId();
+          this.selectedPillar = this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed ? 
+                  this.pillars.filter(x=>x.pillarID == this.ROSEWPillarID)[0]
+                  : this.pillars[0];
+          this.getQuestionsByProgramId();
           this.toaster.showSuccess(res.messages.join(", "));
         } else {
           this.toaster.showError(res.errors.join(", "));
@@ -316,7 +356,8 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       },
     });
   }
-  getAssessmentProgressHistory() {
+ 
+  getAssessmentProgressHistory () {
     this.analystService
       .getAssessmentProgressHistory(this.pillerQuestions?.assessmentID ?? 0)
       .subscribe((res) => {
@@ -329,16 +370,15 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   }
   
   autoSaveSingleAssessemnt(index: number) {
-
     if (this.questionsArray.controls[index].valid) {
-      if (!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0) {
-        this.toaster.showWarning("Please select city first");
+      if (!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0) {
+        this.toaster.showWarning("Please select program first");
         return;
       }
       if (this.questionsArray.controls[index].valid && this.questionsArray.controls[index].dirty) {
 
         const payload: AddAssessmentDto = {
-          userCountryMappingID: this.selectedUserCountryMappingID,
+          staffProgramMappingID: this.selectedUserProgramMappingID,
           assessmentID: this.pillerQuestions?.assessmentID ?? 0,
           pillarID: this.pillerQuestions?.pillarID ?? 0,
           responses: [this.questionsArray.controls[index].value],
@@ -349,6 +389,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           next: (res) => {
             if (res.succeeded) {
               this.questionsArray.at(index).markAsPristine();
+              this.checkAssessmentProgress.next();
             }
           },
           error: () => {
@@ -369,15 +410,15 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   }
   aiResultTransfer() {
 
-    const country = this.countries.find(x => x.userCountryMappingID === Number(this.selectedUserCountryMappingID));
+    const program = this.programs.find(x => x.staffProgramMappingID === Number(this.selectedUserProgramMappingID));
 
-    if (!country) {
-      this.toaster.showWarning("Please select a country");
+    if (!program) {
+      this.toaster.showWarning("Please select a program");
       return;
     }
 
     const payload: AITransferAssessmentRequestDto = {
-      countryID: country.countryID,
+      climateProgramID: program.climateProgramID,
       transferToUserID: this.userService.userInfo?.userID
     };
 
@@ -392,7 +433,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: any) => {
           if (res?.succeeded) {
-            this.countryChanged();
+            this.programChanged();
             this.toaster.showSuccess(res.messages?.join(", ") || "Transfer successful");
           } else {
             this.toaster.showError(res.errors?.join(", ") || "Transfer failed");
@@ -403,8 +444,8 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
         }
       });
   }
-  downloadQuestions(mode: string) {
-    if (mode === 'excel') { this.ImportQuestions() }
+  downloadAssessment(mode: string) {
+    if (mode === 'excel') { this.ImportAssessmentExcel() }
     else { this.exportPillarsHistoryByUserId(ExportType.Pdf); }
 
 
@@ -413,25 +454,25 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   exportPillarsHistoryByUserId(type: ExportType) {   
     if (
       this.userService?.userInfo?.userID == null ||
-      !this.selectedUserCountryMappingID ||
-      this.selectedUserCountryMappingID == 0 ||
-      this.selectedUserCountryMappingID == null
+      !this.selectedUserProgramMappingID ||
+      this.selectedUserProgramMappingID == 0 ||
+      this.selectedUserProgramMappingID == null
     ) {
       return;
     }
 
-    const selectedCountry = this.countries.find(
-      (x: any) => x.userCountryMappingID == this.selectedUserCountryMappingID
+    const selectedProgram = this.programs.find(
+      (x: any) => x.staffProgramMappingID == this.selectedUserProgramMappingID
     );
 
-    if (!selectedCountry) {
+    if (!selectedProgram) {
       this.isLoader = false;
       return;
     }
 
-    let payload: GetCountryPillarHistoryRequestDto = {
+    let payload: GetProgramPillarHistoryRequestDto = {
       userID: this.userService?.userInfo?.userID,
-      countryID: selectedCountry.countryID,   // ✅ Correct countryID
+      climateProgramID: selectedProgram.climateProgramID,   // ✅ Correct climateProgramID
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
       exportType: type
     };
@@ -463,17 +504,15 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       },
     });
   }
-  onHistoryOptionChange(event: any, index: number) {
-    const userId = +event.target.value;
-    const selectedOption = this.pillerQuestions?.questions[
-      index
-    ].history.find((o) => o.userID === userId);
-
+  onHistoryOptionChange(
+    selectedOption: HistoryQuestionAnswerRawDto | null,
+    index: number
+  ) {
     if (selectedOption) {
       const formGroup = this.questionsArray.at(index) as FormGroup;
       formGroup.patchValue({
         questionOptionID: selectedOption.optionID,
-        score: selectedOption.scoreValue,
+        //score: Number(selectedOption.scoreValue),
         source: selectedOption.source,
         justification: selectedOption.justification,
         historyQuestionOptionID: selectedOption.userID

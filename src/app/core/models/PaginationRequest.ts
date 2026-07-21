@@ -10,6 +10,6 @@ export interface PaginationUserRequest extends PaginationRequest{
   userId:number;
 }
 
-export interface PaginationCountryRequest extends PaginationRequest{
-  countryID?:number | null;
+export interface PaginationProgramRequest extends PaginationRequest{
+  climateProgramID?:number | null;
 }

@@ -4,14 +4,14 @@
       <button type="button" (click)="closeModel()" class="btn-close" data-bs-dismiss="modal"
         aria-label="Close"></button>
 
-      <h4 class="modal_head">Country AI Investigation Level</h4>
+      <h4 class="modal_head">Program AI Investigation Level</h4>
 
       <form [formGroup]="assesmentForm" (ngSubmit)="onSubmit()">
 
-        <!-- Country Info -->
+        <!-- Program Info -->
         <div class="details_list">
-          <strong>Country:</strong>
-          <span *ngIf="country">{{ country.countryName }} ({{ country.continent }})</span>
+          <strong>Program:</strong>
+          <span *ngIf="program">{{ program.programName }} ({{ program.continent }})</span>
         </div>
 
         <!-- AI Import Options -->
@@ -40,10 +40,10 @@
             </ng-template>
           </ng-select>
         </div>
-        <div class="input_field mt-4" *ngIf="country?.comment">
+        <div class="input_field mt-4" *ngIf="program?.comment">
           <label>Evaluator Comment</label>
             <small>
-              {{country?.comment}}
+              {{program?.comment}}
             </small>
         </div>
 

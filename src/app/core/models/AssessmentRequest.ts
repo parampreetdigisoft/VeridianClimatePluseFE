@@ -6,7 +6,7 @@ import { PaginationUserRequest } from "./PaginationRequest";
 
 export interface AddAssessmentDto {
   assessmentID: number;
-  userCountryMappingID: number;
+  staffProgramMappingID: number;
   pillarID: number;
   responses: AddAssessmentResponseDto[];
   isAutoSave:boolean;
@@ -30,21 +30,21 @@ export interface GetAssessmentQuestionRequestDto extends PaginationUserRequest{
 
 export interface GetAssessmentRequestDto extends PaginationUserRequest{
   subUserID?: number | null;
-  countryID?: number | null;
+  climateProgramID?: number | null;
   role?: UserRoleValue | null;
   updatedAt?: string;
 }
 
 
-export interface GetCountryPillarHistoryRequestDto {
-  countryID: number;
+export interface GetProgramPillarHistoryRequestDto {
+  climateProgramID: number;
   userID: number;
   pillarID?: number;
   updatedAt:string;
   exportType: ExportType;
 }
-export interface GetCountryPillarHistoryRequestNewDto extends PaginationUserRequest {
-  countryID: number;
+export interface GetProgramPillarHistoryRequestNewDto extends PaginationUserRequest {
+  climateProgramID: number;
   pillarID?: number;
   updatedAt:string;
 }

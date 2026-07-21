@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { map, Subject, tap } from 'rxjs';
 import { HttpService } from 'src/app/core/http/http.service';
-import { CountryVM } from 'src/app/core/models/CountryVM';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
 import { UserInfo } from 'src/app/core/models/UserInfo';
 import { UserService } from 'src/app/core/services/user.service';
 import { environment } from 'src/environments/environment';
-import { CountryUserSignUpDto } from './model/CountryUserSignUpDto';
+import { ClientSignUpDto } from './model/ClientSignUpDto';
 declare const google: any;
 @Injectable({
   providedIn: 'root'
@@ -46,9 +46,9 @@ export class AuthService {
     return this.http.post(`Auth/changePassword`, data).pipe(map(x => x as ResultResponseDto<any>),);
   }
 
-  public cityUserSignUp(data: CountryUserSignUpDto) {
+  public clientSignUp(data: ClientSignUpDto) {
     return this.http
-      .post(`Auth/CountryUserSignUp`, data)
+      .post(`Auth/ClientSignUp`, data)
       .pipe(
         map(x => x as ResultResponseDto<UserInfo | any>),
         tap((user) => {
@@ -58,10 +58,10 @@ export class AuthService {
 
         }));
   }
-  public getAllCountries() {
+  public getAllPrograms() {
     return this.http
-      .get(`Public/getAllCountries`)
-      .pipe(map((x) => x as ResultResponseDto<CountryVM[]>));
+      .get(`Public/getAllPrograms`)
+      .pipe(map((x) => x as ResultResponseDto<ProgramVM[]>));
   }
   public initGoogleButton(elementId: string, callback: (response: any) => void) {
     if (typeof google !== 'undefined') {

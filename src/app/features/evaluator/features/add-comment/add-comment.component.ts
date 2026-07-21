@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AiCountrySummeryDto } from 'src/app/core/models/aiVm/AiCountrySummeryDto';
+import { AiProgramSummeryDto } from 'src/app/core/models/aiVm/AiProgramSummeryDto';
 
 @Component({
   selector: 'app-add-comment',
@@ -12,7 +12,7 @@ import { AiCountrySummeryDto } from 'src/app/core/models/aiVm/AiCountrySummeryDt
 })
 export class AddCommentComponent implements OnInit, OnChanges {
 
-  @Input() country?: AiCountrySummeryDto | null = null;
+  @Input() program?: AiProgramSummeryDto | null = null;
   @Input() loading = false;
 
   @Output() onSubmit = new EventEmitter<any>();
@@ -27,9 +27,9 @@ export class AddCommentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['country'] && this.commentForm) {
+    if (changes['program'] && this.commentForm) {
       this.commentForm.patchValue({
-        countryID: this.country?.countryID
+        climateProgramID: this.program?.climateProgramID
         
       });
     }
@@ -37,13 +37,13 @@ export class AddCommentComponent implements OnInit, OnChanges {
 
   private buildForm(): void {
     this.commentForm = this.fb.group({
-      countryID: [this.country?.countryID],
+      climateProgramID: [this.program?.climateProgramID],
       comment: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
   submit(): void {
-    if (this.commentForm.invalid || !this.country) return;
+    if (this.commentForm.invalid || !this.program) return;
 
     this.onSubmit.emit(this.commentForm.value);
   }

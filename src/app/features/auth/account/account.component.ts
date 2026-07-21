@@ -5,7 +5,7 @@ import { filter, map, mergeMap, Subject } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { AuthService } from '../auth.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
-import { CountryUserSignUpDto } from '../model/CountryUserSignUpDto';
+import { ClientSignUpDto } from '../model/ClientSignUpDto';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageKeyEnum } from 'src/app/core/enums/StorageKeyEnum';
 
@@ -70,7 +70,7 @@ export class AccountComponent implements OnInit {
               this.loading = false;
               if (res.succeeded) {               
                 if (res.result?.userID) {
-                  if ((this.roleName === 'clientPortalLogin' && res?.result?.role == 'CountryUser') || (this.roleName === 'login' && res?.result?.role != 'CountryUser')) {
+                  if ((this.roleName === 'clientPortalLogin' && res?.result?.role == 'ProgramUser') || (this.roleName === 'login' && res?.result?.role != 'ProgramUser')) {
                     this.toasterService.showSuccess('Login successful');
                     this.userService.RedirectBasedOnRole();
                   }
@@ -124,12 +124,12 @@ export class AccountComponent implements OnInit {
       }
     }
   }
-  public cityUserSignUp(event: CountryUserSignUpDto) {
+  public cityUserSignUp(event: ClientSignUpDto) {
     if (!this.loading) {
       if (event) {
         this.loading = true;
         this.authService
-          .cityUserSignUp(event)
+          .clientSignUp(event)
           .subscribe({
             next: (res) => {
               this.loading = false;

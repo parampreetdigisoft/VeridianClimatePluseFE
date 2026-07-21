@@ -2,7 +2,7 @@ import { forkJoin } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { CountryVM } from 'src/app/core/models/CountryVM';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AnalystService } from '../../analyst.service';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
@@ -14,7 +14,7 @@ import { ToasterService } from 'src/app/core/services/toaster.service';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { PaginationComponent } from 'src/app/shared/pagination/pagination.component';
-import { AiPillarQuetionsRequestDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestDto';
+import { AiPillarQuetionsRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
 import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
 import { AIEstimatedQuestionScoreDto } from 'src/app/core/models/aiVm/AIEstimatedQuestionScoreDto';
 import { ChangeDetectorRef, Component, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
@@ -36,11 +36,11 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
 })
 export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
   selectedYear = new Date().getFullYear();
-  selectedCountryID!: number;
+  selectedclimateProgramID!: number;
   selectedPillarID!: number;
   selectedQuestion: AIEstimatedQuestionScoreDto | null = null;
   isLoader: boolean = false;
-  countries: CountryVM[] = [];
+  programs: ProgramVM[] = [];
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
@@ -62,7 +62,7 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     this.headerTextRepeatation = false;
 
     const p = this.pillars.find(x => x.pillarID === this.selectedPillarID)?.pillarName ?? '';
-    const c = this.countries.find(x => x.countryID === this.selectedCountryID)?.countryName ?? '';
+    const c = this.programs.find(x => x.climateProgramID === this.selectedclimateProgramID)?.programName ?? '';
 
     setTimeout(() => {
       this.headerTextRepeatation = true;
@@ -83,11 +83,11 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     this.loadInitialData();
     this.getAITrustLevels();
     this.route.queryParams.subscribe(params => {
-      let cid = +params['countryID'] || null;
+      let cid = +params['climateProgramID'] || null;
       let pid = +params['pillarID'] || null;
       let sYear = +params['year'] || this.selectedYear;
       if (pid && cid) {
-        this.selectedCountryID = Number(cid);
+        this.selectedclimateProgramID = Number(cid);
         this.selectedPillarID = Number(pid);
         this.selectedYear = Number(sYear);
         this.getAIPillarQuestions();
@@ -107,20 +107,20 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
     forkJoin({
       pillarsRes: this.analystService.getAllPillars(),
-      countriesRes: this.analystService.getAllCountriesByUserId(this.userService.userInfo?.userID ?? 0)
+      programsRes: this.analystService.getAllProgramsByUserId(this.userService.userInfo?.userID ?? 0)
     }).subscribe({
-      next: ({ pillarsRes, countriesRes }) => {
+      next: ({ pillarsRes, programsRes }) => {
 
         this.pillars = pillarsRes ?? [];
-        if (countriesRes.succeeded) {
-          this.countries = countriesRes.result ?? [];
+        if (programsRes.succeeded) {
+          this.programs = programsRes.result ?? [];
         } else {
-          this.toaster.showError(countriesRes.errors.join(', '));
+          this.toaster.showError(programsRes.errors.join(', '));
         }
 
-        if ((!this.selectedPillarID && !this.selectedCountryID) && this.pillars.length && this.countries.length) {
+        if ((!this.selectedPillarID && !this.selectedclimateProgramID) && this.pillars.length && this.programs.length) {
           this.selectedPillarID = this.pillars[0].pillarID
-          this.selectedCountryID = this.countries[0].countryID
+          this.selectedclimateProgramID = this.programs[0].climateProgramID
           this.getAIPillarQuestions()
         }
       },
@@ -140,8 +140,8 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
       pageSize: this.pageSize,
       year: this.selectedYear
     }
-    if (this.selectedCountryID > 0) {
-      payload.countryID = this.selectedCountryID;
+    if (this.selectedclimateProgramID > 0) {
+      payload.climateProgramID = this.selectedclimateProgramID;
     }
     if (this.selectedPillarID > 0) {
       payload.pillarID = this.selectedPillarID;
@@ -164,8 +164,8 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     })
   }
 
-  viewDetails(country: AIEstimatedQuestionScoreDto) {
-    this.selectedQuestion = country;
+  viewDetails(program: AIEstimatedQuestionScoreDto) {
+    this.selectedQuestion = program;
     const sidebarEl = document.getElementById('kpiLayerSidebar');
     const offcanvas = new bootstrap.Offcanvas(sidebarEl);
 
@@ -180,8 +180,8 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
   customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
     return (
-      item.countryName?.toLowerCase().includes(term) ||
-      item.countryAliasName?.toLowerCase().includes(term)
+      item.programName?.toLowerCase().includes(term) ||
+      item.programAliasName?.toLowerCase().includes(term)
     );
   }
   

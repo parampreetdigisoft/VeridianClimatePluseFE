@@ -8,7 +8,7 @@ import { UserRoleValue } from 'src/app/core/enums/UserRole';
 import { UserService } from 'src/app/core/services/user.service';
 import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
 import { AdminService } from 'src/app/features/admin/admin.service';
-import { CountryVM } from 'src/app/core/models/CountryVM';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
 
 @Component({
   selector: 'app-add-update-evaluator',
@@ -17,7 +17,7 @@ import { CountryVM } from 'src/app/core/models/CountryVM';
 })
 export class AddUpdateEvaluatorComponent {
   @Input() evaluator: GetUserByRoleResponse | null = null;
-  @Input() countries: CountryVM[] | null = [];
+  @Input() programs: ProgramVM[] | null = [];
   @Output() evaluatorChange = new EventEmitter<UpdateInviteUserDto | null>();
   @Output() bulkImportChange = new EventEmitter<UpdateInviteUserDto[] | null>();
   @Output() closeModal = new EventEmitter<boolean>();
@@ -30,7 +30,7 @@ export class AddUpdateEvaluatorComponent {
     "FullName",
     "Email",
     "Phone",
-    "CountryName"
+    "ProgramName"
   ];
   evaluatorForm: FormGroup<any> = this.fb.group({});  
   analyst: any;
@@ -54,7 +54,7 @@ export class AddUpdateEvaluatorComponent {
       fullName: [evaluator?.fullName, [Validators.required]],
       email: [evaluator?.email, [Validators.required, Validators.email], this.emailExistsValidator()],
       phone: [evaluator?.phone, [Validators.required]],
-      country: [evaluator?.countries?.map(x => x?.countryID) ?? [], [Validators.required]]
+      program: [evaluator?.climatePrograms?.map(x => x?.climateProgramID) ?? [], [Validators.required]]
     });
     this.evaluatorForm.updateValueAndValidity();
   }
@@ -85,12 +85,12 @@ export class AddUpdateEvaluatorComponent {
   onSubmit() {
     this.isSubmitted = true;
     if (this.evaluatorForm.valid) {
-      const countryData: UpdateInviteUserDto = {
+      const programData: UpdateInviteUserDto = {
         ...this.evaluatorForm.value,
         userID: this.evaluator?.userID ?? 0,
-        countryID: this.evaluatorForm.value.country
+        climateProgramID: this.evaluatorForm.value.program
       };
-      this.evaluatorChange.emit(countryData);
+      this.evaluatorChange.emit(programData);
     }
 
   }
@@ -99,7 +99,7 @@ export class AddUpdateEvaluatorComponent {
       "FullName",
       "Email",
       "Phone",
-      "countryName"
+      "ProgramName"
     ];
 
     // One sample row
@@ -107,7 +107,7 @@ export class AddUpdateEvaluatorComponent {
       FullName: "FullName of Evaluator",
       Email: "Enter Email of Evaluator",
       Phone: "Enter Phone Number of Evaluator",
-      countryName: "Enter country seprated by comma, like :- USA, Cananda, Brazil"
+      ProgramName: "Enter program name separated by comma, like :- COP Negotiation Transparency Initiative, Renewable Energy Transition Program, Climate Resilience and Adaptation Program"
     };
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([sampleRow], { header: headers });
@@ -154,17 +154,21 @@ export class AddUpdateEvaluatorComponent {
         const fullName = String(row["FullName"] || "").trim();
         const email = String(row["Email"] || "").trim();
         const phone = String(row["Phone"] || "").trim();
-        const countryName = String(row["countryName"] || "").trim();
+        const programName = String(row["ProgramName"] || "").trim();
 
-        const isCompletelyBlank = !fullName && !email && !phone && !countryName;
+        const isCompletelyBlank = !fullName && !email && !phone && !programName;
         if (isCompletelyBlank) {
           continue;
         }
         // ✅ Required check
-        if (!fullName || !email || !phone || !countryName) {
+        if (!fullName || !email || !phone || !programName) {
           this.alertMsg = `Row ${i + 2}: All fields are required.`;
           this.fileInput.nativeElement.value = "";
           return;
+        }
+
+        if (fullName.toLowerCase() === "FullName of Evaluator".toLowerCase()) {
+          continue;
         }
 
         // ✅ Email validation
@@ -194,7 +198,7 @@ export class AddUpdateEvaluatorComponent {
           phone,
           password: email,
           role: UserRoleValue.Evaluator,
-          countryID: this.getCountryByName(countryName)
+          climateProgramID: this.getProgramByName(programName)
         };
         excelData.push(dto);
       }
@@ -203,12 +207,12 @@ export class AddUpdateEvaluatorComponent {
     reader.readAsBinaryString(target.files[0]);
   }
 
-  getCountryByName(countryNames: string): number[] {
-    if (!countryNames) return [];
-    return countryNames
+  getProgramByName(programNames: string): number[] {
+    if (!programNames) return [];
+    return programNames
       .split(",")
       .map(name => name.trim())
-      .map(name => this.countries?.find(c => c.countryName === name)?.countryID)
+      .map(name => this.programs?.find(c => c.programName === name)?.climateProgramID)
       .filter((id): id is number => id !== undefined);
   }
 

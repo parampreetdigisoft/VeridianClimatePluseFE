@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { CountryHistoryDto, GetCountriesSubmitionHistoryResponseDto, GetCountryQuestionHistoryResponseDto, UserCountryRequestDto } from 'src/app/core/models/countryHistoryDto';
-import { CountryVM } from 'src/app/core/models/CountryVM';
+import { ProgramHistoryDto, GetProgramsSubmitionHistoryResponseDto, GetProgramQuestionHistoryResponseDto, UserProgramRequestDto } from 'src/app/core/models/ProgramHistoryDto';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { EvaluatorService } from '../../evaluator.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -34,10 +34,10 @@ export type ChartOptions = {
 export class EvaluatorDashboardComponent {
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
-  countries: CountryVM[] | null = [];
-  selectedCountries: number | any = '';
-  countryHistory: CountryHistoryDto | null = null;
-  countryQuestionHistoryResponse: GetCountryQuestionHistoryResponseDto | null = null;
+  programs: ProgramVM[] | null = [];
+  selectedPrograms: number | any = '';
+  programHistory: ProgramHistoryDto | null = null;
+  programQuestionHistoryResponse: GetProgramQuestionHistoryResponseDto | null = null;
   @ViewChild("chartPillar") chartPillar!: ChartComponent;
   public chartPillarOptions: any = {};
   isLoader: boolean = false;
@@ -47,53 +47,53 @@ export class EvaluatorDashboardComponent {
   constructor(private evaluatorService: EvaluatorService, private toaster: ToasterService, private userService: UserService, public commonService: CommonService) { }
   ngOnInit(): void {
     this.isLoader = true;
-    this.getAllCountriesByUserId();
-    this.GetCountryHistory();
+    this.getAllProgramsByUserId();
+    this.GetProgramHistory();
   }
   yearChanged() {
-    this.GetCountryHistory();
-    this.getCountryQuestionHistory();
+    this.GetProgramHistory();
+    this.getProgramQuestionHistory();
   }
 
   ngAfterViewInit() { }
 
-  getAllCountriesByUserId() {
-    this.evaluatorService.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
+  getAllProgramsByUserId() {
+    this.evaluatorService.getAllProgramsByUserId(this.userService?.userInfo?.userID).subscribe({
       next: (res) => {
         this.isLoader = false;
-        this.countries = res.result;
-        if (this.countries && this.countries.length > 0) {
+        this.programs = res.result;
+        if (this.programs && this.programs.length > 0) {
           this.isLoader = true;
-          this.selectedCountries = this.countries[0].countryID;
-          this.getCountryQuestionHistory();
+          this.selectedPrograms = this.programs[0].climateProgramID;
+          this.getProgramQuestionHistory();
         }
       }
     });
   }
 
-  GetCountryHistory() {
-    this.evaluatorService.getCountryHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
+  GetProgramHistory() {
+    this.evaluatorService.getProgramHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
       next: (res) => {
-        this.countryHistory = res.result;
+        this.programHistory = res.result;
         this.GetApexPieOptions();
       }
     });
   }
-  getCountryQuestionHistory() {
-    if (this.userService?.userInfo?.userID == null || !this.selectedCountries || this.selectedCountries === '' || this.selectedCountries == null) {
+  getProgramQuestionHistory() {
+    if (this.userService?.userInfo?.userID == null || !this.selectedPrograms || this.selectedPrograms === '' || this.selectedPrograms == null) {
       return;
     }
-    let request: UserCountryRequestDto = {
+    let request: UserProgramRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
-      countryID: this.selectedCountries,
+      climateProgramID: this.selectedPrograms,
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
     }
-    this.evaluatorService.getCountryQuestionHistory(request).subscribe({
+    this.evaluatorService.getProgramQuestionHistory(request).subscribe({
       next: (res) => {
         this.isLoader = false;
-        this.countryQuestionHistoryResponse = res;
-        if (this.countryQuestionHistoryResponse) {
-          this.GetPillarBarOptions(this.countryQuestionHistoryResponse);
+        this.programQuestionHistoryResponse = res;
+        if (this.programQuestionHistoryResponse) {
+          this.GetPillarBarOptions(this.programQuestionHistoryResponse);
         }
       },
       error: (err) => {
@@ -102,7 +102,7 @@ export class EvaluatorDashboardComponent {
     });
   }
 
-  GetPillarBarOptions(history: GetCountryQuestionHistoryResponseDto) {
+  GetPillarBarOptions(history: GetProgramQuestionHistoryResponseDto) {
     let colors = this.commonService.PillarColors;
     const rawMax = Math.max(...history.pillars.map(p => p.scoreProgress));
     const maxNumber = Math.ceil(rawMax / 10) * 10;
@@ -464,10 +464,10 @@ export class EvaluatorDashboardComponent {
   }
 
   GetApexPieOptions() {
-    const total = this.countryHistory?.totalCountry ?? 0;
-    const active = this.countryHistory?.activeCountry ?? 0;
-    const inprogress = this.countryHistory?.inprocessCountry ?? 0;
-    const complete = this.countryHistory?.compeleteCountry ?? 0;
+    const total = this.programHistory?.totalProgram ?? 0;
+    const active = this.programHistory?.activeProgram ?? 0;
+    const inprogress = this.programHistory?.inprocessProgram ?? 0;
+    const complete = this.programHistory?.compeleteProgram ?? 0;
 
     this.chartOptions = {
       series: [
@@ -519,7 +519,7 @@ export class EvaluatorDashboardComponent {
             },
             total: {
               show: true,
-              label: "Total Country",
+              label: "Total Program",
               formatter: (value: any) => {
                 return `${total}`;
               },
@@ -528,7 +528,7 @@ export class EvaluatorDashboardComponent {
         }
       },
       colors: [...AHI_CHART.radialBarShort],
-      labels: ["Total Country", "Active", "InProgress", "Completed"],
+      labels: ["Total Program", "Active", "InProgress", "Completed"],
       legend: {
         show: true,
         floating: true,
@@ -548,12 +548,12 @@ export class EvaluatorDashboardComponent {
       }
     };
   }
-  ExportCountryPillar() {
-    let country = this.countries?.find((x) => x.countryID == this.selectedCountries);
-    if (this.countryQuestionHistoryResponse?.pillars && country) {
-      var exportData = this.countryQuestionHistoryResponse?.pillars.map((x) => {
+  ExportProgramPillar() {
+    let program = this.programs?.find((x) => x.climateProgramID == this.selectedPrograms);
+    if (this.programQuestionHistoryResponse?.pillars && program) {
+      var exportData = this.programQuestionHistoryResponse?.pillars.map((x) => {
         return {
-          countryName: country?.countryName,
+          programName: program?.programName,
           PillarName: x.pillarName,
           Score: x.scoreProgress?.toFixed(2),
           AnsweredQuestion: x.ansQuestion,
@@ -562,7 +562,7 @@ export class EvaluatorDashboardComponent {
       });
       this.commonService.exportExcel(exportData);
     } else {
-      this.toaster.showWarning("Please select country to export the records");
+      this.toaster.showWarning("Please select program to export the records");
     }
   }
 }

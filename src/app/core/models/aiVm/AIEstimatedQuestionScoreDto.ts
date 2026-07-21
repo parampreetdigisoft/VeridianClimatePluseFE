@@ -1,9 +1,9 @@
 export interface AIEstimatedQuestionScoreDto {
-  countryID: number;
-  pillarId: number;
-  questionId: number;
+  climateProgramID: number;
+  pillarID: number;
+  questionID: number;
   questionText: string;
-  year: number; // ✅ renamed from dataYear
+  year: number; 
   aiScore: number | null;
   aiProgress: number | null;
   evaluatorScore: number | null; // ✅ renamed

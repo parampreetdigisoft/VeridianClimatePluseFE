@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PublicUserResponse } from 'src/app/core/models/UserInfo';
-import { AiCountrySummeryDto } from 'src/app/core/models/aiVm/AiCountrySummeryDto';
+import { AiProgramSummeryDto } from 'src/app/core/models/aiVm/AiProgramSummeryDto';
 
 @Component({
   selector: 'app-regenerate-ai-score-and-add-viewer',
@@ -14,7 +14,7 @@ import { AiCountrySummeryDto } from 'src/app/core/models/aiVm/AiCountrySummeryDt
 })
 export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges {
 
-  @Input() country?: AiCountrySummeryDto | any | null = null;
+  @Input() program?: AiProgramSummeryDto | any | null = null;
   @Input() loading = false;
   @Input() evaluatorList: PublicUserResponse[] = [];
   @Output() regenerate = new EventEmitter<any>();
@@ -32,7 +32,7 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
   }
   ngOnChanges(changes: SimpleChanges): void {
     
-    this.showRegenerateMissingQuestionsOption = this.country.aiCompletionRate > 0 || this.country.score > 0;
+    this.showRegenerateMissingQuestionsOption = this.program.aiCompletionRate > 0 || this.program.score > 0;
 
     this.aiOptions = [
       { label: 'Pillar-level AI insights', control: 'pillarEnable', time: this.importPillar ? 5 +' '+'min' : 30 +' '+ 'min' },
@@ -40,12 +40,12 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
     ];
 
     if (!this.importPillar) {
-      this.aiOptions.unshift({ label: 'Country-level AI insights', control: 'countryEnable', time: 5 +' '+'min' });
+      this.aiOptions.unshift({ label: 'Program-level AI insights', control: 'programEnable', time: 5 +' '+'min' });
       this.aiOptions.unshift({ label: 'Immediate Situation', control: 'immediateSummaryEnable', time: 2 +' '+'min' });
     }
     if (this.showRegenerateMissingQuestionsOption)
     {
-      const completionRate = Math.round(this.country?.aiCompletionRate ?? 0);
+      const completionRate = Math.round(this.program?.aiCompletionRate ?? 0);
 
       this.aiOptions.push({
         label: 'Import Missing Questions',
@@ -61,8 +61,8 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
 
   initializeForm() {
     this.assesmentForm = this.fb.group({
-      countryID: [this.country?.countryID],
-      countryEnable: [!this.importPillar],
+      climateProgramID: [this.program?.climateProgramID],
+      programEnable: [!this.importPillar],
       immediateSummaryEnable: [!this.importPillar],
       regenerateMissingQuestionsEnable: [false],
       pillarEnable: [true],
@@ -72,7 +72,7 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
   }
 
   onSubmit() {
-    if (!this.country) return;
+    if (!this.program) return;
 
     const payload = {
       ...this.assesmentForm.value

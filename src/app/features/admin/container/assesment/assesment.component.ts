@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { CountryVM } from "src/app/core/models/CountryVM";
+import { ProgramVM } from "src/app/core/models/ProgramVM";
 import { PaginationResponse } from "src/app/core/models/PaginationResponse";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
@@ -26,7 +26,7 @@ export class AssesmentComponent implements OnInit {
   selectedYear = new Date().getFullYear();
   isLoader: boolean = false;
   isOpendialog = false;
-  selectedCountryID: number | any = "";
+  selectedclimateProgramID: number | any = "";
   selectedRoleID: UserRoleValue | any = "";
   selectedAssessment: GetAssessmentResponse | any = "";
   changeAssessment: ChangeAssessmentStatusRequestDto | any = "";
@@ -34,10 +34,10 @@ export class AssesmentComponent implements OnInit {
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
-  countries: CountryVM[] | null = [];
+  programs: ProgramVM[] | null = [];
   loading: boolean = false;
   evaluators: PublicUserResponse[] | null = [];
-  userofSelectedCountryResponse: GetAssessmentResponse[] = [];
+  userofSelectedProgramResponse: GetAssessmentResponse[] = [];
 
   rolesList = [
     { name: "Analyst", role: UserRoleValue.Analyst },
@@ -54,13 +54,13 @@ export class AssesmentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllCountriesByUserId();
+    this.getAllProgramsByUserId();
     this.route.paramMap.subscribe((params) => {
       let rid = params.get("roleID");
-      let cid = params.get("countryID");
+      let cid = params.get("climateProgramID");
       if (rid && cid) {
         this.selectedRoleID = rid;
-        this.selectedCountryID = cid;
+        this.selectedclimateProgramID = cid;
       }
     });
     this.getAssessments();
@@ -85,7 +85,7 @@ export class AssesmentComponent implements OnInit {
       pageNumber: currentPage,
       pageSize: this.pageSize,
       userId: this.userService?.userInfo?.userID,
-      countryID: this.selectedCountryID,
+      climateProgramID: this.selectedclimateProgramID,
       role: this.selectedRoleID,
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
     };
@@ -97,16 +97,16 @@ export class AssesmentComponent implements OnInit {
       this.isLoader = false;
     });
   }
-  getAllCountriesByUserId() {
+  getAllProgramsByUserId() {
     this.adminService
-      .getAllCountriesByUserId(this.userService?.userInfo?.userID)
+      .getAllProgramsByUserId(this.userService?.userInfo?.userID)
       .subscribe({
         next: (res) => {
-          this.countries = res.result;
-          if (this.countries) {
-            //this.selectedCountryID = this.countries?.length > 0 ? this.countries[0].countryID : null
+          this.programs = res.result;
+          if (this.programs) {
+            //this.selectedclimateProgramID = this.programs?.length > 0 ? this.programs[0].climateProgramID : null
           } else {
-            this.toaster.showWarning("No country assigned");
+            this.toaster.showWarning("No program assigned");
           }
         },
       });
@@ -140,7 +140,7 @@ export class AssesmentComponent implements OnInit {
   }
   selectAssessement(selectedAssessment: GetAssessmentResponse) {
     this.selectedAssessment = selectedAssessment;
-    this.getUsersAssignedToCountry();
+    this.getUsersAssignedToProgram();
     this.opendialog();
   }
   transferAssessment(payload:TransferAssessmentRequestDto) {
@@ -185,16 +185,16 @@ export class AssesmentComponent implements OnInit {
     if (modalInstance) modalInstance.hide();
     this.isOpendialog = false;
   }
-  getUsersAssignedToCountry() {
+  getUsersAssignedToProgram() {
     if (this.selectedAssessment == null) {
       this.toaster.showError("Plese select assessment");
     }
     this.adminService
-      .getUsersAssignedToCountry(this.selectedAssessment.countryID)
+      .getUsersAssignedToProgram(this.selectedAssessment.climateProgramID)
       .subscribe({
         next: (res) => {
           if (res.succeeded) {
-            this.userofSelectedCountryResponse = res.result ?? [];
+            this.userofSelectedProgramResponse = res.result ?? [];
           } else {
             this.toaster.showError(res.errors.join(", "));
           }

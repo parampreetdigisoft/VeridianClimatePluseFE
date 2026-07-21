@@ -51,33 +51,33 @@
                             <div class="input_field">
                                 <label>Phone No.*</label>
                                 <input type="text" formControlName="phone"
-                                    placeholder="Enter phone number" class="form-control"  minlength="10" maxlength="15" (keypress)="numberOnly($event)">
+                                    placeholder="Enter Phone Number" class="form-control"  minlength="10" maxlength="15" (keypress)="numberOnly($event)">
                                 <div class="error-msg"
                                     *ngIf="evaluatorForm.get('phone')?.invalid && (evaluatorForm.get('phone')?.touched || isSubmitted)">
                                     Phone number is required.
                                 </div>
                             </div>
-                            <!-- country Multi-Select -->
+                            <!-- program Multi-Select -->
                             <div class="input_field">
-                                <label>Assign country *</label>
-                                <ng-select [items]="countries" bindValue="countryID" bindLabel="countryName"
-                                    formControlName="country" [multiple]="true" class="form-control analyst_multi_select"
+                                <label>Assign program *</label>
+                                <ng-select [items]="programs" bindValue="climateProgramID" bindLabel="programName"
+                                    formControlName="program" [multiple]="true" class="form-control analyst_multi_select"
                                     [searchable]="true"
-                                    [placeholder]="evaluatorForm.get('country')?.invalid ? 'Assign country' : ''">
+                                    [placeholder]="evaluatorForm.get('program')?.invalid ? 'Assign Program' : ''">
 
                                     <ng-template ng-label-tmp let-item="item">
-                                        {{ item.countryName +', '}}
+                                        {{ item.programName +', '}}
                                     </ng-template>
 
                                     <ng-template ng-option-tmp let-item="item">
-                                        {{ item.countryName }} {{ item.continent }}
+                                        {{ item.programName }} {{ item.continent }}
                                     </ng-template>
                                 </ng-select>
 
 
                                 <div class="error-msg"
-                                    *ngIf="evaluatorForm.get('country')?.invalid && (isSubmitted || evaluatorForm.get('country')?.touched)">
-                                    Please select at least one country.
+                                    *ngIf="evaluatorForm.get('program')?.invalid && (isSubmitted || evaluatorForm.get('program')?.touched)">
+                                    Please select at least one program.
                                 </div>
                             </div>
 

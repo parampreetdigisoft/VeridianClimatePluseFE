@@ -509,7 +509,7 @@
 
 
 
-/* Clear (×) — always visible when a value is selected (country & pillar) */
+/* Clear (×) — always visible when a value is selected (program & pillar) */
 ::ng-deep .cb__selector-inner .ng-select.ng-select-clearable.ng-has-value .ng-select-container .ng-clear-wrapper,
 ::ng-deep .cb__selector-inner .ng-select.ng-select-single.ng-has-value .ng-select-container .ng-clear-wrapper {
   flex: 0 0 26px !important;
@@ -1335,7 +1335,7 @@
   flex-wrap: wrap;
 }
 
-.analysis-modal__country {
+.analysis-modal__program {
   font-size: 13px;
   font-weight: 600;
   color: #475569;
@@ -2447,7 +2447,7 @@
 
 
 
-.pem-sidebar .country-header {
+.pem-sidebar .program-header {
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 600;
@@ -2532,7 +2532,7 @@ aside.pem-sidebar {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
-.country-overview .stats-card {
+.program-overview .stats-card {
   overflow: hidden;
 }
 .sidebar-card {
@@ -3720,7 +3720,7 @@ aside.pem-sidebar {
   flex-shrink: 0;
 }
 
-.trend-card__country {
+.trend-card__program {
   font-size: 12px;
   font-weight: 600;
   color: #3f3f46;

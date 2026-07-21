@@ -5,8 +5,8 @@ import { EvaluatorComponent } from './evaluator/evaluator.component';
 import { AssessmentResultComponent } from './container/assessment-result/assessment-result.component';
 import { MakeAssessmentComponent } from './container/make-assessment/make-assessment.component';
 import { SharedModule } from 'src/app/shared/share.module';
-import { AssignedCountryComponent } from './container/assigned-country/assigned-country.component';
 import { AssessmentViewResultComponent } from './container/assessment-view-result/assessment-view-result.component';
+import { AssignedProgramComponent } from './container/assigned-program/assigned-program.component';
 import { EvaluatorDashboardComponent } from './container/evaluator-dashboard/evaluator-dashboard.component';
 import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 
@@ -19,17 +19,17 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
       { path: "rosew-dashboard", component: RealTimeOperationalStressComponent },
       { path: 'dashboard', component: EvaluatorDashboardComponent },
-      { path: 'assigned-country', component: AssignedCountryComponent },
+      { path: 'assigned-program', component: AssignedProgramComponent },
       { path: 'make-assessment', component: MakeAssessmentComponent },
       { path: 'assessment-result', component: AssessmentResultComponent },
       { path: 'assessment-result/:assessmentID/:userName', component: AssessmentViewResultComponent },
       {
-        path: 'ai/country-analysis',
-        loadComponent: () => import('./container/ai-country-analysis/aicountry-analysis.component').then(m => m.AICountryAnalaysisComponent)
+        path: 'ai/program-analysis',
+        loadComponent: () => import('./container/ai-program-analysis/aiprogram-analysis.component').then(m => m.AIProgramAnalaysisComponent)
       },
       {
-        path: 'ai/country-comparison',
-        loadComponent: () => import('./container/ai-country-comparison/ai-country-comparison.component').then(m => m.AiCountryComparisonComponent)
+        path: 'ai/program-comparison',
+        loadComponent: () => import('./container/ai-program-comparison/ai-program-comparison.component').then(m => m.AiProgramComparisonComponent)
       },
       {
         path: 'ai/kpi-analysis',
@@ -44,7 +44,7 @@ const routes: Routes = [
     EvaluatorComponent,
     AssessmentResultComponent,
     MakeAssessmentComponent,
-    AssignedCountryComponent,
+    AssignedProgramComponent,
     EvaluatorDashboardComponent,
     AssessmentViewResultComponent,
     RealTimeOperationalStressComponent

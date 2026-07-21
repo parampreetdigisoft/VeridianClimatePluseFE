@@ -15,10 +15,10 @@
             {{ year }}
           </option>
         </select>
-        <select [(ngModel)]="selectedcountryID" name="countryID" class="form-control" (change)="getAssessments()">
-          <option value="">Select Country</option>
-          <option *ngFor="let country of countries" [value]="country.countryID">
-            {{ country.countryName }}
+        <select [(ngModel)]="selectedclimateProgramID" name="climateProgramID" class="form-control" (change)="getAssessments()">
+          <option value="">Select Program</option>
+          <option *ngFor="let program of programs" [value]="program.climateProgramID">
+            {{ program.programName }}
           </option>
         </select>
       </div>
@@ -32,7 +32,7 @@
     <thead>
       <tr>
         <th>S.No.</th>
-        <th>Country</th>
+        <th>Program</th>
         <th>Score</th>
         <th>Status</th>
         <th>Unknown</th>
@@ -44,7 +44,7 @@
     <tbody>
       <tr *ngFor="let assessment of assessmentsResponse?.data; let i = index">
         <td>{{((currentPage-1) * pageSize ) +(i+1)}}</td>
-        <td>{{assessment.countryName}}</td>
+        <td>{{assessment.programName}}</td>
         <td><span class="bold_num">{{ assessment.score?.toFixed(2) }}</span></td>
         <td>{{ assessment.assessmentPhase==5 ? 'Completed' :'InProgress' }}</td>
         <td>{{ assessment.totalUnknown }}</td>

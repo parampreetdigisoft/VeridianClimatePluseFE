@@ -3,8 +3,8 @@ import { AgBarSeriesOptions, AgLineSeriesOptions, AgTooltipRendererDataRow } fro
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { AnalystService } from '../../analyst.service';
-import { CountryHistoryDto, GetCountriesSubmitionHistoryResponseDto, UserCountryRequestDto } from 'src/app/core/models/countryHistoryDto';
-import { CountryVM } from 'src/app/core/models/CountryVM';
+import { ProgramHistoryDto, GetProgramsSubmitionHistoryResponseDto, UserProgramRequestDto } from 'src/app/core/models/ProgramHistoryDto';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { CommonService } from 'src/app/core/services/common.service';
 
 import {
@@ -15,7 +15,7 @@ import {
   ChartComponent, ApexAxisChartSeries, ApexXAxis, ApexYAxis, ApexStroke, ApexTooltip, ApexDataLabels,
   ApexStates
 } from "ng-apexcharts";
-import { AiCountryPillarDashboardResponseDto } from 'src/app/core/models/AiCountryPillarDashboardResponseDto';
+import { AiProgramPillarDashboardResponseDto } from 'src/app/core/models/AiProgramPillarDashboardResponseDto';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AHI_CHART, ahiScoreColor, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
 
@@ -65,10 +65,10 @@ export type PillarChartOptions = {
 })
 export class AnalystDashboardComponent implements OnInit {
   selectedYear = new Date().getFullYear();
-  countries: CountryVM[] | null = [];
-  selectedCountries: number | any = '';
-  countryHistory: CountryHistoryDto | null = null;
-  countryQuestionHistoryReponse: AiCountryPillarDashboardResponseDto | null = null;
+  programs: ProgramVM[] | null = [];
+  selectedPrograms: number | any = '';
+  programHistory: ProgramHistoryDto | null = null;
+  programQuestionHistoryReponse: AiProgramPillarDashboardResponseDto | null = null;
   pillarBarOptions: any = {};
   isLoader: boolean = false;
   resizeTimeout: any;
@@ -87,60 +87,60 @@ export class AnalystDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoader = true;
-    this.getAllCountriesByUserId();
+    this.getAllProgramsByUserId();
     this.yearChanged();
 
   }
   yearChanged() {
-    this.GetCountryHistory();
-    this.getCountriesProgressByUserId();
-    this.getCountryPillarHistory();
+    this.GetProgramHistory();
+    this.getProgramsProgressByUserId();
+    this.getProgramPillarHistory();
   }
-  getCountriesProgressByUserId() {
-    this.analystService.getCountriesProgressByUserId(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
+  getProgramsProgressByUserId() {
+    this.analystService.getProgramsProgressByUserId(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
       next: (res) => {
         if (res.succeeded && res.result) {
-          this.apexchartOptions = this.getCountryLineChartOptions(res.result);
+          this.apexchartOptions = this.getProgramLineChartOptions(res.result);
         }
       }
     })
   }
-  getAllCountriesByUserId() {
-    this.analystService.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
+  getAllProgramsByUserId() {
+    this.analystService.getAllProgramsByUserId(this.userService?.userInfo?.userID).subscribe({
       next: (res) => {
-        this.countries = res.result;
+        this.programs = res.result;
         this.isLoader = false;
-        if (this.countries && this.countries.length > 0) {
+        if (this.programs && this.programs.length > 0) {
           this.isLoader = true;
-          this.selectedCountries = this.countries[0].countryID;
-          this.getCountryPillarHistory();
+          this.selectedPrograms = this.programs[0].climateProgramID;
+          this.getProgramPillarHistory();
         }
       }
     });
   }
 
-  GetCountryHistory() {
-    this.analystService.getCountryHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
+  GetProgramHistory() {
+    this.analystService.getProgramHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
       next: (res) => {
-        this.countryHistory = res.result;;
+        this.programHistory = res.result;;
         this.GetApexPieOptions();
       }
     });
   }
-  getCountryPillarHistory() {
-    if (this.userService?.userInfo?.userID == null || !this.selectedCountries || this.selectedCountries === '' || this.selectedCountries == null) {
+  getProgramPillarHistory() {
+    if (this.userService?.userInfo?.userID == null || !this.selectedPrograms || this.selectedPrograms === '' || this.selectedPrograms == null) {
       return;
     }
-    let request: UserCountryRequestDto = {
+    let request: UserProgramRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
-      countryID: this.selectedCountries,
+      climateProgramID: this.selectedPrograms,
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
     }
-    this.analystService.getCountryPillarHistory(request).subscribe({
+    this.analystService.getProgramPillarHistory(request).subscribe({
       next: (res) => {
         this.isLoader = false;
-        this.countryQuestionHistoryReponse = res.result;
-        if (this.countryQuestionHistoryReponse) {
+        this.programQuestionHistoryReponse = res.result;
+        if (this.programQuestionHistoryReponse) {
           this.buildPillarComparisonChart();
         }
       },
@@ -149,22 +149,22 @@ export class AnalystDashboardComponent implements OnInit {
       }
     });
   }
-  goToCountryAnalysis() {
-    // If countryID exists, pass it as a query parameter
+  goToProgramAnalysis() {
+    // If climateProgramID exists, pass it as a query parameter
     const queryParams: any = {};
-    if (this.selectedCountries > 0) {
-      queryParams.countryID = this.selectedCountries;
+    if (this.selectedPrograms > 0) {
+      queryParams.climateProgramID = this.selectedPrograms;
     }
 
-    this.router.navigate(["/analyst/ai/country-analysis"], { queryParams });
+    this.router.navigate(["/analyst/ai/program-analysis"], { queryParams });
   }
 
-  ExportCountryPillar() {
-    let country = this.countries?.find((x) => x.countryID == this.selectedCountries);
-    if (this.countryQuestionHistoryReponse?.pillars && country) {
-      var exportData = this.countryQuestionHistoryReponse?.pillars.map((x) => {
+  ExportProgramPillar() {
+    let program = this.programs?.find((x) => x.climateProgramID == this.selectedPrograms);
+    if (this.programQuestionHistoryReponse?.pillars && program) {
+      var exportData = this.programQuestionHistoryReponse?.pillars.map((x) => {
         return {
-          countryName: country?.countryName,
+          programName: program?.programName,
           PillarName: x.pillarName,
           AIScore: x.aiValue?.toFixed(2),
           EvaluationScore: x.evaluationValue?.toFixed(2)
@@ -172,17 +172,17 @@ export class AnalystDashboardComponent implements OnInit {
       });
       this.commonService.exportExcel(exportData);
     } else {
-      this.toaster.showWarning("Please select country to export the records");
+      this.toaster.showWarning("Please select program to export the records");
     }
   }
-  getCountryLineChartOptions(countriesHistory: GetCountriesSubmitionHistoryResponseDto[]) {
+  getProgramLineChartOptions(programsHistory: GetProgramsSubmitionHistoryResponseDto[]) {
 
     const evaluationColor = AHI_CHART.lineEvaluation;
     const aiColor = AHI_CHART.lineAi;
 
-    const categories = countriesHistory.map(x => x.countryName);
-    const evaluationSeries = countriesHistory.map(x => x.scoreProgress ?? 0);
-    const aiSeries = countriesHistory.map(x => x.aiScore ?? 0);
+    const categories = programsHistory.map(x => x.programName);
+    const evaluationSeries = programsHistory.map(x => x.scoreProgress ?? 0);
+    const aiSeries = programsHistory.map(x => x.aiScore ?? 0);
 
     let option: Partial<ApexChartOptions> = {
       series: [
@@ -216,12 +216,12 @@ export class AnalystDashboardComponent implements OnInit {
         enabled: true,
         offsetY: -8,
         formatter: (val: number, opts: any) => {
-          const d = countriesHistory[opts.dataPointIndex];
+          const d = programsHistory[opts.dataPointIndex];
           if (!d || val <= 0) return "";
 
-          const country = d.countryName;
+          const program = d.programName;
           const percent = val.toFixed(val >= 100 ? 0 : 1);
-          return `${country} ${percent}`;
+          return `${program} ${percent}`;
         },
         style: {
           fontSize: "11px",
@@ -261,13 +261,13 @@ export class AnalystDashboardComponent implements OnInit {
       tooltip: {
         theme: 'light',
         custom: ({ dataPointIndex }) => {
-          const d = countriesHistory[dataPointIndex];
+          const d = programsHistory[dataPointIndex];
           if (!d) return "";
 
           return `
           <div style="padding:14px 16px; min-width:220px; font-size:12px; font-family:Poppins,sans-serif; background:#fff; border-radius:12px; box-shadow:${AHI_CHART.tooltipShadow}; border-left:4px solid ${AHI_CHART.primary};">
             <div style="font-weight:700; margin-bottom:10px; color:${AHI_CHART.primary}; font-size:14px;">
-              ${d.countryName}
+              ${d.programName}
             </div>
             <div style="margin-bottom:8px; color:${AHI_CHART.textMuted};">
               Total Answered: <b style="color:${AHI_CHART.text}">${d.ansQuestion}</b>
@@ -295,13 +295,13 @@ export class AnalystDashboardComponent implements OnInit {
 
 
   GetApexPieOptions() {
-    const total = this.countryHistory?.totalCountry ?? 0;
-    const active = this.countryHistory?.activeCountry ?? 0;
-    const inprogress = this.countryHistory?.inprocessCountry ?? 0;
-    const complete = this.countryHistory?.compeleteCountry ?? 0;
+    const total = this.programHistory?.totalProgram ?? 0;
+    const active = this.programHistory?.activeProgram ?? 0;
+    const inprogress = this.programHistory?.inprocessProgram ?? 0;
+    const complete = this.programHistory?.compeleteProgram ?? 0;
 
-    const finalizeCountry = this.countryHistory?.finalizeCountry ?? 0;
-    const unFinalize = this.countryHistory?.unFinalize ?? 0;
+    const finalizeProgram = this.programHistory?.finalizeProgram ?? 0;
+    const unFinalize = this.programHistory?.unFinalize ?? 0;
 
     this.chartOptions = {
       series: [
@@ -309,7 +309,7 @@ export class AnalystDashboardComponent implements OnInit {
         (active / total) * 100,
         (inprogress / total) * 100,
         (complete / total) * 100,
-        (finalizeCountry / total) * 100,
+        (finalizeProgram / total) * 100,
         (unFinalize / total) * 100,
       ],
 
@@ -348,7 +348,7 @@ export class AnalystDashboardComponent implements OnInit {
             },
             total: {
               show: true,
-              label: "Total Country",
+              label: "Total Program",
               formatter: (value: any) => {
                 return `${total}`;
               },
@@ -394,7 +394,7 @@ export class AnalystDashboardComponent implements OnInit {
 
 
   buildPillarComparisonChart() {
-    const data = [...(this.countryQuestionHistoryReponse?.pillars ?? [])];
+    const data = [...(this.programQuestionHistoryReponse?.pillars ?? [])];
 
     const categories = this.buildUniqueCategories(data);
     const aiSeries = data.map(x => x.aiValue);
@@ -550,14 +550,14 @@ export class AnalystDashboardComponent implements OnInit {
             avgScore >= 50 ? '📈' :
               avgScore >= 25 ? '⚡' : '🌱';
 
-          return `
+          let tooltip = `
           <div style="
             padding: 18px 20px;
             min-width: 300px;
             background: #ffffff;
             border-radius: 14px;
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            border-left: 4px solid ${AHI_CHART.primary};
+            // border-left: 4px solid ${AHI_CHART.primary};
             font-family: 'Poppins', system-ui, sans-serif;
             position: relative;
             overflow: hidden;
@@ -767,9 +767,9 @@ export class AnalystDashboardComponent implements OnInit {
             }
           </style>
         `;
+        return tooltip;
         }
       },
-
       legend: {
         show: false
       }

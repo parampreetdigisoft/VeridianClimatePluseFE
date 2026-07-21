@@ -9,8 +9,8 @@ import {
 import { AdminService } from "../../admin.service";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
-import { CountryVM } from "src/app/core/models/CountryVM";
-import { CountryHistoryDto, UserCountryRequestDto } from "../../../../core/models/countryHistoryDto";
+import { ProgramVM } from "src/app/core/models/ProgramVM";
+import { ProgramHistoryDto, UserProgramRequestDto } from "../../../../core/models/ProgramHistoryDto";
 import { CommonService } from "src/app/core/services/common.service";
 import { Router } from "@angular/router";
 import {
@@ -26,7 +26,7 @@ import {
   ApexYAxis,
   ApexStates,
 } from "ng-apexcharts";
-import { AiCountryPillarDashboardResponseDto } from "src/app/core/models/AiCountryPillarDashboardResponseDto";
+import { AiProgramPillarDashboardResponseDto } from "src/app/core/models/AiProgramPillarDashboardResponseDto";
 import { AHI_CHART, ahiScoreColor, AHI_AXIS_STYLE } from "src/app/core/constants/ahi-chart-theme";
 
 export type ChartOptions = {
@@ -61,12 +61,13 @@ export type PillarChartOptions = {
   styleUrl: "./admin-dashboard.component.css",
   encapsulation: ViewEncapsulation.None,
 })
+
 export class AdminDashboardComponent implements OnInit, AfterViewInit {
   selectedYear = new Date().getFullYear();
-  countries: CountryVM[] | null = [];
-  selectedCountries: number | any = "";
-  countryHistory: CountryHistoryDto | null = null;
-  countryQuestionHistoryResponse: AiCountryPillarDashboardResponseDto | null = null;
+  programs: ProgramVM[] | null = [];
+  selectedPrograms: number | any = "";
+  programHistory: ProgramHistoryDto | null = null;
+  programQuestionHistoryResponse: AiProgramPillarDashboardResponseDto | null = null;
   isLoader: boolean = false;
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
@@ -83,66 +84,66 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.isLoader = true;
-    this.getAllCountriesByUserId();
-    this.GetCountryHistory();
+    this.getAllProgramsByUserId();
+    this.GetProgramHistory();
   }
 
   ngAfterViewInit() { }
 
-  getAllCountriesByUserId() {
+  getAllProgramsByUserId() {
     this.adminService
-      .getAllCountriesByUserId(this.userService?.userInfo?.userID)
+      .getAllProgramsByUserId(this.userService?.userInfo?.userID)
       .subscribe({
         next: (res) => {
-          this.countries = res.result;
+          this.programs = res.result;
           this.isLoader = false;
-          if (this.countries && this.countries.length > 0) {
+          if (this.programs && this.programs.length > 0) {
             this.isLoader = true;
-            this.selectedCountries = this.countries[0].countryID;
-            this.getCountryPillarHistory();
+            this.selectedPrograms = this.programs[0].climateProgramID;
+            this.getProgramPillarHistory();
           }
         },
       });
   }
 
   yearChanged() {
-    this.getCountryPillarHistory();
-    this.GetCountryHistory();
+    this.getProgramPillarHistory();
+    this.GetProgramHistory();
   }
 
-  GetCountryHistory() {
+  GetProgramHistory() {
     this.adminService
-      .getCountryHistory(
+      .getProgramHistory(
         this.userService?.userInfo?.userID ?? 0,
         this.commonService.getStartOfYearLocal(this.selectedYear)
       )
       .subscribe({
         next: (res) => {
-          this.countryHistory = res.result;
+          this.programHistory = res.result;
           this.GetApexPieOptions();
         },
       });
   }
 
-  getCountryPillarHistory() {
+  getProgramPillarHistory() {
     if (
       this.userService?.userInfo?.userID == null ||
-      !this.selectedCountries ||
-      this.selectedCountries === "" ||
-      this.selectedCountries == null
+      !this.selectedPrograms ||
+      this.selectedPrograms === "" ||
+      this.selectedPrograms == null
     ) {
       return;
     }
-    let request: UserCountryRequestDto = {
+    let request: UserProgramRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
-      countryID: this.selectedCountries,
+      climateProgramID: this.selectedPrograms,
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
     };
-    this.adminService.getCountryPillarHistory(request).subscribe({
+    this.adminService.getProgramPillarHistory(request).subscribe({
       next: (res) => {
         this.isLoader = false;
-        this.countryQuestionHistoryResponse = res.result;
-        if (this.countryQuestionHistoryResponse) {
+        this.programQuestionHistoryResponse = res.result;
+        if (this.programQuestionHistoryResponse) {
           this.buildPillarComparisonChart();
         }
       },
@@ -151,22 +152,22 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       },
     });
   }
-  goToCountryAnalysis() {
-    // If countryID exists, pass it as a query parameter
+  goToProgramAnalysis() {
+    // If climateProgramID exists, pass it as a query parameter
     const queryParams: any = {};
-    if (this.selectedCountries > 0) {
-      queryParams.countryID = this.selectedCountries;
+    if (this.selectedPrograms > 0) {
+      queryParams.climateProgramID = this.selectedPrograms;
     }
 
-    this.router.navigate(["/admin/ai/country-analysis"], { queryParams });
+    this.router.navigate(["/admin/ai/program-analysis"], { queryParams });
   }
 
-  ExportCountryPillar() {
-    let country = this.countries?.find((x) => x.countryID == this.selectedCountries);
-    if (this.countryQuestionHistoryResponse?.pillars && country) {
-      var exportData = this.countryQuestionHistoryResponse?.pillars.map((x) => {
+  ExportProgramPillar() {
+    let program = this.programs?.find((x) => x.climateProgramID == this.selectedPrograms);
+    if (this.programQuestionHistoryResponse?.pillars && program) {
+      var exportData = this.programQuestionHistoryResponse?.pillars.map((x) => {
         return {
-          countryName: country?.countryName,
+          programName: program?.programName,
           PillarName: x.pillarName,
           AIScore: x.aiValue?.toFixed(2),
           EvaluationScore: x.evaluationValue?.toFixed(2)
@@ -174,17 +175,17 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       });
       this.commonService.exportExcel(exportData);
     } else {
-      this.toaster.showWarning("Please select country to export the records");
+      this.toaster.showWarning("Please select program to export the records");
     }
   }
   GetApexPieOptions() {
-    const total = this.countryHistory?.totalCountry ?? 0;
-    const active = this.countryHistory?.activeCountry?? 0;
-    const inprogress = this.countryHistory?.inprocessCountry ?? 0;
-    const complete = this.countryHistory?.compeleteCountry ?? 0;
+    const total = this.programHistory?.totalProgram ?? 0;
+    const active = this.programHistory?.activeProgram?? 0;
+    const inprogress = this.programHistory?.inprocessProgram ?? 0;
+    const complete = this.programHistory?.compeleteProgram ?? 0;
 
-    const finalizeCountry = this.countryHistory?.finalizeCountry ?? 0;
-    const unFinalize = this.countryHistory?.unFinalize ?? 0;
+    const finalizeProgram = this.programHistory?.finalizeProgram ?? 0;
+    const unFinalize = this.programHistory?.unFinalize ?? 0;
 
     this.chartOptions = {
       series: [
@@ -192,7 +193,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
         (active / total) * 100,
         (inprogress / total) * 100,
         (complete / total) * 100,
-        (finalizeCountry / total) * 100,
+        (finalizeProgram / total) * 100,
         (unFinalize / total) * 100,
       ],
 
@@ -231,7 +232,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
             },
             total: {
               show: true,
-              label: "Total Country",
+              label: "Total Program",
               formatter: (value: any) => {
                 return `${total}`;
               },
@@ -276,7 +277,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
 
   buildPillarComparisonChart() {
-    const data = [...(this.countryQuestionHistoryResponse?.pillars ?? [])];
+    const data = [...(this.programQuestionHistoryResponse?.pillars ?? [])];
 
     const categories = this.buildUniqueCategories(data);
     const aiSeries = data.map(x => x.aiValue);

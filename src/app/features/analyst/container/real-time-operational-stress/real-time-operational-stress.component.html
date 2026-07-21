@@ -18,14 +18,14 @@
 
     <div class="filters_panel">
       <div class="compare_select input_field input_flex">
-        <label><i class="bi bi-globe2"></i> Select Country *</label>
+        <label><i class="bi bi-globe2"></i> Select Program *</label>
         <div class="filter_select_shell">
-          <ng-select [items]="countries" [searchable]="true" [placeholder]="selectedCountryID ? '' : 'Select Country'"
-            [(ngModel)]="selectedCountryID" (change)="onCountryChanged()" bindValue="countryID" bindLabel="countryName"
+          <ng-select [items]="programs" [searchable]="true" [placeholder]="selectedclimateProgramID ? '' : 'Select Program'"
+            [(ngModel)]="selectedclimateProgramID" (change)="onProgramChanged()" bindValue="climateProgramID" bindLabel="programName"
             class="form-control analyst_multi_select">
             <ng-template ng-option-tmp let-item="item">
               <i class="bi bi-geo-alt-fill filter_option_icon"></i>
-              {{ item.countryName }}, {{ item.continent }}
+              {{ item.programName }}, {{ item.continent }}
             </ng-template>
           </ng-select>
         </div>
@@ -42,7 +42,7 @@
         </div>
         <div class="pem_hero_content">
           <span class="pem_hero_label">{{ dashboard.modeName }}</span>
-          <h3>{{ getCountryName() }}</h3>
+          <h3>{{ getProgramName() }}</h3>
           <p *ngIf="dashboard.description">{{ dashboard.description }}</p>
           <p *ngIf="hasScore(getAverageScore(dashboard)); else noAvgHero">
             Average score {{ formatScore(getAverageScore(dashboard)) }}/100 ·
@@ -71,7 +71,7 @@
       <div class="live_banner" *ngIf="activeTab === 'warning'">
         <div class="live_pulse"></div>
         <i class="bi bi-broadcast radar_icon"></i>
-        <span>Live monitoring · {{ getCountryName() }} </span>
+        <span>Live monitoring · {{ getProgramName() }} </span>
       </div>
 
       <div class="section_header">
@@ -196,7 +196,7 @@
           <h4><i class="bi bi-binoculars"></i> Outlook</h4>
           <p>{{ line }}</p>
           <div class="predictive_meta">
-            <span>{{ getCountryName() }}</span>
+            <span>{{ getProgramName() }}</span>
           </div>
         </div>
       </div>

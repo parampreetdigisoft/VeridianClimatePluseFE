@@ -227,8 +227,9 @@
 }
 
 .vui_logo img {
-  width: 240px;
+  width: 100%;
   max-width: 100%;
+  height: 167px;
   transition: transform 0.3s ease;
 }
 
@@ -238,7 +239,7 @@
 
 .vui_logo > a {
   display: table;
-  margin: 0 auto 32px;
+  margin: 0 auto 10px;
 }
 
 .vui_before_signup .vui_logo > a {

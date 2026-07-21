@@ -48,8 +48,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   get isEvaluator(): boolean {
     return this.userRole() === 'evaluator';
   }
-  get isCountryUser(): boolean {
-    return this.userRole() === 'countryuser';
+  get isProgramUser(): boolean {
+    return this.userRole() === 'programuser';
   }
 
   logout() {

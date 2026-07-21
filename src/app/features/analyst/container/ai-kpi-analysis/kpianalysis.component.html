@@ -8,7 +8,7 @@
         <div class="compare_select input_field input_flex">
           <select
             [(ngModel)]="selectedYear"
-            (change)="getAICountryPillars()"
+            (change)="getAIProgramPillars()"
             name="selectedYear"
             class="form-control"
           >
@@ -20,21 +20,21 @@
             </option>
           </select>
           <ng-select
-            [items]="countries"
+            [items]="programs"
             [searchable]="true"
-            [placeholder]="selectedCountry == 0 ? 'Select Countries' : ''"
-            [(ngModel)]="selectedCountry"
-            (change)="getAICountryPillars()"
-            bindValue="countryID"
-            bindLabel="countryName"
+            [placeholder]="selectedProgram == 0 ? 'Select Programs' : ''"
+            [(ngModel)]="selectedProgram"
+            (change)="getAIProgramPillars()"
+            bindValue="climateProgramID"
+            bindLabel="programName"
             class="form-control analyst_multi_select"
           >
             <ng-template ng-label-tmp let-item="item" class="select_item">
-              {{ item.countryName }}
+              {{ item.programName }}
             </ng-template>
 
             <ng-template ng-option-tmp let-item="item">
-              {{ item.countryName }}, {{ item.continent }} ({{
+              {{ item.programName }}, {{ item.continent }} ({{
                 item.score?.toFixed(1) || "NA"
               }})
             </ng-template>
@@ -42,7 +42,7 @@
           <a
             style="cursor: pointer"
             [matTooltip]="'Refresh..'"
-            (click)="getAICountryPillars(); $event.preventDefault()"
+            (click)="getAIProgramPillars(); $event.preventDefault()"
           >
             <span style="display: inline-block">
               <svg
@@ -94,7 +94,7 @@
     ></apx-chart>
   </div>
   <div
-    *ngIf="aiCountryPillarResponseDto?.pillars?.length"
+    *ngIf="aiProgramPillarResponseDto?.pillars?.length"
     class="table_outer table-responsive"
   >
     <table class="table table-striped table-bordered table-hover compare_table">
@@ -112,7 +112,7 @@
 
       <tbody>
         <tr
-          *ngFor="let piller of aiCountryPillarResponseDto?.pillars; let i = index"
+          *ngFor="let piller of aiProgramPillarResponseDto?.pillars; let i = index"
           [matTooltip]="
             piller.isAccess ? '' : 'Upgrade your plan to access this feature.'
           "
@@ -327,7 +327,7 @@
   >
     <div class="offcanvas-body">
       <app-view-ai-pillar-details
-        [pillar]="selectedAiCountryPillar"
+        [pillar]="selectedAiProgramPillar"
         [aiTrustLevels]="aiTrustLevels"
       ></app-view-ai-pillar-details>
     </div>
@@ -349,7 +349,7 @@
   >
     <app-regenerate-ai-score-and-add-viewer
       [importPillar]="true"
-      [country]="getSelectedCountry()"
+      [program]="getSelectedProgram()"
       [loading]="loading"
       (regenerate)="regenerateAiSearch($event)"
       (closeModal)="closeModal()"

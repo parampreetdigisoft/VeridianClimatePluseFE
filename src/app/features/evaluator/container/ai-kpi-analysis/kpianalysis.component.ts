@@ -17,9 +17,9 @@ import {
   ApexDataLabels
 } from 'ng-apexcharts';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AiCountryPillarResponseDto, AiCountryPillarVM } from 'src/app/core/models/aiVm/AiCountryPillarResponseDto';
-import { CountryVM } from 'src/app/core/models/CountryVM';
-import { ChartTableRowDto } from 'src/app/core/models/CompareCountryResponseDto';
+import { AiProgramPillarResponseDto, AiProgramPillarVM } from 'src/app/core/models/aiVm/AiProgramPillarResponseDto';
+import { ProgramVM } from 'src/app/core/models/ProgramVM';
+import { ChartTableRowDto } from 'src/app/core/models/CompareProgramResponseDto';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
@@ -31,7 +31,7 @@ import { ViewAiPillarDetailsComponent } from '../../../../shared/standAlone/view
 import { UserService } from 'src/app/core/services/user.service';
 import { EvaluatorService } from '../../evaluator.service';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
-import { AiCountrySummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestPdfDto';
+import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestPdfDto';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -59,12 +59,12 @@ export class KPIAnalysisComponent implements OnInit {
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
   pillers: PillarsVM[] = [];
-  selectedCountry?: number;
-  countries: CountryVM[] | null = [];
+  selectedProgram?: number;
+  programs: ProgramVM[] | null = [];
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions> = {};
-  aiCountryPillarResponseDto: AiCountryPillarResponseDto | null = null;
-  selectedAiCountryPillar: AiCountryPillarVM | null = null;
+  aiProgramPillarResponseDto: AiProgramPillarResponseDto | null = null;
+  selectedAiProgramPillar: AiProgramPillarVM | null = null;
   isLoader: boolean = false;
   chartTableData: ChartTableRowDto[] = [];
   selectedIndex: number = -1;
@@ -82,12 +82,12 @@ export class KPIAnalysisComponent implements OnInit {
   ngOnInit(): void {
     this.isLoader = true;
     this.route.queryParams.subscribe(params => {
-      let cid = +params['countryID'] || null;
+      let cid = +params['climateProgramID'] || null;
       if (cid) {
-        this.selectedCountry = Number(cid);
+        this.selectedProgram = Number(cid);
       }
     });
-    this.getAiAccessCountry();
+    this.getAiAccessProgram();
     this.getAITrustLevels();
   }
   getAITrustLevels() {
@@ -95,14 +95,14 @@ export class KPIAnalysisComponent implements OnInit {
       this.aiTrustLevels = p.result || [];
     });
   }
-  getAiAccessCountry() {
-    this.evaluatorService.getAiAccessCountry(this.userService.userInfo?.userID ?? 0).subscribe({
+  getAiAccessProgram() {
+    this.evaluatorService.getAiAccessProgram(this.userService.userInfo?.userID ?? 0).subscribe({
       next: (p) => {
 
-        this.countries = p.result || [];
-        if (this.countries?.length && !this.selectedCountry) {
-          this.selectedCountry = this.countries[0].countryID;
-          this.getAICountryPillars();
+        this.programs = p.result || [];
+        if (this.programs?.length && !this.selectedProgram) {
+          this.selectedProgram = this.programs[0].climateProgramID;
+          this.getAIProgramPillars();
         }
         else {
           this.toaster.showWarning("You don't have access of AI data");
@@ -110,31 +110,31 @@ export class KPIAnalysisComponent implements OnInit {
       },
       error: () => {
         this.toaster.showError("There is an error please Try again");
-        this.getAICountryPillars();
+        this.getAIProgramPillars();
       }
     });
   }
 
-  getAICountryPillars() {
-    if (!this.selectedCountry) {
-      this.toaster.showWarning("Please select at least one country to view data.");
+  getAIProgramPillars() {
+    if (!this.selectedProgram) {
+      this.toaster.showWarning("Please select at least one program to view data.");
       return;
     }
     this.isLoader = true;
-    let payload: AiCountrySummeryRequestPdfDto = {
-      countryID: this.selectedCountry,
+    let payload: AiProgramSummeryRequestPdfDto = {
+      climateProgramID: this.selectedProgram,
       year: this.selectedYear
     }
-    this.aiComputationService.getAICountryPillars(payload).subscribe({
+    this.aiComputationService.getAIProgramPillars(payload).subscribe({
       next: (res) => {
         this.isLoader = false;
         if (res.succeeded && res.result != null) {
-          this.aiCountryPillarResponseDto = res.result;
+          this.aiProgramPillarResponseDto = res.result;
 
           this.buildPillarComparisonChart();
         }
         else {
-          this.toaster.showInfo("No comparison data available for the selected countries.");
+          this.toaster.showInfo("No comparison data available for the selected programs.");
         }
       },
       error: (err) => {
@@ -151,7 +151,7 @@ export class KPIAnalysisComponent implements OnInit {
     };
 
     // 1️⃣ Reorder: accessible first, locked last
-    const data = [...(this.aiCountryPillarResponseDto?.pillars ?? [])].sort(
+    const data = [...(this.aiProgramPillarResponseDto?.pillars ?? [])].sort(
       (a, b) => Number(b.isAccess) - Number(a.isAccess)
     );
 
@@ -383,24 +383,24 @@ export class KPIAnalysisComponent implements OnInit {
     (event.target as HTMLImageElement).src = 'assets/images/Frame 1321315029.png';
   }
 
-  viewDetails(pillar: AiCountryPillarVM) {
-    this.selectedAiCountryPillar = pillar;
+  viewDetails(pillar: AiProgramPillarVM) {
+    this.selectedAiProgramPillar = pillar;
     const sidebarEl = document.getElementById('kpiLayerSidebar');
     const offcanvas = new bootstrap.Offcanvas(sidebarEl);
 
     // Clear selection when sidebar closes
     sidebarEl?.addEventListener('hidden.bs.offcanvas', () => {
-      this.selectedAiCountryPillar = null;
+      this.selectedAiProgramPillar = null;
       this.cdr.detectChanges();
     }, { once: true });
 
     offcanvas.show();
   }
 
-  viewQuestions(pillar: AiCountryPillarVM) {
+  viewQuestions(pillar: AiProgramPillarVM) {
     this.router.navigate(['/evaluator/ai/questions-analysis'], {
       queryParams: {
-        countryID: this.selectedCountry,
+        climateProgramID: this.selectedProgram,
         pillarID: pillar.pillarID,
         year: this.selectedYear
       }
@@ -436,13 +436,13 @@ export class KPIAnalysisComponent implements OnInit {
       return label;
     });
   }
-  aiPillarDetailsReport(country: AiCountryPillarVM, selectedIndex: number) {
+  aiPillarDetailsReport(program: AiProgramPillarVM, selectedIndex: number) {
     if (this.selectedIndex != -1) return;
     this.selectedIndex = selectedIndex;
-    let payload: AiCountrySummeryRequestPdfDto = {
-      countryID: country.countryID,
+    let payload: AiProgramSummeryRequestPdfDto = {
+      climateProgramID: program.climateProgramID,
       year: this.selectedYear,
-      pillarID: country.pillarID
+      pillarID: program.pillarID
     }
     this.aiComputationService.aiPillarDetailsReport(payload).subscribe({
       next: (blob) => {
@@ -452,7 +452,7 @@ export class KPIAnalysisComponent implements OnInit {
           const url = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
-          link.download = `${country.pillarName}_Details_${new Date().toISOString().split('T')[0]}.pdf`;
+          link.download = `${program.pillarName}_Details_${new Date().toISOString().split('T')[0]}.pdf`;
 
           // Trigger download
           document.body.appendChild(link);

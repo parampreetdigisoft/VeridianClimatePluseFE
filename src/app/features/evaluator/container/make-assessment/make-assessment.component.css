@@ -114,7 +114,7 @@
     font-weight: 500;
     line-height: 20px;
 }
-.faqtextarea textarea, .faq_main_item_inner .faq_select {
+.faqtextarea textarea {
     color: #7A7A7A;
     font-size: 12px !important;
     font-style: normal;
@@ -123,6 +123,104 @@
     padding: 10px;
     outline: none;
     box-shadow: none;
+}
+
+.assessment_select {
+    width: 100%;
+    color: #3e3e3e;
+    font-size: 13px;
+}
+
+.assessment_select_label {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.assessment_option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+}
+
+.assessment_option_score {
+    flex: 0 0 auto;
+    min-width: 28px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: #e9f5f1;
+    color: #304a43;
+    font-weight: 600;
+    text-align: center;
+}
+
+.assessment_option_text {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* Keep the menu attached to the control so it moves with the question scroller. */
+:host ::ng-deep .assessment_select .ng-select-container {
+    min-height: 42px;
+    border: 1px solid #d7d7d7;
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+:host ::ng-deep .assessment_select.ng-select-focused:not(.ng-select-opened) > .ng-select-container,
+:host ::ng-deep .assessment_select.ng-select-opened > .ng-select-container {
+    border-color: #7ac2ae;
+    box-shadow: 0 0 0 3px rgba(122, 194, 174, 0.16);
+}
+
+:host ::ng-deep .assessment_select .ng-value-container {
+    min-width: 0;
+    padding: 0 10px;
+}
+
+:host ::ng-deep .assessment_select .ng-value {
+    max-width: 100%;
+}
+
+:host ::ng-deep .assessment_select .ng-placeholder {
+    color: #7a7a7a;
+}
+
+:host ::ng-deep .assessment_select .ng-dropdown-panel {
+    z-index: 30;
+    overflow: hidden;
+    border: 1px solid #d8e4e0;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(15, 14, 23, 0.16);
+}
+
+:host ::ng-deep .assessment_select .ng-dropdown-panel .ng-dropdown-panel-items {
+    max-height: min(320px, 40vh);
+}
+
+:host ::ng-deep .assessment_select .ng-dropdown-panel .ng-option {
+    padding: 10px 12px;
+    border-bottom: 1px solid #edf1f0;
+    color: #3e3e3e;
+    line-height: 1.45;
+    white-space: normal;
+}
+
+:host ::ng-deep .assessment_select .ng-dropdown-panel .ng-option:last-child {
+    border-bottom: 0;
+}
+
+:host ::ng-deep .assessment_select .ng-dropdown-panel .ng-option.ng-option-marked {
+    background: #f0f8f6;
+}
+
+:host ::ng-deep .assessment_select .ng-dropdown-panel .ng-option.ng-option-selected {
+    background: #e4f2ee;
+    color: #0f0e17;
 }
 .next_btn .common_button {
     width: fit-content;
