@@ -25,15 +25,17 @@ export interface AiProgramPillarVM {
   temporalScope?: string | null;
   distortionScreening?: string | null;
   relationalIntegrity?: string | null;
-  stressPoliticalShock?: string | null;
-  stressEconomicShock?: string | null;
-  stressNarrativeShock?: string | null;
+
+  stressGeopoliticalShock?: string | null;
+  stressFinanceShock?: string | null;
+  stressLegitimacyShock?: string | null;
   stressOverallResilience?: string | null;
   stressScoreAdjustment?: string | null;
-  inequalityAdjustment?: string | null;
+
+  inclusionEquityAdjustment?: string | null;
   opacityRisk?: string | null;
   nonCompensationNote?: string | null;
-  geographicEquityNote?: string | null;
+  inclusionAccessNote?: string | null;
   institutionalAssessment?: string | null;
   dataGapAnalysis?: string | null;
   redFlag?: string | null;

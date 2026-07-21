@@ -16,21 +16,24 @@ export interface AiProgramSummeryDto {
   perceptionEvidence: string | null;
   temporalScope: string | null;
   distortionScreening: string | null;
-  politicalShock: string | null;
-  economicShock: string | null;
-  narrativeShock: string | null;
+
+  geopoliticalShock: string | null;
+  financeShock: string | null;
+  legitimacyShock: string | null;
+
   overallStressResilience: string | null;
   stressScoreAdjustment: string | null;
-  inequalityAdjustment: string | null;
+  inclusionEquityAdjustment: string | null;
   opacityRisk: string | null;
   nonCompensationNote: string | null;
   crossPillarPatterns: string | null;
   relationalIntegrity: string | null;
   institutionalCapacity: string | null;
   equityAssessment: string | null;
-  conflictRiskOutlook: string | null;
+  governanceTrajectory: string | null;
+
   strategicRecommendation: string | null;
-  dataTransparencyNote: string | null;
+  assessmentValueNote: string | null;
   primarySource: string | null;
   keyDevelopments: string | null;
   criticalRisks: string | null;

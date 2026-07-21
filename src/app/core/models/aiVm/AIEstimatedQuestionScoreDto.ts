@@ -20,11 +20,11 @@ export interface AIEstimatedQuestionScoreDto {
   distortionScreening: string | null;
   relationalDependencies: string | null;
   // Stress Tests
-  stressPoliticalShock: string | null;
-  stressEconomicShock: string | null;
-  stressNarrativeShock: string | null;
+  stressGeopoliticalShock: string | null;
+  stressFinanceShock: string | null;
+  stressLegitimacyShock: string | null;
   stressOverallResilienceShock: string | null;
-  inequalityAdjustment: string | null; // ✅ renamed
+  inclusionEquityAdjustment: string | null; // ✅ renamed
   opacityRisk: string | null;
   redFlag: string | null; // ✅ renamed
   // Source Metadata

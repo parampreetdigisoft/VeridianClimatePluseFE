@@ -100,11 +100,11 @@
       </div>
 
       <div class="cross-pillar">
-        <h5>Inequality Adjustment</h5>
+        <h5>Inclusion & Equity Adjustment</h5>
         &nbsp;
-        <div *ngIf="question?.inequalityAdjustment">
+        <div *ngIf="question?.inclusionEquityAdjustment">
           <app-typing-text
-            [text]="question?.inequalityAdjustment ?? ''"
+            [text]="question?.inclusionEquityAdjustment ?? ''"
             [speed]="10"
             [numberOfWordAfterHideText]="10"
           >
@@ -196,11 +196,11 @@
         </div>
       </div>
       <div class="cross-pillar">
-        <h5>Political Shock</h5>
+        <h5>Geopolitical Shock</h5>
         &nbsp;
-        <div *ngIf="question?.stressPoliticalShock">
+        <div *ngIf="question?.stressGeopoliticalShock">
           <app-typing-text
-            [text]="question?.stressPoliticalShock ?? ''"
+            [text]="question?.stressGeopoliticalShock ?? ''"
             [speed]="10"
             [numberOfWordAfterHideText]="20"
           >
@@ -208,11 +208,11 @@
         </div>
       </div>
       <div class="cross-pillar">
-        <h5>Economic Shock</h5>
+        <h5>Finance Shock</h5>
         &nbsp;
-        <div *ngIf="question?.stressEconomicShock">
+        <div *ngIf="question?.stressFinanceShock">
           <app-typing-text
-            [text]="question?.stressEconomicShock ?? ''"
+            [text]="question?.stressFinanceShock ?? ''"
             [speed]="10"
             [numberOfWordAfterHideText]="20"
           >
@@ -220,11 +220,11 @@
         </div>
       </div>
       <div class="cross-pillar">
-        <h5>Narrative Shock</h5>
+        <h5>Legitimacy Shock</h5>
         &nbsp;
-        <div *ngIf="question?.stressNarrativeShock">
+        <div *ngIf="question?.stressLegitimacyShock">
           <app-typing-text
-            [text]="question?.stressNarrativeShock ?? ''"
+            [text]="question?.stressLegitimacyShock ?? ''"
             [speed]="10"
             [numberOfWordAfterHideText]="20"
           >
