@@ -17,7 +17,7 @@ import {
 } from "ng-apexcharts";
 import { AiProgramPillarDashboardResponseDto } from 'src/app/core/models/AiProgramPillarDashboardResponseDto';
 import { Router } from '@angular/router';
-import { AHI_CHART, ahiScoreColor, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
+import { VCP_CHART, ahiScoreColor, VCP_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -176,8 +176,8 @@ export class AnalystDashboardComponent implements OnInit {
   }
   getProgramLineChartOptions(programsHistory: GetProgramsSubmitionHistoryResponseDto[]) {
 
-    const evaluationColor = AHI_CHART.lineEvaluation;
-    const aiColor = AHI_CHART.lineAi;
+    const evaluationColor = VCP_CHART.lineEvaluation;
+    const aiColor = VCP_CHART.lineAi;
 
     const categories = programsHistory.map(x => x.programName);
     const evaluationSeries = programsHistory.map(x => x.scoreProgress ?? 0);
@@ -232,7 +232,7 @@ export class AnalystDashboardComponent implements OnInit {
           borderRadius: 5,
           padding: 6,
           borderWidth: 1,
-          borderColor: AHI_CHART.border,
+          borderColor: VCP_CHART.border,
           opacity: 0.95
         }
       },
@@ -264,24 +264,24 @@ export class AnalystDashboardComponent implements OnInit {
           if (!d) return "";
 
           return `
-          <div style="padding:14px 16px; min-width:220px; font-size:12px; font-family:Poppins,sans-serif; background:#fff; border-radius:12px; box-shadow:${AHI_CHART.tooltipShadow}; border-left:4px solid ${AHI_CHART.primary};">
-            <div style="font-weight:700; margin-bottom:10px; color:${AHI_CHART.primary}; font-size:14px;">
+          <div style="padding:14px 16px; min-width:220px; font-size:12px; font-family:Poppins,sans-serif; background:#fff; border-radius:12px; box-shadow:${VCP_CHART.tooltipShadow}; border-left:4px solid ${VCP_CHART.primary};">
+            <div style="font-weight:700; margin-bottom:10px; color:${VCP_CHART.primary}; font-size:14px;">
               ${d.programName}
             </div>
-            <div style="margin-bottom:8px; color:${AHI_CHART.textMuted};">
-              Total Answered: <b style="color:${AHI_CHART.text}">${d.ansQuestion}</b>
+            <div style="margin-bottom:8px; color:${VCP_CHART.textMuted};">
+              Total Answered: <b style="color:${VCP_CHART.text}">${d.ansQuestion}</b>
             </div>
 
             <div style="display:flex; align-items:center; gap:8px; margin:6px 0; padding:6px 8px; background:rgba(0,109,119,0.06); border-radius:8px;">
               <span style="width:10px; height:10px; background:${evaluationColor}; border-radius:50%; box-shadow:0 0 0 2px ${evaluationColor}33;"></span>
-              <span style="color:${AHI_CHART.textMuted}">Evaluation:</span>
-              <b style="margin-left:auto; color:${AHI_CHART.text}">${(d.scoreProgress ?? 0).toFixed(1)}</b>
+              <span style="color:${VCP_CHART.textMuted}">Evaluation:</span>
+              <b style="margin-left:auto; color:${VCP_CHART.text}">${(d.scoreProgress ?? 0).toFixed(1)}</b>
             </div>
 
             <div style="display:flex; align-items:center; gap:8px; margin:6px 0; padding:6px 8px; background:rgba(168,224,99,0.12); border-radius:8px;">
               <span style="width:10px; height:10px; background:${aiColor}; border-radius:50%; box-shadow:0 0 0 2px ${aiColor}44;"></span>
-              <span style="color:${AHI_CHART.textMuted}">AI Score:</span>
-              <b style="margin-left:auto; color:${AHI_CHART.text}">${(d.aiScore ?? 0).toFixed(1)}</b>
+              <span style="color:${VCP_CHART.textMuted}">AI Score:</span>
+              <b style="margin-left:auto; color:${VCP_CHART.text}">${(d.aiScore ?? 0).toFixed(1)}</b>
             </div>
           </div>
         `;
@@ -328,7 +328,7 @@ export class AnalystDashboardComponent implements OnInit {
           hollow: {
             margin: 0,
             size: "40%",
-            background: AHI_CHART.hollow,
+            background: VCP_CHART.hollow,
             image: undefined,
             position: "front",
           },
@@ -355,7 +355,7 @@ export class AnalystDashboardComponent implements OnInit {
           },
         },
       },
-      colors: [...AHI_CHART.radialBar],
+      colors: [...VCP_CHART.radialBar],
       labels: [
         "Total",
         "Manual Active",
@@ -451,7 +451,7 @@ export class AnalystDashboardComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: [AHI_CHART.primary, AHI_CHART.secondary],
+        colors: [VCP_CHART.primary, VCP_CHART.secondary],
       },
 
       fill: {
@@ -464,7 +464,7 @@ export class AnalystDashboardComponent implements OnInit {
         }
       },
 
-      colors: [AHI_CHART.primary, AHI_CHART.secondary],
+      colors: [VCP_CHART.primary, VCP_CHART.secondary],
 
       markers: {
         size: data.map(p => 4),
@@ -520,7 +520,7 @@ export class AnalystDashboardComponent implements OnInit {
       },
 
       grid: {
-        ...AHI_AXIS_STYLE.grid,
+        ...VCP_AXIS_STYLE.grid,
         xaxis: {
           lines: { show: false }
         },
@@ -556,7 +556,7 @@ export class AnalystDashboardComponent implements OnInit {
             background: #ffffff;
             border-radius: 14px;
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            // border-left: 4px solid ${AHI_CHART.primary};
+            // border-left: 4px solid ${VCP_CHART.primary};
             font-family: 'Poppins', system-ui, sans-serif;
             position: relative;
             overflow: hidden;
@@ -586,7 +586,7 @@ export class AnalystDashboardComponent implements OnInit {
                   <div style="
                     font-weight: 700;
                     font-size: 16px;
-                    color: ${AHI_CHART.text};
+                    color: ${VCP_CHART.text};
                     margin-bottom: 6px;
                   ">
                     ${pillar.pillarName}
@@ -750,7 +750,7 @@ export class AnalystDashboardComponent implements OnInit {
                   <div style="
                     font-size: 13px;
                     font-weight: 700;
-                    color: ${AHI_CHART.text};
+                    color: ${VCP_CHART.text};
                   ">
                    ${avgScore.toFixed(0)}
                   </div>

@@ -14,7 +14,7 @@ import {
   ApexLegend,
   ChartComponent,
 } from "ng-apexcharts";
-import { AHI_CHART, ahiCompletionColor, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
+import { VCP_CHART, ahiCompletionColor, VCP_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
 
 
 export type ChartOptions = {
@@ -206,7 +206,7 @@ export class EvaluatorDashboardComponent {
           style: {
             fontSize: '14px',
             fontWeight: 700,
-            color: AHI_CHART.text
+            color: VCP_CHART.text
           },
           offsetY: 0
         },
@@ -214,19 +214,19 @@ export class EvaluatorDashboardComponent {
           style: {
             fontSize: '12px',
             fontWeight: 600,
-            colors: AHI_CHART.textMuted
+            colors: VCP_CHART.textMuted
           },
           formatter: (value: number) => `${value}`
         },
         axisBorder: {
           show: true,
-          color: AHI_CHART.border,
+          color: VCP_CHART.border,
           height: 1,
           offsetY: 0
         },
         axisTicks: {
           show: true,
-          color: AHI_CHART.grid,
+          color: VCP_CHART.grid,
           height: 5
         },
         min: 0,
@@ -242,7 +242,7 @@ export class EvaluatorDashboardComponent {
           style: {
             fontSize: '11px',
             fontWeight: 600,
-            colors: AHI_CHART.textMuted
+            colors: VCP_CHART.textMuted
           },
           offsetX: -50
         },
@@ -255,7 +255,7 @@ export class EvaluatorDashboardComponent {
       },
       grid: {
         show: true,
-        borderColor: AHI_CHART.grid,
+        borderColor: VCP_CHART.grid,
         strokeDashArray: 4,
         position: 'back',
         xaxis: {
@@ -300,7 +300,7 @@ export class EvaluatorDashboardComponent {
           const progressWidth = Math.min(completion, 100);
 
           return `
-          <div style="background: #ffffff; border-radius: 12px; box-shadow: ${AHI_CHART.tooltipShadow}; overflow: hidden; border: 2px solid ${barColor}55; font-family: Poppins, sans-serif;">
+          <div style="background: #ffffff; border-radius: 12px; box-shadow: ${VCP_CHART.tooltipShadow}; overflow: hidden; border: 2px solid ${barColor}55; font-family: Poppins, sans-serif;">
             
             <!-- Header Section with Full Pillar Name -->
             <div style="background: linear-gradient(135deg, ${barColor} 0%, ${barColor}cc 100%); padding: 16px 20px; position: relative; overflow: hidden; min-height: 60px;">
@@ -318,7 +318,7 @@ export class EvaluatorDashboardComponent {
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <div style="width: 8px; height: 8px; background: ${barColor}; border-radius: 50%; box-shadow: 0 0 8px ${barColor}80;"></div>
-                  <span style="color: ${AHI_CHART.textMuted}; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Score</span>
+                  <span style="color: ${VCP_CHART.textMuted}; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Score</span>
                 </div>
                 <span style="color: ${barColor}; font-weight: 900; font-size: 24px; line-height: 1; text-shadow: 0 1px 2px ${barColor}40;">
                   ${percentage}
@@ -327,16 +327,16 @@ export class EvaluatorDashboardComponent {
 
               <!-- Questions Answered -->
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 10px 12px; background: #f7fafc; border-left: 3px solid ${barColor}; border-radius: 6px;">
-                <span style="color: ${AHI_CHART.textMuted}; font-weight: 600; font-size: 12px;">Questions Answered</span>
-                <span style="color: ${AHI_CHART.text}; font-weight: 700; font-size: 15px;">
-                  ${meta.ansQuestion} <span style="color: ${AHI_CHART.border}; font-weight: 500;">/</span> ${meta.totalQuestion}
+                <span style="color: ${VCP_CHART.textMuted}; font-weight: 600; font-size: 12px;">Questions Answered</span>
+                <span style="color: ${VCP_CHART.text}; font-weight: 700; font-size: 15px;">
+                  ${meta.ansQuestion} <span style="color: ${VCP_CHART.border}; font-weight: 500;">/</span> ${meta.totalQuestion}
                 </span>
               </div>
 
               <!-- Completion Rate with Progress Bar -->
               <div style="margin-top: 14px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                  <span style="color: ${AHI_CHART.textMuted}; font-weight: 600; font-size: 12px;">Completion Rate</span>
+                  <span style="color: ${VCP_CHART.textMuted}; font-weight: 600; font-size: 12px;">Completion Rate</span>
                   <span style="color: ${completionColor}; font-weight: 800; font-size: 16px; text-shadow: 0 1px 2px ${completionColor}40;">
                     ${completion}%
                   </span>
@@ -493,7 +493,7 @@ export class EvaluatorDashboardComponent {
           hollow: {
             margin: 0,
             size: "40%",
-            background: AHI_CHART.hollow,
+            background: VCP_CHART.hollow,
             image: undefined,
             position: "front",
             // dropShadow: {
@@ -527,7 +527,7 @@ export class EvaluatorDashboardComponent {
           }
         }
       },
-      colors: [...AHI_CHART.radialBarShort],
+      colors: [...VCP_CHART.radialBarShort],
       labels: ["Total Program", "Active", "InProgress", "Completed"],
       legend: {
         show: true,

@@ -163,7 +163,7 @@
     margin: 0;
 }
 
-/* AHI ApexCharts — default tooltip polish */
+/* VCP ApexCharts — default tooltip polish */
 :host ::ng-deep .apexcharts-tooltip {
   background: #fff !important;
   border: 1px solid rgba(0, 109, 119, 0.14) !important;

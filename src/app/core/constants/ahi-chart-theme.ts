@@ -1,7 +1,7 @@
 /**
  * VCP (Veridian Climate Pulse System) chart palette — aligned with brand logo.
  */
-export const AHI_CHART = {
+export const VCP_CHART = {
   primary: '#006D77',
   primaryMid: '#00838f',
   primarySoft: '#7ec8cf',
@@ -79,41 +79,41 @@ export function ahiScoreColor(score: number | null | undefined): string {
   const safe = Math.min(Math.max(Number(score), 0), 100);
   const index = Math.min(
     Math.floor(safe / 10),
-    AHI_CHART.scoreScale.length - 1
+    VCP_CHART.scoreScale.length - 1
   );
-  return AHI_CHART.scoreScale[index];
+  return VCP_CHART.scoreScale[index];
 }
 
 export function ahiCompletionColor(rate: number): string {
-  if (rate >= 80) return AHI_CHART.completionHigh;
-  if (rate >= 50) return AHI_CHART.completionMid;
-  return AHI_CHART.completionLow;
+  if (rate >= 80) return VCP_CHART.completionHigh;
+  if (rate >= 50) return VCP_CHART.completionMid;
+  return VCP_CHART.completionLow;
 }
 
 /** Shared ApexCharts axis / grid styling */
-export const AHI_AXIS_STYLE = {
+export const VCP_AXIS_STYLE = {
   grid: {
-    borderColor: AHI_CHART.grid,
+    borderColor: VCP_CHART.grid,
     strokeDashArray: 4,
   },
   xaxisLabels: {
     style: {
       fontSize: '11px',
       fontWeight: 500,
-      colors: AHI_CHART.textMuted,
+      colors: VCP_CHART.textMuted,
     },
   },
   yaxisTitle: {
     style: {
       fontSize: '13px',
       fontWeight: 600,
-      color: AHI_CHART.text,
+      color: VCP_CHART.text,
     },
   },
   yaxisLabels: {
     style: {
       fontSize: '12px',
-      colors: AHI_CHART.textMuted,
+      colors: VCP_CHART.textMuted,
     },
   },
 };

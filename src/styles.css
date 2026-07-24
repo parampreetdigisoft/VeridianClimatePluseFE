@@ -11,8 +11,8 @@
 	--Secondary-Color: #A8E063;
 	--Hover-Primary-color: #4CAF50;
 	--Accent-Green: #4CAF50;
-	--AHI-Gradient: linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%);
-	--AHI-Gradient-Hover: linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%);
+	--VCP-Gradient: linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%);
+	--VCP-Gradient-Hover: linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%);
     --White-Color: #ffffff;
 	--Text-Color: #003d44;
 	--Border-Color: #E4E4E4;
@@ -85,7 +85,7 @@ img, svg
 
 .common_button{
     border-radius: 12px !important;
-    background: var(--AHI-Gradient);
+    background: var(--VCP-Gradient);
     padding: 9px 20px;
     text-align: center;
     border: none;
@@ -106,7 +106,7 @@ img, svg
 
 .common_button:hover
 {
-  background: var(--AHI-Gradient-Hover);
+  background: var(--VCP-Gradient-Hover);
   border-color: transparent;
   box-shadow: 0 6px 18px rgba(0, 109, 119, 0.28);
 }
@@ -503,7 +503,7 @@ padding-right: 40px;
     font-size: 14px;
 }
 .city_card_img .score {
-    background: var(--AHI-Gradient);
+    background: var(--VCP-Gradient);
     color: #ffffff;
     display: inline-block;
     padding: 3px 10px;

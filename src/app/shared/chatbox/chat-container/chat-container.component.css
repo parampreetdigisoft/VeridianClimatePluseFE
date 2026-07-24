@@ -1,5 +1,5 @@
 /* ==============================================================
-   AHI · Redesigned Chat — Full-Width, No Double Sidebar
+   VCP · Redesigned Chat — Full-Width, No Double Sidebar
    Pure CSS  |  No global variables  |  PeaceMappers Brand
    ============================================================== */
 
@@ -680,7 +680,7 @@
 
 .cb__session-btn {
   border-radius: 20px !important;
-  background: var(--AHI-Gradient, linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%));
+  background: var(--VCP-Gradient, linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%));
   padding: 9px 20px;
   text-align: center;
   border: none;
@@ -704,7 +704,7 @@
 }
 
 .cb__session-btn:hover {
-  background: var(--AHI-Gradient-Hover, linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%));
+  background: var(--VCP-Gradient-Hover, linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%));
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
@@ -2682,7 +2682,7 @@ aside.pem-sidebar {
 .title-wd-btn .view-all,
 .flip-hero__subtitle_outer .view-all {
     border-radius: 20px !important;
-    background: var(--AHI-Gradient, linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%));
+    background: var(--VCP-Gradient, linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%));
     padding: 9px 20px;
     text-align: center;
     border: none;
@@ -2702,7 +2702,7 @@ aside.pem-sidebar {
 
 .title-wd-btn .view-all:hover,
 .flip-hero__subtitle_outer .view-all:hover {
-  background: var(--AHI-Gradient-Hover, linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%));
+  background: var(--VCP-Gradient-Hover, linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%));
   box-shadow: 0 6px 18px rgba(0, 109, 119, 0.28);
 }
 

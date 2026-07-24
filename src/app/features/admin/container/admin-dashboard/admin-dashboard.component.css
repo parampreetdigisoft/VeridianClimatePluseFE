@@ -66,7 +66,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     font-size: 20px;
     line-height: normal;
 } */
-/* Stat card decorative circles removed — AHI shared card styles apply via ahi-dashboard-ui.css */
+/* Stat card decorative circles removed — VCP shared card styles apply via ahi-dashboard-ui.css */
 
 .city_piller .input_field .analyst_multi_select {
     width: 220px;
@@ -141,7 +141,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     margin: 0;
 }
 
-/* AHI ApexCharts — default tooltip polish */
+/* VCP ApexCharts — default tooltip polish */
 :host ::ng-deep .apexcharts-tooltip {
   background: #fff !important;
   border: 1px solid rgba(0, 109, 119, 0.14) !important;

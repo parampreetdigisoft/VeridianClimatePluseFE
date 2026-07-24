@@ -27,7 +27,7 @@ import {
   ApexStates,
 } from "ng-apexcharts";
 import { AiProgramPillarDashboardResponseDto } from "src/app/core/models/AiProgramPillarDashboardResponseDto";
-import { AHI_CHART, ahiScoreColor, AHI_AXIS_STYLE } from "src/app/core/constants/ahi-chart-theme";
+import { VCP_CHART, ahiScoreColor, VCP_AXIS_STYLE } from "src/app/core/constants/ahi-chart-theme";
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -213,7 +213,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           hollow: {
             margin: 0,
             size: "40%",
-            background: AHI_CHART.hollow,
+            background: VCP_CHART.hollow,
             image: undefined,
             position: "front",
           },
@@ -240,7 +240,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           },
         },
       },
-      colors: [...AHI_CHART.radialBar],
+      colors: [...VCP_CHART.radialBar],
       labels: [
         "Total",
         "Manual Active",
@@ -335,7 +335,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: [AHI_CHART.primary, AHI_CHART.secondary],
+        colors: [VCP_CHART.primary, VCP_CHART.secondary],
       },
 
       fill: {
@@ -348,7 +348,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
         }
       },
 
-      colors: [AHI_CHART.primary, AHI_CHART.secondary],
+      colors: [VCP_CHART.primary, VCP_CHART.secondary],
 
       markers: {
         size: data.map(p => 4),
@@ -404,7 +404,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       },
 
       grid: {
-        ...AHI_AXIS_STYLE.grid,
+        ...VCP_AXIS_STYLE.grid,
         xaxis: {
           lines: { show: false }
         },
@@ -440,7 +440,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
             background: #ffffff;
             border-radius: 14px;
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            border-left: 4px solid ${AHI_CHART.primary};
+            border-left: 4px solid ${VCP_CHART.primary};
             font-family: 'Poppins', system-ui, sans-serif;
             position: relative;
             overflow: hidden;
@@ -470,7 +470,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
                   <div style="
                     font-weight: 700;
                     font-size: 16px;
-                    color: ${AHI_CHART.text};
+                    color: ${VCP_CHART.text};
                     margin-bottom: 6px;
                   ">
                     ${pillar.pillarName}
@@ -634,7 +634,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
                   <div style="
                     font-size: 13px;
                     font-weight: 700;
-                    color: ${AHI_CHART.text};
+                    color: ${VCP_CHART.text};
                   ">
                    ${avgScore.toFixed(0)}
                   </div>

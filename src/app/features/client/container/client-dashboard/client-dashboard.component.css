@@ -1,5 +1,5 @@
 /* ============================================================
-   AHI · Client Dashboard
+   VCP · Client Dashboard
    Design language: "Intelligence Command Console"
    — deep navy + signal green, targeting-reticle card framing,
      radar/grid texture, tabular data typography, live-scan motif.
@@ -1576,7 +1576,7 @@
   }
 }
 
-/* AHI ApexCharts — trend panel tooltips & legend */
+/* VCP ApexCharts — trend panel tooltips & legend */
 :host ::ng-deep .trend_panel .apexcharts-tooltip {
   background: #fff !important;
   border: 1px solid rgba(0, 109, 119, 0.14) !important;

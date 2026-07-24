@@ -1,5 +1,5 @@
 /* ============================================================
-   AHI Auth UI — login, sign-up, forgot/reset, 2FA
+   VCP Auth UI — login, sign-up, forgot/reset, 2FA
    Loaded via account.component (ViewEncapsulation.None)
    ============================================================ */
 
@@ -223,7 +223,7 @@
   right: 24px;
   height: 4px;
   border-radius: 0 0 4px 4px;
-  background: var(--AHI-Gradient, linear-gradient(90deg, #006D77, #4CAF50, #A8E063));
+  background: var(--VCP-Gradient, linear-gradient(90deg, #006D77, #4CAF50, #A8E063));
 }
 
 .vui_logo img {

@@ -110,7 +110,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   });
 
   readonly rotatingHeadlines = [
-    'Welcome to AHI',
+    'Welcome to VCP',
     'Surface stability signals across regions',
     'Interrogate program risk with pillar context',
     'Compare indices and emerging pressure points',

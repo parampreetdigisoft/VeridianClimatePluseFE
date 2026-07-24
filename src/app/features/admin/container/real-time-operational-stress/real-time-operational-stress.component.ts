@@ -18,7 +18,7 @@ import {
   DashboardModeResponseDto,
   DashboardQuestionScoreDto,
 } from 'src/app/core/models/ProgramSignalDashboardDto';
-import { AHI_CHART, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
+import { VCP_CHART, VCP_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -444,24 +444,24 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
           return this.hasScore(q?.aiScore) ? Number(val).toFixed(1) : 'N/A';
         },
         offsetX: 24,
-        style: { fontSize: '11px', fontWeight: 700, colors: [AHI_CHART.text] },
+        style: { fontSize: '11px', fontWeight: 700, colors: [VCP_CHART.text] },
       },
       xaxis: {
         categories,
         max: 100,
         labels: {
-          style: AHI_AXIS_STYLE.xaxisLabels.style,
+          style: VCP_AXIS_STYLE.xaxisLabels.style,
           formatter: (v: string) => v,
         },
-        axisBorder: { color: AHI_CHART.border },
+        axisBorder: { color: VCP_CHART.border },
       },
       yaxis: {
         labels: {
-          style: { ...AHI_AXIS_STYLE.yaxisLabels.style, fontSize: '12px' },
+          style: { ...VCP_AXIS_STYLE.yaxisLabels.style, fontSize: '12px' },
         },
       },
       grid: {
-        borderColor: AHI_CHART.grid,
+        borderColor: VCP_CHART.grid,
         strokeDashArray: 4,
         xaxis: { lines: { show: true } },
         yaxis: { lines: { show: false } },
@@ -512,7 +512,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
         position: 'bottom',
         fontSize: '12px',
         fontWeight: 600,
-        labels: { colors: AHI_CHART.textMuted },
+        labels: { colors: VCP_CHART.textMuted },
       },
       dataLabels: {
         enabled: true,
@@ -530,7 +530,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
                 label: 'Indicators',
                 fontSize: '13px',
                 fontWeight: 600,
-                color: AHI_CHART.textMuted,
+                color: VCP_CHART.textMuted,
                 formatter: () => `${questions.length}`,
               },
             },
@@ -557,7 +557,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
     if (value.includes('watch') || value.includes('developing')) return '#ffc107';
     if (value.includes('stable')) return '#006D77';
     if (value.includes('strong')) return '#77BD3E';
-    return AHI_CHART.primarySoft;
+    return VCP_CHART.primarySoft;
   }
   
   getInterpretationConditionByScore(score: number | null | undefined) {
