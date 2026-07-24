@@ -36,7 +36,8 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   programs: ProgramVM[] = [];
   selectedUserProgramMappingID: number = 0;
-  selectedProgram!: ProgramVM ;
+  selectedProgram?: ProgramVM;
+  programControl = new FormControl<number | null>(null);
   pillerQuestions: GetQuestionByProgramMappingResponse | null = null;
   form!: FormGroup;
   pillarDisplayOrder: number = 1;
@@ -49,9 +50,10 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   isLoader: boolean = false;
   urlBase = environment.apiUrl;
   isAssessementFinalized = false;
+  isProgramSubmissionAction = false;
   isAItransfer: boolean = false;
   selectedYear = new Date().getFullYear();
-  ROSEWPillarID =22;
+  ROSEWPillarID = 22;
   constructor(
     private analystService: AnalystService,
     private userService: UserService,
@@ -124,15 +126,13 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     }
   }
 
-  makePillarActive(pillar:PillarsVM){
-    return (this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder ) 
-              || pillar?.pillarID == this.ROSEWPillarID;
+  makePillarActive(pillar: PillarsVM) {
+    return (this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder);
   }
 
-  activeClass(pillar:PillarsVM){
+  activeClass(pillar: PillarsVM) {
     let con = this.selectedPillar?.displayOrder == pillar.displayOrder
-     &&  this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed 
-     && this.selectedPillar.pillarID != this.ROSEWPillarID;
+      && this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed;
     return con;
   }
 
@@ -156,7 +156,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       this.selectedPillar = pillar;
       this.getQuestionsByProgramId();
     }
-    else if(!this.selectedPillar){
+    else if (!this.selectedPillar) {
       this.selectedPillar = this.pillars.find((x) => x.pillarID == this.pillerQuestions?.pillarID);
       if (this.pillerQuestions && this.pillerQuestions?.submittedPillarDisplayOrder < (this.selectedPillar?.displayOrder ?? 0)) {
         this.pillarDisplayOrder = this.selectedPillar?.displayOrder ?? 1;
@@ -164,15 +164,36 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     }
   }
 
+ onImgError(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/images/noImageAvailable.png';
+  }
+
   programChanged() {
-    this.selectedProgram = this.programs.filter(x=>x.staffProgramMappingID == this.selectedUserProgramMappingID)[0]
+    this.selectedUserProgramMappingID = Number(this.programControl.value ?? 0);
+    this.selectedProgram = this.programs.find(
+      x => x.staffProgramMappingID == this.selectedUserProgramMappingID
+    );
+
+    if (!this.selectedProgram) {
+      return;
+    }
+
     this.selectedPillar = undefined;
     this.getQuestionsByProgramId();
   }
 
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().toLowerCase().includes(term)
+    );
+  }
+
   getProgramByUserIdForAssessment() {
     this.selectedPillar = undefined;
-    this.commonService.getUserNearestProgram()
+    this.analystService.getProgramByUserIdForAssessment(this.userService.userInfo.userID)
       .subscribe({
         next: (res) => {
           this.programs = res.result ?? [];
@@ -180,7 +201,8 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
             this.selectedUserProgramMappingID = this.analystService.staffProgramMappingIDSubject$.value != null ?
               this.analystService.staffProgramMappingIDSubject$.value
               : this.programs[0].staffProgramMappingID ?? 0;
-              this.selectedProgram = this.programs.filter(x=>x.staffProgramMappingID == this.selectedUserProgramMappingID)[0]
+            this.programControl.setValue(this.selectedUserProgramMappingID, { emitEvent: false });
+            this.selectedProgram = this.programs.find(x => x.staffProgramMappingID == this.selectedUserProgramMappingID);
             setTimeout(() => {
               this.toaster.showInfo("You have rediredected to assgined program, please submit all pillars for the program");
             }, 500);
@@ -194,6 +216,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
         },
       });
   }
+
 
   getQuestionsByProgramId() {
     if (
@@ -217,21 +240,21 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
         this.isLoader = false;
         if (res.succeeded) {
           this.pillerQuestions = res.result;
-           setTimeout(() => {
+          setTimeout(() => {
             if (this.pillerQuestions?.displayOrder && this.pillerQuestions?.pillarID) {
               const container = this.scrollPillarContainer.nativeElement;
               const element = container.querySelector('#pillar-' + this.pillerQuestions.pillarID);
               if (element) {
-                 element.scrollIntoView({
+                element.scrollIntoView({
                   behavior: 'smooth',
                   block: 'nearest' // or 'center'
-                  });
+                });
               }
             }
-          }, 300);      
+          }, 300);
           this.pillarDisplayOrder = Math.max(this.pillerQuestions?.displayOrder ?? 0, this.pillerQuestions?.submittedPillarDisplayOrder ?? 0);
-          if (this.pillerQuestions && this.pillerQuestions?.assessmentID > 0) {
-            this.checkAssessmentProgress.next();
+          if (this.pillerQuestions && (this.pillerQuestions?.assessmentID || this.selectedUserProgramMappingID) > 0) {
+            this.getAssessmentProgressHistory();
           } else {
             this.userService.assessmentProgress.next(null);
           }
@@ -278,12 +301,17 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           if (res.succeeded) {
             if (this.isAssessementFinalized) {
               this.analystService.staffProgramMappingIDSubject$.next(null);
-              this.getProgramByUserIdForAssessment();
+              this.checkAssessmentProgress.next();
+              setTimeout(() => {
+                window.location.reload();
+              }, 300);
             } else {
-              if (this.selectedPillar)
-                this.selectedPillar = this.pillars.find(x => x.displayOrder == (Number(this.selectedPillar?.displayOrder) + 1));
+              this.selectedPillar = this.getNextPillar(
+                this.selectedPillar?.pillarID ?? this.pillerQuestions?.pillarID
+              );
               this.getQuestionsByProgramId();
             }
+            this.resetAssessmentActionState();
             this.toaster.showSuccess(res.messages.join(", "));
           } else {
             this.toaster.showError(res.errors.join(", "));
@@ -341,9 +369,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.isUploading = false;
         if (res.succeeded) {
-          this.selectedPillar = this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed ? 
-                  this.pillars.filter(x=>x.pillarID == this.ROSEWPillarID)[0]
-                  : this.pillars[0];
+          this.selectedPillar = this.pillars[0];
           this.getQuestionsByProgramId();
           this.toaster.showSuccess(res.messages.join(", "));
         } else {
@@ -356,10 +382,13 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       },
     });
   }
- 
-  getAssessmentProgressHistory () {
+
+  getAssessmentProgressHistory() {
     this.analystService
-      .getAssessmentProgressHistory(this.pillerQuestions?.assessmentID ?? 0)
+      .getAssessmentProgressHistory({
+        staffProgramMappingID: this.selectedUserProgramMappingID,
+        assessmentID: this.pillerQuestions?.assessmentID ?? 0
+      })
       .subscribe((res) => {
         if (res.succeeded) {
           this.userService.assessmentProgress.next(res.result);
@@ -368,7 +397,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
         }
       });
   }
-  
+
   autoSaveSingleAssessemnt(index: number) {
     if (this.questionsArray.controls[index].valid) {
       if (!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0) {
@@ -408,10 +437,55 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     }
     return "";
   }
+
+  get isLastPillar(): boolean {
+    if (!this.pillerQuestions?.pillarID || this.pillars.length === 0) {
+      return false;
+    }
+    const sortedPillars = this.getSortedPillars();
+    const currentIndex = sortedPillars.findIndex(
+      (pillar) => pillar.pillarID === this.pillerQuestions?.pillarID
+    );
+
+    return currentIndex !== -1 && currentIndex === sortedPillars.length - 1;
+  }
+
+  onAssessmentActionClick(forceProgramSubmit: boolean = false): void {
+    const shouldSubmitProgram = forceProgramSubmit || this.isLastPillar;
+    this.isProgramSubmissionAction = shouldSubmitProgram;
+    this.isAssessementFinalized = shouldSubmitProgram;
+  }
+
+  resetAssessmentActionState(): void {
+    this.isProgramSubmissionAction = false;
+    this.isAssessementFinalized = false;
+  }
+
+  private getSortedPillars(): PillarsVM[] {
+    return [...this.pillars].sort(
+      (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
+    );
+  }
+
+  private getNextPillar(currentPillarID?: number): PillarsVM | undefined {
+    if (!currentPillarID) {
+      return undefined;
+    }
+
+    const sortedPillars = this.getSortedPillars();
+    const currentIndex = sortedPillars.findIndex(
+      (pillar) => pillar.pillarID === currentPillarID
+    );
+
+    if (currentIndex === -1 || currentIndex >= sortedPillars.length - 1) {
+      return undefined;
+    }
+
+    return sortedPillars[currentIndex + 1];
+  }
+
   aiResultTransfer() {
-
     const program = this.programs.find(x => x.staffProgramMappingID === Number(this.selectedUserProgramMappingID));
-
     if (!program) {
       this.toaster.showWarning("Please select a program");
       return;
@@ -451,7 +525,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
 
   }
 
-  exportPillarsHistoryByUserId(type: ExportType) {   
+  exportPillarsHistoryByUserId(type: ExportType) {
     if (
       this.userService?.userInfo?.userID == null ||
       !this.selectedUserProgramMappingID ||

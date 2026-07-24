@@ -16,6 +16,7 @@ import {
 import { SortDirection } from "src/app/core/enums/SortDirection";
 import { ActivatedRoute } from "@angular/router";
 import { ProgramUserRow } from "src/app/core/models/ProgramUserRow";
+import { CommonService } from "src/app/core/services/common.service";
 declare var bootstrap: any;
 
 @Component({
@@ -46,6 +47,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
     private adminService: AdminService,
     private toaster: ToasterService,
     private userService: UserService,
+    private commonService: CommonService,
     private route: ActivatedRoute
   ) {}
 
@@ -84,7 +86,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
     this.adminService.getUserListByRole(payload).subscribe((anaylist) => {
       this.analystResponse = {
         ...anaylist,
-        data: (anaylist.data ?? []).map((user) => this.mapProgramUserRow(user)),
+        data: (anaylist.data ?? []).map((user) => this.commonService.mapProgramUserRow(user)),
       };
       this.totalRecords = anaylist.totalRecords;
       this.currentPage = currentPage;
@@ -236,33 +238,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
     });
   }
 
-     private mapProgramUserRow(user: GetUserByRoleResponse): ProgramUserRow {
-    const programsText = this.getProgramsText(user);
-    return {
-      ...user,
-      programsText,
-      programsExpand: false,
-      showProgramsToggle: this.isLongProgramsText(programsText),
-    };
-  }
-
-   getProgramsText(user: GetUserByRoleResponse): string {
-    return (user.climatePrograms ?? [])
-      .map((program) => program?.programName)
-      .filter((name): name is string => !!name)
-      .join(", ");
-  }
-
-  isLongProgramsText(text: string): boolean {
-    if (!text) {
-      return false;
-    }
-    const words = text.trim().split(/\s+/).filter(Boolean);
-    return words.length > 16 || text.length > 72;
-  }
-
-    togglePrograms(programuser: ProgramUserRow): void {
+  togglePrograms(programuser: ProgramUserRow): void {
     programuser.programsExpand = !programuser.programsExpand;
   }
-
 }

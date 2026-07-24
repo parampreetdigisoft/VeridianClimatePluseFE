@@ -48,11 +48,20 @@
         <td>{{ evaluator.fullName }}</td>
         <td>{{ evaluator.email }}</td>
         <td>{{ evaluator.phone }}</td>
-        <td>
+          <td>
+          <div class="program-list desc" [class.collapsed]="!evaluator.programsExpand">
+            {{ evaluator.programsText }}
+          </div>
+          <a *ngIf="evaluator.showProgramsToggle" class="read-more" href="javascript:void(0)"
+            (click)="togglePrograms(evaluator)">
+            {{ evaluator.programsExpand ? 'Read Less' : 'Read More' }}
+          </a>
+        </td>
+        <!-- <td>
           <span *ngFor="let program of evaluator?.climatePrograms; let last = last">
             {{ program?.programName }}{{ last ? "" : ", " }}
           </span>
-        </td>
+        </td> -->
         <td>
           <button *ngIf="!evaluator.isEmailConfirmed" class="common_button"
              (click)="ResendInvitaion(evaluator,i)" >

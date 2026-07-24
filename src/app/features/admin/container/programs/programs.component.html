@@ -15,6 +15,7 @@
 					(change)="getPrograms()"
 					bindValue="climateProgramID"
 					bindLabel="programName"
+          [dropdownPosition]="'bottom'"
 					class="form-control analyst_multi_select">
 					<ng-template ng-label-tmp
 						let-item="item"
@@ -151,7 +152,7 @@
     <tbody>
       <tr *ngFor="let program of programsResponse?.data; let i = index">
         <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
-        <td> <img class="city_img" style="width: 50px; border-radius:5px; height: 35px; object-fit: cover;"
+        <td> <img class="program_img" style="width: 50px; border-radius:5px; height: 35px; object-fit: cover;"
             [src]="urlBase+program?.image" [alt]="'Profile Image'" (error)="onImgError($event)" /></td>
         <td>{{ program.programName }}</td>
           <td>{{ program.location }}</td>

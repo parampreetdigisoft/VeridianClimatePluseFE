@@ -3,18 +3,23 @@
     <div class="col">
       <h3 class="page_head">Assesment</h3>
     </div>
-
-
     <div class="col-lg-auto">
       <div class="header_btns">
-        <div class="input_field">
-          <select [(ngModel)]="selectedUserProgramMappingID" name="programID" class="form-control" (change)="programChanged()">
-            <option value="0">Select Program-Analyst</option>
-            <option *ngFor="let program of programs" [value]="program.staffProgramMappingID">
-              {{ program.programName }} - {{ program.assignedBy }}
-            </option>
-          </select>
-        </div>
+      <div class="compare_select input_field input_flex" (click)="$event.stopPropagation()">
+              <ng-select [items]="programs" bindValue="staffProgramMappingID" bindLabel="programName"
+                [formControl]="programControl"
+                (change)="programChanged()"     
+                [searchable]="true"
+                [clearable]="false"
+                [placeholder]="'Search by Program'" [searchFn]="customSearchFn">
+                <ng-template ng-label-tmp let-item="item">
+                  {{ item.programName }} {{ item.location }}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  {{ item.programName }} {{ item.location }}
+                </ng-template>
+              </ng-select>
+            </div>
         <a href="javascript:void(0)" (click)="ImportQuestions()" class="common_button">
           Download All Question
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -35,7 +40,7 @@
         </a>
         <div class="next_btn">
           <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" style="cursor: pointer" [disabled]="!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0"
-            class="common_button" (click)="isAssessementFinalized=true">
+            class="common_button" (click)="onAssessmentActionClick(true)">
             {{'Submit Assesment' }}
           </button>
         </div>
@@ -44,17 +49,17 @@
   </div>
 </div>
 
-<div class="body_faq">
+<div class="body_faq" #scrollPillarContainer>
   <div class="body_faq_inner">
     <div class="faq_sidebar">
       <div class="faq_sidebar_inner">
-        <div class="faq_sidebar_item" *ngFor="let piller of pillars; let i = index"
+        <div class="faq_sidebar_item" *ngFor="let piller of pillars; let i = index" id="pillar-{{piller.pillarID}}"
           [class.active]="makePillarActive(piller)">
           <div class="faq_sidebar_item_inner"
             (click)="selectedPillar?.displayOrder == piller.displayOrder ? $event.stopPropagation() :pillarChanged(piller) "
             [ngClass]="activeClass(piller) ? 'current-active' : ''">
             <span class="faq_inner_svg">
-              <img [src]="urlBase + '/' + piller.imagePath" [alt]="'No image found'" />
+              <img class="program_img" style="width: 50px; border-radius:5px; height: 35px; object-fit: cover;" [src]="urlBase + '/' + piller.imagePath" [alt]="'Profile Image'" (error)="onImgError($event)" />
             </span>
             <p>{{ piller.pillarName }}</p>
           </div>
@@ -81,7 +86,7 @@
                 placeholder="Select option"
                 [searchable]="false"
                 [clearable]="true"
-                dropdownPosition="auto"
+                dropdownPosition="bottom"
                 (change)="onOptionChange($event, i)">
                 <ng-template ng-label-tmp let-item="item">
                   <span class="assessment_select_label" [title]="item.optionText">
@@ -109,8 +114,8 @@
 
         <div class="next_btn"  [class.loading-bottom]="isLoader" *ngIf="this.selectedUserProgramMappingID || !(this.selectedUserProgramMappingID == 0)">
           <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" style="cursor: pointer"
-            class="common_button" [disabled]="!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0">
-            {{pillerQuestions?.displayOrder == 14 ? 'Submit' :'Save & NEXT' }}
+            class="common_button" (click)="onAssessmentActionClick()" [disabled]="!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0">
+            {{isLastPillar ? 'Submit' : 'Save & NEXT' }}
           </button>
         </div>
       </form>
@@ -123,11 +128,11 @@
 
 <app-file-upload-modal (fileUploaded)="handleFileUpload($event)"></app-file-upload-modal>
 <app-prompt [title]="
-    pillerQuestions?.displayOrder == 14 || isAssessementFinalized? 'Submit Pillar' : 'Save Pillar'
+    isProgramSubmissionAction ? 'Submit Program' : 'Save Pillar'
   " [message]="
-    pillerQuestions?.displayOrder == 14 || isAssessementFinalized
+    isProgramSubmissionAction
       ? 'Are you sure you want to submit this program? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Admin.'
       : 'Are you sure you want to save this pillar?'
-  " [confirmText]="pillerQuestions?.displayOrder == 14 || isAssessementFinalized ? 'Submit' : 'Save'"
-  [cancelText]="'Cancel'" (confirm)="SaveAssessment()" (cancel)="isAssessementFinalized=false">
+  " [confirmText]="isProgramSubmissionAction ? 'Submit' : 'Save'"
+  [cancelText]="'Cancel'" (confirm)="SaveAssessment()" (cancel)="resetAssessmentActionState()">
 </app-prompt>

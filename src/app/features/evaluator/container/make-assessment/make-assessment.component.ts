@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { PillarsVM } from "src/app/core/models/PillersVM";
 import { ProgramVM } from "src/app/core/models/ProgramVM";
 import { UserService } from "src/app/core/services/user.service";
@@ -18,11 +19,12 @@ import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import {
   AddAssessmentDto,
   AddAssessmentResponseDto,
+  GetProgramProgressHistoryRequestDto,
 } from "src/app/core/models/AssessmentRequest";
 import { environment } from "src/environments/environment";
 import { EvaluatorService } from "../../evaluator.service";
-import { CommonService } from "src/app/core/services/common.service";
 import { AssessmentPhase } from "src/app/core/enums/AssessmentPhase";
+import { debounceTime, Subject } from "rxjs";
 
 @Component({
   selector: "app-make-assessment",
@@ -32,25 +34,27 @@ import { AssessmentPhase } from "src/app/core/enums/AssessmentPhase";
 export class MakeAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   programs: ProgramVM[] = [];
+  programControl = new FormControl<number | null>(null);
   selectedUserProgramMappingID: number = 0;
-  selectedProgram!: ProgramVM ;
+  selectedProgram?: ProgramVM;
   pillerQuestions: GetQuestionByProgramMappingResponse | null = null;
   form!: FormGroup;
   pillarDisplayOrder: number = 1;
   selectedPillar?: PillarsVM;
   @ViewChild("scrollContainer") scrollContainer!: ElementRef;
+  checkAssessmentProgress = new Subject<void | null>();
+  @ViewChild("scrollPillarContainer") scrollPillarContainer!: ElementRef;
   isloading = false;
   isUploading = false;
   isLoader: boolean = false;
   urlBase = environment.apiUrl;
   isAssessementFinalized = false;
-  ROSEWPillarID =22;
+  isProgramSubmissionAction = false;
   constructor(
     private evaluatorService: EvaluatorService,
     private userService: UserService,
     private toaster: ToasterService,
-    private fb: FormBuilder,
-    private commonService: CommonService
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +62,9 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
     this.formInitialized();
     this.GetAllPillars();
     this.getProgramByUserIdForAssessment();
+     this.checkAssessmentProgress.pipe(debounceTime(10000)).subscribe(() => {
+          this.getAssessmentProgressHistory();
+        });
   }
 
   get questions() {
@@ -73,6 +80,15 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
   get questionsArray(): FormArray {
     return this.form.get("questions") as FormArray;
   }
+  
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().toLowerCase().includes(term)
+    );
+  }
 
   loadQuestions() {
     this.pillerQuestions?.questions.forEach((q) => {
@@ -86,7 +102,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
             q.isSelected ? option?.optionID : null,
             Validators.required,
           ],
-          score: [q.isSelected ? option?.scoreValue : null],
+          // score: [q.isSelected ? option?.scoreValue : null],
           justification: [
             q.isSelected ? option?.justification : null,
             Validators.required,
@@ -109,66 +125,78 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       });
     }
   }
-  makePillarActive(pillar:PillarsVM){
-    return (this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder ) 
-              || pillar?.pillarID == this.ROSEWPillarID;
+
+ 
+ makePillarActive(pillar:PillarsVM){
+    return (this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder );
   }
+
   activeClass(pillar:PillarsVM){
 
     let con = this.selectedPillar?.displayOrder == pillar.displayOrder
-     &&  this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed 
-     && this.selectedPillar.pillarID != this.ROSEWPillarID;
+     &&  this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed;
     return con;
   }
-
 
   GetAllPillars() {
     this.evaluatorService.getAllPillars().subscribe((pillars) => {
       this.pillars = pillars;
     });
   }
+
+  
   pillarChanged(pillar?: PillarsVM) {
     if (!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0) {
       this.toaster.showWarning("Please select program first");
       return;
     }
-    if(this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
-      this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires analyst permission.");
-      return
-    }
-
-    this.isAssessementFinalized = false;
+    // if(this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
+    //   this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires administrator permission.");
+    //   return
+    // }
+    this.resetAssessmentActionState();
     if (pillar) {
       this.selectedPillar = pillar;
       this.getQuestionsByProgramId();
-    } else if(!this.selectedPillar){
-      this.selectedPillar = this.pillars.find(
-        (x) => x.pillarID == this.pillerQuestions?.pillarID
-      );
+    }
+    else if(!this.selectedPillar){
+      this.selectedPillar = this.pillars.find((x) => x.pillarID == this.pillerQuestions?.pillarID);
       if (this.pillerQuestions && this.pillerQuestions?.submittedPillarDisplayOrder < (this.selectedPillar?.displayOrder ?? 0)) {
         this.pillarDisplayOrder = this.selectedPillar?.displayOrder ?? 1;
       }
     }
   }
 
-  programChanged() {
-    this.selectedProgram = this.programs.filter(x=>x.staffProgramMappingID == this.selectedUserProgramMappingID)[0]
+   onImgError(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/images/noImageAvailable.png';
+  }
+
+   programChanged() {
+    this.selectedUserProgramMappingID = Number(this.programControl.value ?? 0);
+    this.selectedProgram = this.programs.find(
+      x => x.staffProgramMappingID == this.selectedUserProgramMappingID
+    );
+
+    if (!this.selectedProgram) {
+      return;
+    }
+
     this.selectedPillar = undefined;
     this.getQuestionsByProgramId();
   }
-  
+
   getProgramByUserIdForAssessment() {
     this.selectedPillar = undefined;
-    this.commonService.getUserNearestProgram()
+    this.evaluatorService.getProgramByUserIdForAssessment(this.userService.userInfo.userID)
       .subscribe({
         next: (res) => {
-          this.programs = res.result ?? [];
+        this.programs = res.result ?? [];
           if (this.programs.length > 0) {
             this.selectedUserProgramMappingID = this.evaluatorService.staffProgramMappingIDSubject$.value != null ?
               this.evaluatorService.staffProgramMappingIDSubject$.value
               : this.programs[0].staffProgramMappingID ?? 0;
-
-              this.selectedProgram = this.programs.filter(x=>x.staffProgramMappingID == this.selectedUserProgramMappingID)[0]
+            this.programControl.setValue(this.selectedUserProgramMappingID, { emitEvent: false });
+            this.selectedProgram = this.programs.find(x => x.staffProgramMappingID == this.selectedUserProgramMappingID);
             setTimeout(() => {
               this.toaster.showInfo(
                 "You have rediredected to assgined program, please submit all pillars for the program"
@@ -185,7 +213,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       });
   }
 
-  getQuestionsByProgramId() {
+ getQuestionsByProgramId() {
     if (
       !this.selectedUserProgramMappingID ||
       this.selectedUserProgramMappingID == 0
@@ -207,14 +235,25 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
         this.isLoader = false;
         if (res.succeeded) {
           this.pillerQuestions = res.result;
-          this.pillarDisplayOrder =
-            this.pillerQuestions?.submittedPillarDisplayOrder ?? 1;
-          this.pillarChanged();
-          if (this.pillerQuestions && this.pillerQuestions?.assessmentID > 0) {
+           setTimeout(() => {
+            if (this.pillerQuestions?.displayOrder && this.pillerQuestions?.pillarID) {
+              const container = this.scrollPillarContainer.nativeElement;
+              const element = container.querySelector('#pillar-' + this.pillerQuestions.pillarID);
+              if (element) {
+                 element.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'nearest' // or 'center'
+                  });
+              }
+            }
+          }, 300);      
+          this.pillarDisplayOrder = Math.max(this.pillerQuestions?.displayOrder ?? 0, this.pillerQuestions?.submittedPillarDisplayOrder ?? 0);
+          if (this.pillerQuestions && (this.pillerQuestions?.assessmentID || this.selectedUserProgramMappingID) > 0) {
             this.getAssessmentProgressHistory();
           } else {
             this.userService.assessmentProgress.next(null);
           }
+          this.pillarChanged();
           this.loadQuestions();
         } else {
           this.toaster.showWarning("The program's assessment has already been submitted, or the selected pillar has no questions.");
@@ -255,14 +294,19 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
             });
           }, 300);
           if (res.succeeded) {
-            if (this.pillerQuestions?.displayOrder == 14 || this.isAssessementFinalized) {
+            if (this.isAssessementFinalized) {
               this.evaluatorService.staffProgramMappingIDSubject$.next(null);
-              this.getProgramByUserIdForAssessment();
+              this.checkAssessmentProgress.next();
+              setTimeout(() => {
+                window.location.reload();
+              }, 300);
             } else {
-              if (this.selectedPillar)
-                this.selectedPillar = this.pillars.find(x => x.displayOrder == (Number(this.selectedPillar?.displayOrder) + 1));
+              this.selectedPillar = this.getNextPillar(
+                this.selectedPillar?.pillarID ?? this.pillerQuestions?.pillarID
+              );
               this.getQuestionsByProgramId();
             }
+            this.resetAssessmentActionState();
             this.toaster.showSuccess(res.messages.join(", "));
           } else {
             this.toaster.showError(res.errors.join(", "));
@@ -319,9 +363,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.isUploading = false;
         if (res.succeeded) {
-          this.selectedPillar = this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed ? 
-                  this.pillars.filter(x=>x.pillarID == this.ROSEWPillarID)[0]
-                  : this.pillars[0];
+          this.selectedPillar = this.pillars[0];
            this.getQuestionsByProgramId();
           this.toaster.showSuccess(res.messages.join(", "));
         } else {
@@ -335,8 +377,12 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
     });
   }
   getAssessmentProgressHistory() {
+    var payload: GetProgramProgressHistoryRequestDto = {
+      staffProgramMappingID: this.selectedUserProgramMappingID,
+      assessmentID: this.pillerQuestions?.assessmentID ?? 0
+    }
     this.evaluatorService
-      .getAssessmentProgressHistory(this.pillerQuestions?.assessmentID ?? 0)
+      .getAssessmentProgressHistory(payload)
       .subscribe((res) => {
         if (res.succeeded) {
           this.userService.assessmentProgress.next(res.result);
@@ -347,7 +393,6 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
   }
   
   autoSaveSingleAssessemnt(index: number) {
-
     if (this.questionsArray.controls[index].valid) {
       if (!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0) {
         this.toaster.showWarning("Please select city first");
@@ -367,6 +412,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
           next: (res) => {
             if (res.succeeded) {
               this.questionsArray.at(index).markAsPristine();
+              this.checkAssessmentProgress.next();
             }
           },
           error: () => {
@@ -384,4 +430,52 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
     }
     return "";
   }
+
+  get isLastPillar(): boolean {
+    if (!this.pillerQuestions?.pillarID || this.pillars.length === 0) {
+      return false;
+    }
+
+    const sortedPillars = this.getSortedPillars();
+    const currentIndex = sortedPillars.findIndex(
+      (pillar) => pillar.pillarID === this.pillerQuestions?.pillarID
+    );
+
+    return currentIndex !== -1 && currentIndex === sortedPillars.length - 1;
+  }
+
+  onAssessmentActionClick(forceProgramSubmit: boolean = false): void {
+    const shouldSubmitProgram = forceProgramSubmit || this.isLastPillar;
+    this.isProgramSubmissionAction = shouldSubmitProgram;
+    this.isAssessementFinalized = shouldSubmitProgram;
+  }
+
+  resetAssessmentActionState(): void {
+    this.isProgramSubmissionAction = false;
+    this.isAssessementFinalized = false;
+  }
+
+  private getSortedPillars(): PillarsVM[] {
+    return [...this.pillars].sort(
+      (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
+    );
+  }
+
+  private getNextPillar(currentPillarID?: number): PillarsVM | undefined {
+    if (!currentPillarID) {
+      return undefined;
+    }
+
+    const sortedPillars = this.getSortedPillars();
+    const currentIndex = sortedPillars.findIndex(
+      (pillar) => pillar.pillarID === currentPillarID
+    );
+
+    if (currentIndex === -1 || currentIndex >= sortedPillars.length - 1) {
+      return undefined;
+    }
+
+    return sortedPillars[currentIndex + 1];
+  }
+
 }

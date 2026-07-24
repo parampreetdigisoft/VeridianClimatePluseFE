@@ -37,6 +37,11 @@
     font-weight: 600;
 }
 
+::ng-deep .analyst_multi_select .ng-select-container .ng-value-container .ng-input > input {
+  color: var(--Text-Color) !important;
+  caret-color: var(--Text-Color) !important;
+}
+
 textarea.form-control.description {
   border-radius: 25px !important;
 }

@@ -3,12 +3,12 @@ import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 import { ResultResponseDto } from "../models/ResultResponseDto";
 import { UserService } from "./user.service";
-import { BehaviorSubject, catchError, from, map, Observable, switchMap, tap } from "rxjs";
+import { BehaviorSubject, map, tap } from "rxjs";
 import { HttpService } from "../http/http.service";
 import { UpdateUserResponseDto, UserInfo } from "../models/UserInfo";
-import { ProgramVM } from "../models/ProgramVM";
-import { GetNearestProgramRequestDto } from "../models/GetNearestProgramRequestDto";
 import { ToasterService } from "./toaster.service";
+import { GetUserByRoleResponse } from "../models/GetUserByRoleResponse";
+import { ProgramUserRow } from "../models/ProgramUserRow";
 
 @Injectable({
   providedIn: "root",
@@ -19,74 +19,6 @@ export class CommonService {
   private years = new BehaviorSubject<number[]>(this.getYearList(2025));
 
   constructor(private http: HttpService, private userService: UserService, private toaster: ToasterService) { }
-
-  public getAllProgramsByLocation(): Observable<ResultResponseDto<ProgramVM[]>> {
-    const payload: GetNearestProgramRequestDto = {
-      userID: this.userService.userInfo.userID,
-      location: this.location,
-    };
-
-    return this.http
-      .getWithQueryParams('Program/getAllProgramsByLocation', payload)
-      .pipe(map((x) => x as ResultResponseDto<ProgramVM[]>));
-  }
-
-  // public getUserNearestProgram(): Observable<ResultResponseDto<ProgramVM[]>> {
-  //   if (navigator.geolocation) {
-  //     return from(
-  //       new Promise<GeolocationPosition>((resolve, reject) => {
-  //         navigator.geolocation.getCurrentPosition(resolve, reject);
-  //       })
-  //     ).pipe(
-  //       switchMap((position) => {
-  //         this.location = `${position.coords.latitude},${position.coords.longitude}`;
-  //         return this.getAllProgramsByLocation();
-  //       }),
-  //       catchError((error) => {
-  //         console.error('Geolocation error:', error);
-  //         this.toaster.showError(
-  //           'Location access denied or unavailable. Showing all programs.'
-  //         );
-  //         return this.getAllProgramsByLocation(); // fallback
-  //       })
-  //     );
-  //   } else {
-  //     this.toaster.showError('Geolocation not supported by this browser.');
-  //     return this.getAllProgramsByLocation();
-  //   }
-  // }
-  public getUserNearestProgram(): Observable<ResultResponseDto<ProgramVM[]>> {
-  if (!navigator.geolocation) {
-    this.toaster.showError('Geolocation not supported by this browser.');
-    return this.getAllProgramsByLocation();
-  }
-
-  return from(
-    new Promise<GeolocationPosition>((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject, {
-        timeout: 5000, 
-        enableHighAccuracy: true
-      });
-    })
-  ).pipe(
-    switchMap((position: GeolocationPosition) => {
-      const location = `${position.coords.latitude},${position.coords.longitude}`;
-      this.location = location;
-      return this.getAllProgramsByLocation();
-    }),
-
-    catchError((error) => {
-      console.error('Geolocation error:', error);
-
-      this.toaster.showError(
-        'Location access denied or unavailable. Showing all programs.'
-      );
-
-      // ✅ fallback without location
-      return this.getAllProgramsByLocation();
-    })
-  );
-}
 
   public getUserInfo() {
     return this.http
@@ -385,4 +317,28 @@ get radarColors() {
     ];
   }
 
+  public mapProgramUserRow(user: GetUserByRoleResponse): ProgramUserRow {
+      const programsText = this.getProgramsText(user);
+      return {
+        ...user,
+        programsText,
+        programsExpand: false,
+        showProgramsToggle: this.isLongProgramsText(programsText),
+      };
+    }
+  
+     getProgramsText(user: GetUserByRoleResponse): string {
+      return (user.climatePrograms ?? [])
+        .map((program) => program?.programName)
+        .filter((name): name is string => !!name)
+        .join(", ");
+    }
+  
+    isLongProgramsText(text: string): boolean {
+      if (!text) {
+        return false;
+      }
+      const words = text.trim().split(/\s+/).filter(Boolean);
+      return words.length > 16 || text.length > 72;
+    }
 }

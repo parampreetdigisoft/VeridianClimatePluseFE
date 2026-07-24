@@ -16,11 +16,8 @@ import {
   ApexStates
 } from "ng-apexcharts";
 import { AiProgramPillarDashboardResponseDto } from 'src/app/core/models/AiProgramPillarDashboardResponseDto';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AHI_CHART, ahiScoreColor, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
-
-
-
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -91,11 +88,13 @@ export class AnalystDashboardComponent implements OnInit {
     this.yearChanged();
 
   }
+  
   yearChanged() {
     this.GetProgramHistory();
     this.getProgramsProgressByUserId();
     this.getProgramPillarHistory();
   }
+  
   getProgramsProgressByUserId() {
     this.analystService.getProgramsProgressByUserId(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
       next: (res) => {

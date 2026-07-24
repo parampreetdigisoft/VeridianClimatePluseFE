@@ -34,8 +34,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
   statusList: string[] = [
     'In Progress',
     'On Hold',
-    'Cancelled',
-    'Completed',
+    'Cancelled'
   ];
 
   // ✅ Statuses that force IsActive to false, silently (not shown in UI)
@@ -61,11 +60,11 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
       programName: [this.program?.programName, Validators.required],
       year: [this.program?.year ?? new Date().getFullYear(), Validators.required],
       location: [this.program?.location, Validators.required],
-      startAt: [formatDate(this.program?.startAt) ?? new Date().toISOString().substring(0, 10), Validators.required],
+      startAt: [formatDate(this.program?.startAt) ?? new Date().toISOString().substring(0, 10)],
       endAt: [formatDate(this.program?.endAt)],
       status: [this.program?.status ?? 'In Progress', Validators.required],
       isActive: [this.computeIsActive(this.program?.status)],
-      description: [this.program?.description],
+      description: [this.program?.description,Validators.required],
       programs: [this.program?.peerProgramIDs || []],
       imageFile: ['']
     }, { validators: this.dateRangeValidator });
@@ -135,6 +134,14 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
     reader.readAsDataURL(file);
     this.selectedFile = event.target.files[0];
   }
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().toLowerCase().includes(term)
+    );
+  }
 
   onSubmit() {
     this.isSubmitted = true;
@@ -149,7 +156,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
     formData.append('StartAt', this.programForm.get('startAt')?.value);
     formData.append('EndAt', this.programForm.get('endAt')?.value ?? '');
     formData.append('Status', this.programForm.get('status')?.value);
-    formData.append('IsActive', this.programForm.get('isActive')?.value); // ✅ computed silently from status
+    formData.append('IsActive', this.programForm.get('isActive')?.value);
     formData.append('Description', this.programForm.get('description')?.value ?? '');
 
     // 👇 Peer Programs (array)
@@ -238,7 +245,6 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
         "ProgramName",
         "Year",
         "Location",
-        "StartAt",
         "Status",
         "Description"
       ];
@@ -306,7 +312,6 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
           return;
         }
 
-
         if (!description) {
           this.alertMsg = `Row ${i + 2}: Description is required.`;
           this.fileInput.nativeElement.value = "";
@@ -322,14 +327,13 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
 
         const isActive = this.computeIsActive(status);
 
-
         const dto = {
           programName,
           year,
           location,
-         startAt: new Date(startAt),
-         endAt: endAt ? new Date(endAt) : null,
-         status,
+          startAt: startAt ? new Date(startAt) : null,
+          endAt: endAt ? new Date(endAt) : null,
+          status,
           isActive,
           description
         } as ProgramVM;

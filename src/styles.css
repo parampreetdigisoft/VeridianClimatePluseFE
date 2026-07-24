@@ -790,7 +790,7 @@ body .content_area .inner_content_area {
     color: #e74c3c;
     border: 1px solid rgba(231, 76, 60, 0.35);
 }
-.city_img {
+.program_img {
     background-color: var(--Primary-Color);
     border-radius: 15px !important;
 }

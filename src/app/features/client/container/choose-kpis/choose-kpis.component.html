@@ -73,7 +73,7 @@
                                     [placeholder]="kpiForm.get('programs')?.invalid ? 'Assign Program' : ''"
                                     (change)="checkSelectionLimit('programs')">
                                     <ng-template ng-label-tmp let-item="item">
-                                        {{ item.programName }},
+                                        {{ item.programName }}
                                     </ng-template>
 
                                     <ng-template ng-option-tmp let-item="item">

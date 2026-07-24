@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpService } from 'src/app/core/http/http.service';
 import { SendRequestMailToUpdateProgram } from 'src/app/core/models/AnalystVM';
-import { AddAssessmentDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto } from 'src/app/core/models/AssessmentRequest';
+import { AddAssessmentDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto, GetProgramProgressHistoryRequestDto } from 'src/app/core/models/AssessmentRequest';
 import { AssessmentWithProgressVM, GetAssessmentQuestionResponseDto, GetAssessmentResponse } from 'src/app/core/models/AssessmentResponse';
 import { ProgramHistoryDto, GetProgramQuestionHistoryResponseDto, UserProgramRequestDto } from 'src/app/core/models/ProgramHistoryDto';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
@@ -76,8 +76,8 @@ export class EvaluatorService {
     return this.http.UploadFile(`AssessmentResponse/ImportAssessment`, formData).pipe(map(x => x as ResultResponseDto<string>));;
   }
 
-  public getAssessmentProgressHistory(assessmentID: number) {
-    return this.http.get(`AssessmentResponse/getAssessmentProgressHistory/` + assessmentID).pipe(map(x => x as ResultResponseDto<AssessmentWithProgressVM>));
+  public getAssessmentProgressHistory(request: GetProgramProgressHistoryRequestDto) {
+    return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentProgressHistory`, request).pipe(map(x => x as ResultResponseDto<AssessmentWithProgressVM>));
   }
 
   public getProgramQuestionHistory(request: UserProgramRequestDto) {

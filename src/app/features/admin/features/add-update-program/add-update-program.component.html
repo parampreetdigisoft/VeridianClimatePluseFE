@@ -36,8 +36,8 @@
               <div class="row">
                 <div class="col">
                   <div class="input_field">
-                    <label>Enter Program Name *</label>
-                    <input type="text" formControlName="programName" appAlphaOnly placeholder="Enter Program Name"
+                    <label>Program Name *</label>
+                    <input type="text" formControlName="programName" placeholder="Enter Program Name"
                       class="form-control" maxlength="256" />
                     <div class="error-msg" *ngIf="
                         programForm.get('programName')?.invalid &&
@@ -49,8 +49,8 @@
                 </div>
                 <div class="col">
                   <div class="input_field">
-                    <label>Enter Year *</label>
-                    <input type="number" formControlName="year" placeholder="Enter Climate Program Starting Year" class="form-control" />
+                    <label>Year *</label>
+                    <input type="number" formControlName="year" placeholder="Enter Climate Program Year" class="form-control" />
                     <div class="error-msg" *ngIf="
                         programForm.get('year')?.invalid &&
                         (programForm.get('year')?.touched || isSubmitted)
@@ -64,8 +64,8 @@
               <div class="row">
                 <div class="col">
                   <div class="input_field">
-                    <label>Enter Location *</label>
-                    <input type="text" formControlName="location" placeholder="Enter Geographical Location for the Program" appAlphaOnly
+                    <label>Location *</label>
+                    <input type="text" formControlName="location" placeholder="Enter Geographical Location for the Program" 
                       class="form-control" maxlength="256" />
                     <div class="error-msg" *ngIf="
                         programForm.get('location')?.invalid &&
@@ -95,7 +95,7 @@
               <div class="row">
                 <div class="col">
                   <div class="input_field">
-                    <label>Start Date *</label>
+                    <label>Program Start At</label>
                     <input type="date" formControlName="startAt" class="form-control" />
                     <div class="error-msg" *ngIf="
                         programForm.get('startAt')?.invalid &&
@@ -107,7 +107,7 @@
                 </div>
                 <div class="col">
                   <div class="input_field">
-                    <label>End Date</label>
+                    <label>Program End At</label>
                     <input type="date" formControlName="endAt" class="form-control" />
                     <div class="error-msg" *ngIf="programForm.errors?.['dateRangeInvalid'] && (programForm.get('endAt')?.touched || isSubmitted)">
                       End date must be after start date.
@@ -116,23 +116,18 @@
                 </div>
               </div>
 
-              <!-- <div class="row">
-                <div class="col d-flex align-items-center">
-                  <div class="input_field w-100">
-                    <label class="d-block">Is Active</label>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" role="switch" formControlName="isActive" />
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-
               <div class="row">
                 <div class="col-12">
                   <div class="input_field">
                     <label>Description *</label>
-                    <textarea formControlName="description" placeholder="Enter Description related to the Program" class="form-control description"
-                      rows="3" minlength="10" maxlength="2000"></textarea>
+                    <textarea formControlName="description" placeholder="Describe the COP program to help the AI find accurate sources and relevant information." class="form-control description"
+                      rows="3" minlength="10"></textarea>
+                      <div class="error-msg" *ngIf="
+                        programForm.get('description')?.invalid &&
+                        (programForm.get('description')?.touched || isSubmitted)
+                      ">
+                      Description is required.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -161,16 +156,16 @@
 
               <div class="row">
                 <div class="input_field">
-                  <label>Select peer programs</label>
+                  <label>Peer programs</label>
                   <ng-select [items]="programList" bindValue="climateProgramID" bindLabel="programName"
                     formControlName="programs" [multiple]="true" class="form-control analyst_multi_select"
-                    [searchable]="true" placeholder=" Select peer programs">
+                    [searchable]="true" placeholder=" Select peer programs" [searchFn]="customSearchFn">
                     <ng-template ng-label-tmp let-item="item">
                       {{ item.programName }},
                     </ng-template>
 
                     <ng-template ng-option-tmp let-item="item">
-                      {{ item.programName }}
+                      {{ item.programName }} {{ item.location }} {{ item.year}}
                     </ng-template>
                   </ng-select>
                 </div>

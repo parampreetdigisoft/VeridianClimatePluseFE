@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonService } from 'src/app/core/services/common.service';
 import { ProgramVM } from '../../../../core/models/ProgramVM';
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
 import { ToasterService } from 'src/app/core/services/toaster.service';
@@ -7,6 +8,7 @@ import { GetUserByRoleRequestDto, GetUserByRoleResponse } from '../../../../core
 import { UserRoleValue } from 'src/app/core/enums/UserRole';
 import { InviteBulkUserDto, UpdateInviteUserDto } from '../../../../core/models/AnalystVM';
 import { AnalystService } from '../../analyst.service';
+import { ProgramUserRow } from 'src/app/core/models/ProgramUserRow';
 declare var bootstrap: any;
 
 @Component({
@@ -17,7 +19,7 @@ declare var bootstrap: any;
 export class EvaluatorViewComponent implements OnInit, OnDestroy {
   selectedEvaluator: GetUserByRoleResponse | null = null;
   loading: boolean = false;
-  evaluatorResponse: PaginationResponse<GetUserByRoleResponse> | undefined;
+  evaluatorResponse: PaginationResponse<ProgramUserRow> | undefined;
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1
@@ -25,7 +27,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
   isLoader: boolean = false;
   isOpendialog: boolean = false;
   selectedIndex?:number;
-  constructor(private analystService: AnalystService, private toaster: ToasterService, private userService: UserService) { }
+  constructor(private analystService: AnalystService, private toaster: ToasterService, private userService: UserService, private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.getEvaluator();
@@ -52,11 +54,14 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       getUserRole: UserRoleValue.Evaluator
     }
 
-    this.analystService.getEvaluator(payload).subscribe(anaylist => {
-      this.evaluatorResponse = anaylist;
-      this.totalRecords = anaylist.totalRecords;
+    this.analystService.getEvaluator(payload).subscribe(evaluator => {
+      this.evaluatorResponse = {
+        ...evaluator,
+        data: (evaluator.data ?? []).map((user) => this.commonService.mapProgramUserRow(user)),
+      };
+      this.totalRecords = evaluator.totalRecords;
       this.currentPage = currentPage;
-      this.pageSize = anaylist.pageSize;
+      this.pageSize = evaluator.pageSize;
       this.isLoader = false;
     });
   }
@@ -203,5 +208,8 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
         this.toaster.showError('Failed to add analyst');
       }
     });
+  }
+  togglePrograms(programuser: ProgramUserRow): void {
+    programuser.programsExpand = !programuser.programsExpand;
   }
 }

@@ -18,6 +18,7 @@ import { SortDirection } from "src/app/core/enums/SortDirection";
 import { ActivatedRoute } from "@angular/router";
 import { PillarsVM } from "src/app/core/models/PillersVM";
 import { ClientService } from "src/app/features/client/client.service";
+import { CommonService } from "src/app/core/services/common.service";
 declare var bootstrap: any;
 
 @Component({
@@ -50,7 +51,8 @@ export class ClientViewComponent implements OnInit, OnDestroy {
     private toaster: ToasterService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -96,7 +98,7 @@ export class ClientViewComponent implements OnInit, OnDestroy {
     this.adminService.getUserListByRole(payload).subscribe((clientList) => {
        this.clientResponse = {
         ...clientList,
-        data: (clientList.data ?? []).map((user) => this.mapProgramUserRow(user)),
+        data: (clientList.data ?? []).map((user) => this.commonService.mapProgramUserRow(user)),
       };
       this.totalRecords = clientList.totalRecords;
       this.currentPage = currentPage;
@@ -215,35 +217,6 @@ export class ClientViewComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-    private mapProgramUserRow(user: GetUserByRoleResponse): ProgramUserRow {
-    const programsText = this.getProgramsText(user);
-    return {
-      ...user,
-      programsText,
-      programsExpand: false,
-      showProgramsToggle: this.isLongProgramsText(programsText),
-    };
-  }
-
-   getProgramsText(user: GetUserByRoleResponse): string {
-    return (user.climatePrograms ?? [])
-      .map((program) => program?.programName)
-      .filter((name): name is string => !!name)
-      .join(", ");
-  }
-
-  isLongProgramsText(text: string): boolean {
-    if (!text) {
-      return false;
-    }
-    const words = text.trim().split(/\s+/).filter(Boolean);
-    return words.length > 16 || text.length > 72;
-  }
-
-    togglePrograms(programuser: ProgramUserRow): void {
-    programuser.programsExpand = !programuser.programsExpand;
-  }
-
   closeModal() {
     this.selectedIndex =undefined;
     this.loading = false;
@@ -279,5 +252,9 @@ export class ClientViewComponent implements OnInit, OnDestroy {
         this.toaster.showError("Failed to add client account");
       },
     });
+  }
+
+  togglePrograms(programuser: ProgramUserRow): void {
+    programuser.programsExpand = !programuser.programsExpand;
   }
 }

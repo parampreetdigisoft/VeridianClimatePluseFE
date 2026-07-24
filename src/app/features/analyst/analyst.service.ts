@@ -9,7 +9,7 @@ import { GetUserByRoleRequestDto, GetUserByRoleResponse } from '../../core/model
 import { InviteBulkUserDto, InviteUserDto, SendRequestMailToUpdateProgram, UpdateInviteUserDto } from '../../core/models/AnalystVM';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
 import { ProgramMappingPillerRequestDto} from 'src/app/core/models/QuestionRequest';
-import { AddAssessmentDto, ChangeAssessmentStatusRequestDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto, GetProgramPillarHistoryRequestDto, GetProgramPillarHistoryRequestNewDto, TransferAssessmentRequestDto } from 'src/app/core/models/AssessmentRequest';
+import { AddAssessmentDto, ChangeAssessmentStatusRequestDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto, GetProgramPillarHistoryRequestDto, GetProgramPillarHistoryRequestNewDto, GetProgramProgressHistoryRequestDto, TransferAssessmentRequestDto } from 'src/app/core/models/AssessmentRequest';
 import { AssessmentWithProgressVM, GetAssessmentQuestionResponseDto, GetAssessmentResponse } from 'src/app/core/models/AssessmentResponse';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { GetQuestionByProgramMappingResponse } from 'src/app/core/models/QuestionResponse';
@@ -46,7 +46,7 @@ export class AnalystService {
   public getProgramByUserIdForAssessment(userId: number) {
     return this.http.get(`Program/getProgramByUserIdForAssessment/` + userId).pipe(map(x => x as ResultResponseDto<ProgramVM[]>));;
   }
-
+  
   public getProgramHistory(userID: number, updatedAt: string) {
     return this.http.get(`Program/getProgramHistory/` + updatedAt).pipe(map(x => x as ResultResponseDto<ProgramHistoryDto>));
   }
@@ -92,9 +92,11 @@ export class AnalystService {
   public getQuestionsHistoryByPillar(request: GetProgramPillarHistoryRequestDto) {
     return this.http.getWithQueryParams(`Question/getQuestionsHistoryByPillar`, request).pipe(map(x => x as ResultResponseDto<QuestionsByUserPillarsResponsetDto[]>));
   }
+
   public saveAssessment(payload: AddAssessmentDto) {
     return this.http.post(`AssessmentResponse/saveAssessment`, payload).pipe(map(x => x as ResultResponseDto<string>));
   }
+  
   public getAssessmentResults(payload: GetAssessmentRequestDto) {
     return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentResults`, payload).pipe(map(x => x as PaginationResponse<GetAssessmentResponse>));
   }
@@ -104,8 +106,8 @@ export class AnalystService {
   public ImportAssessment(formData: FormData) {
     return this.http.UploadFile(`AssessmentResponse/ImportAssessment`, formData).pipe(map(x => x as ResultResponseDto<string>));;
   }
-  public getAssessmentProgressHistory(assessmentID: number) {
-    return this.http.get(`AssessmentResponse/getAssessmentProgressHistory/` + assessmentID).pipe(map(x => x as ResultResponseDto<AssessmentWithProgressVM>));
+  public getAssessmentProgressHistory(request: GetProgramProgressHistoryRequestDto) {
+    return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentProgressHistory`, request).pipe(map(x => x as ResultResponseDto<AssessmentWithProgressVM>));
   }
   public changeAssessmentStatus(request: ChangeAssessmentStatusRequestDto) {
     return this.http.post(`AssessmentResponse/changeAssessmentStatus`, request).pipe(map(x => x as ResultResponseDto<string>));

@@ -65,12 +65,12 @@
                                     [searchable]="true"
                                     [placeholder]="analystForm.get('program')?.invalid ? 'Assign Program' : ''">
 
-                                    <ng-template ng-label-tmp let-item="item " class="select_item">
-                                        {{ item.programName +', '}}
+                                    <ng-template ng-label-tmp let-item="item" class="select_item">
+                                        {{ item.programName}}
                                     </ng-template>
 
                                     <ng-template ng-option-tmp let-item="item">
-                                        {{ item.programName }}, {{ item.continent }}
+                                        {{ item.programName }}, {{ item.location }}
                                     </ng-template>
                                 </ng-select>
 

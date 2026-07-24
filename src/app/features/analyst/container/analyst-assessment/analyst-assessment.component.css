@@ -10,6 +10,118 @@
     flex-wrap: wrap;
     grid-gap: 10px;
 }
+
+:host {
+    --program-dropdown-width: 220px;
+}
+
+.compare_select {
+    flex: 0 0 var(--program-dropdown-width);
+    width: var(--program-dropdown-width);
+    min-width: var(--program-dropdown-width);
+    max-width: var(--program-dropdown-width);
+}
+
+.heading_area .compare_select.input_field {
+    flex: 0 0 var(--program-dropdown-width);
+    justify-content: flex-start;
+}
+
+:host ::ng-deep .compare_select .ng-select {
+    width: 100%;
+}
+
+:host ::ng-deep .compare_select .ng-select-container {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid #d7d7d7;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+:host ::ng-deep .compare_select .ng-select-container .ng-value-container {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    align-items: center;
+    padding: 0 12px;
+}
+
+:host ::ng-deep .compare_select .ng-select-container .ng-value-container .ng-placeholder {
+    position: static;
+    padding: 0;
+}
+
+:host ::ng-deep .compare_select .ng-select-container .ng-value-container .ng-value {
+    max-width: 100%;
+    overflow: hidden;
+    flex-shrink: 1;
+}
+
+:host ::ng-deep .compare_select .ng-select-container .ng-value-container .ng-value .ng-value-label {
+    display: block;
+    max-width: calc(var(--program-dropdown-width) - 56px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #7a7a7a;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+:host ::ng-deep .compare_select .ng-select-container .ng-input {
+    padding: 0 !important;
+    min-width: 24px;
+}
+
+:host ::ng-deep .compare_select .ng-select-container .ng-input > input {
+    color: #3e3e3e !important;
+    font-size: 13px;
+    background: transparent !important;
+    caret-color: #3e3e3e;
+}
+
+:host ::ng-deep .compare_select .ng-arrow-wrapper {
+    flex: 0 0 22px;
+    width: 22px;
+}
+
+:host ::ng-deep .compare_select .ng-clear-wrapper {
+    display: none;
+}
+
+:host ::ng-deep .compare_select .ng-placeholder {
+    color: #7a7a7a;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+:host ::ng-deep .compare_select .ng-dropdown-panel {
+    margin-top: 0 !important;
+}
+
+:host ::ng-deep .compare_select.ng-select-opened > .ng-select-container {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+@media only screen and (max-width: 1550px) {
+    :host {
+        --program-dropdown-width: 200px;
+    }
+}
+
+:host ::ng-deep .compare_select .ng-value-container {
+    min-width: 0;
+}
+
+:host ::ng-deep .compare_select .ng-value-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .faq_sidebar_item_inner {
     display: flex;
     align-items: center;
@@ -425,7 +537,6 @@
     }
     
 }
-
 
 :host {
   display: block;

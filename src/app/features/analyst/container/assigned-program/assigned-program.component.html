@@ -12,7 +12,7 @@
       <tr>
         <th>S.No.</th>
         <th>Program</th>
-        <!-- <th>Continent</th> -->
+        <th>Program Year</th>
         <th>Score</th>
       </tr>
     </thead>
@@ -20,7 +20,7 @@
       <tr *ngFor="let program of programsResponse?.data; let i = index">
         <td>{{((currentPage-1) * pageSize ) +(i+1)}}</td>
         <td>{{program.programName}}</td>
-        <!--<td>{{program.continent}}</td>-->
+        <td>{{ program.year }}</td>
         <td>{{(program.score ?? 0).toFixed(1)}}</td>
       </tr>
     </tbody>

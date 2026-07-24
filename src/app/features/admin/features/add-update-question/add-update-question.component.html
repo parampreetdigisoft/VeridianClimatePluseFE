@@ -127,7 +127,7 @@
 
                                     </div>
                                 </div>
-                                <button type="button" class="btn add_btn btn-primary mt-2" (click)="addOption()">Add</button>
+                                <button type="button" class="btn add_btn btn-primary mt-2" [disabled]="this.questionOptions.length >= 12" (click)="addOption()">Add</button>
                             </div>
 
                             <!-- Submit -->

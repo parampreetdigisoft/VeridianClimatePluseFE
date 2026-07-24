@@ -48,12 +48,19 @@ export interface GetProgramPillarHistoryRequestNewDto extends PaginationUserRequ
   pillarID?: number;
   updatedAt:string;
 }
+
 export interface ChangeAssessmentStatusRequestDto {
   assessmentID: number;
   userID: number;
   assessmentPhase?: AssessmentPhase;
 }
+
 export interface TransferAssessmentRequestDto {
   assessmentID: number;
   transferToUserID: number;
+}
+
+export interface GetProgramProgressHistoryRequestDto {
+  staffProgramMappingID: number;
+  assessmentID: number | null;
 }

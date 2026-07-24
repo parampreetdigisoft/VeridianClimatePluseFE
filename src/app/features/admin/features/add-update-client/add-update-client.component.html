@@ -119,7 +119,7 @@
 
                             <div class="input_field" *ngIf="!isPremium || premiumGeoMode === 'select'">
                                 <label>Assign Program *</label>
-                                <ng-select [items]="programs" bindValue="programID" bindLabel="programName"
+                                <ng-select [items]="programs" bindValue="climateProgramID" bindLabel="programName"
                                     formControlName="program" [multiple]="true" [closeOnSelect]="false"
                                     class="form-control analyst_multi_select" [searchable]="true"
                                     [placeholder]="clientForm.get('program')?.invalid ? 'Assign Program' : ''"
@@ -130,7 +130,7 @@
                                     </ng-template>
 
                                     <ng-template ng-option-tmp let-item="item">
-                                        {{ item.programName }}, {{ item.continent }}
+                                        {{ item.programName }}, {{ item.location }}
                                     </ng-template>
                                 </ng-select>
                                 <div *ngIf="limitMessages['program']" class="error-msg">

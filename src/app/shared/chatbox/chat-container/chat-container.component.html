@@ -695,7 +695,7 @@
           <div class="pillar-row" *ngFor="let p of sidebarPillars; trackBy: trackPillarId">
             <div class="pillar-img-wrap"
               [style.--pillar-color]="pillarScoreColor(p.pillarScore)">
-              <img class="pillar-row__img city_img"
+              <img class="pillar-row__img program_img"
                 *ngIf="p.imagePath"
                 [src]="urlBase + '/' + p.imagePath"
                 [alt]="p.pillarName" />
