@@ -132,7 +132,7 @@
     min-height: auto !important;
     height: 100% !important;
 }
-::ng-deep .compare_select  .ng-select-container:hover {
+::ng-deep .compare_select .ng-select-container:hover {
     box-shadow: none !important;
 }
 ::ng-deep .compare_select .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {

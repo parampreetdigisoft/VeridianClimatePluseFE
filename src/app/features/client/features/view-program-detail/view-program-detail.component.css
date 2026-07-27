@@ -151,7 +151,7 @@ span:empty, div:empty{
     font-weight: 700;
     color: #000000;
 }
-.city_piller {
+.program_pillar {
     background-color: #f7f7f7;
     padding: 20px;
     position: relative;
@@ -191,6 +191,6 @@ button.btn-close:focus-visible {
 .integrate_outter .cross-pillar {
     margin-top: 15px;
 }
-.city_piller .program_card .common_button {
+.program_pillar .program_card .common_button {
     margin-top: 10px;
 }

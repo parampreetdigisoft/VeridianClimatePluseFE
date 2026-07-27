@@ -185,14 +185,14 @@ h4.kpi_head_col {
 }
 
 
-.city_piller+app-ag-bar {
+.program_pillar+app-ag-bar {
     border-radius: 15px;
     background-color: #fff;
     overflow: hidden;
     display: flex;
 }
 
-::ng-deep .city_piller + app-ag-bar > div {
+::ng-deep .program_pillar + app-ag-bar > div {
     width: 100%;
 }
 
@@ -282,7 +282,7 @@ span:empty, div:empty{
     font-weight: 700;
     color: #000000;
 }
-.city_piller {
+.program_pillar {
     background-color: #f7f7f7;
     padding: 20px;
     position: relative;
@@ -322,6 +322,6 @@ button.btn-close:focus-visible {
 .integrate_outter .cross-pillar {
     margin-top: 15px;
 }
-.city_piller .program_card .common_button {
+.program_pillar .program_card .common_button {
     margin-top: 10px;
 }

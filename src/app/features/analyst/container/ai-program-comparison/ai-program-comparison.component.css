@@ -6,7 +6,7 @@ app-ai-city-comparison {
 }
 
 /* Target first two bars */
-app-ai-city-comparison .city_piller {
+app-ai-city-comparison .program_pillar {
   flex: 0 0 auto;
   width: calc(66.6% - 6px);
 }

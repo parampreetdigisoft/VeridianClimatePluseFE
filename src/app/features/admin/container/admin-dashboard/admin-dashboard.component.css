@@ -7,7 +7,7 @@ app-admin-dashboard {
 }
 
 /* Target first two bars */
-app-admin-dashboard .city_piller {
+app-admin-dashboard .program_pillar {
     flex: 0 0 auto;
     width: calc(66.6% - 6px);
 }
@@ -68,16 +68,16 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
 } */
 /* Stat card decorative circles removed — VCP shared card styles apply via ahi-dashboard-ui.css */
 
-.city_piller .input_field .analyst_multi_select {
+.program_pillar .input_field .analyst_multi_select {
     width: 220px;
     padding: 0;
     border: 0;
 }
-.city_piller .input_field .analyst_multi_select input[type="text"] {
+.program_pillar .input_field .analyst_multi_select input[type="text"] {
     line-height: 26px;
 }
 
-.city_piller .input_field .analyst_multi_select .ng-select-container{
+.program_pillar .input_field .analyst_multi_select .ng-select-container{
     background-color: #ffffff;
     border: 1px solid #ccc;
     min-height: 36px;
@@ -95,10 +95,10 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     border: 1px solid #efefef  !important;
 }
 
-.city_piller .input_field .analyst_multi_select .ng-select-container .ng-value-container {
+.program_pillar .input_field .analyst_multi_select .ng-select-container .ng-value-container {
     padding-left: 5px;
 }
-.city_piller .input_field .analyst_multi_select .ng-select-container .ng-value-container > .ng-input{
+.program_pillar .input_field .analyst_multi_select .ng-select-container .ng-value-container > .ng-input{
     padding-right: 45px;
     padding-left: 15px;
 }
@@ -108,7 +108,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     margin-bottom: 15px;
 }
 
-.city_piller + app-ag-bar
+.program_pillar + app-ag-bar
 {
     border-radius: 15px;
     background-color: #ffffff;
@@ -116,11 +116,11 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     display: flex;
 }
 
-.city_piller + app-ag-bar > div
+.program_pillar + app-ag-bar > div
 {
     width: 100%;
 }
-.city_piller .input_field {
+.program_pillar .input_field {
     min-width: 150px;
 }
 .apx_chart_new {

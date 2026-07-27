@@ -78,8 +78,8 @@ app-evaluator-dashboard {
   font-weight: 700 !important;
 }
 
-/* ── Filter / chart panel (city_piller) ─────────────────────── */
-.city_piller {
+/* ── Filter / chart panel (program_pillar) ─────────────────────── */
+.program_pillar {
   background: #ffffff !important;
   padding: 24px 28px !important;
   border-radius: 16px !important;
@@ -88,30 +88,30 @@ app-evaluator-dashboard {
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.city_piller:hover {
+.program_pillar:hover {
   box-shadow: 0 8px 28px rgba(0, 109, 119, 0.1);
   border-color: rgba(0, 109, 119, 0.16);
 }
 
-.city_piller .input_field label {
+.program_pillar .input_field label {
   color: #006D77;
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.02em;
 }
 
-.city_piller .input_field .form-control,
-.city_piller .input_field .analyst_multi_select .ng-select-container {
+.program_pillar .input_field .form-control,
+.program_pillar .input_field .analyst_multi_select .ng-select-container {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.city_piller .input_field .form-control:focus,
-.city_piller .input_field .analyst_multi_select.ng-select-focused .ng-select-container {
+.program_pillar .input_field .form-control:focus,
+.program_pillar .input_field .analyst_multi_select.ng-select-focused .ng-select-container {
   border-color: rgba(0, 109, 119, 0.35) !important;
   box-shadow: 0 0 0 3px rgba(168, 224, 99, 0.15);
 }
 
-.city_piller .calender_icon svg {
+.program_pillar .calender_icon svg {
   stroke: #006D77;
 }
 
@@ -199,11 +199,11 @@ app-evaluator-dashboard {
 }
 
 /* ── Action buttons row ─────────────────────────────────────── */
-.city_piller .common_button {
+.program_pillar .common_button {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.city_piller .common_button:hover {
+.program_pillar .common_button:hover {
   transform: translateY(-2px);
 }
 

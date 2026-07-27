@@ -175,7 +175,7 @@ p.btn_spinner {
     display: flex;
 }
 
-::ng-deep .document_sidebar .city_piller {
+::ng-deep .document_sidebar .program_pillar {
     background-color: #f7f7f7;
     padding: 0px 15px;
     position: relative;

@@ -403,7 +403,7 @@ padding-right: 40px;
     transition: .3s all;
 }
 
-.inner_content_area .city_piller .input_field select.form-control{
+.inner_content_area .program_pillar .input_field select.form-control{
     background: #ffffff;
     border-radius: 12px !important;
     padding: 10px 16px !important;
@@ -627,19 +627,19 @@ padding-right: 40px;
     line-height: normal;
     font-weight: 700;
 }
-.city_piller > .align-items-end {
+.program_pillar > .align-items-end {
     background-color: rgba(0, 109, 119, 0.05);
     border-radius: 10px;
     padding: 10px 6px 10px 0;
     margin-bottom: 20px;
     margin: 0;
 }
-.city_piller .input_field {
+.program_pillar .input_field {
     min-width: 150px;
     margin-bottom: 0 !important;
     position: relative;
 }
-.city_piller{
+.program_pillar{
     background-color: #fff;
     padding: 24px 34px;
     position: relative;

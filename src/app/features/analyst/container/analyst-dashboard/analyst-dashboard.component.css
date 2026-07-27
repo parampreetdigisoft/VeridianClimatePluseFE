@@ -7,7 +7,7 @@
 }
 
 /* Target first two bars */
-::ng-deep app-analyst-dashboard .city_piller {
+::ng-deep app-analyst-dashboard .program_pillar {
     flex: 0 0 auto;
     width: calc(66.6% - 6px);
 }
@@ -22,30 +22,30 @@
 }
 
 
-.city_piller {
+.program_pillar {
     background-color: #fff;
     padding: 20px;
     position: relative;
     border-radius: 15px;
 }
 
-.city_piller>.input_field .analyst_multi_select {
+.program_pillar>.input_field .analyst_multi_select {
     width: 220px;
     padding: 0;
     border: 0;
 }
-.city_piller>.input_field .analyst_multi_select input[type="text"] {
+.program_pillar>.input_field .analyst_multi_select input[type="text"] {
     line-height: 26px;
 }
 
-.city_piller+app-ag-bar {
+.program_pillar+app-ag-bar {
     border-radius: 15px;
     background-color: #fff;
     overflow: hidden;
     display: flex;
 }
 
-::ng-deep .city_piller + app-ag-bar > div {
+::ng-deep .program_pillar + app-ag-bar > div {
     width: 100%;
 }
 
@@ -56,7 +56,7 @@
     background-color: #fff;
 }
 
-::ng-deep .city_piller .input_field .analyst_multi_select .ng-select-container {
+::ng-deep .program_pillar .input_field .analyst_multi_select .ng-select-container {
     background-color: #fff;
     border: 1px solid #ccc;
     min-height: 36px;
@@ -75,32 +75,32 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-::ng-deep .city_piller .input_field .analyst_multi_select input[type=text] {
+::ng-deep .program_pillar .input_field .analyst_multi_select input[type=text] {
     line-height: 26px;
 }
 
 
-.city_piller {
+.program_pillar {
     background-color: #fff;
     padding: 20px;
     position: relative;
     border-radius: 15px;
 }
-/* .city_piller > .input_field {
+/* .program_pillar > .input_field {
     position: absolute;
     top: 10px;
     right: 30px;
 } */
-.city_piller .input_field .analyst_multi_select {
+.program_pillar .input_field .analyst_multi_select {
     width: 220px;
     padding: 0;
     border: 0;
 }
-.city_piller .input_field .analyst_multi_select input[type="text"] {
+.program_pillar .input_field .analyst_multi_select input[type="text"] {
     line-height: 26px;
 }
 
-.city_piller .input_field .analyst_multi_select .ng-select-container{
+.program_pillar .input_field .analyst_multi_select .ng-select-container{
     background-color: #fff;
     border: 1px solid #ccc;
     min-height: 36px;
@@ -116,10 +116,10 @@
     border-radius: 100px;
 }
 
-.city_piller .input_field .analyst_multi_select .ng-select-container .ng-value-container {
+.program_pillar .input_field .analyst_multi_select .ng-select-container .ng-value-container {
     padding-left: 5px;
 }
-.city_piller .input_field .analyst_multi_select .ng-select-container .ng-value-container > .ng-input{
+.program_pillar .input_field .analyst_multi_select .ng-select-container .ng-value-container > .ng-input{
     padding-right: 45px;
     padding-left: 15px;
 }
@@ -129,7 +129,7 @@
     margin-bottom: 15px;
 }
 
-.city_piller + app-ag-bar
+.program_pillar + app-ag-bar
 {
     border-radius: 15px;
     background-color: #ffffff;
@@ -137,12 +137,12 @@
     display: flex;
 }
 
-.city_piller + app-ag-bar > div
+.program_pillar + app-ag-bar > div
 {
     width: 100%;
 }
 
-.city_piller .input_field {
+.program_pillar .input_field {
     min-width: 150px;
 }
 .apx_chart_new {

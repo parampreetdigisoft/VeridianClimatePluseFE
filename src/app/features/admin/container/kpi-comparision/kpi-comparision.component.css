@@ -12,7 +12,7 @@ app-kpi-comparision {
 }
 
 /* Target first two bars */
-app-kpi-comparision .city_piller {
+app-kpi-comparision .program_pillar {
   flex: 0 0 auto;
   width: calc(66.6% - 6px);
 }

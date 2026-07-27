@@ -50,7 +50,7 @@
         width: 50px !important;
         height: 50px !important;
     }
-    ::ng-deep .city_piller .input_field {
+    ::ng-deep .program_pillar .input_field {
         min-width: 100px !important;
     }
 }

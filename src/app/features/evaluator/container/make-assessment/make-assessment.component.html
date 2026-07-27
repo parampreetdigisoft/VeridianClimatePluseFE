@@ -59,7 +59,7 @@
             (click)="selectedPillar?.displayOrder == piller.displayOrder ? $event.stopPropagation() :pillarChanged(piller) "
             [ngClass]="activeClass(piller) ? 'current-active' : ''">
             <span class="faq_inner_svg">
-              <img class="program_img" style="width: 50px; border-radius:5px; height: 35px; object-fit: cover;" [src]="urlBase + '/' + piller.imagePath" [alt]="'Profile Image'" (error)="onImgError($event)" />
+              <img class="program_img" style="width: 50px; border-radius:5px; height: 41px; object-fit: cover;" [src]="urlBase + '/' + piller.imagePath" [alt]="'Profile Image'" (error)="onImgError($event)" />
             </span>
             <p>{{ piller.pillarName }}</p>
           </div>
