@@ -228,3 +228,54 @@ min-width: max-content;
   color: #495057;          /* darker grey for text */
   letter-spacing: 0.5px;
 }
+
+.input_flex ng-select {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Remove Bootstrap's form-control chrome from ng-select host */
+.input_flex ng-select.form-control {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Program dropdown style to visually match the native select */
+::ng-deep .input_flex ng-select .ng-select-container {
+  min-height: 36px !important;
+  border: 1px solid #d7d7d7 !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+  padding: 6px 2px 6px 10px !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #7a7a7a !important;
+}
+
+::ng-deep .input_flex ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container,
+::ng-deep .input_flex ng-select.ng-select-opened > .ng-select-container {
+  border-color: #d7d7d7 !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .input_flex ng-select .ng-value-container {
+  padding-left: 0 !important;
+}
+
+::ng-deep .input_flex ng-select .ng-placeholder,
+::ng-deep .input_flex ng-select .ng-value-label {
+  color: #7a7a7a !important;
+  font-size: 13px !important;
+}
+
+::ng-deep .input_flex ng-select .ng-arrow-wrapper {
+  padding-right: 0 !important;
+}
+
+::ng-deep .input_flex ng-select .ng-arrow {
+  border-color: #888888 transparent transparent !important;
+}

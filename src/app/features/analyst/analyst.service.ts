@@ -100,8 +100,8 @@ export class AnalystService {
   public getAssessmentResults(payload: GetAssessmentRequestDto) {
     return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentResults`, payload).pipe(map(x => x as PaginationResponse<GetAssessmentResponse>));
   }
-  public getAssessmentQuestoins(payload: GetAssessmentQuestionRequestDto) {
-    return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentQuestoins`, payload).pipe(map(x => x as PaginationResponse<GetAssessmentQuestionResponseDto>));
+  public getAssessmentQuestions(payload: GetAssessmentQuestionRequestDto) {
+    return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentQuestions`, payload).pipe(map(x => x as PaginationResponse<GetAssessmentQuestionResponseDto>));
   }
   public ImportAssessment(formData: FormData) {
     return this.http.UploadFile(`AssessmentResponse/ImportAssessment`, formData).pipe(map(x => x as ResultResponseDto<string>));;

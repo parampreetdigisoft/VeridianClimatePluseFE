@@ -35,6 +35,7 @@ import { AssessmentPhase } from "src/app/core/enums/AssessmentPhase";
 export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   programs: ProgramVM[] = [];
+    filterProgram!: number;
   selectedUserProgramMappingID: number = 0;
   selectedProgram?: ProgramVM;
   programControl = new FormControl<number | null>(null);
@@ -547,7 +548,6 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     let payload: GetProgramPillarHistoryRequestDto = {
       userID: this.userService?.userInfo?.userID,
       climateProgramID: selectedProgram.climateProgramID,   // ✅ Correct climateProgramID
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
       exportType: type
     };
 

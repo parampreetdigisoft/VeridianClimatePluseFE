@@ -6,7 +6,7 @@
     <div class="col-md-6">
       <div class="input_field">
         <select [(ngModel)]="selectedPillarId" name="pillarID" class="form-control ms-auto"
-          (change)="getAssessmentQuestoins()">
+          (change)="getAssessmentQuestions()">
           <option value="">Select Pillar</option>
           <option *ngFor="let pillar of pillers" [value]="pillar.pillarID">
             {{ pillar.pillarName }}
@@ -60,6 +60,6 @@
     </tbody>
   </table>
   <app-pagination [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize" [isLoader]="isLoader"
-    (pageChange)="getAssessmentQuestoins($event)"></app-pagination>
+    (pageChange)="getAssessmentQuestions($event)"></app-pagination>
 
 </div>

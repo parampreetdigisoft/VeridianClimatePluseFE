@@ -2,7 +2,7 @@
   <div class="heading_area">
     <div class="row justify-content-between align-items-center gap-2">
       <div class="col-md-auto">
-        <h3 class="page_head">Assessment Comparision</h3>
+        <h3 class="page_head">Assessment Comparison</h3>
       </div>
       <div class="col-md-6">
         <div class="input_field input_flex">
@@ -12,16 +12,17 @@
               {{ piller.pillarName }}
             </option>
           </select>
-          <select [(ngModel)]="selectedYear" name="selectedYear" class="form-control" (change)="getResponsesByUserId()">
-            <option *ngFor="let year of commonService.applicateYears" [value]="year">
-              {{ year }}
-            </option>
-          </select>
-          <select [(ngModel)]="selectedPrograms" name="climateProgramID" class="form-control" (change)="getResponsesByUserId()">
-            <option *ngFor="let program of programs" [value]="program.climateProgramID">
-              {{ program.programName }}
-            </option>
-          </select>
+          <ng-select [items]="programs" [searchable]="true" [searchFn]="customSearchFn"
+          [placeholder]="filterProgram > 0 ? '' : 'Search Program..'" [(ngModel)]="filterProgram" (change)="getResponsesByUserId()"
+          bindValue="climateProgramID" bindLabel="programName" class="form-control">
+          <ng-template ng-label-tmp let-item="item" class="select_item">
+            {{ item.programName }} {{ item.location }}
+          </ng-template>
+
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.programName }}, {{ item.location }}
+          </ng-template>
+        </ng-select>
         </div>
       </div>
     </div>
@@ -37,7 +38,7 @@
     <!-- Pagination -->
     <ng-container *ngIf="totalRecords > pageSize">
       <div class="pagination-wrapper">
-        <app-pagination [selectedYear]="selectedYear" [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize"
+        <app-pagination [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize"
           [isLoader]="isLoader" (pageChange)="comparePrograms($event)">
         </app-pagination>
       </div>
@@ -48,14 +49,14 @@
       <h3 class="page_head mt-5 mb-3">Assessment Details</h3>
     </div>
     <div class="col-md-auto" >
-      <button class="common_button mb_15" [disabled]="isPillarHistroyDownloading" (click)="exportPillarsHistoryByUserId()">
+      <button class="common_button mb_15" [disabled]="isPillarHistoryDownloading" (click)="exportPillarsHistoryByUserId()">
         Export
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 256">
           <path
             d="M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z">
           </path>
         </svg>
-        <span *ngIf="isPillarHistroyDownloading" class="spinner-border spinner-border-sm ms-2"></span>
+        <span *ngIf="isPillarHistoryDownloading" class="spinner-border spinner-border-sm ms-2"></span>
       </button>
     </div>
   </div>
@@ -162,8 +163,7 @@
       <ng-container *ngIf="pillarColumns?.length == 0 && !isLoader">
         <div class="no_result_found">
           <div class="no_result_found_inner">
-            <h3 *ngIf="selectedYear == currentYear"><i class="fas fa-search"></i> No Result Found</h3>
-            <h3 *ngIf="selectedYear != currentYear"><i class="fas fa-search"></i> No result from previous year </h3>
+            <h3><i class="fas fa-search"></i> No Result Found</h3>
           </div>
         </div>
       </ng-container>

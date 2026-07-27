@@ -28,13 +28,13 @@ const routes: Routes = [
       { path: 'evaluator-response/:userID/:climateProgramID', component: EvaluatorResponsesComponent },
       { path: 'analyst-assessment', component: AnalystAssessmentComponent },
       { path: 'assessment-result/:assessmentID/:userName', component: EvaluatorResponseViewComponent },
-      { path: 'evaluator-Comparision', component: ComparisionComponent },
+      { path: 'evaluator-comparison', component: ComparisionComponent },
       {
         path: 'kpi-layers',
         loadComponent: () => import('./container/kpi-layers/kpi-layers.component').then(m => m.KpiLayersComponent)
       },
       {
-        path: 'kpi-comparision',
+        path: 'kpi-comparison',
         loadComponent: () => import('./container/kpi-comparision/kpi-comparision.component').then(m => m.KpiComparisionComponent)
       },
       {

@@ -130,8 +130,7 @@ export class EvaluatorResponsesComponent implements OnInit {
       climateProgramID: this.selectedclimateProgramID,
       subUserID: this.assessmentUserID
         ? this.assessmentUserID
-        : this.selecteduserID,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
+        : this.selecteduserID
     };
     this.analystService
       .getAssessmentResults(payload)

@@ -8,7 +8,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { EvaluatorService } from '../../evaluator.service';
 import { ActivatedRoute } from '@angular/router';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
-import { GetAssessmentQuestionRequestDto } from 'src/app/core/models/AssessmentRequest';
+import { GetAssessmentQuestionRequestDto, GetProgramProgressHistoryRequestDto } from 'src/app/core/models/AssessmentRequest';
 import { GetAssessmentQuestionResponseDto } from 'src/app/core/models/AssessmentResponse';
 import { SortDirection } from 'src/app/core/enums/SortDirection';
 
@@ -37,7 +37,7 @@ export class AssessmentViewResultComponent implements OnInit {
       this.assessmentID = params.get('assessmentID');
       this.userName = params.get('userName');
     });
-    this.getAssessmentQuestoins();
+    this.getAssessmentQuestions();
     this.GetAllPillars();
     this.getAssessmentProgressHistory();
   }
@@ -48,7 +48,11 @@ export class AssessmentViewResultComponent implements OnInit {
     });
   }
   getAssessmentProgressHistory() {
-    this.evaluatorService.getAssessmentProgressHistory(this.assessmentID).subscribe(res => {
+    var payload: GetProgramProgressHistoryRequestDto = {
+      staffProgramMappingID: 0,
+      assessmentID: this.assessmentID ?? 0
+    };
+    this.evaluatorService.getAssessmentProgressHistory(payload).subscribe(res => {
       if (res.succeeded) {
         this.userService.assessmentProgress.next(res.result);
       }
@@ -58,7 +62,7 @@ export class AssessmentViewResultComponent implements OnInit {
     });
   }
 
-  getAssessmentQuestoins(currentPage: number = 1) {
+  getAssessmentQuestions(currentPage: number = 1) {
     this.questionResponse = undefined;
     this.isLoader = true;
     let payload: GetAssessmentQuestionRequestDto = {
@@ -70,7 +74,7 @@ export class AssessmentViewResultComponent implements OnInit {
       assessmentID: this.assessmentID,
       pillarID: this.selectedPillarId
     }
-    this.evaluatorService.getAssessmentQuestoins(payload).subscribe(programs => {
+    this.evaluatorService.getAssessmentQuestions(payload).subscribe(programs => {
       this.questionResponse = programs;
       this.totalRecords = programs.totalRecords;
       this.currentPage = currentPage;

@@ -19,7 +19,7 @@ import { GetUserByRoleRequestDto, GetUserByRoleResponse } from '../../core/model
 import { AddBulkQuestionsDto, AddQuestionRequest, GetQuestionRequest, GetQuestionResponse } from 'src/app/core/models/QuestionResponse';
 import { AssessmentWithProgressVM, GetAssessmentQuestionResponseDto, GetAssessmentResponse } from 'src/app/core/models/AssessmentResponse';
 import { AnalyticalLayerResponseDto, GetAnalyticalLayerRequestDto, GetAnalyticalLayerResultDto } from 'src/app/core/models/GetAnalyticalLayerResultDto';
-import { ChangeAssessmentStatusRequestDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto, GetProgramPillarHistoryRequestDto, GetProgramPillarHistoryRequestNewDto, TransferAssessmentRequestDto } from 'src/app/core/models/AssessmentRequest';
+import { ChangeAssessmentStatusRequestDto, GetAssessmentQuestionRequestDto, GetAssessmentRequestDto, GetProgramPillarHistoryRequestDto, GetProgramPillarHistoryRequestNewDto, GetProgramProgressHistoryRequestDto, TransferAssessmentRequestDto } from 'src/app/core/models/AssessmentRequest';
 import { GetMutiplekpiLayerRequestDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerRequestDto';
 import { GetMutiplekpiLayerResultsDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto';
 import { EmailExistDto } from 'src/app/core/models/EmailExistDto';
@@ -203,17 +203,16 @@ export class AdminService {
       .getWithQueryParams(`AssessmentResponse/getAssessmentResults`, payload)
       .pipe(map((x) => x as PaginationResponse<GetAssessmentResponse>));
   }
-  public getAssessmentQuestoins(payload: GetAssessmentQuestionRequestDto) {
+  public getAssessmentQuestions(payload: GetAssessmentQuestionRequestDto) {
     return this.http
-      .getWithQueryParams(`AssessmentResponse/getAssessmentQuestoins`, payload)
+      .getWithQueryParams(`AssessmentResponse/getAssessmentQuestions`, payload)
       .pipe(
         map((x) => x as PaginationResponse<GetAssessmentQuestionResponseDto>)
       );
   }
-  public getAssessmentProgressHistory(assessmentID: number) {
-    return this.http
-      .get(`AssessmentResponse/getAssessmentProgressHistory/` + assessmentID)
-      .pipe(map((x) => x as ResultResponseDto<AssessmentWithProgressVM>));
+
+  public getAssessmentProgressHistory(request: GetProgramProgressHistoryRequestDto) {
+     return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentProgressHistory`, request).pipe(map(x => x as ResultResponseDto<AssessmentWithProgressVM>));
   }
 
   public getProgramPillarHistory(request: UserProgramPillarDashboardRequestDto) {

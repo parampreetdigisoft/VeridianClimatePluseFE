@@ -62,8 +62,7 @@ export class AssessmentResultComponent implements OnInit {
       pageNumber: currentPage,
       pageSize: this.pageSize,
       userId: this.userService?.userInfo?.userID,
-      climateProgramID: this.selectedclimateProgramID,
-      updatedAt:this.commonService.getStartOfYearLocal(this.selectedYear)
+      climateProgramID: this.selectedclimateProgramID
     };
     this.evaluatorService
       .getAssessmentResults(payload)

@@ -35,7 +35,7 @@
         <th>Program</th>
         <th>Score</th>
         <th>Status</th>
-        <th>Unknown</th>
+        <th>Indeterminate</th>
         <th>NA</th>
         <th>Analyst</th>
         <th>Action</th>
@@ -47,7 +47,7 @@
         <td>{{assessment.programName}}</td>
         <td><span class="bold_num">{{ assessment.score?.toFixed(2) }}</span></td>
         <td>{{ assessment.assessmentPhase==5 ? 'Completed' :'InProgress' }}</td>
-        <td>{{ assessment.totalUnknown }}</td>
+        <td>{{ assessment.totalIndeterminate }}</td>
         <td>{{ assessment.totalNA }}</td>
         <td>{{assessment.assignedByUser}}</td>
         <!-- <td><button class="see_response" (click)="goToAssessment(assessment)">See Response</button></td> -->
@@ -117,7 +117,7 @@
 
     </tbody>
   </table>
-  <app-pagination [selectedYear]="selectedYear" [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize" [isLoader]="isLoader"
+  <app-pagination [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize" [isLoader]="isLoader"
     (pageChange)="getAssessments($event)"></app-pagination>
   
 </div>

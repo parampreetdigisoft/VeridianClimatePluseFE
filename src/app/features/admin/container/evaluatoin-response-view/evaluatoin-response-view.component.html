@@ -9,7 +9,7 @@
 		<div class="col-md-6">
 			<div class="input_field">
 				<select [(ngModel)]="selectedPillarId"
-					(change)="getAssessmentQuestoins()"
+					(change)="getAssessmentQuestions()"
 					name="pillarID"
 					class="form-control ms-auto">
 					<option value>Select Pillar</option>
@@ -78,5 +78,5 @@
 		[currentPage]="currentPage"
 		[pageSize]="pageSize"
 		[isLoader]="isLoader"
-		(pageChange)="getAssessmentQuestoins($event)"></app-pagination>
+		(pageChange)="getAssessmentQuestions($event)"></app-pagination>
 </div>

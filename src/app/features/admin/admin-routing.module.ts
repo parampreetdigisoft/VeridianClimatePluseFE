@@ -27,14 +27,14 @@ const routes: Routes = [
       { path: "client", component: ClientViewComponent },
       { path: "pillar", component: PillarComponent },
       { path: "question", component: QuestionComponent },
-      { path: "assesment", component: AssesmentComponent },
-      { path: "assesment/:roleID/:climateProgramID", component: AssesmentComponent },
+      { path: "assessment", component: AssesmentComponent },
+      { path: "assessment/:roleID/:climateProgramID", component: AssesmentComponent },
       {
         path: "assessment-result/:assessmentID/:userName",
         component: EvaluatoinResponseViewComponent,
       },
       { path: "viewUser/:roleID", component: AnalystViewComponent },
-      { path: "evaluator-Comparision", component: ComparisionComponent },
+      { path: "evaluator-comparison", component: ComparisionComponent },
       {
         path: "kpi-layers",
         loadComponent: () =>
@@ -43,7 +43,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: "kpi-comparision",
+        path: "kpi-comparison",
         loadComponent: () =>
           import("./container/kpi-comparision/kpi-comparision.component").then(
             (m) => m.KpiComparisionComponent

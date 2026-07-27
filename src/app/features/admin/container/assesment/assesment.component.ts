@@ -35,6 +35,7 @@ export class AssesmentComponent implements OnInit {
   pageSize: number = 10;
   currentPage: number = 1;
   programs: ProgramVM[] | null = [];
+  filterProgram!: number;
   loading: boolean = false;
   evaluators: PublicUserResponse[] | null = [];
   userofSelectedProgramResponse: GetAssessmentResponse[] = [];
@@ -63,6 +64,11 @@ export class AssesmentComponent implements OnInit {
         this.selectedclimateProgramID = cid;
       }
     });
+    this.route.queryParams.subscribe((params) => {
+      if (params["climateProgramID"]) {
+        this.filterProgram = +params["climateProgramID"];
+      }
+    });
     this.getAssessments();
   }
 
@@ -85,10 +91,11 @@ export class AssesmentComponent implements OnInit {
       pageNumber: currentPage,
       pageSize: this.pageSize,
       userId: this.userService?.userInfo?.userID,
-      climateProgramID: this.selectedclimateProgramID,
-      role: this.selectedRoleID,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
+      role: this.selectedRoleID
     };
+    if (this.userService?.userInfo?.userID == null || this.filterProgram > 0) {
+      payload.climateProgramID = this.filterProgram;
+    }
     this.adminService.getAssessmentResults(payload).subscribe((assessments) => {
       this.assessmentsResponse = assessments;
       this.totalRecords = assessments.totalRecords;
@@ -110,6 +117,15 @@ export class AssesmentComponent implements OnInit {
           }
         },
       });
+  }
+
+    customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().toLowerCase().includes(term)
+    );
   }
 
   selectChangedAssessment(assessmentPhase: AssessmentPhase,assessmentID: number){

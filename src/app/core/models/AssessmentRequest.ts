@@ -27,26 +27,21 @@ export interface GetAssessmentQuestionRequestDto extends PaginationUserRequest{
   assessmentID: number;
 }
 
-
 export interface GetAssessmentRequestDto extends PaginationUserRequest{
   subUserID?: number | null;
   climateProgramID?: number | null;
   role?: UserRoleValue | null;
-  updatedAt?: string;
 }
-
 
 export interface GetProgramPillarHistoryRequestDto {
   climateProgramID: number;
   userID: number;
   pillarID?: number;
-  updatedAt:string;
   exportType: ExportType;
 }
 export interface GetProgramPillarHistoryRequestNewDto extends PaginationUserRequest {
-  climateProgramID: number;
+  climateProgramID?: number;
   pillarID?: number;
-  updatedAt:string;
 }
 
 export interface ChangeAssessmentStatusRequestDto {

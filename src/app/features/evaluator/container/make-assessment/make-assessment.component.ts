@@ -31,6 +31,7 @@ import { debounceTime, Subject } from "rxjs";
   templateUrl: "./make-assessment.component.html",
   styleUrl: "./make-assessment.component.css",
 })
+
 export class MakeAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   programs: ProgramVM[] = [];
@@ -126,7 +127,6 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
     }
   }
 
- 
  makePillarActive(pillar:PillarsVM){
     return (this.selectedProgram?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder );
   }
@@ -144,16 +144,11 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
     });
   }
 
-  
   pillarChanged(pillar?: PillarsVM) {
     if (!this.selectedUserProgramMappingID || this.selectedUserProgramMappingID == 0) {
       this.toaster.showWarning("Please select program first");
       return;
     }
-    // if(this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
-    //   this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires administrator permission.");
-    //   return
-    // }
     this.resetAssessmentActionState();
     if (pillar) {
       this.selectedPillar = pillar;
@@ -167,11 +162,11 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
     }
   }
 
-   onImgError(event: Event) {
+  onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/noImageAvailable.png';
   }
 
-   programChanged() {
+  programChanged() {
     this.selectedUserProgramMappingID = Number(this.programControl.value ?? 0);
     this.selectedProgram = this.programs.find(
       x => x.staffProgramMappingID == this.selectedUserProgramMappingID
@@ -213,7 +208,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       });
   }
 
- getQuestionsByProgramId() {
+  getQuestionsByProgramId() {
     if (
       !this.selectedUserProgramMappingID ||
       this.selectedUserProgramMappingID == 0
@@ -376,6 +371,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       },
     });
   }
+
   getAssessmentProgressHistory() {
     var payload: GetProgramProgressHistoryRequestDto = {
       staffProgramMappingID: this.selectedUserProgramMappingID,
@@ -422,6 +418,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       }
     }
   }
+  
   decodeHtml(text: string | undefined): string {
     if (text) {
       const txt = document.createElement('textarea');
@@ -477,5 +474,4 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
 
     return sortedPillars[currentIndex + 1];
   }
-
 }

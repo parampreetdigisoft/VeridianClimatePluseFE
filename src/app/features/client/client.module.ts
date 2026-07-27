@@ -23,7 +23,7 @@ const routes: Routes = [
         loadComponent: () => import('./container/kpi-layers/kpi-layers.component').then(m => m.KpiLayersComponent)
       },
       {
-        path: 'comparision', 
+        path: 'comparison', 
         loadComponent: () => import('./container/comparison/comparison.component').then(m => m.ComparisonComponent)
       },
       {

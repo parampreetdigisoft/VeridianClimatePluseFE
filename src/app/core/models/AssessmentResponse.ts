@@ -1,20 +1,21 @@
 import { AssessmentPhase } from "../enums/AssessmentPhase";
 
 export interface GetAssessmentResponse {
-  assessmentID:number;
-  staffProgramMappingID:number
-  createdAt:Date | string;
+  assessmentID: number;
+  staffProgramMappingID: number;
+  createdAt: Date | string;
   climateProgramID: number;
   programName: string;
   isActive: boolean;
   userID: number;
   userName: string;
-  score?: number |null;   // float in C# maps to number in TS
+  userRole: string;
+  score?: number | null; // float in C# maps to number in TS
   assignedByUser: string;
   assignedByUserId: number;
-  assessmentPhase?:AssessmentPhase;
+  assessmentPhase?: AssessmentPhase;
   assessmentYear: number;
-  totalUnknown?: number;
+  totalIndeterminate?: number;
   totalNA?: number;
 }
 

@@ -5,17 +5,19 @@
     </div>
     <div class="col-md-6">
       <div class="input_field input_flex">
-        <select [(ngModel)]="selectedYear" name="selectedYear" class="form-control" (change)="getAssessments()">
-          <option *ngFor="let year of commonService.applicateYears" [value]="year">
-            {{ year }}
-          </option>
-        </select>
-        <select [(ngModel)]="selectedclimateProgramID" name="climateProgramID" class="form-control" (change)="getAssessments()">
-          <option value="">Search by Program</option>
-          <option *ngFor="let program of programs" [value]="program.climateProgramID">
-            {{ program.programName }}
-          </option>
-        </select>
+        <ng-select [items]="programs" [searchable]="true" [searchFn]="customSearchFn"
+          [placeholder]="filterProgram > 0 ? '' : 'Search Program..'" [(ngModel)]="filterProgram" (change)="getAssessments()"
+          bindValue="climateProgramID" bindLabel="programName" class="form-control analyst_multi_select">
+          <ng-template ng-label-tmp let-item="item" class="select_item">
+            {{ item.programName }}
+          </ng-template>
+
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.programName }}, {{ item.location }} ({{
+            item.score?.toFixed(1) || "NA"
+            }})
+          </ng-template>
+        </ng-select>
         <select [(ngModel)]="selectedRoleID" name="role" class="form-control" (change)="getAssessments()">
           <option value="">Search by Role</option>
           <option *ngFor="let role of rolesList" [value]="role.role">
@@ -33,10 +35,11 @@
       <tr>
         <th>S.No.</th>
         <th>Submitted By</th>
+        <th>Role</th>
         <th>Program</th>
         <th>Score</th>
         <th>Status</th>
-        <th>Unknown</th>
+        <th>Indeterminate</th>
         <th>NA</th>
         <th>Assign By</th>
         <th>Action</th>
@@ -46,12 +49,13 @@
       <tr *ngFor="let assessment of assessmentsResponse?.data; let i = index">
         <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
         <td>{{ assessment.userName }}</td>
+        <td>{{ assessment.userRole }}</td>
         <td>{{ assessment.programName }}</td>
         <td>
           <span class="bold_num">{{ assessment.score?.toFixed(2) }}</span>
         </td>
         <td>{{ assessment.assessmentPhase==5 ? 'Completed' :'InProgress' }}</td>
-        <td>{{ assessment.totalUnknown }}</td>
+        <td>{{ assessment.totalIndeterminate }}</td>
         <td>{{ assessment.totalNA }}</td>
         <td>{{ assessment.assignedByUser }}</td>
         <td>
@@ -128,7 +132,7 @@
       </tr>
     </tbody>
   </table>
-  <app-pagination [selectedYear]="selectedYear" [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize" [isLoader]="isLoader"
+  <app-pagination [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize" [isLoader]="isLoader"
     (pageChange)="getAssessments($event)"></app-pagination>
 </div>
 
