@@ -97,10 +97,9 @@
 			<div class="col-xxl col-md-6">
 				<div class="input_field">
 					<label>Select Program *</label>
-
-
 					<ng-select [items]="programs"
 						[searchable]="true"
+						[searchFn]="customSearchFn"
 						[placeholder]="selectedPrograms == '' ? 'Select Program' : ''"
 						[(ngModel)]="selectedPrograms"
 						(change)="getProgramPillarHistory()"
@@ -116,45 +115,9 @@
 
 						<ng-template ng-option-tmp
 							let-item="item">
-							{{ item.programName }}, {{ item.continent }}
+							{{ item.programName }}, {{ item.location }}, {{ item.year }}
 						</ng-template>
 					</ng-select>
-				</div>
-			</div>
-			<div class="col-xxl col-md-6">
-				<div class="input_field">
-					<label>Select Year*</label>
-					<select [(ngModel)]="selectedYear"
-						(change)="yearChanged()"
-						name="selectedYear"
-						class="form-control">
-						<option *ngFor="let year of commonService.applicateYears"
-							[value]="year">
-							{{ year }}
-						</option>
-					</select>
-					<span class="calender_icon">
-						<svg xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="#006D77"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="icon icon-tabler icons-tabler-outline icon-tabler-calendar">
-							<path stroke="none"
-								d="M0 0h24v24H0z"
-								fill="none"></path>
-							<path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path>
-							<path d="M16 3v4"></path>
-							<path d="M8 3v4"></path>
-							<path d="M4 11h16"></path>
-							<path d="M11 15h1"></path>
-							<path d="M12 15v3"></path>
-						</svg>
-					</span>
 				</div>
 			</div>
 			<div class="col-md-auto d-flex gap-2 mt-3">

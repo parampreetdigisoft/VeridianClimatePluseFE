@@ -19,8 +19,7 @@ import { SendRequestMailToUpdateProgram } from "src/app/core/models/AnalystVM";
   styleUrl: "./assessment-result.component.css",
 })
 export class AssessmentResultComponent implements OnInit {
-  currentYear = new Date().getFullYear();
-  selectedYear= this.currentYear;
+
   selectedclimateProgramID: number | any = "";
   assessmentsResponse: PaginationResponse<GetAssessmentResponse> | undefined;
   totalRecords: number = 0;

@@ -5,11 +5,6 @@
     </div>
     <div class="col-md-5">
       <div class="compare_select input_field input_flex">
-        <select [(ngModel)]="selectedYear" (change)="yearChanged()" name="selectedYear" class="form-control">
-          <option *ngFor="let year of commonService.applicateYears" [value]="year">
-            {{ year }}
-          </option>
-        </select>
         <ng-select [items]="programs" [searchable]="true" [searchFn]="customSearchFn"
           [placeholder]="filterProgram > 0 ? '' : 'Search Program..'" [(ngModel)]="filterProgram" (change)="getAIPrograms()"
           bindValue="climateProgramID" bindLabel="programName" class="form-control analyst_multi_select">
@@ -83,7 +78,7 @@
         <tr *ngFor="let program of aiPrograms; let i = index">
           <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
           <td class="city-col">            
-            <app-typing-text [text]="program.programName + ', ' + program.continent" [speed]="40">
+            <app-typing-text [text]="program.programName + ', ' + program.location + ', ' + program.year" [speed]="40">
             </app-typing-text>
           </td>
 
@@ -194,7 +189,7 @@
 
 
 
-                      <a *ngIf="selectedYear == currentYear" style="cursor: pointer" [matTooltip]="
+                      <a style="cursor: pointer" [matTooltip]="
                           'Ai will research again as you provide element for research'
                         " (click)="opendialog(program); $event.preventDefault()">
                         <span style="display: inline-block">
@@ -212,7 +207,7 @@
                         </span>
                       </a>
 
-                      <a *ngIf="!program.isVerified && selectedYear == currentYear" style="cursor: pointer"
+                      <a *ngIf="!program.isVerified" style="cursor: pointer"
                         data-bs-toggle="modal" data-bs-target="#FinalizeAIScoreModal"
                         matTooltip="Finalize and lock the AI-generated score after reviewing and reconciling it with evaluator inputs. This action confirms the AI-assisted final assessment."
                         (click)="
@@ -232,7 +227,7 @@
                         </p>
                       </a>
 
-                      <a *ngIf="program.isVerified && selectedYear == currentYear" style="cursor: pointer"
+                      <a *ngIf="program.isVerified" style="cursor: pointer"
                         data-bs-toggle="modal" data-bs-target="#RejectAIScoreModal"
                         matTooltip="Reject the current AI-generated score to review evaluator inputs further or regenerate the AI score. No final score will be published."
                         (click)="

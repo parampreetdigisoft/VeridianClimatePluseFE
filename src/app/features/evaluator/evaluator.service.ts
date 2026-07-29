@@ -48,8 +48,8 @@ export class EvaluatorService {
     return this.http.get(`Program/getProgramByUserIdForAssessment/` + userId).pipe(map(x => x as ResultResponseDto<ProgramVM[]>));;
   }
 
-  public getProgramHistory(userID: number, updatedAt: string) {
-    return this.http.get(`Program/getProgramHistory/` + updatedAt).pipe(map(x => x as ResultResponseDto<ProgramHistoryDto>));
+  public getProgramHistory(userID: number) {
+    return this.http.get(`Program/getProgramHistory`).pipe(map(x => x as ResultResponseDto<ProgramHistoryDto>));
   }
 
   public getEvaluator(request: GetUserByRoleRequestDto) {

@@ -42,8 +42,6 @@ export class ProgramDetailsComponent implements OnInit {
 
   programDetail: ProgramDetailsDto | null = null;
   program: ProgramVM | null = null;
-  currentYear = new Date().getFullYear();
-  selectedYear = new Date().getFullYear();
 
   urlBase = environment.apiUrl;
   programQuestionHistoryReponse: GetProgramQuestionHistoryResponseDto | null = null;
@@ -80,8 +78,7 @@ export class ProgramDetailsComponent implements OnInit {
     this.isLoader = true;
     let request: UserProgramRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
-      climateProgramID: this.program?.climateProgramID ?? 0,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
+      climateProgramID: this.program?.climateProgramID ?? 0
     }
     this.clientService.getProgramDetails(request).subscribe({
       next: (res) => {
@@ -104,12 +101,12 @@ export class ProgramDetailsComponent implements OnInit {
       }
     });
   }
+
   getprogramPillarDetails(pillarID: number) {
     let request: StaffProgramGetPillarInfoRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
       climateProgramID: this.program?.climateProgramID ?? 0,
-      pillarID: pillarID,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
+      pillarID: pillarID
     }
     this.clientService.getProgramPillarDetails(request).subscribe({
       next: (res) => {

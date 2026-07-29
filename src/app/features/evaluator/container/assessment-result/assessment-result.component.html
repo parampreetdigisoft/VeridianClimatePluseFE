@@ -5,16 +5,6 @@
     </div>
     <div class="col-md">
       <div class="input_field input_flex">
-        <select
-          [(ngModel)]="selectedYear"
-          name="selectedYear"
-          class="form-control"
-          (change)="getAssessments()"
-        >
-          <option *ngFor="let year of commonService.applicateYears" [value]="year">
-            {{ year }}
-          </option>
-        </select>
         <select [(ngModel)]="selectedclimateProgramID" name="climateProgramID" class="form-control" (change)="getAssessments()">
           <option value="">Select Program</option>
           <option *ngFor="let program of programs" [value]="program.climateProgramID">
@@ -88,7 +78,7 @@
               </span>
             </a>
             <ng-container>
-              <a style="cursor: pointer" *ngIf="currentYear == selectedYear && (assessment.assessmentPhase==1 || assessment.assessmentPhase==4)" (click)=" assessmentPhaseAction(assessment); $event.preventDefault()" matTooltip="Edit Response">
+              <a style="cursor: pointer" *ngIf="(assessment.assessmentPhase==1 || assessment.assessmentPhase==4)" (click)=" assessmentPhaseAction(assessment); $event.preventDefault()" matTooltip="Edit Response">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="22"

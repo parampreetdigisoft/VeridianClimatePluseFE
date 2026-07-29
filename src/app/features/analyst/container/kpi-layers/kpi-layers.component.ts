@@ -23,7 +23,6 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './kpi-layers.component.css'
 })
 export class KpiLayersComponent {
-  selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
   selectedKpi: GetAnalyticalLayerResultDto | null | undefined = null;
   selectedclimateProgramID?: number;
@@ -48,6 +47,7 @@ export class KpiLayersComponent {
       this.GetAnalyticalLayerResults();
     });
   }
+
   kpiChanged() {
     this.$kpiChanged.next(true);
   }
@@ -68,9 +68,7 @@ export class KpiLayersComponent {
     if (this.selectedkpiLayerID != undefined && this.selectedkpiLayerID != 0) {
       payload.layerID = this.selectedkpiLayerID
     }
-    if(this.selectedYear > 0){
-      payload.year = Number(this.selectedYear);
-    }
+
     this.analystService.GetAnalyticalLayerResults(payload).subscribe(kpiLayers => {
       this.kpiLayersResponse = kpiLayers;
       this.totalRecords = kpiLayers.totalRecords;
@@ -90,6 +88,7 @@ export class KpiLayersComponent {
     const offcanvas = new bootstrap.Offcanvas(sidebarEl);
     offcanvas.show();
   }
+
   GetAllKpi() {
     this.analystService.GetAllKpi().subscribe({
       next: (res) => {
@@ -99,6 +98,7 @@ export class KpiLayersComponent {
       }
     });
   }
+  
   getClientPrograms() {
     this.analystService.getAllProgramsByUserId(this.userService.userInfo.userID ?? 0).subscribe({
       next: (res) => {
@@ -112,6 +112,7 @@ export class KpiLayersComponent {
   getConditionByid(layer: GetAnalyticalLayerResultDto) {
     return layer?.fiveLevelInterpretations?.find(x => x.interpretationID == layer.interpretationID)?.condition || '';
   }
+  
   customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
     return (

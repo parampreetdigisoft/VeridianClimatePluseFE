@@ -40,7 +40,7 @@
         <tr *ngFor="let program of aiPrograms; let i = index">
           <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
           <td class="city-col">            
-            <app-typing-text [text]="program.programName + ', ' + program.continent" [speed]="40">
+            <app-typing-text [text]="program.programName + ', ' + program.location" [speed]="40">
             </app-typing-text>
           </td>
 

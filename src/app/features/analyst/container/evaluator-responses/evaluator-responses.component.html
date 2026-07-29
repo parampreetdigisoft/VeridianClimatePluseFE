@@ -6,17 +6,6 @@
     <div class="col-md">
       <div class="input_field input_flex">
         <select
-          [(ngModel)]="selectedYear"
-          name="selectedYear"
-          class="form-control"
-          (change)="getAssessments()"
-        >
-          <option *ngFor="let year of commonService.applicateYears" [value]="year">
-            {{ year }}
-          </option>
-        </select>
-
-        <select
           [(ngModel)]="selectedclimateProgramID"
           name="climateProgramID"
           class="form-control"
@@ -109,7 +98,7 @@
                 </svg>
               </span>
             </a>
-            <ng-container *ngIf="!assessmentUserID && assessment.assessmentPhase ==2 && currentYear == selectedYear">
+            <ng-container *ngIf="!assessmentUserID && assessment.assessmentPhase ==2">
               <a style="cursor: pointer"
                 data-bs-toggle="modal"
                 data-bs-target="#ApproveRequestModal"
@@ -131,7 +120,7 @@
               </a>
             </ng-container>
 
-            <ng-container *ngIf="currentYear == selectedYear && assessmentUserID && assessment.assessmentPhase !=2">
+            <ng-container *ngIf="assessmentUserID && assessment.assessmentPhase !=2">
               <a style="cursor: pointer" *ngIf="(assessment.assessmentPhase==1 || assessment.assessmentPhase==4)" 
               (click)=" assessmentPhaseAction(assessment); $event.preventDefault()" matTooltip="Edit Response">
                 <svg

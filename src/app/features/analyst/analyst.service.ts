@@ -47,8 +47,8 @@ export class AnalystService {
     return this.http.get(`Program/getProgramByUserIdForAssessment/` + userId).pipe(map(x => x as ResultResponseDto<ProgramVM[]>));;
   }
   
-  public getProgramHistory(userID: number, updatedAt: string) {
-    return this.http.get(`Program/getProgramHistory/` + updatedAt).pipe(map(x => x as ResultResponseDto<ProgramHistoryDto>));
+  public getProgramHistory(userID: number) {
+    return this.http.get(`Program/getProgramHistory`).pipe(map(x => x as ResultResponseDto<ProgramHistoryDto>));
   }
 
   public getEvaluator(request: GetUserByRoleRequestDto) {
@@ -71,24 +71,31 @@ export class AnalystService {
   public deleteEvaluator(id: number) {
     return this.http.delete(`Auth/deleteUser` + id).pipe(map(x => x as ResultResponseDto<boolean>));
   }
+
   public unAssignProgram(data: any) {
     return this.http.post(`Program/unAssignProgram`, data).pipe(map(x => x as ResultResponseDto<unknown>));
   }
-  public getProgramsProgressByUserId(userID: number, updatedAt: string) {
-    return this.http.get(`Program/getProgramsProgressByUserId/`+ updatedAt).pipe(map(x => x as ResultResponseDto<GetProgramsSubmitionHistoryResponseDto[]>));
+
+  public getProgramsProgressByUserId(userID: number) {
+    return this.http.get(`Program/getProgramsProgressByUserId`).pipe(map(x => x as ResultResponseDto<GetProgramsSubmitionHistoryResponseDto[]>));
   }
+
   public getAllPillars() {
     return this.http.get(`Pillar/Pillars`).pipe(map(x => x as PillarsVM[]));
   }
+
   public exportPillarsHistoryByUserId(request: GetProgramPillarHistoryRequestDto) {
     return this.http.ImportFile(`Pillar/ExportPillarsHistoryByUserId`, request);
   }
+
   // public getQuestionsByclimateProgramID(payload: ProgramMappingPillerRequestDto) {
   //   return this.http.getWithQueryParams(`Question/getQuestionsByCityMappingId`, payload).pipe(map(x => x as ResultResponseDto<GetQuestionByProgramMappingResponse>));
   // }
+  
   public ExportAssessment(staffProgramMappingID: number) {
     return this.http.ImportFile(`Question/ExportAssessment/` + staffProgramMappingID);
   }
+
   public getQuestionsHistoryByPillar(request: GetProgramPillarHistoryRequestDto) {
     return this.http.getWithQueryParams(`Question/getQuestionsHistoryByPillar`, request).pipe(map(x => x as ResultResponseDto<QuestionsByUserPillarsResponsetDto[]>));
   }
@@ -100,6 +107,7 @@ export class AnalystService {
   public getAssessmentResults(payload: GetAssessmentRequestDto) {
     return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentResults`, payload).pipe(map(x => x as PaginationResponse<GetAssessmentResponse>));
   }
+  
   public getAssessmentQuestions(payload: GetAssessmentQuestionRequestDto) {
     return this.http.getWithQueryParams(`AssessmentResponse/getAssessmentQuestions`, payload).pipe(map(x => x as PaginationResponse<GetAssessmentQuestionResponseDto>));
   }

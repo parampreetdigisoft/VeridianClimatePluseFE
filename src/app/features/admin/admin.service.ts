@@ -81,9 +81,10 @@ export class AdminService {
       .delete(`Program/delete/` + id)
       .pipe(map((x) => x as ResultResponseDto<boolean>));
   }
-  public getProgramHistory(userID: number, updatedAt: string) {
+
+  public getProgramHistory(userID: number) {
     return this.http
-      .get(`Program/getProgramHistory/` + updatedAt)
+      .get(`Program/getProgramHistory` )
       .pipe(map((x) => x as ResultResponseDto<ProgramHistoryDto>));
   }
   public exportPrograms(request: ExportProgramsWithOptionDto) {
@@ -238,9 +239,9 @@ export class AdminService {
       .getWithQueryParams(`User/GetEvaluatorByAnalyst`, payload)
       .pipe(map((x) => x as ResultResponseDto<PublicUserResponse[]>));
   }
-  public GetAnalyticalLayerResults(request: GetAnalyticalLayerRequestDto) {
+  public getAnalyticalLayerResults(request: GetAnalyticalLayerRequestDto) {
     return this.http
-      .getWithQueryParams(`Kpi/GetAnalyticalLayerResults`, request)
+      .getWithQueryParams(`Kpi/getAnalyticalLayerResults`, request)
       .pipe(map((x) => x as PaginationResponse<GetAnalyticalLayerResultDto>));
   }
   public GetAllKpi() {

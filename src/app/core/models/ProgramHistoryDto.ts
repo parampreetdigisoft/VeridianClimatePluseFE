@@ -47,5 +47,4 @@ export interface UserProgramRequestDto extends UserProgramPillarDashboardRequest
 
 export interface UserProgramPillarDashboardRequestDto {
   climateProgramID: number;
-  updatedAt: string;
 }

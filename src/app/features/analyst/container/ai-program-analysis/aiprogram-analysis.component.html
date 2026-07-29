@@ -33,7 +33,7 @@
 					</ng-template>
 					<ng-template ng-option-tmp
 						let-item="item">
-						{{ item.programName }}, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA'}})
+						{{ item.programName }}, {{ item.location }} ({{ item.score?.toFixed(1) || 'NA'}})
 					</ng-template>
 				</ng-select>
 				
@@ -104,14 +104,10 @@
 						{{ (currentPage - 1) * pageSize + (i + 1) }}
 					</td>
 					<td class="program-col">						
-						<app-typing-text [text]="program.programName + ', ' + program.continent"
+						<app-typing-text [text]="program.programName + ', ' + program.location + ', ' + program.year"
 							[speed]="40">
 						</app-typing-text>
 					</td>
-
-
-
-
 
 					<td>
 						<app-circular-score [value]="program?.evaluatorScore ?? 0"></app-circular-score>

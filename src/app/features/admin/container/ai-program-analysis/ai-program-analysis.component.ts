@@ -51,8 +51,6 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './ai-program-analysis.component.css'
 })
 export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
-  currentYear = new Date().getFullYear();
-  selectedYear = this.currentYear;
   urlBase = environment.apiUrl;
   totalRecords: number = 0;
   pageSize: number = 10;
@@ -86,9 +84,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
     document.body.style.overflow = "";
     document.body.style.paddingRight = "";
   }
-  yearChanged() {
-    this.getAIPrograms();
-  }
+
   getClientPrograms() {
     this.adminService
       .getAllProgramsByUserId(this.userService.userInfo.userID ?? 0)
@@ -113,8 +109,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
       sortDirection: SortDirection.DESC,
       sortBy: "AIProgress",
       pageNumber: currentPage,
-      pageSize: this.pageSize,
-      year: this.selectedYear
+      pageSize: this.pageSize
     }
     if (this.userService?.userInfo?.userID == null || this.filterProgram > 0) {
       payload.climateProgramID = this.filterProgram;
@@ -158,7 +153,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
 
     let payload: AiProgramSummeryRequestPdfDto = {
       climateProgramID: program.climateProgramID,
-      year: this.selectedYear,
+      year: program.year,
       format: format,
       reportType: mode
     };
@@ -253,6 +248,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
     if (modalInstance) modalInstance.hide();
     this.isOpenResearchBox = false;
   }
+  
   getUsersAssignedToCity() {
     let payload: GetAssignUserDto = {
       userID: this.userService.userInfo.userID,
@@ -270,6 +266,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
       },
     });
   }
+
   regenerateAiSearch(payload: RegenerateAiSearchDto) {
     if (this.selectedProgram) {
       this.loading = true;
@@ -343,9 +340,11 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
       item.programAliasName?.toLowerCase().includes(term)
     );
   }
+
   refresh() {
     this.getAIPrograms(this.currentPage);
   }
+
   reCalculateKpis() {
     this.isRecalcualteKpi = true;
 

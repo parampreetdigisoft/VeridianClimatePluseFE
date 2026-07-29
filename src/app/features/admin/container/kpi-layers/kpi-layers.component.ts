@@ -22,7 +22,6 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './kpi-layers.component.css'
 })
 export class KpiLayersComponent {
-  selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
   selectedKpi: GetAnalyticalLayerResultDto | null | undefined = null;
   selectedclimateProgramID?: number;
@@ -40,17 +39,17 @@ export class KpiLayersComponent {
   constructor(private adminService: AdminService, private toaster: ToasterService, private userService: UserService, public commonService:CommonService) { }
 
   ngOnInit(): void {
-    this.GetAnalyticalLayerResults(1);
+    this.getAnalyticalLayerResults(1);
     this.getProgramUserPrograms();
     this.GetAllKpi();
     this.$kpiChanged.pipe(debounceTime(1000)).subscribe(x => {
-      this.GetAnalyticalLayerResults();
+      this.getAnalyticalLayerResults();
     });
   }
   kpiChanged() {
     this.$kpiChanged.next(true);
   }
-  GetAnalyticalLayerResults(currentPage: any = 1) {
+  getAnalyticalLayerResults(currentPage: any = 1) {
     this.kpiLayersResponse = undefined;
     this.isLoader = true;
     let payload: GetAnalyticalLayerRequestDto = {
@@ -66,11 +65,7 @@ export class KpiLayersComponent {
     if (this.selectedkpiLayerID != undefined && this.selectedkpiLayerID != 0) {
       payload.layerID = this.selectedkpiLayerID;
     }
-    if(this.selectedYear > 0){
-      payload.year = Number(this.selectedYear);
-    }
-
-    this.adminService.GetAnalyticalLayerResults(payload).subscribe(kpiLayers => {
+    this.adminService.getAnalyticalLayerResults(payload).subscribe(kpiLayers => {
       this.kpiLayersResponse = kpiLayers;
       this.totalRecords = kpiLayers.totalRecords;
       this.currentPage = currentPage;
@@ -80,7 +75,6 @@ export class KpiLayersComponent {
   }
 
   ngOnDestroy(): void {
-
   }
 
   viewDetails(program: GetAnalyticalLayerResultDto) {   

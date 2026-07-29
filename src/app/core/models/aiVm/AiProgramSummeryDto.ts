@@ -1,6 +1,6 @@
 export interface AiProgramSummeryDto {
   climateProgramID: number;
-  continent: string;
+  location: string;
   programName: string;
   image: string | null;
   year: number;
@@ -16,11 +16,9 @@ export interface AiProgramSummeryDto {
   perceptionEvidence: string | null;
   temporalScope: string | null;
   distortionScreening: string | null;
-
   geopoliticalShock: string | null;
   financeShock: string | null;
   legitimacyShock: string | null;
-
   overallStressResilience: string | null;
   stressScoreAdjustment: string | null;
   inclusionEquityAdjustment: string | null;
@@ -31,7 +29,6 @@ export interface AiProgramSummeryDto {
   institutionalCapacity: string | null;
   equityAssessment: string | null;
   governanceTrajectory: string | null;
-
   strategicRecommendation: string | null;
   assessmentValueNote: string | null;
   primarySource: string | null;

@@ -1,10 +1,9 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { ProgramHistoryDto, GetProgramsSubmitionHistoryResponseDto, GetProgramQuestionHistoryResponseDto, UserProgramRequestDto } from 'src/app/core/models/ProgramHistoryDto';
+import { Component, ViewChild } from '@angular/core';
+import { ProgramHistoryDto, GetProgramQuestionHistoryResponseDto, UserProgramRequestDto } from 'src/app/core/models/ProgramHistoryDto';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { EvaluatorService } from '../../evaluator.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { AgBarSeriesOptions, AgTooltipRendererDataRow } from "ag-charts-community";
 import { CommonService } from 'src/app/core/services/common.service';
 
 import {
@@ -14,8 +13,7 @@ import {
   ApexLegend,
   ChartComponent,
 } from "ng-apexcharts";
-import { VCP_CHART, ahiCompletionColor, VCP_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
-
+import { VCP_CHART, ahiCompletionColor } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -31,9 +29,8 @@ export type ChartOptions = {
   templateUrl: './evaluator-dashboard.component.html',
   styleUrl: './evaluator-dashboard.component.css'
 })
+
 export class EvaluatorDashboardComponent {
-  currentYear = new Date().getFullYear();
-  selectedYear = this.currentYear;
   programs: ProgramVM[] | null = [];
   selectedPrograms: number | any = '';
   programHistory: ProgramHistoryDto | null = null;
@@ -48,11 +45,7 @@ export class EvaluatorDashboardComponent {
   ngOnInit(): void {
     this.isLoader = true;
     this.getAllProgramsByUserId();
-    this.GetProgramHistory();
-  }
-  yearChanged() {
-    this.GetProgramHistory();
-    this.getProgramQuestionHistory();
+    this.getProgramHistory();
   }
 
   ngAfterViewInit() { }
@@ -71,29 +64,38 @@ export class EvaluatorDashboardComponent {
     });
   }
 
-  GetProgramHistory() {
-    this.evaluatorService.getProgramHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
+  getProgramHistory() {
+    this.evaluatorService.getProgramHistory(this.userService?.userInfo?.userID ?? 0).subscribe({
       next: (res) => {
         this.programHistory = res.result;
-        this.GetApexPieOptions();
+        this.getApexPieOptions();
       }
     });
   }
+
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().includes(term)
+    );
+  }
+  
   getProgramQuestionHistory() {
     if (this.userService?.userInfo?.userID == null || !this.selectedPrograms || this.selectedPrograms === '' || this.selectedPrograms == null) {
       return;
     }
     let request: UserProgramRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
-      climateProgramID: this.selectedPrograms,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
+      climateProgramID: this.selectedPrograms
     }
     this.evaluatorService.getProgramQuestionHistory(request).subscribe({
       next: (res) => {
         this.isLoader = false;
         this.programQuestionHistoryResponse = res;
         if (this.programQuestionHistoryResponse) {
-          this.GetPillarBarOptions(this.programQuestionHistoryResponse);
+          this.getPillarBarOptions(this.programQuestionHistoryResponse);
         }
       },
       error: (err) => {
@@ -102,7 +104,7 @@ export class EvaluatorDashboardComponent {
     });
   }
 
-  GetPillarBarOptions(history: GetProgramQuestionHistoryResponseDto) {
+  getPillarBarOptions(history: GetProgramQuestionHistoryResponseDto) {
     let colors = this.commonService.PillarColors;
     const rawMax = Math.max(...history.pillars.map(p => p.scoreProgress));
     const maxNumber = Math.ceil(rawMax / 10) * 10;
@@ -463,7 +465,7 @@ export class EvaluatorDashboardComponent {
     return colors[colorIndex];
   }
 
-  GetApexPieOptions() {
+  getApexPieOptions() {
     const total = this.programHistory?.totalProgram ?? 0;
     const active = this.programHistory?.activeProgram ?? 0;
     const inprogress = this.programHistory?.inprocessProgram ?? 0;

@@ -85,7 +85,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.isLoader = true;
     this.getAllProgramsByUserId();
-    this.GetProgramHistory();
+    this.getProgramHistory();
   }
 
   ngAfterViewInit() { }
@@ -106,23 +106,26 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       });
   }
 
-  yearChanged() {
-    this.getProgramPillarHistory();
-    this.GetProgramHistory();
-  }
-
-  GetProgramHistory() {
+  getProgramHistory() {
     this.adminService
       .getProgramHistory(
-        this.userService?.userInfo?.userID ?? 0,
-        this.commonService.getStartOfYearLocal(this.selectedYear)
-      )
+        this.userService?.userInfo?.userID ?? 0
+         )
       .subscribe({
         next: (res) => {
           this.programHistory = res.result;
-          this.GetApexPieOptions();
+          this.getApexPieOptions();
         },
       });
+  }
+
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().includes(term)
+    );
   }
 
   getProgramPillarHistory() {
@@ -136,8 +139,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
     }
     let request: UserProgramRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
-      climateProgramID: this.selectedPrograms,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
+      climateProgramID: this.selectedPrograms
     };
     this.adminService.getProgramPillarHistory(request).subscribe({
       next: (res) => {
@@ -178,7 +180,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       this.toaster.showWarning("Please select program to export the records");
     }
   }
-  GetApexPieOptions() {
+
+  getApexPieOptions() {
     const total = this.programHistory?.totalProgram ?? 0;
     const active = this.programHistory?.activeProgram?? 0;
     const inprogress = this.programHistory?.inprocessProgram ?? 0;

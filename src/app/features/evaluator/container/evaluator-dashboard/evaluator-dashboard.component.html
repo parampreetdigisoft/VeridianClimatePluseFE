@@ -6,6 +6,7 @@
 					<label>Select Program *</label>
 					<ng-select [items]="programs"
 						[searchable]="true"
+						[searchFn]="customSearchFn"
 						[placeholder]="selectedPrograms == '' ? 'Select Program' : ''"
 						[(ngModel)]="selectedPrograms"
 						(change)="getProgramQuestionHistory()"
@@ -17,31 +18,14 @@
 							class="select_item">
 							{{ item.programName }} ({{item?.assignedBy || ''}})
 						</ng-template>
-
-
 						<ng-template ng-option-tmp
 							let-item="item">
-							{{ item.programName }}, {{ item.continent }} ({{item?.assignedBy || ''}})
+							{{ item.programName }}, {{ item.location }} ({{item?.assignedBy || ''}})
 						</ng-template>
 					</ng-select>
 				</div>
-			</div>
-			<div class="col-md-auto">
-				<div class="input_field">
-					<label>Select Year*</label>
-					<select [(ngModel)]="selectedYear"
-						(change)="yearChanged()"
-						name="selectedYear"
-						class="form-control">
-						<option *ngFor="let year of commonService.applicateYears"
-							[value]="year">
-							{{ year }}
-						</option>
-					</select>
-				</div>
-			</div>			
+			</div>		
 		</div>
-
 
 		<div *ngIf="chartPillarOptions && chartPillarOptions?.series"
 			id="chartPillar"

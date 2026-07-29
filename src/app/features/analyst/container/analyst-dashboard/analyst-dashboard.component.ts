@@ -61,7 +61,6 @@ export type PillarChartOptions = {
   styleUrl: './analyst-dashboard.component.css',
 })
 export class AnalystDashboardComponent implements OnInit {
-  selectedYear = new Date().getFullYear();
   programs: ProgramVM[] | null = [];
   selectedPrograms: number | any = '';
   programHistory: ProgramHistoryDto | null = null;
@@ -85,18 +84,11 @@ export class AnalystDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.isLoader = true;
     this.getAllProgramsByUserId();
-    this.yearChanged();
-
-  }
-  
-  yearChanged() {
-    this.GetProgramHistory();
-    this.getProgramsProgressByUserId();
-    this.getProgramPillarHistory();
+    this.getProgramHistory();
   }
   
   getProgramsProgressByUserId() {
-    this.analystService.getProgramsProgressByUserId(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
+    this.analystService.getProgramsProgressByUserId(this.userService?.userInfo?.userID ?? 0).subscribe({
       next: (res) => {
         if (res.succeeded && res.result) {
           this.apexchartOptions = this.getProgramLineChartOptions(res.result);
@@ -104,6 +96,7 @@ export class AnalystDashboardComponent implements OnInit {
       }
     })
   }
+
   getAllProgramsByUserId() {
     this.analystService.getAllProgramsByUserId(this.userService?.userInfo?.userID).subscribe({
       next: (res) => {
@@ -118,22 +111,31 @@ export class AnalystDashboardComponent implements OnInit {
     });
   }
 
-  GetProgramHistory() {
-    this.analystService.getProgramHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
+  getProgramHistory() {
+    this.analystService.getProgramHistory(this.userService?.userInfo?.userID ?? 0).subscribe({
       next: (res) => {
         this.programHistory = res.result;;
-        this.GetApexPieOptions();
+        this.getApexPieOptions();
       }
     });
   }
+
+   customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().includes(term)
+    );
+  }
+
   getProgramPillarHistory() {
     if (this.userService?.userInfo?.userID == null || !this.selectedPrograms || this.selectedPrograms === '' || this.selectedPrograms == null) {
       return;
     }
     let request: UserProgramRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
-      climateProgramID: this.selectedPrograms,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
+      climateProgramID: this.selectedPrograms
     }
     this.analystService.getProgramPillarHistory(request).subscribe({
       next: (res) => {
@@ -148,6 +150,7 @@ export class AnalystDashboardComponent implements OnInit {
       }
     });
   }
+
   goToProgramAnalysis() {
     // If climateProgramID exists, pass it as a query parameter
     const queryParams: any = {};
@@ -174,6 +177,7 @@ export class AnalystDashboardComponent implements OnInit {
       this.toaster.showWarning("Please select program to export the records");
     }
   }
+
   getProgramLineChartOptions(programsHistory: GetProgramsSubmitionHistoryResponseDto[]) {
 
     const evaluationColor = VCP_CHART.lineEvaluation;
@@ -208,8 +212,6 @@ export class AnalystDashboardComponent implements OnInit {
         curve: "smooth",
         width: 3
       },
-
-
 
       dataLabels: {
         enabled: true,
@@ -292,8 +294,7 @@ export class AnalystDashboardComponent implements OnInit {
     return option;
   }
 
-
-  GetApexPieOptions() {
+  getApexPieOptions() {
     const total = this.programHistory?.totalProgram ?? 0;
     const active = this.programHistory?.activeProgram ?? 0;
     const inprogress = this.programHistory?.inprocessProgram ?? 0;
@@ -390,7 +391,6 @@ export class AnalystDashboardComponent implements OnInit {
       },
     };
   }
-
 
   buildPillarComparisonChart() {
     const data = [...(this.programQuestionHistoryReponse?.pillars ?? [])];
