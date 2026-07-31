@@ -119,7 +119,7 @@ export class ViewProgramDetailComponent implements OnChanges {
             },
             total: {
               show: true,
-              label: "Avg Progress",
+              label: "Avg Score",
               formatter: (value: any) => {
                 return `${avgProgress.toFixed(2)}`;
               },
@@ -128,7 +128,7 @@ export class ViewProgramDetailComponent implements OnChanges {
         }
       },
       colors: ["#51eea5", "#486363", "#383836d9", "#099176"],
-      labels: ["AI Progress", "Evaluator Progress", "Discrepancy", "Avg Progress"],
+      labels: ["AI Score", "Evaluator Score", "Discrepancy", "Avg Score"],
       legend: {
         show: true,
         floating: true,

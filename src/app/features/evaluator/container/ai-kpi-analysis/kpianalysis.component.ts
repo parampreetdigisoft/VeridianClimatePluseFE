@@ -179,8 +179,8 @@ export class KPIAnalysisComponent implements OnInit {
 
     this.chartOptions = {
       series: [
-        { name: 'AI Progress', data: aiSeries },
-        { name: 'Evaluator Progress', data: evaluatorSeries },
+        { name: 'AI Score', data: aiSeries },
+        { name: 'Evaluator Score', data: evaluatorSeries },
         { name: 'Discrepancy', data: discrepancySeries }
       ],
 
@@ -337,7 +337,7 @@ export class KPIAnalysisComponent implements OnInit {
               <div style="display:grid; row-gap:6px;">
 
                 <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#6b7280;">AI Progress</span>
+                  <span style="color:#6b7280;">AI Score</span>
                   <span style="font-weight:600; color:#2d5e56;">
                     ${pillar.aiProgress?.toFixed(2) ?? '0.00'}
                   </span>

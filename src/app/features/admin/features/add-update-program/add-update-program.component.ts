@@ -32,7 +32,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
   programList: ProgramVM[] = [];
 
   statusList: string[] = [
-    'In Progress',
+    'In Score',
     'On Hold',
     'Cancelled'
   ];
@@ -62,7 +62,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
       location: [this.program?.location, Validators.required],
       startAt: [formatDate(this.program?.startAt) ?? new Date().toISOString().substring(0, 10)],
       endAt: [formatDate(this.program?.endAt)],
-      status: [this.program?.status ?? 'In Progress', Validators.required],
+      status: [this.program?.status ?? 'In Score', Validators.required],
       isActive: [this.computeIsActive(this.program?.status)],
       description: [this.program?.description,Validators.required],
       programs: [this.program?.peerProgramIDs || []],

@@ -461,7 +461,7 @@ export class KPIAnalysisComponent implements OnInit {
                   </div>
                   <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                     <span style="color: #8b5cf6; font-size: 16px;">✓</span>
-                    <span>Real-time Progress Tracking</span>
+                    <span>Real-time Score Tracking</span>
                   </div>
                   <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="color: #8b5cf6; font-size: 16px;">✓</span>
@@ -495,7 +495,7 @@ export class KPIAnalysisComponent implements OnInit {
           const progressColor = this.PillarColorByScore(pillar);
           const progressPercent = pillar.aiProgress ?? 0;
           const statusText = progressPercent >= 75 ? 'Excellent Performance' :
-            progressPercent >= 50 ? 'Strong Progress' :
+            progressPercent >= 50 ? 'Strong Score' :
               progressPercent >= 25 ? 'Steady Growth' : 'Early Stage';
           const statusIcon = progressPercent >= 75 ? '🌟' :
             progressPercent >= 50 ? '📈' :
@@ -568,7 +568,7 @@ export class KPIAnalysisComponent implements OnInit {
                 </div>
               </div>
 
-              <!-- Progress Bar -->
+              <!-- Score Bar -->
               <div style="margin-bottom: 14px;">
                 <div style="
                   display: flex;

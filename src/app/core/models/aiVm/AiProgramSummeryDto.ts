@@ -32,9 +32,8 @@ export interface AiProgramSummeryDto {
   strategicRecommendation: string | null;
   assessmentValueNote: string | null;
   primarySource: string | null;
-  keyDevelopments: string | null;
-  criticalRisks: string | null;
-  gaps: string | null;
+  keyFindings: string | null;
+  recommendations: string | null;
   updatedAt: Date;
   isVerified: boolean;
   aiCompletionRate?: number;

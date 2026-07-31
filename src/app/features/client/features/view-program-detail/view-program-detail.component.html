@@ -69,33 +69,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                     <tr *ngIf="program?.keyDevelopments">
-                        <td><span class="score_label_tab">Key Developments</span></td>
+                     <tr *ngIf="program?.keyFindings">
+                        <td><span class="score_label_tab">Key Findings</span></td>
                         <td>
                             <app-typing-text 
-                                [text]="program!.keyDevelopments!" 
+                                [text]="program!.keyFindings!" 
                                 [speed]="5" 
                                 [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>
                     </tr>
 
-                    <tr *ngIf="program?.criticalRisks">
-                        <td><span class="score_label_tab">Critical Risks</span></td>
+                    <tr *ngIf="program?.recommendations">
+                        <td><span class="score_label_tab">Recommendations</span></td>
                         <td>
                             <app-typing-text 
-                                [text]="program!.criticalRisks!" 
-                                [speed]="5" 
-                                [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-
-                    <tr *ngIf="program?.gaps">
-                        <td><span class="score_label_tab">Gaps</span></td>
-                        <td>
-                            <app-typing-text 
-                                [text]="program!.gaps!" 
+                                [text]="program!.recommendations!" 
                                 [speed]="5" 
                                 [numberOfWordAfterHideText]="7">
                             </app-typing-text>
