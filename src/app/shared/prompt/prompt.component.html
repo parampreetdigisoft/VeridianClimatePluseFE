@@ -19,7 +19,7 @@
         <button type="button" class="btn btn_cancel" data-bs-dismiss="modal" (click)="onCancel()">
           {{ cancelText }}
         </button>
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onConfirm()">
+        <button *ngIf="showConfirmButton" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onConfirm()">
           {{ confirmText }}
         </button>
       </div>

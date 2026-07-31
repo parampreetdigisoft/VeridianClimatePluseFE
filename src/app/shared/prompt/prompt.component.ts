@@ -13,6 +13,7 @@ export class PromptComponent {
   @Input() message: string = 'Are you sure you want to proceed?';
   @Input() confirmText: string = 'Yes';
   @Input() cancelText: string = 'Cancel';
+  @Input() showConfirmButton: boolean = true;
   @Input() value: any;
   @Input() uniqueId ="confirmModal";
   @Output() confirm = new EventEmitter<void>();

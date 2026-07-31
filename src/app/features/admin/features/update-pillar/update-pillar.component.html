@@ -177,21 +177,35 @@
               <span class="kpi-count-badge">{{ selectedKpiCount }} selected</span>
             </div>
 
+            <div class="locked-kpis-wrap" *ngIf="existingKpiDetails.length > 0">
+              <div class="locked-kpis-tags">
+                <span class="locked-kpis-title">Existing KPI Values (Locked) :</span>
+                <span class="locked-kpi-tag" *ngFor="let kpi of existingKpiDetails">
+                  {{ kpi.layerCode }}
+                </span>
+              </div>
+               <span class="kpi-change-pill lock" *ngIf="hasLockedKpis">
+                Existing KPI values are locked for this pillar
+              </span>
+            </div>
+
             <div class="compare_select kpi-select-wrap" #kpiSelectContainer>
               <ng-select
                 *ngIf="kpiSelectReady"
-                [items]="kpis"
+                [items]="filteredKpis"
                 bindValue="layerID"
                 bindLabel="layerCode"
                 formControlName="kpiLayerIds"
                 [multiple]="true"
                 [searchable]="true"
                 [searchFn]="customSearchFn"
-                [closeOnSelect]="false"            
+                [closeOnSelect]="false"
+                [clearable]="!hasLockedKpis"
+                appendTo="body"
                 class="form-control analyst_multi_select pillar-kpi-select"
-                [placeholder]="selectedKpiCount ? '' : 'Search by KPIs'"
+                [placeholder]="'Search by KPIs'"
                 (open)="onKpiDropdownOpen()"
-                (change)="onKpiSelectionChange()"
+                (change)="onKpiSelectionChange($event)"
               >
                 <ng-template ng-label-tmp let-item="item">
                   {{ item.layerCode }}
@@ -205,6 +219,68 @@
             <div class="kpi-mapping-loader" *ngIf="isLoadingMappings">
               <span class="spinner-border spinner-border-sm"></span>
               Loading mappings...
+            </div>
+
+            <div class="kpi-mapping-loader kpi-details-loader" *ngIf="isLoadingKpiDetails">
+              <span class="spinner-border spinner-border-sm"></span>
+              Loading linked pillars...
+            </div>
+
+            <div class="kpi-details-panel" *ngIf="replacementKpiDetails.length > 0">
+              <div class="kpi-details-head">
+                <div>
+                  <span class="kpi-details-kicker">Replacement Mapping</span>
+                  <h6>Choose existing pillar to replace for each new KPI</h6>
+                </div>
+              </div>
+
+              <div class="error-msg replacement-error" *ngIf="replacementValidationMessage">
+                {{ replacementValidationMessage }}
+              </div>
+
+              <div class="kpi-details-grid">
+                <article class="kpi-detail-card" *ngFor="let item of replacementKpiDetails; trackBy: trackByLayerId">
+                  <div class="kpi-detail-card-head">
+                    <div>
+                      <span class="kpi-detail-code"> ({{ item.kpi.layerCode }})</span>
+                      <h6>{{ item.kpi.layerName }}</h6>
+                    </div>
+                    <span class="kpi-detail-count">{{ item.pillars.length }} replace options</span>
+                  </div>
+
+                  <ng-container *ngIf="item.pillars.length > 0; else emptyKpiPillars">
+                    <div class="category-groups-grid">
+                      <div class="category-group" *ngFor="let category of replacementPillarsByCategoryCache[item.kpi.layerID]; trackBy: trackByCategoryKey">
+                        <div class="category-head">{{ category.label }}</div>
+
+                      <label
+                        class="pillar-radio-option"
+                        *ngFor="let pillar of category.pillars; trackBy: trackByPillarId"
+                        [attr.for]="'replace-' + item.kpi.layerID + '-' + pillar.pillarID"
+                        >
+                          <input
+                            [id]="'replace-' + item.kpi.layerID + '-' + pillar.pillarID"
+                            type="radio"
+                            [name]="'kpi-pillars-' + item.kpi.layerID"
+                            [value]="pillar.pillarID"
+                            (change)="selectPillarForKpi(item.kpi.layerID, pillar.pillarID)"
+                          />
+                          <span class="pillar-radio-ui"></span>
+                          <span class="pillar-radio-content">
+                          <span class="pillar-radio-title">{{ pillar.pillarName }}</span>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #emptyKpiPillars>
+                    <div class="kpi-empty-state">
+                      No existing pillar found to replace for this KPI.
+                    </div>
+                  </ng-template>
+                </article>
+              </div>
             </div>
           </section>
         </div>

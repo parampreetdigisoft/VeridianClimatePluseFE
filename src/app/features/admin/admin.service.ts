@@ -28,6 +28,7 @@ import { DashboardModeResponseDto } from 'src/app/core/models/ProgramSignalDashb
 import { PaginationProgramRequest } from 'src/app/core/models/PaginationRequest';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { ExportProgramsWithOptionDto } from 'src/app/core/models/ExportProgramsWithOptionDto';
+import { AnalyticalLayerPillarMappingDTO } from 'src/app/core/models/AnalyticalLayerPillarMapping';
 
 @Injectable({
   providedIn: "root",
@@ -145,6 +146,10 @@ export class AdminService {
     return this.http
       .get(`Pillar/${pillarId}/kpiMappings`)
       .pipe(map((x) => x as ResultResponseDto<PillarKpiMappingDto[]>));
+  }
+
+  public getKPIDetailsByLayerID(layerID: number) {
+    return this.http.get(`Kpi/getKPIDetailsByLayerID/${layerID}`).pipe(map((x) => x as ResultResponseDto<AnalyticalLayerPillarMappingDTO[]>));
   }
 
   public deletePillar(id: number) {

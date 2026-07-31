@@ -44,7 +44,7 @@
             <tr *ngFor="let pillar of pillars; let i = index">
                 <td>{{i+1}}</td>
                 <td>  <img class="program_img" 
-          style="width: 50px; border-radius:5px; height: 50px; object-fit: contain;"
+                style="width: 50px; border-radius:5px; height: 50px; object-fit: contain;"
                 [src]="urlBase+ '/' +pillar?.imagePath"
                 [alt]="'Profile Image'"
                 (error)="onImgError($event)"
@@ -70,10 +70,8 @@
                             </svg>
                         </a>
                         <a
-                            data-bs-toggle="modal"
-                            data-bs-target="#confirmModal"
                             style="cursor: pointer"
-                            (click)="editPillar(pillar, false); $event.preventDefault()"
+                            (click)="onDeletePillarClick(pillar, $event)"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -125,8 +123,9 @@
 
 <app-prompt
     [title]="'Delete Pillar'"
-    [message]="'Are you sure you want to delete this pillar? All questions under this pillar will also be deleted.'"
+    [message]="deletePromptMessage"
     [confirmText]="'Delete'"
-    [cancelText]="'Cancel'"
+    [cancelText]="canDeleteSelectedPillar ? 'Cancel' : 'Close'"
+    [showConfirmButton]="canDeleteSelectedPillar"
     (confirm)="deletePillar()"
 ></app-prompt>
