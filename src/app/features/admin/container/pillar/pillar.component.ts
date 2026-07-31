@@ -28,11 +28,11 @@ export class PillarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.GetAllPillars();
-    this.GetAllKpi();
+    this.GetAllKpiPillarMapping();
   }
 
-  GetAllKpi() {
-    this.adminService.GetAllKpi().subscribe((res) => {
+  GetAllKpiPillarMapping() {
+    this.adminService.GetAllKpiPillarMapping().subscribe((res) => {
       if (res.succeeded) {
         this.kpis = res.result ?? [];
       }

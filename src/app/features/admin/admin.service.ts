@@ -249,11 +249,19 @@ export class AdminService {
       .getWithQueryParams(`Kpi/getAnalyticalLayerResults`, request)
       .pipe(map((x) => x as PaginationResponse<GetAnalyticalLayerResultDto>));
   }
+
   public GetAllKpi() {
     return this.http
       .get(`Kpi/GetAllKpi`)
       .pipe(map((x) => x as ResultResponseDto<AnalyticalLayerResponseDto[]>));
   }
+
+  public GetAllKpiPillarMapping() {
+    return this.http
+    .get(`Kpi/GetAllKpiPillarMapping`)
+    .pipe(map((x) => x as ResultResponseDto<AnalyticalLayerResponseDto[]>));
+  }
+
   public comparePrograms(request: CompareProgramRequestDto) {
     return this.http.post(`Kpi/comparePrograms`, request).pipe(map(x => x as ResultResponseDto<CompareProgramResponseDto>));
   }
