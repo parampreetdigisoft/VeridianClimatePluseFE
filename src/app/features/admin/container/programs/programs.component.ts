@@ -323,7 +323,8 @@ export class ProgramsComponent implements OnInit, OnDestroy {
     term = term.toLowerCase();
     return (
       item.programName?.toLowerCase().includes(term) ||
-      item.programAliasName?.toLowerCase().includes(term)
+        item.location?.toLowerCase().includes(term) ||
+        item.year?.toString().includes(term)
     );
   }
 }

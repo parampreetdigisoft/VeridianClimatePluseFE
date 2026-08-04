@@ -470,14 +470,15 @@ export class EvaluatorDashboardComponent {
     const active = this.programHistory?.activeProgram ?? 0;
     const inprogress = this.programHistory?.inprocessProgram ?? 0;
     const complete = this.programHistory?.compeleteProgram ?? 0;
+    const toPercent = (value: number) => (total > 0 ? (value / total) * 100 : 0);
 
     this.chartOptions = {
-      series: [
-        (total / total) * 100,
-        (active / total) * 100,
-        (inprogress / total) * 100,
-        (complete / total) * 100
-      ],
+        series: [
+          total > 0 ? 100 : 0,
+          toPercent(active),
+          toPercent(inprogress),
+          toPercent(complete)
+        ],
 
       chart: {
         height: 380,
@@ -515,6 +516,7 @@ export class EvaluatorDashboardComponent {
             value: {
               show: true,
               offsetY: 10,
+              
               formatter: (value: number) => {
                 return `${((value * total) / 100).toFixed(0)}`;
               }
@@ -538,6 +540,9 @@ export class EvaluatorDashboardComponent {
         position: "left",
         offsetX: 5,
         offsetY: 10,
+        onItemClick: {
+          toggleDataSeries: false,
+        },
         labels: {
           useSeriesColors: true
         },

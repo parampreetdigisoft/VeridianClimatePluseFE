@@ -106,7 +106,12 @@ export class KPIAnalysisComponent implements OnInit {
     });
   }
   getSelectedProgram() {
-    return this.programs?.find(x => x.climateProgramID == this.selectedProgram);
+    let program  = this.programs?.find(x => x.climateProgramID == this.selectedProgram);
+    if(!program) return;
+
+    program.aiScore = this.selectedAiProgramPillar?.aiScore ?? 0;
+    program.aiCompletionRate = this.selectedAiProgramPillar?.aiCompletionRate ?? 0;
+    return  program;
   }
 
   getProgramUserPrograms() {
@@ -133,8 +138,7 @@ export class KPIAnalysisComponent implements OnInit {
     }
     this.isLoader = true;
     let payload: AiProgramSummeryRequestPdfDto = {
-      climateProgramID: this.selectedProgram,
-      year: this.selectedYear
+      climateProgramID: this.selectedProgram
     }
     this.aiComputationService.getAIProgramPillars(payload).subscribe({
       next: (res) => {
@@ -458,7 +462,6 @@ export class KPIAnalysisComponent implements OnInit {
     this.selectedIndex = selectedIndex;
     let payload: AiProgramSummeryRequestPdfDto = {
       climateProgramID: program.climateProgramID,
-      year: this.selectedYear,
       pillarID: program.pillarID
     }
     this.aiComputationService.aiPillarDetailsReport(payload).subscribe({

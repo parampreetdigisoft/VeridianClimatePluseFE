@@ -15,6 +15,7 @@ import { AiProgramSummeryRequestPdfDto } from '../models/aiVm/AiProgramSummeryRe
 import { AITransferAssessmentRequestDto } from '../models/aiVm/AITransferAssessmentRequestDto';
 import { DownloadReportDto } from '../models/aiVm/DownloadReportDto';
 import { GetProgramDocumentResponseDto, GetProgramPillarDocumentResponseDto } from '../models/aiVm/GetProgramDocumentResponseDto';
+import { UpdateAIProgramScoreDto } from '../models/aiVm/UpdateAiScoreDtos';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,10 @@ export class AiComputationService {
       .getWithQueryParams(`AiComputation/getAIPrograms`, request)
       .pipe(map((x) => x as PaginationResponse<AiProgramSummeryDto>));
   }
+
+  public updateAIProgramScore(payload: UpdateAIProgramScoreDto) {
+    return this.http.post(`AiComputation/updateAIProgramScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
+   }
 
   public getAIProgramPillars(request: AiProgramSummeryRequestPdfDto) {
     return this.http

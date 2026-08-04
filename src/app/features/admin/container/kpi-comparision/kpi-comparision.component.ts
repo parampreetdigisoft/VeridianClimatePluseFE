@@ -62,6 +62,8 @@ export class KpiComparisionComponent implements OnInit {
   mutipleProgramkpiLayerResults: GetMutiplekpiLayerResultsDto | null = null;
   viewDetailIndex = -1;
   downloadkpiSpinnerEnable =false;
+  kpiSearchFn = (term: string, item: any) => this.customSearchFn(term, item, 'kpi');
+  programSearchFn = (term: string, item: any) => this.customSearchFn(term, item, 'program');
   constructor(
     private adminService: AdminService,
     private toaster: ToasterService,
@@ -479,12 +481,21 @@ export class KpiComparisionComponent implements OnInit {
 
     return avgPeerProgramScore.toFixed(2);
   }
-  customSearchFn(term: string, item: any) {
+  
+  customSearchFn(term: string, item: any, type: 'kpi' | 'program' = 'kpi') {
     term = term.toLowerCase();
-    return (
-      item.layerCode?.toLowerCase().includes(term) ||
-      item.layerName?.toLowerCase().includes(term)
-    );
+    if (type === 'kpi') {
+      return (
+        item.layerCode?.toLowerCase().includes(term) ||
+        item.layerName?.toLowerCase().includes(term)
+      );
+    } else {
+      return (
+        item.programName?.toLowerCase().includes(term) ||
+        item.location?.toLowerCase().includes(term) ||
+        item.year?.toString().includes(term)
+      );
+    }
   }
 
   exportData() {

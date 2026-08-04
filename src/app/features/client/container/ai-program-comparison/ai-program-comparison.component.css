@@ -503,7 +503,7 @@ h6.city_pile {
 }
 
 .dashboard_card_inner span img {
-  filter: brightness(0) saturate(100%) invert(15%) sepia(25%) saturate(4960%) hue-rotate(190deg) brightness(95%) contrast(103%);
+  filter: brightness(-1) saturate(100%) invert(15%) sepia(25%) saturate(4960%) hue-rotate(190deg) brightness(95%) contrast(103%);
   width: 44px;
   height: auto;
 }

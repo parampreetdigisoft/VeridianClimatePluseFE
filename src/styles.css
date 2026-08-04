@@ -786,9 +786,9 @@ body .content_area .inner_content_area {
 
 /* Low = Red */
 .confidence-badge.low {
-    background: rgba(231, 76, 60, 0.15);
-    color: #e74c3c;
-    border: 1px solid rgba(231, 76, 60, 0.35);
+    background-color: #ffcccc;
+    color: #b30000;
+    border: 1px solid #ff4d4d !important;
 }
 .program_img {
     background-color: var(--Primary-Color);

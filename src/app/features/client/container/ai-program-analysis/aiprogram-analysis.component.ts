@@ -124,7 +124,6 @@ export class AIProgramAnalysisComponent implements OnInit, OnDestroy {
 
     let payload: AiProgramSummeryRequestPdfDto = {
       climateProgramID: program.climateProgramID,
-      year: this.selectedYear,
       format: format
     };
 

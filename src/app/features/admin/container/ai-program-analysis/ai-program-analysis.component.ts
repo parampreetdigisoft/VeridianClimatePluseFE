@@ -153,7 +153,6 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
 
     let payload: AiProgramSummeryRequestPdfDto = {
       climateProgramID: program.climateProgramID,
-      year: program.year,
       format: format,
       reportType: mode
     };
@@ -337,7 +336,8 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
     term = term.toLowerCase();
     return (
       item.programName?.toLowerCase().includes(term) ||
-      item.programAliasName?.toLowerCase().includes(term)
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().includes(term)
     );
   }
 

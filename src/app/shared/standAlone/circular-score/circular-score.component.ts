@@ -57,7 +57,7 @@ export class CircularScoreComponent implements OnInit, OnChanges {
 
     if (value >= 80) return colors[5];
     else if (value >= 60) return colors[4];
-    else if (value >= 40) return colors[3];
+    else if (value >= 40) return colors[9];
     else return colors[1];
   }
 }

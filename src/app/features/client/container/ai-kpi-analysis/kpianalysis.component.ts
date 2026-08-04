@@ -128,8 +128,7 @@ export class KPIAnalysisComponent implements OnInit {
     }
     this.isLoader = true;
     let payload: AiProgramSummeryRequestPdfDto = {
-      climateProgramID: this.selectedProgram,
-      year: this.selectedYear
+      climateProgramID: this.selectedProgram
     }
     this.clientService.getAIProgramPillars(payload).subscribe({
       next: (res) => {
@@ -184,7 +183,6 @@ export class KPIAnalysisComponent implements OnInit {
     this.selectedIndex = selectedIndex;
     let payload: AiProgramSummeryRequestPdfDto = {
       climateProgramID: program.climateProgramID,
-      year: this.selectedYear,
       pillarID: program.pillarID
     }
     this.aiComputationService.aiPillarDetailsReport(payload).subscribe({

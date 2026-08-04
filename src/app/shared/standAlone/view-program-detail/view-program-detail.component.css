@@ -325,3 +325,20 @@ button.btn-close:focus-visible {
 .program_pillar .program_card .common_button {
     margin-top: 10px;
 }
+
+.ai-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.ai-edit-surface {
+    border-color: #006d77;
+    box-shadow: 0 0 0 1px rgba(0, 109, 119, 0.08);
+}
+.score-input {
+    width: 90px;
+    display: inline-block;
+    margin-left: 0.35rem;
+    vertical-align: middle;
+}

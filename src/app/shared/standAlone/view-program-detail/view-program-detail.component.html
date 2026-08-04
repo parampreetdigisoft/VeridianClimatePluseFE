@@ -1,6 +1,15 @@
-<div class="offcanvas-header">
-    <h5 id="offcanvasLabel">AI Power Program Details</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+<div class="offcanvas-header ai-detail-header">
+	<app-ai-edit-toolbar [canEdit]="canEdit"
+		[editMode]="editMode"
+		[saving]="saving"
+		(edit)="startEdit()"
+		(cancel)="cancelEdit()"
+		(save)="saveChanges()"
+		title="AI Powered Program Details">
+	</app-ai-edit-toolbar>
+	<button type="button"
+		class="btn-close text-reset"
+		data-bs-dismiss="offcanvas"></button>
 </div>
 
 <ng-container>
@@ -10,7 +19,10 @@
                 <div class="program_card_img">
                     <img [src]="urlBase+program?.image " [alt]="'Profile Image'" (error)="onImgError($event)" />
                     <div class="score">
-                        AI Score : {{ program?.aiProgress?.toFixed(2) }}
+                        AI Score : 
+                        <ng-container >
+							{{ program?.aiProgress?.toFixed(2) }}
+						</ng-container>	
 
                     </div>
                 </div>
@@ -27,11 +39,9 @@
                                     </svg>{{program?.programName}}, {{program?.location}}, {{program?.year}}</p>
                             </div>
                             <p class="program_cards_disc"> {{program?.programName}}, situated in {{program?.location}},
-                                 is actively making strides in sustainable development through
-                                continual improvements in governance and infrastructure.</p>
-                           
+                                 is actively making strides in sustainable development through continual improvements in governance and infrastructure.
+                            </p>
                         </div>
-
                     </div>
                     <div>Explore AI-Powered Insights Across All Pillars</div>
                     <button type="button" [matTooltip]="'View detailed pillar insights'" class="common_button"
@@ -45,269 +55,148 @@
         </div>
     </div>
     &nbsp;
-    <div class="cross-pillar_outter">
-        <div class="integrate_outter">
-            <div class="integrate_list">
-                <table class="kpi_custom_table">
-                    <tr class="last_data">
-                        <td>
-                            <div class="kpi_cat_name">AI Confidence Level</div>
-                        </td>
-                        <td style="text-align: center;">
-                            <span class="confidence-badge" [ngClass]="(program?.confidenceLevel ?? 'low').toLowerCase()">
-                                {{ program?.confidenceLevel || 'NA' }}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="kpi_cat_name">AI Score</div>
-                        </td>
-                        <td>
-                            <app-circular-score [value]="program?.aiProgress ?? 0"></app-circular-score>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="kpi_cat_name">Evaluator Score</div>
-                        </td>
-                        <td>
-                            <app-circular-score [value]="program?.evaluatorScore ?? 0"></app-circular-score>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="kpi_cat_name">Discrepancy</div>
-                        </td>
-                        <td>
-                            <app-sparkline-score [value]="program?.discrepancy ?? 0"></app-sparkline-score>
 
-                        </td>
-                    </tr>
-                    <tr class="last_data">
-                        <td>
-                            <div class="kpi_cat_name">Average Score</div>
-                        </td>
-                        <td>
-                            <app-circular-score
-                                [value]="(((program?.aiProgress ?? 0) + (program?.evaluatorScore ?? 0))/2)"></app-circular-score>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="outer_graph" *ngIf="chartOptions?.series">
-                <div id="card">
-                    <div id="chart">
-                        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
-                            [plotOptions]="chartOptions.plotOptions!" [labels]="chartOptions.labels!"
-                            [legend]="chartOptions.legend!" [colors]="chartOptions.colors!">
-                        </apx-chart>
-                    </div>
-                </div>
-            </div>
+   <div [class.ai-edit-surface]="editMode" class="cross-pillar_outter">
+		<div class="integrate_outter">
+			<div class="integrate_list">
+				<table class="kpi_custom_table">
+					<tbody>
+						<tr class="last_data">
+							<td>
+								<div class="kpi_cat_name">AI Confidence Level</div>
+							</td>
+							<td style="text-align: center;">
+								<app-ai-editable-field [editMode]="editMode"
+									[showLabel]="false"
+									[value]="getFieldValue('confidenceLevel')"
+									(valueChange)="setFieldValue('confidenceLevel', $event)"
+									fieldType="confidence">
+								</app-ai-editable-field>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="kpi_cat_name">AI Score</div>
+							</td>
+							<td>								
+								<app-circular-score [value]="program?.aiProgress ?? 0"></app-circular-score>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="kpi_cat_name">Evaluator Score</div>
+							</td>
+							<td>
+								<app-circular-score [value]="program?.evaluatorScore ?? 0"></app-circular-score>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="kpi_cat_name">Discrepancy</div>
+							</td>
+							<td>
+								<app-sparkline-score [value]="editMode ? discrepancy : (program?.discrepancy ?? 0)"></app-sparkline-score>
+							</td>
+						</tr>
+						<tr class="last_data">
+							<td>
+								<div class="kpi_cat_name">Average Score</div>
+							</td>
+							<td>
+								<app-circular-score [value]="editMode ? averageProgress : (((program?.aiProgress ?? 0) + (program?.evaluatorScore ?? 0))/2)"></app-circular-score>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+           <div *ngIf="chartOptions?.series" class="outer_graph">
+				<div id="card">
+					<div id="chart">
+						<apx-chart [series]="chartOptions.series!"
+							[chart]="chartOptions.chart!"
+							[plotOptions]="chartOptions.plotOptions!"
+							[labels]="chartOptions.labels!"
+							[legend]="chartOptions.legend!"
+							[colors]="chartOptions.colors!">
+						</apx-chart>
+					</div>
+				</div>
+			</div>
 
             <div class="cross-pillar">
                 <h5>Executive Summary</h5>
                 &nbsp;
-                <div *ngIf="program?.evidenceSummary">
-                    <app-typing-text [text]="program!.evidenceSummary" [speed]="3" [numberOfWordAfterHideText]="40">
-                    </app-typing-text>
-                </div>
-            </div>
-        </div>
-    </div>
+            <ng-container *ngIf="editMode; else combineExecutiveSummery">
+					<app-ai-editable-field [showLabel]="false"
+						[editMode]="editMode"
+						[hideAfterWords]="40"
+						[value]="getFieldValue('immediateSituationSummary')"
+						(valueChange)="setFieldValue('immediateSituationSummary', $event)"
+						label="Executive Summary"
+						fieldType="textarea">
+					</app-ai-editable-field>
+					<app-ai-editable-field [showLabel]="false"
+						[editMode]="false"
+						[hideAfterWords]="40"
+						[value]="getFieldValue('countryScoreSummery')"
+						(valueChange)="setFieldValue('countryScoreSummery', $event)"
+						label="Executive Summary"
+						fieldType="textarea">
+					</app-ai-editable-field>
 
-    &nbsp;
+					<app-ai-editable-field [showLabel]="false"
+						[editMode]="editMode"
+						[hideAfterWords]="40"
+						[value]="getFieldValue('evidenceSummary')"
+						(valueChange)="setFieldValue('evidenceSummary', $event)"
+						label="Executive Summary"
+						fieldType="textarea">
+					</app-ai-editable-field>
+				</ng-container>
+				<ng-template #combineExecutiveSummery>
 
-    <div class="cus_table kpi_table">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Category</th>
-                        <th scope="col">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngIf="program?.keyFindings">
-                        <td><span class="score_label_tab">Key Findings</span></td>
-                        <td>
-                            <app-typing-text 
-                                [text]="program!.keyFindings!" 
-                                [speed]="5" 
-                                [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
+					<app-ai-editable-field [showLabel]="false"
+						[editMode]="editMode"
+						[hideAfterWords]="40"
+						[value]="getExecutiveSummery()"						
+						label="Executive Summary"
+						fieldType="textarea">
+					</app-ai-editable-field>
+				</ng-template>
+			</div>
+		</div>
+	</div>
 
-                    <tr *ngIf="program?.recommendations">
-                        <td><span class="score_label_tab">Recommendations</span></td>
-                        <td>
-                            <app-typing-text 
-                                [text]="program!.recommendations!" 
-                                [speed]="5" 
-                                [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                   
-                    <tr>
-                        <td><span class="score_label_tab">Structural Evidence</span></td>
-                        <td *ngIf="program?.structuralEvidence"> <app-typing-text [text]="program!.structuralEvidence!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Operational Evidence</span></td>
-                        <td *ngIf="program?.operationalEvidence"> <app-typing-text [text]="program!.operationalEvidence!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                     <tr>
-                        <td><span class="score_label_tab">Outcome Evidence</span></td>
-                        <td *ngIf="program?.outcomeEvidence"> <app-typing-text [text]="program!.outcomeEvidence!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Perception Evidence</span></td>
-                        <td *ngIf="program?.perceptionEvidence"> <app-typing-text [text]="program!.perceptionEvidence!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Temporal Scope</span></td>
-                        <td *ngIf="program?.temporalScope"> <app-typing-text [text]="program!.temporalScope!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Distortion Screening</span></td>
-                        <td *ngIf="program?.distortionScreening"> <app-typing-text [text]="program!.distortionScreening!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Geopolitical Shock</span></td>
-                        <td *ngIf="program?.geopoliticalShock"> <app-typing-text [text]="program!.geopoliticalShock!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                     <tr>
-                        <td><span class="score_label_tab">Finance Shock</span></td>
-                        <td *ngIf="program?.financeShock"> <app-typing-text [text]="program!.financeShock!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                     <tr>
-                        <td><span class="score_label_tab">Legitimacy Shock</span></td>
-                        <td *ngIf="program?.legitimacyShock"> <app-typing-text [text]="program!.legitimacyShock!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Stress Score Adjustment</span></td>
-                        <td *ngIf="program?.stressScoreAdjustment"> <app-typing-text [text]="program!.stressScoreAdjustment!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Inclusion & Equity Adjustment</span></td>
-                        <td *ngIf="program?.inclusionEquityAdjustment"> <app-typing-text [text]="program!.inclusionEquityAdjustment!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Opacity Risk</span></td>
-                        <td *ngIf="program?.opacityRisk"> <app-typing-text [text]="program!.opacityRisk!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Non Compensation Note</span></td>
-                        <td *ngIf="program?.nonCompensationNote"> <app-typing-text [text]="program!.nonCompensationNote!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Relational Integrity</span></td>
-                        <td *ngIf="program?.relationalIntegrity"> <app-typing-text [text]="program!.relationalIntegrity!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Institutional Capacity</span></td>
-                        <td *ngIf="program?.institutionalCapacity"> <app-typing-text [text]="program!.institutionalCapacity!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Primary Source</span></td>
-                        <td *ngIf="program?.primarySource"> <app-typing-text [text]="program!.primarySource!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Cross Pillar Patterns</span></td>
-                        <td *ngIf="program?.crossPillarPatterns"> <app-typing-text [text]="program!.crossPillarPatterns!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Institutional Capacity</span></td>
-                        <td *ngIf="program?.institutionalCapacity"> <app-typing-text [text]="program!.institutionalCapacity!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Equity Assessment</span></td>
-                        <td *ngIf="program?.equityAssessment"> <app-typing-text [text]="program!.equityAssessment!" [speed]="5"
-                                [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Governance Trajectory</span></td>
-                        <td *ngIf="program?.governanceTrajectory"> <app-typing-text [text]="program!.governanceTrajectory!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Strategic Recommendation </span></td>
-                        <td *ngIf="program?.strategicRecommendation"> <app-typing-text
-                                [text]="program!.strategicRecommendation!" [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="score_label_tab">Data Transparency Note</span></td>
-                        <td *ngIf="program?.assessmentValueNote"> <app-typing-text [text]="program!.assessmentValueNote!"
-                                [speed]="5" [numberOfWordAfterHideText]="7">
-                            </app-typing-text>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
+	<div [class.ai-edit-surface]="editMode"
+		class="cus_table kpi_table">
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Category</th>
+						<th scope="col">Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let field of evidenceFields"
+						[hidden]="!shouldShowEvidenceRow(field)">
+						<td>
+							<span class="score_label_tab">{{ field.label }}</span>
+						</td>
+						<td>
+							<app-ai-editable-field [label]="field.label"
+								[showLabel]="false"
+								[editMode]="editMode"
+								[fieldType]="field.type"
+								[value]="getFieldValue(field.key)"
+								(valueChange)="setFieldValue(field.key, $event)">
+							</app-ai-editable-field>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </ng-container>

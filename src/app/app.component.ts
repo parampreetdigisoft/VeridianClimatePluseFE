@@ -10,7 +10,7 @@ declare var bootstrap: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'Health-intelligence-frontend';
+  title = 'Veridian-Climate-Pulse-frontend';
   toastMessage = '';
   toastClass = '';
   private destroy$ = new Subject<void>();

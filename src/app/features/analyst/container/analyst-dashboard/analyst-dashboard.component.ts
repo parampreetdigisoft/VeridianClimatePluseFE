@@ -302,15 +302,16 @@ export class AnalystDashboardComponent implements OnInit {
 
     const finalizeProgram = this.programHistory?.finalizeProgram ?? 0;
     const unFinalize = this.programHistory?.unFinalize ?? 0;
+    const toPercent = (value: number) => (total > 0 ? (value / total) * 100 : 0);
 
     this.chartOptions = {
       series: [
-        (total / total) * 100,
-        (active / total) * 100,
-        (inprogress / total) * 100,
-        (complete / total) * 100,
-        (finalizeProgram / total) * 100,
-        (unFinalize / total) * 100,
+        total > 0 ? 100 : 0,
+        toPercent(active),
+        toPercent(inprogress),
+        toPercent(complete),
+        toPercent(finalizeProgram),
+        toPercent(unFinalize),
       ],
 
       chart: {
@@ -372,6 +373,9 @@ export class AnalystDashboardComponent implements OnInit {
         position: "top",
         offsetX: 0,
         offsetY: 10,
+        onItemClick: {
+          toggleDataSeries: false,
+        },
         labels: {
           useSeriesColors: true,
         },

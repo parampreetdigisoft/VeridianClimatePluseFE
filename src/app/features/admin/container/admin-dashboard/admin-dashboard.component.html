@@ -94,7 +94,7 @@
 	</div>
 	<div class="program_pillar">
 		<div class="row align-items-end">
-			<div class="col-xxl col-md-6">
+			<div class="col-xxl col-md-5">
 				<div class="input_field">
 					<label>Select Program *</label>
 					<ng-select [items]="programs"
@@ -120,7 +120,7 @@
 					</ng-select>
 				</div>
 			</div>
-			<div class="col-md-auto d-flex gap-2 mt-3">
+			<div class="col-md-6 d-flex gap-2 mt-3">
 				<button *ngIf="programQuestionHistoryResponse?.pillars?.length"
 					[matTooltip]=" 'Go to the AI analysis page to review detailed program insights and scores'"
 					(click)="goToProgramAnalysis()"

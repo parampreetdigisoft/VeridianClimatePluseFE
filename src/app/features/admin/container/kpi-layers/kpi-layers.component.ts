@@ -36,6 +36,8 @@ export class KpiLayersComponent {
   programList: ProgramVM[] = [];
   $kpiChanged = new Subject();
   kpiLayers: GetAnalyticalLayerResultDto[] = [];
+  kpiSearchFn = (term: string, item: any) => this.customSearchFn(term, item, 'kpi');
+  programSearchFn = (term: string, item: any) => this.customSearchFn(term, item, 'program');
   constructor(private adminService: AdminService, private toaster: ToasterService, private userService: UserService, public commonService:CommonService) { }
 
   ngOnInit(): void {
@@ -105,11 +107,21 @@ export class KpiLayersComponent {
   getConditionByid(layer: GetAnalyticalLayerResultDto) {
     return layer?.fiveLevelInterpretations?.find(x => x.interpretationID == layer.interpretationID)?.condition || '';
   }
-  customSearchFn(term: string, item: any) {
+
+  customSearchFn(term: string, item: any, type: 'kpi' | 'program') {
     term = term.toLowerCase();
-    return (
-      item.layerCode?.toLowerCase().includes(term) ||
-      item.layerName?.toLowerCase().includes(term)
-    );
+    if (type === 'kpi') {
+      return (
+        item.layerCode?.toLowerCase().includes(term) ||
+        item.layerName?.toLowerCase().includes(term)
+      );
+    } else if (type === 'program') {
+      return (
+        item.programName?.toLowerCase().includes(term) ||
+        item.location?.toLowerCase().includes(term) ||
+        item.year?.toString().includes(term)
+      );
+    }
+    return false;
   }
 }

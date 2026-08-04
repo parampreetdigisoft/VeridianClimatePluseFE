@@ -18,11 +18,11 @@
 					[searchable]="true"
 					[placeholder]="selectedKpis.length ? '' : 'Search by Kpis'"
 					[(ngModel)]="selectedKpis"
-					[searchFn]="customSearchFn"
+          [searchFn]="kpiSearchFn"
 					(change)="kpiChanged()"
 					[maxSelectedItems]="4"
 					bindValue="layerID"
-					bindLabel="layerNmme"
+					bindLabel="layerName"
 					class="form-control analyst_multi_select">
 					<ng-template ng-label-tmp
 						let-item="item"
@@ -49,6 +49,7 @@
 					(change)="kpiChanged()"
 					bindValue="climateProgramID"
 					bindLabel="programName"
+          [searchFn]="programSearchFn"
 					class="form-control analyst_multi_select">
 					<ng-template ng-label-tmp
 						let-item="item"

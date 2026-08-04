@@ -275,9 +275,7 @@
                           </svg>
                         </span>
                       </a>                      
-                      <a
-                        *ngIf="selectedYear == currentYear"
-                        [matTooltip]="'Re-run AI analysis for this pillar'"
+                      <a [matTooltip]="'Re-run AI analysis for this pillar'"
                         (click)="opendialog(piller); $event.preventDefault()"
                         style="cursor: pointer"
                       >

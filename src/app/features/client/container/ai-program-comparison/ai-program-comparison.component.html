@@ -143,7 +143,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="kpi-card col-md-12">
+                        <div class="kpi-card col-md-12" *ngIf="avgScore">
                             <div class="dashboard_card dashboard_card3">
                                 <div class="dashboard_card_inner">
                                     <span>
@@ -155,7 +155,7 @@
                                                 fill="white" />
                                         </svg>
                                     </span>
-                                    <div class="dashboard_number" *ngIf="avgScore">
+                                    <div class="dashboard_number">
                                         <div class="card_ttile">
                                             <h4>All Pillars</h4>
                                             <h5>{{ avgScore }}</h5>
@@ -209,7 +209,7 @@
                                                         [utcToLocalTooltip]="
                                                             commonService.isValidDate(program?.updatedAt)
                                                                 ? program?.updatedAt
-                                                                : 'null'
+                                                                : null
                                                         "
                                                         matTooltip
                                                         tooltipFormat="fullDate">

@@ -101,7 +101,7 @@
           <td [utcToLocalTooltip]="
               commonService.isValidDate(program?.updatedAt)
                 ? program?.updatedAt
-                : 'null'
+                : null
             " matTooltip tooltipFormat="fullDate">
             <span [ngClass]="commonService.researchStatusClass(program.updatedAt)" class="research_date">
               {{ commonService.getGeneratedTime(program?.updatedAt) }}

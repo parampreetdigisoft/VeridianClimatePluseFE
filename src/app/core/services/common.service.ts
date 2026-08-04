@@ -134,95 +134,98 @@ export class CommonService {
     .getExternalApi('https://nominatim.openstreetmap.org/search', params)
     .pipe(map((x) => x as any[]));
 }
+
   getGeneratedTime(utcDate: string | Date | null | undefined): string {
-  if (!utcDate) return 'NA';
+    if (!utcDate) return 'NA';
 
-  // Ensure UTC parsing for string dates
-  let parsedInput = utcDate;
+    // Ensure UTC parsing for string dates
+    let parsedInput = utcDate;
 
-  if (typeof utcDate === 'string') {
-    parsedInput = utcDate.endsWith('Z') ? utcDate : utcDate + 'Z';
-  }
+    if (typeof utcDate === 'string') {
+      parsedInput = utcDate.endsWith('Z') ? utcDate : utcDate + 'Z';
+    }
 
-  const generatedDate = new Date(parsedInput);
+    const generatedDate = new Date(parsedInput);
 
-  // Invalid JS date check
-  if (isNaN(generatedDate.getTime())) return 'NA';
+    // Invalid JS date check
+    if (isNaN(generatedDate.getTime())) return 'NA';
 
-  // Ignore .NET MinValue (0001-01-01)
-  if (generatedDate.getFullYear() <= 1) return 'NA';
+    // Ignore .NET MinValue (0001-01-01)
+    if (generatedDate.getFullYear() <= 1) return 'NA';
 
-  const now = new Date();
+    const now = new Date();
 
-  const diffMs = now.getTime() - generatedDate.getTime();
+    const diffMs = now.getTime() - generatedDate.getTime();
 
-  // If future date, treat as NA
-  if (diffMs < 0) return 'NA';
+    // If future date, treat as NA
+    if (diffMs < -90000) return 'NA';
 
-  const diffMinutes = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const safeDiffMs = Math.max(0, diffMs);
 
-  // Less than 10 minutes
-  if (diffMinutes < 10) {
-    return 'Just now';
-  }
+    const diffMinutes = Math.floor(safeDiffMs / (1000 * 60));
+    const diffHours = Math.floor(safeDiffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(safeDiffMs / (1000 * 60 * 60 * 24));
 
-  // Less than 1 hour
-  if (diffMinutes < 60) {
-    return `${diffMinutes} min`;
-  }
+    // Less than 10 minutes
+    if (diffMinutes < 10) {
+      return 'Just now';
+    }
 
-  // Less than 24 hours
-  if (diffHours < 24) {
-    const remainingMinutes = diffMinutes % 60;
-    return remainingMinutes > 0
-      ? `${diffHours} hr ${remainingMinutes} min`
-      : `${diffHours} hr`;
-  }
+    // Less than 1 hour
+    if (diffMinutes < 60) {
+      return `${diffMinutes} min`;
+    }
 
-  // 1 day or more
-  const remainingHours = diffHours % 24;
+    // Less than 24 hours
+    if (diffHours < 24) {
+      const remainingMinutes = diffMinutes % 60;
+      return remainingMinutes > 0
+        ? `${diffHours} hr ${remainingMinutes} min`
+        : `${diffHours} hr`;
+    }
 
-  return remainingHours > 0
-    ? `${diffDays} day${diffDays > 1 ? 's' : ''} ${remainingHours} hr`
-    : `${diffDays} day${diffDays > 1 ? 's' : ''}`;
+    // 1 day or more
+    const remainingHours = diffHours % 24;
+
+    return remainingHours > 0
+      ? `${diffDays} day${diffDays > 1 ? 's' : ''} ${remainingHours} hr`
+      : `${diffDays} day${diffDays > 1 ? 's' : ''}`;
 }
+
   researchStatusClass(date: Date | string | null | undefined): string {
-  if (!date) return 'old';
+    if (!date) return 'old';
 
-  const parsedDate = new Date(date);
+    const parsedDate = new Date(date);
 
-  // Invalid JS date
-  if (isNaN(parsedDate.getTime())) return 'old';
+    // Invalid JS date
+    if (isNaN(parsedDate.getTime())) return 'old';
 
-  // Ignore .NET MinValue (0001-01-01)
-  if (parsedDate.getFullYear() <= 1) return 'old';
+    // Ignore .NET MinValue (0001-01-01)
+    if (parsedDate.getFullYear() <= 1) return 'old';
 
-  const diffHours =
-    (Date.now() - parsedDate.getTime()) / (1000 * 60 * 60);
+    const diffHours =
+      (Date.now() - parsedDate.getTime()) / (1000 * 60 * 60);
 
-  if (diffHours < 24) return 'just-now';
-  if (diffHours <= 72) return 'fresh';
-  if (diffHours <= 240) return 'recent';
+    if (diffHours < 24) return 'just-now';
+    if (diffHours <= 72) return 'fresh';
+    if (diffHours <= 240) return 'recent';
 
-  return 'old';
-}
-isValidDate(date: any): boolean {
-  if (!date) return false;
+    return 'old';
+  }
+  isValidDate(date: any): boolean {
+    if (!date) return false;
 
-  const parsed = new Date(date);
+    const parsed = new Date(date);
 
-  if (isNaN(parsed.getTime())) return false;
+    if (isNaN(parsed.getTime())) return false;
 
-  // Block .NET MinValue
-  if (parsed.getFullYear() <= 1) return false;
+    // Block .NET MinValue
+    if (parsed.getFullYear() <= 1) return false;
 
-  return true;
-}
- get PillarColors() {
-      return [
-     "#003F4A", // 10 - darkest
+    return true;
+  }
+  get PillarColors() {
+    return [
       "#8FD0A8", // 3
       "#2D9590", // 6
       "#005D68", // 9
@@ -246,65 +249,66 @@ isValidDate(date: any): boolean {
       "#1E8189", // 7
       "#0F6E78", // 8
     ];
-}
-get radarColors() {
-  return [
-    {
-      primary: '#005D68',
-      light: '#6BB7BE',
-      gradient: 'rgba(0, 93, 104, 0.25)'
-    },
-    {
-      primary: '#007985',
-      light: '#7CCED3',
-      gradient: 'rgba(0, 121, 133, 0.25)'
-    },
-    {
-      primary: '#0E8285',
-      light: '#8FD9DB',
-      gradient: 'rgba(14, 130, 133, 0.25)'
-    },
-    {
-      primary: '#1A9398',
-      light: '#9CE2E5',
-      gradient: 'rgba(26, 147, 152, 0.25)'
-    },
-    {
-      primary: '#23957B',
-      light: '#93D9C7',
-      gradient: 'rgba(35, 149, 123, 0.25)'
-    },
-    {
-      primary: '#3CA76A',
-      light: '#A8E0B8',
-      gradient: 'rgba(60, 167, 106, 0.25)'
-    },
-    {
-      primary: '#58BB5E',
-      light: '#BCE7BE',
-      gradient: 'rgba(88, 187, 94, 0.25)'
-    },
-    {
-      primary: '#73C953',
-      light: '#CBECA7',
-      gradient: 'rgba(115, 201, 83, 0.25)'
-    },
-    {
-      primary: '#8ED45F',
-      light: '#DCF1B6',
-      gradient: 'rgba(142, 212, 95, 0.25)'
-    },
-    {
-      primary: '#AEE08A',
-      light: '#EDF8D8',
-      gradient: 'rgba(174, 224, 138, 0.25)'
-    }
-  ];
-}
+  }
+  
+  get radarColors() {
+    return [
+      {
+        primary: '#005D68',
+        light: '#6BB7BE',
+        gradient: 'rgba(0, 93, 104, 0.25)'
+      },
+      {
+        primary: '#007985',
+        light: '#7CCED3',
+        gradient: 'rgba(0, 121, 133, 0.25)'
+      },
+      {
+        primary: '#0E8285',
+        light: '#8FD9DB',
+        gradient: 'rgba(14, 130, 133, 0.25)'
+      },
+      {
+        primary: '#1A9398',
+        light: '#9CE2E5',
+        gradient: 'rgba(26, 147, 152, 0.25)'
+      },
+      {
+        primary: '#23957B',
+        light: '#93D9C7',
+        gradient: 'rgba(35, 149, 123, 0.25)'
+      },
+      {
+        primary: '#3CA76A',
+        light: '#A8E0B8',
+        gradient: 'rgba(60, 167, 106, 0.25)'
+      },
+      {
+        primary: '#58BB5E',
+        light: '#BCE7BE',
+        gradient: 'rgba(88, 187, 94, 0.25)'
+      },
+      {
+        primary: '#73C953',
+        light: '#CBECA7',
+        gradient: 'rgba(115, 201, 83, 0.25)'
+      },
+      {
+        primary: '#8ED45F',
+        light: '#DCF1B6',
+        gradient: 'rgba(142, 212, 95, 0.25)'
+      },
+      {
+        primary: '#AEE08A',
+        light: '#EDF8D8',
+        gradient: 'rgba(174, 224, 138, 0.25)'
+      }
+    ];
+  }
 
   get kpiColors() {
     return [
-      "#003F4A" , // 10 - darkest
+      "#003F4A", // 10 - darkest
       "#8FD0A8", // 3
       "#2D9590", // 6
       "#005D68", // 9

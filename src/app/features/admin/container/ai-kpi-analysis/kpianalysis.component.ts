@@ -61,8 +61,6 @@ export type ChartOptions = {
 })
 export class KPIAnalysisComponent implements OnInit {
   urlBase = environment.apiUrl;
-  currentYear = new Date().getFullYear();
-  selectedYear = this.currentYear;
   pillers: PillarsVM[] = [];
   selectedProgram?: number;
   programs: ProgramVM[] | null = [];
@@ -92,18 +90,21 @@ export class KPIAnalysisComponent implements OnInit {
     this.isLoader = true;
     this.route.queryParams.subscribe(params => {
       let cid = +params['climateProgramID'] || null;
-      let sYear = +params['year'] || this.selectedYear;
 
       if (cid) {
         this.selectedProgram = Number(cid);
-        this.selectedYear = Number(sYear);
       }
     });
     this.getProgramUserPrograms();
     this.getAITrustLevels();
   }
+
   getSelectedProgram() {
-    return this.programs?.find(x => x.climateProgramID == this.selectedProgram);
+    let program  = this.programs?.find(x => x.climateProgramID == this.selectedProgram);
+    if(!program) return;
+    program.aiScore = this.selectedAiProgramPillar?.aiScore ?? 0;
+    program.aiCompletionRate = this.selectedAiProgramPillar?.aiCompletionRate ?? 0;
+    return  program;
   }
 
   getAITrustLevels() {
@@ -137,7 +138,6 @@ export class KPIAnalysisComponent implements OnInit {
 
     let payload: AiProgramSummeryRequestPdfDto = {
       climateProgramID: this.selectedProgram,
-      year: this.selectedYear
     }
     this.aiComputationService.getAIProgramPillars(payload).subscribe({
       next: (res) => {
@@ -393,6 +393,15 @@ export class KPIAnalysisComponent implements OnInit {
     };
   }
 
+   customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().includes(term)
+    );
+  }
+
   onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/Frame 1321315029.png';
   }
@@ -415,8 +424,7 @@ export class KPIAnalysisComponent implements OnInit {
     this.router.navigate(['/admin/ai/questions-analysis'], {
       queryParams: {
         climateProgramID: this.selectedProgram,
-        pillarID: pillar.pillarID,
-        year:this.selectedYear
+        pillarID: pillar.pillarID
       }
     });
   }
@@ -455,7 +463,6 @@ export class KPIAnalysisComponent implements OnInit {
     this.selectedIndex = selectedIndex;
     let payload: AiProgramSummeryRequestPdfDto = {
       climateProgramID: program.climateProgramID,
-      year: this.selectedYear,
       pillarID: program.pillarID,
       format:format
     }

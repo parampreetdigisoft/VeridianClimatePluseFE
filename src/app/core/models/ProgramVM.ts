@@ -13,6 +13,7 @@ export interface ProgramVM extends AddUpdateProgramDto {
     aiScore?: number; 
     selected:boolean;
     assessmentPhase:AssessmentPhase;
+    aiCompletionRate?: number; 
 }
 
 export interface AddUpdateProgramDto {

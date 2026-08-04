@@ -486,7 +486,7 @@ h6.city_pile {
     background-color: #ffffff;
 }
 .dashboard_card_inner span img {
-    filter: brightness(0) saturate(100%) invert(13%) sepia(8%) saturate(4078%) hue-rotate(120deg) brightness(97%) contrast(87%);
+    filter: brightness(-1) saturate(100%) invert(13%) sepia(8%) saturate(4078%) hue-rotate(120deg) brightness(97%) contrast(87%);
 }
 @media only screen and (max-width:1540px){
   .dashboard_number {

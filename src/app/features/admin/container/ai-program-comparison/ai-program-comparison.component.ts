@@ -222,14 +222,14 @@ export class AiProgramComparisonComponent implements OnInit {
           },
           export: {
             csv: {
-              filename: 'cross-city-comparison',
+              filename: 'cross-program-comparison',
               headerCategory: 'Category',
             },
             svg: {
-              filename: 'cross-city-radar'
+              filename: 'cross-program-radar'
             },
             png: {
-              filename: 'cross-city-radar'
+              filename: 'cross-program-radar'
             }
           }
         },

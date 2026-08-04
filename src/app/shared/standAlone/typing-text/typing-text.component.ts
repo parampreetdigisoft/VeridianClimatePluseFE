@@ -43,6 +43,20 @@ export class TypingTextComponent implements OnDestroy, OnChanges {
     }
   }
 
+  /** Prefer real newlines so each numbered point wraps (also converts legacy "||"). */
+  private get displaySourceText(): string {
+    if (!this.text) {
+      return '';
+    }
+    return this.text
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .replace(/\s*\|\|\s*/g, '\n')
+      .replace(/\s+(?=\d+\))/g, '\n')
+      .replace(/\n{2,}/g, '\n')
+      .trim();
+  }
+
   /**
    * Complete reset of component state
    */
@@ -63,31 +77,33 @@ export class TypingTextComponent implements OnDestroy, OnChanges {
     this.fullText = '';
     this.wasFullyTypedOnce = false;
 
+    const source = this.displaySourceText;
+
     // Validate input before starting
-    if (!this.text || this.text.trim() === '') {
+    if (!source) {
       this.isTypingCompleted = true;
       this.cdr.markForCheck();
       return;
     }
 
     // Start typing animation
-    this.startInitialTyping();
+    this.startInitialTyping(source);
   }
 
   /**
    * Initial typing until word limit exceeded
    */
-  private startInitialTyping(): void {
+  private startInitialTyping(source: string = this.displaySourceText): void {
     let index = 0;
 
     this.intervalId = setInterval(() => {
       // Safety check
-      if (!this.text || index >= this.text.length) {
-        this.finishTyping();
+      if (!source || index >= source.length) {
+        this.finishTyping(source);
         return;
       }
 
-      this.displayedText += this.text[index];
+      this.displayedText += source[index];
       index++;
 
       // Check word count
@@ -109,8 +125,8 @@ export class TypingTextComponent implements OnDestroy, OnChanges {
       }
 
       // Check if finished
-      if (index >= this.text.length) {
-        this.finishTyping();
+      if (index >= source.length) {
+        this.finishTyping(source);
       }
 
       this.cdr.markForCheck();
@@ -121,9 +137,10 @@ export class TypingTextComponent implements OnDestroy, OnChanges {
    * Lazy typing when user clicks "Show More" the first time
    */
   private startLazyTyping(): void {
+    const source = this.displaySourceText;
     // Safety check
-    if (!this.text) {
-      this.finishTyping();
+    if (!source) {
+      this.finishTyping(source);
       return;
     }
 
@@ -132,16 +149,16 @@ export class TypingTextComponent implements OnDestroy, OnChanges {
 
     this.intervalId = setInterval(() => {
       // Safety check
-      if (!this.text || index >= this.text.length) {
-        this.finishTyping();
+      if (!source || index >= source.length) {
+        this.finishTyping(source);
         return;
       }
 
-      this.displayedText += this.text[index];
+      this.displayedText += source[index];
       index++;
 
-      if (index >= this.text.length) {
-        this.finishTyping();
+      if (index >= source.length) {
+        this.finishTyping(source);
       }
 
       this.cdr.markForCheck();
@@ -151,13 +168,13 @@ export class TypingTextComponent implements OnDestroy, OnChanges {
   /**
    * Finish typing and store full text
    */
-  private finishTyping(): void {
+  private finishTyping(source: string = this.displaySourceText): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
     this.isTypingCompleted = true;
-    this.fullText = this.text;
+    this.fullText = source;
     this.wasFullyTypedOnce = true;
     this.cdr.markForCheck();
   }

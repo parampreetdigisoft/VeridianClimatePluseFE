@@ -134,7 +134,7 @@
 
 
 
-					<td [utcToLocalTooltip]="commonService.isValidDate(program?.updatedAt) ? program?.updatedAt : 'null'"
+					<td [utcToLocalTooltip]="commonService.isValidDate(program?.updatedAt) ? program?.updatedAt : null"
 						matTooltip
 						tooltipFormat="fullDate">
 						<span [ngClass]="commonService.researchStatusClass(program.updatedAt)"
@@ -184,7 +184,7 @@
 
 
 
-											<a *ngIf="selectedYear == currentYear" [matTooltip]="'Ai will research again as you provide element for research'"
+											<a  [matTooltip]="'Ai will research again as you provide element for research'"
 												(click)="opendialog(program); $event.preventDefault()"
 												style="cursor: pointer">
 												<span style="display: inline-block">

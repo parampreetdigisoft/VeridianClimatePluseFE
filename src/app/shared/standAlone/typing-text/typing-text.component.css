@@ -1,8 +1,7 @@
 .typing-container {
   transition: opacity 0.35s ease-out;
   opacity: 1;
-  display: inline-flex;
-  align-items: center;
+  display: block;
 }
 
 .typing-container.collapsed {

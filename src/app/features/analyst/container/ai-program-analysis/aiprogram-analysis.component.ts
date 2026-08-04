@@ -139,8 +139,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
     this.selectedIndex = selectedIndex;
 
     let payload: AiProgramSummeryRequestPdfDto = {
-      climateProgramID: program.climateProgramID,
-      year: this.selectedYear
+      climateProgramID: program.climateProgramID
     }
     this.aiComputationService.aiProgramDetailsReport(payload).subscribe({
       next: (blob) => {

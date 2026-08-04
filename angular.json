@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "health-intelligence-frontend": {
+    "climate-pulse-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/health-intelligence-frontend",
+            "outputPath": "dist/climate-pulse-frontend",
             "allowedCommonJsDependencies": [
               "file-saver",
               "quill-delta"
@@ -69,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "health-intelligence-frontend:build"
+            "buildTarget": "climate-pulse-frontend:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "health-intelligence-frontend:build:production"
+              "buildTarget": "climate-pulse-frontend:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "health-intelligence-frontend:build"
+            "buildTarget": "climate-pulse-frontend:build"
           }
         },
         "test": {

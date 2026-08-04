@@ -26,13 +26,14 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
   /** AI options config (easy to extend later) */
   aiOptions: any[] = [];
 
-  constructor(private fb: FormBuilder, private ctx: ChangeDetectorRef) { }
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder, private ctx: ChangeDetectorRef) {
     this.initializeForm();
   }
+  ngOnInit(): void {
+    // Form is initialized in constructor so [formGroup] is always available.
+  }
   ngOnChanges(changes: SimpleChanges): void {
-    
-    this.showRegenerateMissingQuestionsOption = this.program.aiCompletionRate > 0 || this.program.score > 0;
+    this.showRegenerateMissingQuestionsOption = this.program?.aiCompletionRate < 100;
 
     this.aiOptions = [
       { label: 'Pillar-level AI insights', control: 'pillarEnable', time: this.importPillar ? 5 +' '+'min' : 30 +' '+ 'min' },
@@ -41,7 +42,7 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
 
     if (!this.importPillar) {
       this.aiOptions.unshift({ label: 'Program-level AI insights', control: 'programEnable', time: 5 +' '+'min' });
-      this.aiOptions.unshift({ label: 'Immediate Situation', control: 'immediateSummaryEnable', time: 2 +' '+'min' });
+      // this.aiOptions.unshift({ label: 'Immediate Situation', control: 'immediateSummaryEnable', time: 2 +' '+'min' });
     }
     if (this.showRegenerateMissingQuestionsOption)
     {
@@ -55,15 +56,18 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
           : Math.max(1, 120 - completionRate) +' '+ 'min'
       });
     }
-
-    this.ctx.detectChanges();
+// this.ctx.detectChanges();
+    this.assesmentForm.patchValue({
+      climateProgramID: this.program?.climateProgramID ?? null,
+      programEnable: !this.importPillar
+    });
   }
 
   initializeForm() {
     this.assesmentForm = this.fb.group({
       climateProgramID: [this.program?.climateProgramID],
       programEnable: [!this.importPillar],
-      immediateSummaryEnable: [!this.importPillar],
+      // immediateSummaryEnable: [!this.importPillar],
       regenerateMissingQuestionsEnable: [false],
       pillarEnable: [true],
       questionEnable: [false],
