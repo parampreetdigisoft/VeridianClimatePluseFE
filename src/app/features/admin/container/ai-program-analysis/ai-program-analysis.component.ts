@@ -76,7 +76,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
         this.filterProgram = +params["climateProgramID"];
       }
     });
-    this.getClientPrograms();
+    this.getAllProgramsByUserID();
     this.getAIPrograms();
   }
 
@@ -85,7 +85,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
     document.body.style.paddingRight = "";
   }
 
-  getClientPrograms() {
+  getAllProgramsByUserID() {
     this.adminService
       .getAllProgramsByUserId(this.userService.userInfo.userID ?? 0)
       .subscribe({
@@ -296,7 +296,6 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
   }
 
   aiAllProgramDetailsReport(format: string = 'pdf') {
-
     this.isLoader = true;
 
     const payload: DownloadReportDto = {

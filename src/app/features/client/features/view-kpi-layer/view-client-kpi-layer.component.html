@@ -143,11 +143,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let inerpretaion of interpretaions" [class]="inerpretaion.interpretationID == selectedLayer?.aiInterpretationID ? 'active_row' : ''">
-                        <td><span class="score_label_tab">{{inerpretaion.minRange}}–{{inerpretaion.maxRange}}</span>
+                    <tr *ngFor="let interpretation of interpretaions" [class]="interpretation.interpretationID == selectedLayer?.aiInterpretationID ? 'active_row' : ''">
+                        <td><span class="score_label_tab">({{interpretation.minRange}})–({{interpretation.maxRange}})</span>
                         </td>
-                        <td>{{inerpretaion.condition}}</td>
-                        <td>{{inerpretaion.descriptor}}</td>                        
+                        <td>{{interpretation.condition}}</td>
+                        <td>{{interpretation.descriptor}}</td>                        
                     </tr>
                 </tbody>
             </table>

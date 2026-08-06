@@ -114,8 +114,7 @@ export class ViewProgramDetailComponent implements OnChanges {
   viewPillars() {
     this.router.navigate([`/${this.userService.userInfo?.role?.toLowerCase()}/ai/kpi-analysis`], {
       queryParams: {
-        climateProgramID: this.program?.climateProgramID,
-        year:this.program?.year
+        climateProgramID: this.program?.climateProgramID
       }
     });
   }

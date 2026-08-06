@@ -11,11 +11,14 @@
 .cus_table .score_label_tab {
     background: #006D77;
     color: #ffffff;
-    padding: 0.3rem 0.5rem;
+    padding: 0.3rem 2px;
     border-radius: 0.5rem;
+    justify-content: center;
     display: inline-flex;
     font-weight: 600;
     font-size: 14px;
+    width: 100%;
+    white-space: nowrap;
 }
 
 .cus_table .table td {

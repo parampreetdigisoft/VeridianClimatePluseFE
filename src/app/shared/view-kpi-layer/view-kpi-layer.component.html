@@ -156,7 +156,7 @@
                 <tbody>
                     <tr *ngFor="let inerpretaion of interpretaions" [ngClass]="inerpretaion.interpretationID == selectedLayer?.interpretationID
                      ? 'active_row' : inerpretaion.interpretationID == selectedLayer?.aiInterpretationID ? 'active_ai' : ''">
-                        <td><span class="score_label_tab">{{inerpretaion.minRange}}–{{inerpretaion.maxRange}}</span>
+                        <td><span class="score_label_tab">({{inerpretaion.minRange}})–({{inerpretaion.maxRange}})</span>
                         </td>
                         <td>{{inerpretaion.condition}}</td>
                         <td>{{inerpretaion.descriptor}}</td>
