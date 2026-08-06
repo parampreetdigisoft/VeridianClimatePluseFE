@@ -18,6 +18,7 @@ import {
   DashboardModeResponseDto,
   DashboardQuestionScoreDto,
 } from 'src/app/core/models/ProgramSignalDashboardDto';
+import { NarrativeDto, SignalCardDto } from 'src/app/core/models/SignalCardDto';
 import { VCP_CHART, VCP_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { ToasterService } from 'src/app/core/services/toaster.service';
@@ -53,7 +54,7 @@ export type GlanceDonutChartOptions = {
   tooltip: ApexTooltip;
 };
 
-type SignalTab = 'stress' | 'warning' | 'resilience';
+type SignalTab = 'ambitionDelivery' | 'diplomaticRisk' | 'institutionalReadiness';
 
 @Component({
   selector: 'app-client-dashboard',
@@ -63,16 +64,15 @@ type SignalTab = 'stress' | 'warning' | 'resilience';
 export class ClientDashboardComponent implements OnInit, OnDestroy {
   programs: ProgramVM[] = [];
   selectedclimateProgramID: number | null = null;
-  activeTab: SignalTab = 'stress';
+  activeTab: SignalTab = 'ambitionDelivery';
   isOpenDialog: boolean = false;
   selectedKpiData: AddClientKpisProgramAndPillar | null = null;
   tier: TieredAccessPlanValue = TieredAccessPlanValue.Pending;
   pillars: PillarsVM[] = [];
   isLoading = false;
-  stressDashboard: DashboardModeResponseDto | null = null;
-  warningDashboard: DashboardModeResponseDto | null = null;
-  resilienceDashboard: DashboardModeResponseDto | null = null;
+  deliveryDashboard: DashboardModeResponseDto | null = null;
   selectedQuestion: DashboardQuestionScoreDto | null = null;
+  selectedSignal: SignalCardDto | null = null;
   interpretationConditions: DashboardInterpretationDto[] = [];
   glanceBarChartOptions: Partial<GlanceBarChartOptions> = {};
   glanceDonutChartOptions: Partial<GlanceDonutChartOptions> = {};
@@ -144,8 +144,17 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
       },
     });
   }
-  
 
+    customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.programName?.toLowerCase().includes(term) ||
+      item.location?.toLowerCase().includes(term) ||
+      item.year?.toString().includes(term)
+    );
+  }
+
+  
   onProgramChanged(): void {
     this.loadActiveTabData();
   }
@@ -162,54 +171,55 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.activeTab === 'stress') {
-      this.loadStressDashboard();
+    if (this.activeTab === 'ambitionDelivery') {
+      this.loadAmbitionDeliveryIndexDashboard();
       return;
     }
-    if (this.activeTab === 'warning') {
-      this.loadEarlyWarningDashboard();
+    if (this.activeTab === 'diplomaticRisk') {
+      this.loadDiplomaticRiskDashboard();
       return;
     }
-    this.loadResilienceDashboard();
+
+    this.loadReadinessScorecardDashboard();
   }
 
-  loadStressDashboard(): void {
+  loadAmbitionDeliveryIndexDashboard(): void {
     if (!this.selectedclimateProgramID) return;
     this.isLoading = true;
-    this.clientService.getPeaceStressTestDashboard(this.selectedclimateProgramID).subscribe({
+    this.clientService.getAmbitionDeliveryIndexDashboard(this.selectedclimateProgramID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
-          this.stressDashboard = null;
-          this.toaster.showWarning(res.errors?.[0] || 'No stress test data found.');
+          this.deliveryDashboard = null;
+          this.toaster.showWarning(res.errors?.[0] || 'No ambition delivery index  data found.');
           return;
         }
         this.interpretationConditions = res.result?.dashboardInterpretations ?? [];
-        this.stressDashboard = res.result;
-        if (this.activeTab === 'stress') this.updateGlanceCharts(res.result);
+        this.deliveryDashboard = res.result;
+        if (this.activeTab === 'ambitionDelivery') this.updateGlanceCharts(res.result);
       },
       error: () => {
         this.isLoading = false;
-        this.toaster.showError('Failed to load stress test dashboard.');
+        this.toaster.showError('Failed to load ambition delivery index dashboard.');
       },
     });
   }
 
-  loadEarlyWarningDashboard(isSilent = false): void {
+  loadDiplomaticRiskDashboard(isSilent = false): void {
     if (!this.selectedclimateProgramID) return;
     if (!isSilent) this.isLoading = true;
-    this.clientService.getEarlyWarningDashboard(this.selectedclimateProgramID).subscribe({
+    this.clientService.getDiplomaticRiskDashboard(this.selectedclimateProgramID).subscribe({
       next: (res) => {
         if (!isSilent) this.isLoading = false;
         if (!res.succeeded) {
-          this.warningDashboard = null;
+          this.deliveryDashboard = null;
           if (!isSilent) {
             this.toaster.showWarning(res.errors?.[0] || 'No early warning data found.');
           }
           return;
         }
-        this.warningDashboard = res.result;
-        if (this.activeTab === 'warning') this.updateGlanceCharts(res.result);
+        this.deliveryDashboard = res.result;
+        if (this.activeTab === 'diplomaticRisk') this.updateGlanceCharts(res.result);
       },
       error: () => {
         if (!isSilent) this.isLoading = false;
@@ -220,19 +230,19 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadResilienceDashboard(): void {
+  loadReadinessScorecardDashboard(): void {
     if (!this.selectedclimateProgramID) return;
     this.isLoading = true;
-    this.clientService.getResilienceScorecard(this.selectedclimateProgramID).subscribe({
+    this.clientService.getReadinessScorecardDashboard(this.selectedclimateProgramID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
-          this.resilienceDashboard = null;
+          this.deliveryDashboard = null;
           this.toaster.showWarning(res.errors?.[0] || 'No resilience data found.');
           return;
         }
-        this.resilienceDashboard = res.result;
-        if (this.activeTab === 'resilience') this.updateGlanceCharts(res.result);
+        this.deliveryDashboard = res.result;
+        if (this.activeTab === 'institutionalReadiness') this.updateGlanceCharts(res.result);
       },
       error: () => {
         this.isLoading = false;
@@ -242,9 +252,23 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
   }
 
   getActiveDashboard(): DashboardModeResponseDto | null {
-    if (this.activeTab === 'stress') return this.stressDashboard;
-    if (this.activeTab === 'warning') return this.warningDashboard;
-    return this.resilienceDashboard;
+    if (this.activeTab === 'ambitionDelivery') return this.deliveryDashboard;
+    if (this.activeTab === 'diplomaticRisk') return this.deliveryDashboard;
+    return this.deliveryDashboard;
+  }
+
+  getDashboardSignals(dashboard: DashboardModeResponseDto | null): SignalCardDto[] {
+    if (!dashboard) return [];
+    if (dashboard.primarySignals?.length) return dashboard.primarySignals;
+    return dashboard.signals ?? [];
+  }
+
+  getSecondarySignals(dashboard: DashboardModeResponseDto | null): SignalCardDto[] {
+    return dashboard?.secondarySignals ?? [];
+  }
+
+  getDashboardNarratives(dashboard: DashboardModeResponseDto | null): NarrativeDto[] {
+    return dashboard?.narratives ?? [];
   }
 
   getQuestions(dashboard: DashboardModeResponseDto | null): DashboardQuestionScoreDto[] {
@@ -285,19 +309,19 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
   }
 
   getAverageScore(dashboard: DashboardModeResponseDto | null): number | null {
-    const scores = (dashboard?.questions ?? [])
-      .map((q) => q.aiScore)
+    const scores = this.getDashboardSignals(dashboard)
+      .map((signal) => signal.value)
       .filter((score): score is number => this.hasScore(score));
     if (!scores.length) return null;
     return scores.reduce((sum, score) => sum + score, 0) / scores.length;
   }
 
   getReportingCount(dashboard: DashboardModeResponseDto | null): number {
-    return (dashboard?.questions ?? []).filter((q) => this.hasScore(q.aiScore)).length;
+    return this.getDashboardSignals(dashboard).filter((signal) => this.hasScore(signal.value)).length;
   }
 
   getTotalQuestionCount(dashboard: DashboardModeResponseDto | null): number {
-    return dashboard?.questions?.length ?? 0;
+    return this.getDashboardSignals(dashboard).length;
   }
 
   getProgramName(): string {
@@ -307,7 +331,19 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-
+   getProgramLocation(): string {
+    return (
+      this.programs.find((x) => x.climateProgramID === this.selectedclimateProgramID)?.location ||
+      'N/A'
+    );
+  }
+  
+  getProgramYear(): number {
+    return (
+      this.programs.find((x) => x.climateProgramID === this.selectedclimateProgramID)?.year ||
+      0
+    );
+  }
 
   getQuestionName(question: DashboardQuestionScoreDto): string {
     return question.questionDescription ;
@@ -334,19 +370,94 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
 
   getTabIcon(tab: SignalTab): string {
     const icons: Record<SignalTab, string> = {
-      stress: 'bi-speedometer2',
-      warning: 'bi-bell',
-      resilience: 'bi-bar-chart-steps',
+      ambitionDelivery: 'bi-bullseye',
+      diplomaticRisk: 'bi-shield-exclamation',
+      institutionalReadiness: 'bi-clipboard-check',
     };
     return icons[tab];
   }
 
   getOutlookLines(dashboard: DashboardModeResponseDto | null): string[] {
-    const alertCount = (dashboard?.questions ?? []).filter((q) => this.isAlertQuestion(q)).length;
+    const alertCount = this.getDashboardSignals(dashboard).filter((signal) => signal.isAlert).length;
     if (!dashboard) return [];
     if (alertCount >= 4) return ['Escalation watch: multiple indicators are in elevated or critical range.'];
     if (alertCount >= 2) return ['Cautionary watch: monitor highlighted indicators closely.'];
     return ['Stable watch: no major escalation detected across mapped indicators.'];
+  }
+
+  getSignalCode(signal: SignalCardDto): string {
+    return signal.code || signal.layerCode || 'SIG';
+  }
+
+  getSignalName(signal: SignalCardDto): string {
+    return signal.name || signal.layerName || 'Signal';
+  }
+
+  getSignalIconClass(code?: string | null): string {
+    const value = (code || '').toLowerCase();
+    if (value.includes('pem') || value.includes('program')) return 'bi-speedometer2';
+    if (value.includes('sfs') || value.includes('fragility')) return 'bi-activity';
+    if (value.includes('gas') || value.includes('grievance')) return 'bi-exclamation-diamond';
+    if (value.includes('scs') || value.includes('cohesion')) return 'bi-people';
+    if (value.includes('tas') || value.includes('trust')) return 'bi-shield-check';
+    if (value.includes('risk') || value.includes('alert')) return 'bi-broadcast';
+    return 'bi-graph-up-arrow';
+  }
+
+  getSignalAccentClass(code?: string | null): string {
+    const value = (code || '').toLowerCase();
+    if (value.includes('pem') || value.includes('vcp')) return 'accent-vcp';
+    if (value.includes('risk') || value.includes('gas')) return 'accent-risk';
+    if (value.includes('fragility') || value.includes('sfs')) return 'accent-warning';
+    if (value.includes('cohesion') || value.includes('scs')) return 'accent-cohesion';
+    if (value.includes('trust') || value.includes('tas')) return 'accent-network';
+    return 'accent-default';
+  }
+
+  getNarrativeHeadline(item: NarrativeDto): string {
+    return item.headline || 'System signal';
+  }
+
+  getNarrativeDetail(item: NarrativeDto): string {
+    return item.detail || 'No narrative detail available.';
+  }
+
+  hasSignalDelta(signal: SignalCardDto): boolean {
+    return typeof (signal as any).delta === 'number';
+  }
+
+  getSignalDelta(signal: SignalCardDto): string {
+    const delta = Number((signal as any).delta ?? 0);
+    const prefix = delta >= 0 ? '+' : '';
+    return `${prefix}${delta.toFixed(1)}`;
+  }
+
+  getSignalValue(signal?: SignalCardDto | null): string {
+    return this.hasScore(signal?.value) ? Number(signal?.value).toFixed(1) : 'N/A';
+  }
+
+  openSignalDetails(signal: SignalCardDto): void {
+    this.selectedSignal = signal;
+    setTimeout(() => {
+      const modalEl = document.getElementById('signalDetailModal');
+      if (modalEl) {
+        let modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (!modalInstance) {
+          modalInstance = new bootstrap.Modal(modalEl);
+        }
+        modalInstance.show();
+      }
+    }, 50);
+  }
+
+  closeSignalDetails(): void {
+    const modalEl = document.getElementById('signalDetailModal');
+    if (!modalEl) return;
+    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+    this.selectedSignal = null;
   }
 
   openQuestionDetails(question: DashboardQuestionScoreDto): void {
@@ -411,12 +522,12 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
   }
 
   private updateGlanceCharts(dashboard: DashboardModeResponseDto | null): void {
-    const questions = dashboard?.questions ?? [];
-    const categories = questions.map((q) => this.truncateLabel(q.questionDescription || `Q${q.questionID}`, 22));
-    const scores = questions.map((q) => (this.hasScore(q.aiScore) ? Number(q.aiScore) : 0));
-    const barColors = questions.map((q, i) => {
-      if (!this.hasScore(q.aiScore)) return '#cbd5e1';
-      const score = Number(q.aiScore);
+    const signals = this.getDashboardSignals(dashboard);
+    const categories = signals.map((signal) => this.truncateLabel(this.getSignalName(signal), 22));
+    const scores = signals.map((signal) => (this.hasScore(signal.value) ? Number(signal.value) : 0));
+    const barColors = signals.map((signal) => {
+      if (!this.hasScore(signal.value)) return '#cbd5e1';
+      const score = Number(signal.value);
       if (score <= 40) return '#dc3545';
       if (score <= 60) return '#fd7e14';
       if (score <= 80) return '#006D77';
@@ -444,8 +555,8 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
       dataLabels: {
         enabled: true,
         formatter: (val: number, opts: any) => {
-          const q = questions[opts.dataPointIndex];
-          return this.hasScore(q?.aiScore) ? Number(val).toFixed(1) : 'N/A';
+          const signal = signals[opts.dataPointIndex];
+          return this.hasScore(signal?.value) ? Number(val).toFixed(1) : 'N/A';
         },
         offsetX: 24,
         style: { fontSize: '11px', fontWeight: 700, colors: [VCP_CHART.text] },
@@ -475,8 +586,8 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
         theme: 'light',
         y: {
           formatter: (val: number, opts: any) => {
-            const q = questions[opts.dataPointIndex];
-            if (!this.hasScore(q?.aiScore)) return 'No data';
+            const signal = signals[opts.dataPointIndex];
+            if (!this.hasScore(signal?.value)) return 'No data';
             return `${Number(val).toFixed(1)} / 100`;
           },
         },
@@ -486,12 +597,12 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
 
     const conditionMap = new Map<string, number>();
     let noDataCount = 0;
-    questions.forEach((q) => {
-      if (!this.hasScore(q.aiScore)) {
+    signals.forEach((signal) => {
+      if (!this.hasScore(signal.value)) {
         noDataCount++;
         return;
       }
-      const key = this.getInterpretationConditionByScore(q.aiScore).condition || 'Stable';
+      const key = signal.condition || 'Stable';
       conditionMap.set(key, (conditionMap.get(key) ?? 0) + 1);
     });
     if (noDataCount > 0) {
@@ -534,7 +645,7 @@ export class ClientDashboardComponent implements OnInit, OnDestroy {
                 fontSize: '13px',
                 fontWeight: 600,
                 color: VCP_CHART.textMuted,
-                formatter: () => `${questions.length}`,
+                formatter: () => `${signals.length}`,
               },
             },
           },

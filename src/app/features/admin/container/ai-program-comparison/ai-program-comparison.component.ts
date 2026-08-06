@@ -622,7 +622,7 @@ export class AiProgramComparisonComponent implements OnInit {
     return Math.round(avg * 100) / 100 + '';
   }
 
-  viewPEMAveumCrossComparision(){
+  viewVCPAveumCrossComparision(){
     this.chatService.crossComparisionprogramIDs.next(this.selectedPrograms);
     this.router.navigate(['/admin/aevum'], { state: { role: UserRole.Admin } });
   }

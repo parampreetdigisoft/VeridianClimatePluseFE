@@ -18,13 +18,13 @@
   border: 1px solid #A8E0633b; */
 }
 
-.pem-chat_header {
+.vcp-chat_header {
   flex: 0 0 auto;
   flex-shrink: 0;
 }
 
 /* ── Root: single column, full height ───────────────────────── */
-.pem-chat {
+.vcp-chat {
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -36,7 +36,7 @@
   grid-gap: 15px;
 }
 
-.pem-chat-inner {
+.vcp-chat-inner {
   flex: 1 1 0;
   min-width: 0;
   min-height: 0;
@@ -54,7 +54,7 @@
 }
 
 /* Chat column: messages scroll, input stays pinned */
-.pem-chat-body {
+.vcp-chat-body {
   flex: 1 1 0;
   min-height: 0;
   display: flex;
@@ -64,7 +64,7 @@
   height: 100%;
 }
 
-.pem-chat-inner--has-hero .per-chat-slides {
+.vcp-chat-inner--has-hero .per-chat-slides {
   flex: 0 0 auto;
   flex-shrink: 0;
   overflow: hidden;
@@ -73,7 +73,7 @@
   min-height: 0;
 }
 
-.pem-chat-inner--has-hero .flip-hero {
+.vcp-chat-inner--has-hero .flip-hero {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
@@ -83,12 +83,12 @@
 /* Collapsed hero: compact fixed band — chat area owns scrolling */
 
 
-.pem-chat-inner--has-hero .per-chat-slides--expanded {
+.vcp-chat-inner--has-hero .per-chat-slides--expanded {
   min-height: 220px;
   max-height: min(46vh, 420px);
 }
 
-.pem-chat-inner--has-hero .flip-hero__viewport {
+.vcp-chat-inner--has-hero .flip-hero__viewport {
   flex: 1 1 auto;
   min-height: 0;
   max-height: 100%;
@@ -97,31 +97,31 @@
   flex-direction: column;
 }
 
-.pem-chat-inner--has-hero .flip-hero__slider {
+.vcp-chat-inner--has-hero .flip-hero__slider {
   overflow: hidden;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
 }
 
-.pem-chat-inner--has-hero .per-chat-slides--collapsed .flip-hero__slider {
+.vcp-chat-inner--has-hero .per-chat-slides--collapsed .flip-hero__slider {
   flex: 0 0 auto;
   min-height: 52px;
 }
 
-.pem-chat-inner--has-hero .per-chat-slides--expanded .flip-hero__slider {
+.vcp-chat-inner--has-hero .per-chat-slides--expanded .flip-hero__slider {
   flex: 1 1 auto;
   min-height: 0;
 }
 
-.pem-chat-inner--has-hero .flip-hero__viewport .suggestions-rail {
+.vcp-chat-inner--has-hero .flip-hero__viewport .suggestions-rail {
   flex: 0 0 auto;
   flex-shrink: 0;
   position: relative;
   z-index: 3;
 }
 
-.pem-chat-inner--has-hero .flip-hero__card {
+.vcp-chat-inner--has-hero .flip-hero__card {
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
@@ -129,7 +129,7 @@
   flex-direction: column;
 }
 
-.pem-chat-inner--has-hero .flip-hero__content {
+.vcp-chat-inner--has-hero .flip-hero__content {
   flex: 1 1 auto;
   min-height: 0;
   max-height: none;
@@ -139,29 +139,29 @@
 }
 
 /* Expanded: scroll inside hero body only; chat scrolls messages separately */
-.pem-chat-inner--has-hero.pem-chat-inner--hero-expanded .flip-hero__content {
+.vcp-chat-inner--has-hero.vcp-chat-inner--hero-expanded .flip-hero__content {
   overflow-y: auto;
 }
 
-.pem-chat-inner--has-hero.pem-chat-inner--hero-collapsed .flip-hero__content {
+.vcp-chat-inner--has-hero.vcp-chat-inner--hero-collapsed .flip-hero__content {
   overflow: hidden;
 }
 
-.pem-chat-inner--has-hero.pem-chat-inner--hero-expanded .chat-messages,
-.pem-chat-inner--has-hero.pem-chat-inner--hero-collapsed .chat-messages {
+.vcp-chat-inner--has-hero.vcp-chat-inner--hero-expanded .chat-messages,
+.vcp-chat-inner--has-hero.vcp-chat-inner--hero-collapsed .chat-messages {
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1 1 0;
   min-height: 0;
 }
 
-.pem-chat-inner--has-hero.pem-chat-inner--has-chat .chat-messages__inner {
+.vcp-chat-inner--has-hero.vcp-chat-inner--has-chat .chat-messages__inner {
   min-height: 0;
   justify-content: flex-start;
   overflow: auto;
 }
 
-.pem-chat-inner--has-hero.pem-chat-inner--has-chat .chat-messages__anchor {
+.vcp-chat-inner--has-hero.vcp-chat-inner--has-chat .chat-messages__anchor {
   flex: 0 0 0;
   min-height: 0;
   height: 0;
@@ -174,39 +174,39 @@
     /* min-height: 48px; */
   }
 
-  .pem-chat-inner--has-hero .flip-hero__slider {
+  .vcp-chat-inner--has-hero .flip-hero__slider {
     min-height: 52px;
   }
 
-  .pem-chat-inner--has-hero .per-chat-slides--collapsed .flip-hero__slider {
+  .vcp-chat-inner--has-hero .per-chat-slides--collapsed .flip-hero__slider {
     min-height: 56px;
   }
 
-  .pem-chat-inner--has-hero .per-chat-slides--expanded {
+  .vcp-chat-inner--has-hero .per-chat-slides--expanded {
     min-height: 248px;
     max-height: min(44vh, 400px);
   }
 
-  .pem-chat-inner--has-hero .per-chat-slides--expanded .flip-hero__slider {
+  .vcp-chat-inner--has-hero .per-chat-slides--expanded .flip-hero__slider {
     min-height: 172px;
   }
 }
 
 @media (min-width: 1281px) {
 
-  .pem-chat-inner--has-hero .per-chat-slides--expanded {
+  .vcp-chat-inner--has-hero .per-chat-slides--expanded {
     min-height: 260px;
     max-height: min(42vh, 420px);
   }
 
-  .pem-chat-inner--has-hero .per-chat-slides--expanded .flip-hero__slider {
+  .vcp-chat-inner--has-hero .per-chat-slides--expanded .flip-hero__slider {
     min-height: 180px;
   }
 }
 
 
 /* Subtle grid texture on background */
-.pem-chat::before {
+.vcp-chat::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -544,7 +544,7 @@
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel,
-::ng-deep body > .ng-dropdown-panel.pem-context-select {
+::ng-deep body > .ng-dropdown-panel.vcp-context-select {
   border: 1px solid rgba(0, 109, 119, 0.1) !important;
   border-radius: 14px !important;
   box-shadow: 0 12px 40px rgba(0, 10, 40, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
@@ -890,12 +890,12 @@
   }
 }
 
-.pem-chat-inner--has-hero .flip-hero__viewport .suggestions-rail {
+.vcp-chat-inner--has-hero .flip-hero__viewport .suggestions-rail {
   min-height: 54px;
 }
 
 @media (max-width: 1280px), (max-height: 820px) {
-  .pem-chat-inner--has-hero .flip-hero__viewport .suggestions-rail {
+  .vcp-chat-inner--has-hero .flip-hero__viewport .suggestions-rail {
     min-height: 56px;
   }
 }
@@ -1701,7 +1701,7 @@
   flex-shrink: 0;
 }
 
-/* ── Exchange divider between analyst ↔ PEM turns ─────────────── */
+/* ── Exchange divider between analyst ↔ VCP turns ─────────────── */
 .brief-exchange {
   max-width: 860px;
   width: 100%;
@@ -2447,7 +2447,7 @@
 
 
 
-.pem-sidebar .program-header {
+.vcp-sidebar .program-header {
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 600;
@@ -2464,7 +2464,7 @@
 /* dashboard-card.component.css */
 
 /* ── Sidebar (AT A GLANCE, KEY PILLARS) ─────────────────────── */
-aside.pem-sidebar {
+aside.vcp-sidebar {
   max-width: 440px;
   width: 100%;
   min-width: 0;
@@ -2478,7 +2478,7 @@ aside.pem-sidebar {
   align-self: stretch;
 }
 
-.pem-sidebar__scroll {
+.vcp-sidebar__scroll {
   flex: 1 1 auto;
   overflow-y: auto;
   padding: 0;
@@ -2490,17 +2490,17 @@ aside.pem-sidebar {
   scrollbar-gutter: stable;
 }
 
-.pem-sidebar__scroll::-webkit-scrollbar {
+.vcp-sidebar__scroll::-webkit-scrollbar {
   width: 6px;
 }
 
-.pem-sidebar__scroll::-webkit-scrollbar-track {
+.vcp-sidebar__scroll::-webkit-scrollbar-track {
   background: rgba(0, 109, 119, 0.05);
   border-radius: 999px;
   margin: 10px 0;
 }
 
-.pem-sidebar__scroll::-webkit-scrollbar-thumb {
+.vcp-sidebar__scroll::-webkit-scrollbar-thumb {
   background: rgba(0, 109, 119, 0.1);
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.85);
@@ -2508,18 +2508,18 @@ aside.pem-sidebar {
   box-shadow: 0 1px 4px rgba(0, 109, 119, 0.12);
 }
 
-.pem-sidebar__scroll::-webkit-scrollbar-thumb:hover {
+.vcp-sidebar__scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 109, 119, 0.1);
   box-shadow: 0 2px 6px rgba(0, 109, 119, 0.18);
 }
 
-.pem-sidebar__scroll::-webkit-scrollbar-thumb:active {
+.vcp-sidebar__scroll::-webkit-scrollbar-thumb:active {
   background: rgba(0, 109, 119, 0.1);
   border-color: rgba(255, 255, 255, 0.7);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pem-sidebar__scroll {
+  .vcp-sidebar__scroll {
     scroll-behavior: auto;
   }
 }
@@ -2935,7 +2935,7 @@ aside.pem-sidebar {
    ══════════════════════════════════════════════════════════════ */
 
 @media only screen and (max-width: 1780px) {
-  aside.pem-sidebar {
+  aside.vcp-sidebar {
     max-width: 380px;
   }
    .stats-card .stat-row .chart {
@@ -2967,7 +2967,7 @@ aside.pem-sidebar {
       -webkit-line-clamp: 5;
       font-size: 13px;
   }
-  aside.pem-sidebar {
+  aside.vcp-sidebar {
       max-width: 320px;
   }
   .flip-hero__header {
@@ -3314,7 +3314,7 @@ aside.pem-sidebar {
     max-height: 130px;
   }
 
-  .pem-chat-inner--has-hero .flip-hero__content {
+  .vcp-chat-inner--has-hero .flip-hero__content {
     max-height: none;
   }
 }
@@ -3350,7 +3350,7 @@ aside.pem-sidebar {
     padding: 0 12px 10px;
   }
 
-  .pem-chat-inner--has-hero .flip-hero__content {
+  .vcp-chat-inner--has-hero .flip-hero__content {
     max-height: none;
   }
 
@@ -3495,7 +3495,7 @@ aside.pem-sidebar {
     font-size: 12px;
   }
 
-  .pem-chat-inner--has-hero .flip-hero__content {
+  .vcp-chat-inner--has-hero .flip-hero__content {
     max-height: none;
   }
 

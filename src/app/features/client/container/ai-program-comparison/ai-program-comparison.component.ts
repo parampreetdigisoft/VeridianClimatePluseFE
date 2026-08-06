@@ -614,7 +614,7 @@ export class AiProgramComparisonComponent implements OnInit {
     let avg = pillarValues.reduce((a, b) => a + b.value, 0) / pillarValues.length;
     return Math.round(avg * 100) / 100 + '';
   }
-    viewPEMAveumCrossComparision(){
+    viewVCPAveumCrossComparision(){
     this.chatService.crossComparisionprogramIDs.next(this.selectedPrograms);
     this.router.navigate(['/programuser/aevum'], { state: { role: UserRole.ProgramUser } });
   }

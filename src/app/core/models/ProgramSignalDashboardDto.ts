@@ -1,3 +1,5 @@
+import { NarrativeDto, SignalCardDto } from "./SignalCardDto";
+
 export type SignalCondition = 'Stable' | 'Watch' | 'Elevated' | 'Critical' | string;
 
 export interface DashboardInterpretationDto {
@@ -31,6 +33,17 @@ export interface DashboardModeResponseDto {
   dashboardModeID: number;
   modeName: string;
   description: string | null;
-  questions: DashboardQuestionScoreDto[];
-  dashboardInterpretations: DashboardInterpretationDto[];
+  year: number;
+  vcp: number;
+  programScore: number;
+  vcpDirectionalMovement: number;
+  vcpCondition: string;
+  vcpDescriptor: string;
+  vcpStrategicAction: string;
+  signals: SignalCardDto[];
+  primarySignals: SignalCardDto[];
+  secondarySignals: SignalCardDto[];
+  narratives: NarrativeDto[];
+  questions?: DashboardQuestionScoreDto[];
+  dashboardInterpretations?: DashboardInterpretationDto[];
 }

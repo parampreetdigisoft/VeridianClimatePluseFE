@@ -51,5 +51,5 @@ export interface FiveLevelInterpretation {
   maxRange: number;
   condition: string;
   descriptor: string;  
-  strategicAction: string;
 }
+

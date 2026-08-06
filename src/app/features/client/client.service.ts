@@ -110,18 +110,18 @@ export class ClientService {
     return this.http.post(`kpi/getMutiplekpiLayerResults`, payload).pipe(map(x => x as ResultResponseDto<GetMutiplekpiLayerResultsDto>));;
   }
 
-  public getPeaceStressTestDashboard(climateProgramID: number) {
-    return this.http.getWithQueryParams(`Dashboard/getPeaceStressTestDashboard`, { climateProgramID })
+  public getAmbitionDeliveryIndexDashboard(climateProgramID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getAmbitionDeliveryIndexDashboard`, { climateProgramID })
       .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
 
-  public getEarlyWarningDashboard(climateProgramID: number) {
-    return this.http.getWithQueryParams(`Dashboard/getEarlyWarningDashboard`, { climateProgramID })
+  public getDiplomaticRiskDashboard(climateProgramID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getDiplomaticRiskDashboard`, { climateProgramID })
       .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
   
-  public getResilienceScorecard(climateProgramID: number) {
-    return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { climateProgramID })
+  public getReadinessScorecardDashboard(climateProgramID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getReadinessScorecardDashboard`, { climateProgramID })
       .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
   

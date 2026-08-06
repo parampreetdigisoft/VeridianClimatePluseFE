@@ -40,7 +40,7 @@
    Shared: tabular / mono numerals for every score in the system
    ============================================================ */
 .signal_value,
-.pem_stat strong,
+.vcp_stat strong,
 .signal_detail_stat strong,
 .code_pill,
 .delta {
@@ -329,7 +329,7 @@
    Hero banners — "console" treatment with radar grid + scanline
    ============================================================ */
 
-.pem_hero,
+.vcp_hero,
 .resilience_hero {
   display: flex;
   flex-wrap: wrap;
@@ -361,7 +361,7 @@
   overflow: hidden;
 }
 
-.pem_hero::after,
+.vcp_hero::after,
 .resilience_hero::after {
   content: "";
   position: absolute;
@@ -380,7 +380,7 @@
   100% { top: 100%; opacity: 0; }
 }
 
-.pem_hero_content,
+.vcp_hero_content,
 .resilience_hero_content {
   flex: 1;
   min-width: 200px;
@@ -388,7 +388,7 @@
   z-index: 1;
 }
 
-.pem_hero_icon,
+.vcp_hero_icon,
 .resilience_hero_icon {
   width: 58px;
   height: 58px;
@@ -404,7 +404,7 @@
   z-index: 1;
 }
 
-.pem_hero_icon svg,
+.vcp_hero_icon svg,
 .resilience_hero_icon svg {
   width: 28px;
   height: 28px;
@@ -413,7 +413,7 @@
   display: block;
 }
 
-.pem_hero_label,
+.vcp_hero_label,
 .resilience_hero_label {
   display: inline-flex;
   align-items: center;
@@ -426,7 +426,7 @@
   font-weight: 700;
 }
 
-.pem_hero_label::before,
+.vcp_hero_label::before,
 .resilience_hero_label::before {
   content: "";
   width: 6px;
@@ -436,7 +436,7 @@
   box-shadow: 0 0 6px var(--pe-secondary-glow);
 }
 
-.pem_hero h3,
+.vcp_hero h3,
 .resilience_hero h3 {
   margin: 0;
   font-size: 22px;
@@ -444,14 +444,14 @@
   letter-spacing: -0.01em;
 }
 
-.pem_hero p,
+.vcp_hero p,
 .resilience_hero p {
   margin: 6px 0 0;
   font-size: 13px;
   opacity: 0.85;
 }
 
-.pem_hero_stats {
+.vcp_hero_stats {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -459,7 +459,7 @@
   z-index: 1;
 }
 
-.pem_stat {
+.vcp_stat {
   min-width: 76px;
   padding: 11px 14px;
   border-radius: 11px;
@@ -470,13 +470,13 @@
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.pem_stat:hover {
+.vcp_stat:hover {
   background: rgba(168, 224, 99, 0.16);
   border-color: rgba(168, 224, 99, 0.4);
   transform: translateY(-2px);
 }
 
-.pem_stat span {
+.vcp_stat span {
   display: block;
   font-size: 10.5px;
   letter-spacing: 0.06em;
@@ -484,7 +484,7 @@
   opacity: 0.8;
 }
 
-.pem_stat strong {
+.vcp_stat strong {
   display: block;
   font-size: 23px;
   margin-top: 3px;
@@ -869,7 +869,7 @@
 
 /* ── Signal accent variants ── */
 
-.accent-pem .signal_icon_well { background: linear-gradient(135deg, #d4e8e4, #a8cfc4); color: #006D77; border-color: #9ec4b8; }
+.accent-vcp .signal_icon_well { background: linear-gradient(135deg, #d4e8e4, #a8cfc4); color: #006D77; border-color: #9ec4b8; }
 .accent-risk .signal_icon_well { background: linear-gradient(135deg, #fde8d8, #f5c9a8); color: #a04a12; border-color: #f0b88a; }
 .accent-alert .signal_icon_well { background: linear-gradient(135deg, #ffe4dc, #ffc4b0); color: #b83a1a; border-color: #f5a890; }
 .accent-warning .signal_icon_well { background: linear-gradient(135deg, #fff3d4, #ffe4a0); color: #8a6500; border-color: #f0d070; }
@@ -1359,7 +1359,7 @@
   to { transform: rotate(360deg); }
 }
 
-.pem_hero_icon::before,
+.vcp_hero_icon::before,
 .resilience_hero_icon::before {
   content: "";
   position: absolute;
@@ -1476,7 +1476,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .radar_sweep_line,
-  .pem_hero_icon::before,
+  .vcp_hero_icon::before,
   .resilience_hero_icon::before,
   .signal_detail_modal .modal-dialog {
     animation: none;
@@ -1540,11 +1540,11 @@
   .alert_item { grid-template-columns: auto 1fr; }
   .alert_flag { grid-column: 2; }
   .alert_content { grid-column: 1 / -1; }
-  .pem_hero, .resilience_hero { padding: 18px; }
+  .vcp_hero, .resilience_hero { padding: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pem_hero::after,
+  .vcp_hero::after,
   .resilience_hero::after,
   .live_pulse,
   .progress_fill.shimmer::after,
@@ -1673,16 +1673,16 @@
   overflow: hidden;
 }
 
-.pem_hero_icon .bi {
+.vcp_hero_icon .bi {
   font-size: 28px;
   color: var(--pe-primary);
 }
 
-.pem_hero--warning {
+.vcp_hero--warning {
   border-left-color: #fd7e14;
 }
 
-.pem_hero--resilience {
+.vcp_hero--resilience {
   border-left-color: #77BD3E;
 }
 

@@ -35,13 +35,13 @@
 
   <ng-container *ngIf="!isLoading">
     <section class="tab_body" *ngIf="getActiveDashboard() as dashboard">
-      <div class="pem_hero" [class.pem_hero--warning]="activeTab === 'warning'" [class.pem_hero--resilience]="activeTab === 'resilience'">
+      <div class="vcp_hero" [class.vcp_hero--warning]="activeTab === 'warning'" [class.vcp_hero--resilience]="activeTab === 'resilience'">
         <img src="assets/images/health-score-chart.svg" alt="" class="hero_watermark" aria-hidden="true" />
-        <div class="pem_hero_icon">
+        <div class="vcp_hero_icon">
           <i class="bi" [ngClass]="getTabIcon(activeTab)"></i>
         </div>
-        <div class="pem_hero_content">
-          <span class="pem_hero_label">{{ dashboard.modeName }}</span>
+        <div class="vcp_hero_content">
+          <span class="vcp_hero_label">{{ dashboard.modeName }}</span>
           <h3>{{ getProgramsName() }}</h3>
           <p *ngIf="dashboard.description">{{ dashboard.description }}</p>
           <p *ngIf="hasScore(getAverageScore(dashboard)); else noAvgHero">
@@ -52,16 +52,16 @@
             <p>{{ getReportingCount(dashboard) }} of {{ getTotalQuestionCount(dashboard) }} indicators mapped · awaiting scores</p>
           </ng-template>
         </div>
-        <div class="pem_hero_stats">
-          <div class="pem_stat">
+        <div class="vcp_hero_stats">
+          <div class="vcp_stat">
             <span>Reporting</span>
             <strong>{{ getReportingCount(dashboard) }}/{{ getTotalQuestionCount(dashboard) }}</strong>
           </div>
-          <div class="pem_stat" *ngIf="getQuestions(dashboard)[0] as firstQuestion">
+          <div class="vcp_stat" *ngIf="getQuestions(dashboard)[0] as firstQuestion">
             <span>{{ getQuestionName(firstQuestion) }}</span>
             <strong>{{ formatScore(firstQuestion.aiScore) }}</strong>
           </div>
-          <div class="pem_stat" *ngIf="getQuestions(dashboard)[1] as secondQuestion">
+          <div class="vcp_stat" *ngIf="getQuestions(dashboard)[1] as secondQuestion">
             <span>{{ getQuestionName(secondQuestion) }}</span>
             <strong>{{ formatScore(secondQuestion.aiScore) }}</strong>
           </div>

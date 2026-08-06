@@ -409,7 +409,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     );
   }
 
-  /** 0–100 peace index → PEM pillar palette (higher = more peaceful). */
+  /** 0–100 peace index → VCP pillar palette (higher = more peaceful). */
   scoreToColor(value: number | null | undefined): string {
     const colors = this.commonService.PillarColors;
     if (value == null || isNaN(Number(value))) return '#E0E0E0';

@@ -1,6 +1,6 @@
 <!-- VCP · Intelligence workspace -->
 
-<div class="pem-chat_header">
+<div class="vcp-chat_header">
       <header class="command-bar">
         <div class="cb__identity">
           <div class="cb__orb" aria-hidden="true">
@@ -28,7 +28,7 @@
         <div class="cb__selector-inner">
           <ng-select [items]="chatService.programs | async" [searchable]="true" [searchFn]="customSearchFn"
             [clearable]="true" appendTo="body" [ngModel]="selectedProgram()" (ngModelChange)="onProgramChange($event)"
-            class="analyst_multi_select pem-context-select" placeholder="Select program" bindLabel="programName"
+            class="analyst_multi_select vcp-context-select" placeholder="Select program" bindLabel="programName"
             notFoundText="No programs match your search" typeToSearchText="Type to search programs">
             <ng-template ng-label-tmp let-item="item">{{ item?.programName }}</ng-template>
             <ng-template ng-option-tmp let-item="item">
@@ -51,7 +51,7 @@
         </div>
         <div class="cb__selector-inner">
           <ng-select [items]="chatService.pillars | async" [searchable]="true" [clearable]="true" appendTo="body"
-            [ngModel]="selectedPillar()" (ngModelChange)="onPillarChange($event)" class="analyst_multi_select pem-context-select"
+            [ngModel]="selectedPillar()" (ngModelChange)="onPillarChange($event)" class="analyst_multi_select vcp-context-select"
             placeholder="Select pillar" bindLabel="pillarName"
             notFoundText="No pillars match your search" typeToSearchText="Type to search pillars">
             <ng-template ng-label-tmp let-item="item">{{ item?.pillarName }}</ng-template>
@@ -81,12 +81,12 @@
 
 
 
-<div class="pem-chat">
-<div class="pem-chat-inner"
-  [class.pem-chat-inner--has-hero]="sliderItems.length > 0 && selectedProgram()"
-  [class.pem-chat-inner--hero-expanded]="isExpanded && sliderItems.length > 0 && selectedProgram()"
-  [class.pem-chat-inner--hero-collapsed]="!isExpanded && sliderItems.length > 0 && selectedProgram()"
-  [class.pem-chat-inner--has-chat]="displayMessages().length > 0 || isTyping()">
+<div class="vcp-chat">
+<div class="vcp-chat-inner"
+  [class.vcp-chat-inner--has-hero]="sliderItems.length > 0 && selectedProgram()"
+  [class.vcp-chat-inner--hero-expanded]="isExpanded && sliderItems.length > 0 && selectedProgram()"
+  [class.vcp-chat-inner--hero-collapsed]="!isExpanded && sliderItems.length > 0 && selectedProgram()"
+  [class.vcp-chat-inner--has-chat]="displayMessages().length > 0 || isTyping()">
     <div class="per-chat-slides"
       [class.per-chat-slides--expanded]="isExpanded && sliderItems.length > 0 && selectedProgram()"
       [class.per-chat-slides--collapsed]="!isExpanded && sliderItems.length > 0 && selectedProgram()">
@@ -200,7 +200,7 @@
     </div>
  <div class="analyst_chat">
 
-  <div class="pem-chat-body">
+  <div class="vcp-chat-body">
   <div #messagesContainer class="chat-messages" role="log" aria-live="polite">
     <div class="chat-messages__inner">
     <div class="chat-messages__anchor" *ngIf="displayMessages().length > 0 || isTyping()"></div>
@@ -290,10 +290,10 @@
               <path d="M5 20c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
             </svg> -->
             <ng-container *ngIf="msg.role === 'user'">
-                 <img src="assets/images/pemaevumai.svg" alt="Logo">
+                 <img src="assets/images/vcpaevumai.svg" alt="Logo">
             </ng-container>
             <ng-container *ngIf="msg.role === 'assistant'">
-                 <img src="assets/images/pemaevumchat.svg" alt="Logo">
+                 <img src="assets/images/vcpaevumchat.svg" alt="Logo">
             </ng-container>
 
             <!-- <svg *ngIf="msg.role === 'assistant'" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -356,7 +356,7 @@
             <span></span><span></span><span></span>
           </span>
         </div>
-        <input *ngIf="!isTyping()" #inputField id="pem-aevum-input" [value]="inputText()"
+        <input *ngIf="!isTyping()" #inputField id="vcp-aevum-input" [value]="inputText()"
           (input)="onInputChange($event)" (keydown)="onKeyDown($event)" (blur)="closeSuggestions()"
           type="text" class="chat-input" placeholder=" " autocomplete="off" spellcheck="false">
         <span *ngIf="!isTyping() && !inputText().trim()" class="input-rotator"
@@ -393,8 +393,8 @@
 
 
     <!-- Sidebar -->
-  <aside class="pem-sidebar">
-    <div class="pem-sidebar__scroll">
+  <aside class="vcp-sidebar">
+    <div class="vcp-sidebar__scroll">
 
     <!-- Program Overview Card -->
     <section class="sidebar-card program-overview">

@@ -269,7 +269,7 @@ export class ChatService {
   }
 
   getProgramsCrossComparision() {
-    let userText = "Provide a detailed comparative analysis of the selected programs across all PEM pillars, including key risks, opportunities, structural vulnerabilities, resilience indicators, emerging trends, and strategic observations for each pillar."
+    let userText = "Provide a detailed comparative analysis of the selected programs across all VCP pillars, including key risks, opportunities, structural vulnerabilities, resilience indicators, emerging trends, and strategic observations for each pillar."
 
     if (this.isTyping()) {
       this.stopGeneration();

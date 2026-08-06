@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit {
         return 'Program Analyst';
       }
       else if(this.userinfo?.tier === 3){
-        return 'Network Administrator';
+        return 'Client Account';
       }
     }
     return this.userinfo?.role;

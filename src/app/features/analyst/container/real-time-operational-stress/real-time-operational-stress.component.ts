@@ -67,9 +67,9 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   loading = false;
   isLoading = false;
 
-  stressDashboard: DashboardModeResponseDto | null = null;
-  warningDashboard: DashboardModeResponseDto | null = null;
-  resilienceDashboard: DashboardModeResponseDto | null = null;
+  ambitionDeliveryDashboard: DashboardModeResponseDto | null = null;
+  diplomaticRiskDashboard: DashboardModeResponseDto | null = null;
+  readinessDashboard: DashboardModeResponseDto | null = null;
   selectedQuestion: DashboardQuestionScoreDto | null = null;
   interpretationConditions: DashboardInterpretationDto[] = [];
 
@@ -154,11 +154,11 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
-          this.stressDashboard = null;
+          this.ambitionDeliveryDashboard = null;
           this.toaster.showWarning(res.errors?.[0] || 'No stress test data found.');
           return;
         }
-        this.stressDashboard = res.result;
+        this.ambitionDeliveryDashboard = res.result;
         this.interpretationConditions = res.result?.dashboardInterpretations ?? [];
         if (this.activeTab === 'stress') this.updateGlanceCharts(res.result);
       },
@@ -176,13 +176,13 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
       next: (res) => {
         if (!isSilent) this.isLoading = false;
         if (!res.succeeded) {
-          this.warningDashboard = null;
+          this.diplomaticRiskDashboard = null;
           if (!isSilent) {
             this.toaster.showWarning(res.errors?.[0] || 'No early warning data found.');
           }
           return;
         }
-        this.warningDashboard = res.result;
+        this.diplomaticRiskDashboard = res.result;
         if (this.activeTab === 'warning') this.updateGlanceCharts(res.result);
       },
       error: () => {
@@ -201,11 +201,11 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
-          this.resilienceDashboard = null;
+          this.readinessDashboard = null;
           this.toaster.showWarning(res.errors?.[0] || 'No resilience data found.');
           return;
         }
-        this.resilienceDashboard = res.result;
+        this.readinessDashboard = res.result;
         if (this.activeTab === 'resilience') this.updateGlanceCharts(res.result);
       },
       error: () => {
@@ -216,9 +216,9 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   getActiveDashboard(): DashboardModeResponseDto | null {
-    if (this.activeTab === 'stress') return this.stressDashboard;
-    if (this.activeTab === 'warning') return this.warningDashboard;
-    return this.resilienceDashboard;
+    if (this.activeTab === 'stress') return this.ambitionDeliveryDashboard;
+    if (this.activeTab === 'warning') return this.diplomaticRiskDashboard;
+    return this.readinessDashboard;
   }
 
   getQuestions(dashboard: DashboardModeResponseDto | null): DashboardQuestionScoreDto[] {
