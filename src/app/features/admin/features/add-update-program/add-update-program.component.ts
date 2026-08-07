@@ -32,7 +32,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
   programList: ProgramVM[] = [];
 
   statusList: string[] = [
-    'In Score',
+    'In Progress',
     'On Hold',
     'Cancelled'
   ];
@@ -62,7 +62,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
       location: [this.program?.location, Validators.required],
       startAt: [formatDate(this.program?.startAt) ?? new Date().toISOString().substring(0, 10)],
       endAt: [formatDate(this.program?.endAt)],
-      status: [this.program?.status ?? 'In Score', Validators.required],
+      status: [this.program?.status ?? 'In Progress', Validators.required],
       isActive: [this.computeIsActive(this.program?.status)],
       description: [this.program?.description,Validators.required],
       programs: [this.program?.peerProgramIDs || []],
@@ -178,7 +178,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
   downloadTemplate() {
     const headers = [
       "ProgramName",
-      "Year",
+      "ConferenceYear",
       "Location",
       "StartAt",
       "EndAt",
@@ -188,7 +188,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
 
     const sampleRow = {
       ProgramName: "Enter Program Name",
-      Year: "Enter Year",
+      ConferenceYear: "Enter Conference Year",
       Location: "Enter Location",
       StartAt: "YYYY-MM-DD",
       EndAt: "YYYY-MM-DD",
@@ -243,7 +243,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
 
       const requiredHeaders = [
         "ProgramName",
-        "Year",
+        "ConferenceYear",
         "Location",
         "Status",
         "Description"
@@ -278,7 +278,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
         const row = jsonData[i];
 
         const programName = String(row["ProgramName"] || "").trim();
-        const year = Number(row["Year"] || "");
+        const year = Number(row["ConferenceYear"] || "");
         const location = String(row["Location"] || "").trim();
         const startAt = this.formatExcelDate(row["StartAt"]);
         const endAt = this.formatExcelDate(row["EndAt"]);
@@ -301,7 +301,7 @@ export class AddUpdateProgramComponent implements OnChanges, OnInit {
         }
 
         if (!year) {
-          this.alertMsg = `Row ${i + 2}: Year is required.`;
+          this.alertMsg = `Row ${i + 2}: Conference Year is required.`;
           this.fileInput.nativeElement.value = "";
           return;
         }

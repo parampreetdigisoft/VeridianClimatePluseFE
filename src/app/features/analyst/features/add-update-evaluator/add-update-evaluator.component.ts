@@ -52,7 +52,14 @@ export class AddUpdateEvaluatorComponent {
   initializeForm(evaluator: GetUserByRoleResponse | null) {
     this.evaluatorForm = this.fb.group({
       fullName: [evaluator?.fullName, [Validators.required]],
-      email: [evaluator?.email, [Validators.required, Validators.email], this.emailExistsValidator()],
+      email: this.fb.control(
+        this.evaluator?.email,
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.emailExistsValidator()],
+          updateOn: 'blur'
+        }
+      ),
       phone: [evaluator?.phone, [Validators.required]],
       program: [evaluator?.climatePrograms?.map(x => x?.climateProgramID) ?? [], [Validators.required]]
     });

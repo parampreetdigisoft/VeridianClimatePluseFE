@@ -103,7 +103,14 @@ export class AddUpdateClientComponent implements OnInit {
   private buildForm(): void {
     this.clientForm = this.fb.group({
       fullName: [null, [Validators.required]],
-      email: [null, [Validators.required, Validators.email], [this.emailExistsValidator()]],
+      email: this.fb.control(
+        null,
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.emailExistsValidator()],
+          updateOn: 'blur'
+        }
+      ),
       phone: [null, [Validators.required]],
       tier: [null, [Validators.required]],
       pillars: [[], [Validators.required]],

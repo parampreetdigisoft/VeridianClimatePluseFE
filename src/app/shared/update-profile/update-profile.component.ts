@@ -44,7 +44,14 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
       this.userForm = this.fb.group({
         fullName: [this.userinfo.fullName, [Validators.required]],
         phone: [this.userinfo.phone, [Validators.required]],
-        email: [this.userinfo.email, [Validators.required,Validators.email], this.emailExistsValidator()],
+        email: this.fb.control(
+        this.userinfo?.email,
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.emailExistsValidator()],
+          updateOn: 'blur'
+        }
+      ),
         profileImage: [],
         is2FAEnabled:[this.userinfo.is2FAEnabled]
       });

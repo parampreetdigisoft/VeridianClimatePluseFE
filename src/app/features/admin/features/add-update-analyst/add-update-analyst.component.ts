@@ -51,7 +51,14 @@ export class AddUpdateAnalystComponent implements OnInit {
   initializeForm() {
     this.analystForm = this.fb.group({
       fullName: [this.analyst?.fullName, [Validators.required]],
-      email: [this.analyst?.email, [Validators.required, Validators.email], this.emailExistsValidator()],
+      email: this.fb.control(
+        this.analyst?.email,
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.emailExistsValidator()],
+          updateOn: 'blur'
+        }
+      ),
       phone: [this.analyst?.phone, [Validators.required]],
       program: [
         this.analyst?.climatePrograms?.map((x) => x?.climateProgramID) ?? [],
