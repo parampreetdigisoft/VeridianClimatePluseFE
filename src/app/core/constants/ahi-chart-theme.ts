@@ -2,7 +2,7 @@
  * VCP (Veridian Climate Pulse System) chart palette — aligned with brand logo.
  */
 export const VCP_CHART = {
-  primary: '#006D77',
+  primary: 'var(--Primary-Color)',
   primaryMid: '#00838f',
   primarySoft: '#7ec8cf',
   secondary: '#A8E063',
@@ -17,7 +17,7 @@ export const VCP_CHART = {
 
   /** Radial / multi-segment status charts */
   radialBar: [
-    '#006D77',
+    'var(--Primary-Color)',
     '#7ec8cf',
     '#4CAF50',
     '#00838f',
@@ -26,18 +26,18 @@ export const VCP_CHART = {
   ],
 
   /** Evaluator radial (4 segments) */
-  radialBarShort: ['#006D77', '#7ec8cf', '#A8E063', '#4CAF50'],
+  radialBarShort: ['var(--Primary-Color)', '#7ec8cf', '#A8E063', '#4CAF50'],
 
   /** Line chart: manual / evaluation vs AI */
-  lineEvaluation: '#006D77',
+  lineEvaluation: 'var(--Primary-Color)',
   lineAi: '#A8E063',
 
   /** Area comparison chart strokes */
   areaEvaluator: '#7ec8cf',
-  areaAi: '#006D77',
+  areaAi: 'var(--Primary-Color)',
 
   /** Early-warning & multi-series trends */
-  trendLines: ['#006D77', '#A8E063', '#4CAF50', '#7ec8cf', '#00838f', '#c5e878'],
+  trendLines: ['var(--Primary-Color)', '#A8E063', '#4CAF50', '#7ec8cf', '#00838f', '#c5e878'],
 
   /** Bar / score scale (low → high) */
   scoreScale: [
@@ -49,7 +49,7 @@ export const VCP_CHART = {
     '#4CAF50',
     '#3d9a46',
     '#2d8a6e',
-    '#006D77',
+    'var(--Primary-Color)',
     '#004d55',
   ],
 
@@ -63,7 +63,7 @@ export const VCP_CHART = {
     '#4CAF50',
     '#3d9a46',
     '#2d8a6e',
-    '#006D77',
+    'var(--Primary-Color)',
     '#004d55',
   ],
 

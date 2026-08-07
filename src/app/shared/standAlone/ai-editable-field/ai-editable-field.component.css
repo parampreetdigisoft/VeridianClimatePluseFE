@@ -29,7 +29,7 @@
 
 .ai-field-input:focus,
 .ai-field-textarea:focus {
-  border-color: #006d77;
+  border-color: var(--Primary-Color);
   box-shadow: 0 0 0 0.15rem rgba(0, 109, 119, 0.15);
   outline: none;
 }

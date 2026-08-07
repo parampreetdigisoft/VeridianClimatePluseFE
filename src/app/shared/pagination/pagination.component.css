@@ -1,6 +1,6 @@
 
 .cus_pagination>li.active span {
-    background: #006D77;
+    background: var(--Primary-Color);
     color: #fff;
 }
 .pagi_label:hover {

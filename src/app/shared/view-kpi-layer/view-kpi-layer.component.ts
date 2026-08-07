@@ -135,7 +135,7 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
       },
       fill: {
         type: "solid",
-        colors: ["#006D77", "#d6ebc4"] // Manual, AI
+        colors: ["var(--Primary-Color)", "#d6ebc4"] // Manual, AI
       },
       stroke: {
         lineCap: "round"

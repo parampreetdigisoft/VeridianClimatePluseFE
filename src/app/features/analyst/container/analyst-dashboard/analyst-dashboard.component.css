@@ -167,7 +167,7 @@
 :host ::ng-deep .apexcharts-tooltip {
   background: #fff !important;
   border: 1px solid rgba(0, 109, 119, 0.14) !important;
-  border-left: 4px solid #006D77 !important;
+  border-left: 4px solid var(--Primary-Color) !important;
   border-radius: 12px !important;
   box-shadow: 0 12px 32px rgba(0, 109, 119, 0.16) !important;
   overflow: hidden;
@@ -175,7 +175,7 @@
 
 :host ::ng-deep .apexcharts-tooltip-title {
   background: rgba(0, 109, 119, 0.06) !important;
-  color: #006D77 !important;
+  color: var(--Primary-Color) !important;
   font-weight: 700 !important;
   font-family: Poppins, sans-serif !important;
   border-bottom: 1px solid rgba(0, 109, 119, 0.1) !important;
@@ -192,6 +192,21 @@
 
 :host ::ng-deep .apexcharts-marker {
   border-radius: 50% !important;
+}
+
+:host ::ng-deep .apx_chart_new .apexcharts-legend.apx-legend-position-top {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    padding: 0 16px !important;
+}
+
+:host ::ng-deep .apx_chart_new .apexcharts-legend-series {
+    width: 100% !important;
+}
+
+:host ::ng-deep .apx_chart_new .apexcharts-canvas {
+    margin: 0 auto;
 }
 
 

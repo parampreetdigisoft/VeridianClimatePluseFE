@@ -24,7 +24,7 @@
 }
 
 .program_card_img .score {
-    background-color: #77bd3e;
+    background-color: var(--Secondary-Color);
     color: #ffffff;
     display: inline-block;
     padding: 3px 10px;
@@ -117,7 +117,7 @@
 
 
 .cus_table .table th {
-    background-color: #77BD3E;
+    background-color: var(--Secondary-Color);
     font-weight: 600;
     color: #ffffff;
     font-size: 14px;
@@ -126,7 +126,7 @@
 
 
 .cus_table .score_label_tab {
-    background: #006D77;
+    background: var(--Primary-Color);
     color: #ffffff;
     padding: 0.3rem 0.4rem;
     border-radius: 0.5rem;
@@ -226,7 +226,7 @@ span:empty, div:empty{
 }
 
 .kpi_custom_table th {
-  background-color: #77BD3E;
+  background-color: var(--Secondary-Color);
   color: #ffffff;
   font-weight: 600;
   padding: 8px;
@@ -271,21 +271,22 @@ span:empty, div:empty{
     border: 1px solid #e4e4e4;
     padding: 20px;
     border-radius: 15px;
+    margin-bottom: 20px;
 }
 .active_row td {
-    background-color: #006D77;
+    background-color: #087374;
     color: #ffffff;
 }
 .active_row td .score_label_tab {
-    background-color: rgba(255,255,255,0.08) !important;
+    /* background-color: rgba(255,255,255,0.08) !important; */
 }
 .last_data td {
-    background-color: #006D77;
+    background-color: #087374;
     color: #ffffff;
 }
 .last_data td span {
     color: #ffffff;
-    background-color: #77BD3E;
+    background-color: var(--Primary-Color);
     white-space: nowrap;
     padding: 5px 8px;
     border-radius: 30px;

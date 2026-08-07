@@ -34,7 +34,7 @@
   left: 0;
   right: 0;
   height: 5px;
-  background: linear-gradient(90deg, #006D77 0%, #4CAF50 55%, #A8E063 100%);
+  background: linear-gradient(90deg, var(--Primary-Color) 0%, #4CAF50 55%, #A8E063 100%);
 }
 
 .ahi_account_popup__logo {
@@ -63,7 +63,7 @@
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(0, 109, 119, 0.1) 0%, rgba(168, 224, 99, 0.22) 100%);
   border: 2px solid rgba(0, 109, 119, 0.2);
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 30px;
   font-weight: 700;
   box-shadow: 0 8px 20px rgba(0, 109, 119, 0.12);

@@ -20,11 +20,11 @@
     max-width: 100%;
 }
 .score_col {
-    color:#77bd3e !important;
+    color:#1A7D5E !important;
     font-weight: 700 !important;
 }
 .user_name_active{
-    color:#006D77 !important;
+    color:var(--Primary-Color) !important;
 }
 
 

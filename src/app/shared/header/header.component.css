@@ -13,7 +13,7 @@
     border-radius: 10px;
     /* border: 1px solid var(--Light-Border-Color); */
     /* background: var(--background-Color); */
-    padding: 0px 15px;
+    padding: 5px 15px 10px;
     background-color: #ffffff;
 }
 
@@ -29,7 +29,7 @@
 .vui_dashboard_logo img
 {
     width: 100%;
-    height: 100px;
+    height: 80px;
 }
 
 .user_detail > ul
@@ -187,7 +187,7 @@ display: block;
         right: 5px;
     }
     .vui_dashboard_logo img {
-        width: 90px;
+        width: 70px;
     }
     .vui_header_inner {
         padding: 15px;

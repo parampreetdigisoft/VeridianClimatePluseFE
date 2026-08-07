@@ -66,7 +66,7 @@ app-comparision app-ag-bar:nth-child(3) {
 }
 
 .expand-toggle:hover {
-  background: var(--Hover-Primary-color);
+  background: #1A7D5E;
 }
 
 /* SVG resize */
@@ -209,7 +209,7 @@ min-width: max-content;
   margin-bottom: 15px;
 }
 .score_col {
-    color: #77bd3e !important;
+    color: #1A7D5E !important;
     font-weight: 700 !important;
 }
 

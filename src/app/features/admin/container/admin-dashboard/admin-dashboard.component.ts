@@ -202,7 +202,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       ],
 
       chart: {
-        height: 500,
+        height: 450,
         type: "radialBar",
         toolbar: {
           show: false,
@@ -216,8 +216,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           offsetX: 10,
           hollow: {
             margin: 0,
-            size: "40%",
-            background: VCP_CHART.hollow,
+            // size: "40%",
+            // background: VCP_CHART.hollow,
             image: undefined,
             position: "front",
           },
@@ -244,7 +244,14 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           },
         },
       },
-      colors: [...VCP_CHART.radialBar],
+      colors: [
+        "#01223E",
+        "#5C9CC0",
+        "#77B44D",
+        "#105675",
+        "#074C3E",
+        "#1D5D96",
+      ],
       labels: [
         "Total",
         "Manual Active",
@@ -256,12 +263,13 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       legend: {
         show: true,
         floating: false,
-        fontSize: "16px",
+        fontSize: "14px",
         position: "top",
+        horizontalAlign: "left",
         offsetX: 0,
         offsetY: 10,
         onItemClick: {
-          toggleDataSeries: false,
+        toggleDataSeries: false,
         },
         labels: {
           useSeriesColors: true,
@@ -277,7 +285,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           );
         },
         itemMargin: {
-          horizontal: 3,
+          horizontal: 0,
+          vertical: 6,
         },
       },
     };

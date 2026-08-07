@@ -9,7 +9,7 @@
 }
 
 .bold_num {
-    color: #77bd3e;
+    color: var(--Secondary-Color);
     font-weight: 800;
 }
 
@@ -49,7 +49,8 @@
 .action-header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  grid-gap: 18px;
+  /* justify-content: space-between; */
 }
 
 .global_Checkbox {
@@ -57,13 +58,17 @@
   height: 16px;
   cursor: pointer;
   accent-color: #3e7b69; 
+    width: 20px;    
+    height: 20px;
+    accent-color: var(--Primary-Color);
+    border-radius: 5px;
 }
 
 
 
 ::ng-deep .analyst_multi_select .ng-option-selected {
   background-color: #e8f0ff !important;
-  color: #006D77 !important;
+  color: var(--Primary-Color) !important;
   font-weight: 600;
 }
 
@@ -105,7 +110,7 @@
     white-space: nowrap;
     padding: 2px 5px !important;
     border-radius: 5px !important;
-    background-color: #006D77 !important;
+    background-color: var(--Primary-Color) !important;
     color: #ffffff !important;
 }
 ::ng-deep .analyst_multi_select .ng-clear-wrapper {

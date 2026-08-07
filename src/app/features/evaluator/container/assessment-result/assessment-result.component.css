@@ -15,7 +15,7 @@
     color: #304A43;
 }
 .bold_num {
-    color: #77bd3e;
+    color: var(--Secondary-Color);
     font-weight: 800;
 }
 .input_field {

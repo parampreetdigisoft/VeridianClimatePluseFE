@@ -15,7 +15,7 @@
   background:
     radial-gradient(ellipse 80% 60% at 10% 0%, rgba(168, 224, 99, 0.18) 0%, transparent 55%),
     radial-gradient(ellipse 70% 50% at 95% 100%, rgba(0, 109, 119, 0.22) 0%, transparent 50%),
-    linear-gradient(145deg, #003d44 0%, #006D77 38%, #004d55 72%, #002a30 100%);
+    linear-gradient(145deg, #003d44 0%, var(--Primary-Color) 38%, #004d55 72%, #002a30 100%);
 }
 
 .vui_before_login::before {
@@ -91,7 +91,7 @@
 
 .ahi_auth_brand {
   flex: 0 0 42%;
-  background: linear-gradient(160deg, #004d55 0%, #006D77 45%, #00838f 100%);
+  background: linear-gradient(160deg, #004d55 0%, var(--Primary-Color) 45%, #00838f 100%);
   color: #fff;
   padding: 44px 40px;
   display: flex;
@@ -223,7 +223,7 @@
   right: 24px;
   height: 4px;
   border-radius: 0 0 4px 4px;
-  background: var(--VCP-Gradient, linear-gradient(90deg, #006D77, #4CAF50, #A8E063));
+  background: var(--VCP-Gradient, linear-gradient(90deg, var(--Primary-Color), #4CAF50, #A8E063));
 }
 
 .vui_logo img {
@@ -287,7 +287,7 @@
 
 .vui_before_login .input_field label,
 .vui_before_login .form-label {
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -315,7 +315,7 @@
 
 .vui_before_login .input_field .form-control:focus,
 .vui_before_login .input_field .form-select:focus {
-  border-color: #006D77 !important;
+  border-color: var(--Primary-Color) !important;
   box-shadow: 0 0 0 3px rgba(168, 224, 99, 0.22) !important;
   background: #fff;
   outline: none;
@@ -362,12 +362,12 @@
 
 .vui_before_login .password_eye_icon i {
   font-size: 18px;
-  color: #006D77;
+  color: var(--Primary-Color);
   line-height: 1;
 }
 
 .vui_before_login .password_eye_icon path {
-  fill: #006D77;
+  fill: var(--Primary-Color);
 }
 
 /* Icon-prefixed inputs */
@@ -381,7 +381,7 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 17px;
   line-height: 1;
   pointer-events: none;
@@ -399,8 +399,8 @@
 
 /* ── Checkbox & switch ──────────────────────────────────────── */
 .vui_before_login .vui_checkbox .form-check-input:checked {
-  border-color: #006D77 !important;
-  background-color: #006D77;
+  border-color: var(--Primary-Color) !important;
+  background-color: var(--Primary-Color);
 }
 
 .vui_before_login .form-switch .form-check-input {
@@ -411,8 +411,8 @@
 }
 
 .vui_before_login .form-switch .form-check-input:checked {
-  background-color: #006D77 !important;
-  border-color: #006D77 !important;
+  background-color: var(--Primary-Color) !important;
+  border-color: var(--Primary-Color) !important;
 }
 
 .vui_before_login .form-switch .form-check-label {
@@ -438,7 +438,7 @@
 
 /* ── Links ──────────────────────────────────────────────────── */
 .vui_before_login .vui_reset_pass_link {
-  color: #006D77 !important;
+  color: var(--Primary-Color) !important;
   font-weight: 600;
   text-decoration: none !important;
   transition: color 0.2s ease, opacity 0.2s ease;
@@ -454,7 +454,7 @@
   font-size: 15px;
   text-decoration: underline !important;
   padding-top: 16px;
-  color: #006D77 !important;
+  color: var(--Primary-Color) !important;
 }
 
 /* ── Primary button in auth ───────────────────────────────────── */
@@ -540,7 +540,7 @@
 }
 
 .vui_before_login .otp_field > input:focus {
-  border-color: #006D77 !important;
+  border-color: var(--Primary-Color) !important;
   box-shadow: 0 0 0 3px rgba(168, 224, 99, 0.25) !important;
   transform: scale(1.04);
   outline: none;
@@ -552,7 +552,7 @@
 }
 
 .vui_before_login .resend_code a {
-  color: #006D77;
+  color: var(--Primary-Color);
   font-weight: 700;
   text-decoration: none;
 }

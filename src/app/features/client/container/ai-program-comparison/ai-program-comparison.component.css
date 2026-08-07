@@ -26,7 +26,7 @@ app-ai-city-comparison app-ag-bar:nth-child(3) {
 }
 
 .score_col {
-  color: #77bd3e !important;
+  color: #1A7D5E !important;
   font-weight: 700 !important;
 }
 
@@ -50,7 +50,7 @@ app-ai-city-comparison app-ag-bar:nth-child(3) {
 }
 
 .table_badge {
-  background: #006D77;
+  background: var(--Primary-Color);
   color: #ffffff;
   padding: 2px 8px;
   border-radius: 0.5rem;
@@ -140,7 +140,7 @@ app-ai-city-comparison app-ag-bar:nth-child(3) {
 
 .city_cards_p {
   font-size: 14px;
-  background-color: #77bd3e;
+  background-color: var(--Secondary-Color);
   color: #ffffff;
   padding: 2px 10px;
   border-radius: 20px;
@@ -150,7 +150,7 @@ app-ai-city-comparison app-ag-bar:nth-child(3) {
 
 ::ng-deep .analyst_multi_select .ng-option-selected {
   background-color: #e8f0ff !important;
-  color: #006D77 !important;
+  color: var(--Primary-Color) !important;
   font-weight: 600;
 }
 
@@ -209,7 +209,7 @@ span.selexted_piller {
   white-space: nowrap;
   padding: 2px 5px !important;
   border-radius: 5px !important;
-  background-color: #006D77 !important;
+  background-color: var(--Primary-Color) !important;
   color: #ffffff !important;
 }
 
@@ -235,7 +235,7 @@ span.selexted_piller {
   line-height: 1.2;
   font-weight: 500;
   color: #fff;
-  background-color: #77bd3e;
+  background-color: var(--Secondary-Color);
   border-radius: 4px;
   white-space: nowrap;
 }
@@ -288,11 +288,11 @@ span.selexted_piller {
 }
 
 .faq_sidebar_item.active .faq_sidebar_item_inner:after {
-  background-color: #006D77;
+  background-color: var(--Primary-Color);
 }
 
 .faq_sidebar_item.active .faq_sidebar_item_inner svg>rect {
-  fill: #006D77;
+  fill: var(--Primary-Color);
 }
 
 .faq_inner_svg {
@@ -431,7 +431,7 @@ tr.pillar_disabled {
 
 h6.city_pile {
   font-size: 13px;
-  background-color: #77bd3e;
+  background-color: var(--Secondary-Color);
   padding: 2px 10px;
   border-radius: 20px;
   font-weight: 400;
