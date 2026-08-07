@@ -96,6 +96,7 @@ export class ComparisionComponent implements OnInit {
           this.programs = res.result;
           if (this.programs && this.programs.length > 0) {
             this.selectedPrograms = this.programs[0].climateProgramID;
+            this.filterProgram = this.programs[0].climateProgramID;
             this.getResponsesByUserId();
           }
         },

@@ -43,7 +43,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
   }
 
   getEvaluator(currentPage: number = 1) {
-        this.evaluatorResponse = undefined;
+    this.evaluatorResponse = undefined;
     this.isLoader = true;
     let payload: GetUserByRoleRequestDto = {
       sortDirection: 'asc',

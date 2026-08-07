@@ -98,7 +98,6 @@ emailExistsValidator(): AsyncValidatorFn {
         program: selectedclimateProgramIDs
       });
     }
-    this.initializeForm();
   } 
 
 
