@@ -124,18 +124,18 @@
 				</div>
 			</div>
 
-            <div class="cross-pillar">
+            <div class="cross-pillar w-100">
                 <h5>Executive Summary</h5>
                 &nbsp;
             <ng-container *ngIf="editMode; else combineExecutiveSummery">
-					<app-ai-editable-field [showLabel]="false"
+					<!-- <app-ai-editable-field [showLabel]="false"
 						[editMode]="editMode"
 						[hideAfterWords]="40"
 						[value]="getFieldValue('immediateSituationSummary')"
 						(valueChange)="setFieldValue('immediateSituationSummary', $event)"
 						label="Executive Summary"
 						fieldType="textarea">
-					</app-ai-editable-field>
+					</app-ai-editable-field> -->
 					<!-- <app-ai-editable-field [showLabel]="false"
 						[editMode]="false"
 						[hideAfterWords]="40"

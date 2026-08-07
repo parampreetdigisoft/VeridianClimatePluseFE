@@ -457,8 +457,8 @@ export class KpiComparisionComponent implements OnInit {
     return this.programs?.find(c => c.climateProgramID === climateProgramID)?.programName || '';
   }
 
-  // getProgramContinent(climateProgramID: number): string {
-  //   return this.programs?.find(c => c.climateProgramID === climateProgramID)?.continent || '';
+  // getProgramLocation(climateProgramID: number): string {
+  //   return this.programs?.find(c => c.climateProgramID === climateProgramID)?.location || '';
   // }
 
   onImgError(event: Event) {

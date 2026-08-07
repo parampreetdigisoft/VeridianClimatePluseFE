@@ -33,7 +33,7 @@
             <ng-template ng-label-tmp let-item="item">{{ item?.programName }}</ng-template>
             <ng-template ng-option-tmp let-item="item">
               <span class="option-main">{{ item.programName }}</span>
-              <span class="option-sub">{{ item.continent }}</span>
+              <span class="option-sub">{{ item.location }}</span>
             </ng-template>
           </ng-select>
         </div>
@@ -449,7 +449,7 @@
       <!-- Rank -->
       <div class="stat-row">
         <div class="left">
-          <p class="label">Continent Rank</p>
+          <p class="label">Location Rank</p>
 
           <div class="rank-line">
             <span class="rank">{{programSlide.program.programRank}}</span>

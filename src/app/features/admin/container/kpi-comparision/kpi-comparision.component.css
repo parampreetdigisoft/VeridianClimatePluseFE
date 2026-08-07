@@ -228,3 +228,6 @@ p.btn_spinner {
     color: #ffffff;
     border-radius: 5px;
 }
+.export_btn{
+  min-width: 64px;
+}

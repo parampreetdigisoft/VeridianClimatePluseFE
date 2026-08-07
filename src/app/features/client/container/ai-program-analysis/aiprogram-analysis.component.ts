@@ -56,9 +56,6 @@ export class AIProgramAnalysisComponent implements OnInit, OnDestroy {
     this.getClientPrograms();
     this.getAIPrograms();
   }
-    yearChanged() {
-    this.getAIPrograms();
-  }
 
   getClientPrograms() {
     this.clientService.getClientPrograms().subscribe({

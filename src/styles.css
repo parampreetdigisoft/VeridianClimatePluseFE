@@ -798,3 +798,10 @@ body .content_area .inner_content_area {
 .last_data td .sparkline-container .score-label {
     color: #ffffff !important;
 }
+
+@media only screen and (max-width: 1401.5px) {
+    .heading_area .input_field.input_flex {
+      margin-bottom: 0;
+      min-width: 100px;
+  }
+}

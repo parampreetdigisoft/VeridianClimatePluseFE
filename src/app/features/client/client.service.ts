@@ -69,7 +69,7 @@ export class ClientService {
   }
 
   public getClientKpi() {
-    return this.http.get(`Client/getClientKpi`).pipe(map(x => x as ResultResponseDto<AnalyticalLayerResponseDto[]>));;
+    return this.http.get(`Client/getProgramUserKpi`).pipe(map(x => x as ResultResponseDto<AnalyticalLayerResponseDto[]>));;
   }
 
   public addClientKpisProgramAndPillar(request: AddClientKpisProgramAndPillar) {

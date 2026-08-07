@@ -279,7 +279,6 @@ tr.pillar_disabled {
 }
 p.btn_spinner {
     display: inline-block;
-    background-color: var(--Primary-Color);
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;

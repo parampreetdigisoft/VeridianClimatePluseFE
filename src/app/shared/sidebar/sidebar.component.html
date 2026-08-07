@@ -601,7 +601,7 @@
           <span class="nav-text">{{userInfo.tier > 1 ? 'Compare Programs' : 'View Programs'}}</span></a>
       </li>
       <li *ngIf="userInfo.tier > 1">
-        <a [routerLink]="'/client/comparison'" class="nav_links active" [routerLinkActive]="['active']"
+        <a [routerLink]="'/programuser/comparison'" class="nav_links active" [routerLinkActive]="['active']"
           [routerLinkActiveOptions]="{ exact: true }">
           <svg width="25" height="25" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path

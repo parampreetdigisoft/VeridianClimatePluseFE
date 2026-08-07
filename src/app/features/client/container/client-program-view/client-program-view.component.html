@@ -39,7 +39,7 @@
             <tr>
                 <th>S.No.</th>
                 <th>Program</th>
-                <!-- <th>Continent</th> -->
+                <th>Location</th>
                 <th>Score</th>
                 <th class="action_th">Actions</th>
             </tr>
@@ -49,7 +49,7 @@
                 <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
 
                 <td>{{ program.programName }}</td>
-                <!-- <td>{{ program.continent }}</td> -->
+                <td>{{ program.location }}</td>
                 <td><span class="bold_num">{{ program.score?.toFixed(2) || 'NA' }}</span></td>
                 <td class="action_td">
                     <table>

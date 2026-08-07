@@ -259,7 +259,7 @@ export class KPIAnalysisComponent implements OnInit {
         style: {
           fontSize: '11px',
           fontWeight: 700,
-          colors: ['#32288f']
+          colors: ['#040e46']
         },
         background: {
           enabled: true,
@@ -275,7 +275,7 @@ export class KPIAnalysisComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#425cf0']
+        colors: ['#040e46']
       },
 
       fill: {
@@ -323,7 +323,7 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '11px',
             fontWeight: 500,
-            colors: '#2153b8'
+            colors: '#253658'
           }
         },
         axisBorder: {
@@ -689,11 +689,11 @@ export class KPIAnalysisComponent implements OnInit {
       "#AFC9E9",
       "#95B8E2",
       "#7BA6DB",
-      "#6195D4",
-      "#4A7FC2",
-      "#345FA3",
-      "#1F3F7A",
-      "#0D2B4D"  // deep navy (highest)
+      "#053168",
+      "#314e74",
+      "#28374e",
+      "#14213a",
+      "#030b13"  // deep navy (highest)
     ];
 
     if (score === null || score === undefined || isNaN(score)) {

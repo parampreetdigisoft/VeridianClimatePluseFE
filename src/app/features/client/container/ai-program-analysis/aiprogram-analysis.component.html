@@ -5,15 +5,6 @@
     </div>
     <div class="col-md-5">
 			<div class="compare_select input_field input_flex">
-				<select [(ngModel)]="selectedYear"
-					(change)="yearChanged()"
-					name="selectedYear"
-					class="form-control">
-					<option *ngFor="let year of commonService.applicateYears"
-						[value]="year">
-						{{ year }}
-					</option>
-				</select>
 				<ng-select [items]="programs"
 					[searchable]="true"
           [searchFn]="customSearchFn"
@@ -31,7 +22,7 @@
           
 					<ng-template ng-option-tmp
 						let-item="item">
-						{{ item.programName }}, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA'}})
+						{{ item.programName }}, {{ item.location }} ({{ item.score?.toFixed(1) || 'NA'}})
 					</ng-template>
 				</ng-select>
 			</div>
@@ -46,10 +37,10 @@
         <tr>
           <th>S.No.</th>
           <th>Program</th>
-          <th>Continent</th>          
+          <th>Location</th>          
           <th>Score</th>
           <th>Rank</th>
-          <th>Region Rank</th>
+          <!-- <th>Region Rank</th> -->
           <th class="action_th">View Details</th>
         </tr>
       </thead>
@@ -68,9 +59,9 @@
           <td class="city-col">
             {{ program.rank }}
           </td>
-          <td class="city-col">
+          <!-- <td class="city-col">
             {{ program.regionRank }}
-          </td>
+          </td> -->
 
           <td class="action_td">
             <table>

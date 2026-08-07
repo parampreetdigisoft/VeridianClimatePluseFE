@@ -88,7 +88,7 @@ export class ClientProgramViewComponent {
   }
   gotoComparision() {
     this.userDataService.compareProgram.set(this.selectedPrograms);
-    this.router.navigate(['/programuser/comparision']);
+    this.router.navigate(['/programuser/comparsion']);
   }
 
 }

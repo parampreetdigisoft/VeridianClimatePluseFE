@@ -9,28 +9,6 @@
   </div>
 
   <div class="kpi_filters_bar">
-    <div class="kpi_filter_field">
-      <label for="kpiYearSelect">
-        <i class="bi bi-calendar3"></i>
-        Select Year
-      </label>
-      <div class="kpi_select_shell">
-        <i class="bi bi-calendar-event kpi_select_icon"></i>
-        <select
-          id="kpiYearSelect"
-          [(ngModel)]="selectedYear"
-          (change)="GetAnalyticalLayerResults()"
-          name="selectedYear"
-          class="kpi_select kpi_select--native"
-        >
-          <option *ngFor="let year of commonService.applicateYears" [value]="year">
-            {{ year }}
-          </option>
-        </select>
-        <i class="bi bi-chevron-down kpi_select_chevron"></i>
-      </div>
-    </div>
-
     <div class="kpi_filter_field kpi_filter_field--wide">
       <label>
         <i class="bi bi-layers"></i>
@@ -82,7 +60,7 @@
           </ng-template>
           <ng-template ng-option-tmp let-item="item">
             <span class="kpi_option_name">{{ item.programName }}</span>
-            <span class="kpi_option_meta">, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA' }})</span>
+            <span class="kpi_option_meta">, {{ item.location }} ({{ item.score?.toFixed(1) || 'NA' }})</span>
           </ng-template>
         </ng-select>
       </div>
@@ -124,7 +102,7 @@
             </td>
             <td>
               <div class="kpi_cat05 kpi_td_data">
-                <p>{{ kpi.calText5 || '-' }}</p>
+                <!-- <p>{{ kpi.calText5 || '-' }}</p> -->
                 <div class="bold_num">{{ (kpi.aiCalValue5 ?? 0).toFixed(2) }}</div>
               </div>
             </td>
