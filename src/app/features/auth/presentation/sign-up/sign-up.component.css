@@ -69,7 +69,7 @@ input[type="password"]::-ms-clear {
   height: 44px;
   border-radius: 14px;
   background: linear-gradient(135deg, rgba(0, 109, 119, 0.12), rgba(168, 224, 99, 0.2));
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 20px;
   display: grid;
   place-items: center;
@@ -87,7 +87,7 @@ input[type="password"]::-ms-clear {
   padding: 4px 10px;
   border-radius: 999px;
   background: rgba(0, 109, 119, 0.08);
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -124,14 +124,14 @@ input[type="password"]::-ms-clear {
   height: 26px;
   border-radius: 8px;
   background: linear-gradient(135deg, rgba(0, 109, 119, 0.12), rgba(168, 224, 99, 0.18));
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 13px;
   flex-shrink: 0;
   line-height: 1;
 }
 
 .ahi_form_label > span {
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -200,7 +200,7 @@ input[type="password"]::-ms-clear {
   height: 26px;
   border-radius: 8px;
   background: rgba(0, 109, 119, 0.1);
-  color: #006D77;
+  color: var(--Primary-Color);
   font-size: 13px;
   flex-shrink: 0;
 }
@@ -213,7 +213,7 @@ input[type="password"]::-ms-clear {
 
 .ahi_2fa_inline .auth_text i {
   margin-right: 4px;
-  color: #006D77;
+  color: var(--Primary-Color);
 }
 
 .ahi_captcha_inline {

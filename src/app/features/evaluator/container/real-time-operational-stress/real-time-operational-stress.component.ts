@@ -389,8 +389,8 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
       const score = Number(q.aiScore);
       if (score <= 40) return '#dc3545';
       if (score <= 60) return '#fd7e14';
-      if (score <= 80) return '#006D77';
-      return '#77BD3E';
+      if (score <= 80) return 'var(--Primary-Color)';
+      return 'var(--Secondary-Color)';
     });
 
     this.glanceBarChartOptions = {
@@ -528,8 +528,8 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
     if (value.includes('critical') || value.includes('fragile')) return '#dc3545';
     if (value.includes('elevated') || value.includes('high')) return '#fd7e14';
     if (value.includes('watch') || value.includes('developing')) return '#ffc107';
-    if (value.includes('stable')) return '#006D77';
-    if (value.includes('strong')) return '#77BD3E';
+    if (value.includes('stable')) return 'var(--Primary-Color)';
+    if (value.includes('strong')) return 'var(--Secondary-Color)';
     return VCP_CHART.primarySoft;
   }
 

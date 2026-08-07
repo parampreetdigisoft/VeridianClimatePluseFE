@@ -55,7 +55,7 @@
 
 
 .cus_table .table th {
-    background-color: #A8E063;
+    background-color: var(--Secondary-Color);
     font-weight: 600;
     color: #ffffff;
     font-size: 14px;
@@ -64,7 +64,7 @@
 
 
 .cus_table .score_label_tab {
-    background: #006D77;
+    background: var(--Primary-Color);
     color: #ffffff;
     padding: 0.3rem 0.5rem;
     border-radius: 0.5rem;
@@ -166,7 +166,7 @@ button.btn-close:focus-visible {
   cursor: pointer;
     white-space: nowrap;
     border-radius: 5px !important;
-    background-color: #006D77 !important;
+    background-color: var(--Primary-Color) !important;
     color: #ffffff !important;
     display: inline-block;
     padding: 8px 10px;
@@ -178,7 +178,7 @@ button.btn-close:focus-visible {
 }
 
 .save-btn {
-    background: #28a745;
+    background: var(--VCP-Gradient);
     color: #ffffff !important;
     border: none;
     padding: 8px 10px;
@@ -195,7 +195,7 @@ button.btn-close:focus-visible {
     cursor: pointer;
     white-space: nowrap;
     border-radius: 5px !important;
-    background-color: #006D77 !important;
+    background-color: var(--Primary-Color) !important;
     color: #ffffff !important;
     display: inline-block;
     padding: 8px 10px;
@@ -241,6 +241,7 @@ button.btn-close:focus-visible {
     position: absolute;
     right: 10px;
     top: 10px;
+    background-color: transparent;
 }
 
 button.save-btn[disabled] {

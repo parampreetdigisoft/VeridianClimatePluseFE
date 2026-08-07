@@ -374,7 +374,7 @@ export class KPIAnalysisComponent implements OnInit {
                   <span style="color:#6b7280;">Discrepancy</span>
                   <span style="
                     font-weight:600;
-                    color:${(pillar.discrepancy ?? 0) > 0 ? '#006D77' : '#77bd3e'};
+                    color:${(pillar.discrepancy ?? 0) > 0 ? 'var(--Primary-Color)' : 'var(--Secondary-Color)'};
                   ">
                     ${pillar.discrepancy?.toFixed(2) ?? '0.00'}
                   </span>

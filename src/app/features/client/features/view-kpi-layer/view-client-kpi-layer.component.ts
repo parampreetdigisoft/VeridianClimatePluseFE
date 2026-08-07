@@ -164,7 +164,7 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
       },
       fill: {
         type: "solid",
-        colors: ["#77bd3e"]
+        colors: ["var(--Secondary-Color)"]
       },
       stroke: {
         lineCap: "round"

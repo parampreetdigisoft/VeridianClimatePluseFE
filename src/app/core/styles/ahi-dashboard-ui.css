@@ -22,7 +22,7 @@ app-evaluator-dashboard {
 /* ── Stat cards row ─────────────────────────────────────────── */
 .dashboard_cards {
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
 }
 
 .dashboard_cards_inner .row {
@@ -35,36 +35,36 @@ app-evaluator-dashboard {
   overflow: hidden;
   border-radius: 16px !important;
   border: 1px solid rgba(0, 109, 119, 0.1) !important;
-  border-top: 4px solid #006D77 !important;
+  border-top: 4px solid #01223E !important;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
 
 .dashboard_card2 {
-  border-top-color: #006D77 !important;
+  border-top-color: #5C9CC0 !important;
 }
 
 .dashboard_card3 {
-  border-top-color: #4CAF50 !important;
+  border-top-color: #77B44D !important;
 }
 
-.dashboard_card:hover {
+/* .dashboard_card:hover {
   transform: translateY(-4px);
   box-shadow: 0 14px 32px rgba(0, 109, 119, 0.14) !important;
   border-color: rgba(0, 109, 119, 0.22) !important;
-}
+} */
 
 .dashboard_card_inner span {
   background: linear-gradient(135deg, rgba(0, 109, 119, 0.12) 0%, rgba(168, 224, 99, 0.18) 100%) !important;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.dashboard_card:hover .dashboard_card_inner span {
+/* .dashboard_card:hover .dashboard_card_inner span {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 109, 119, 0.12);
-}
+} */
 
 .dashboard_card_inner span svg path {
-  fill: #006D77 !important;
+  fill: var(--Primary-Color) !important;
 }
 
 .dashboard_number h4 {
@@ -74,14 +74,14 @@ app-evaluator-dashboard {
 }
 
 .dashboard_number h5 {
-  color: #006D77 !important;
+  color: var(--Primary-Color) !important;
   font-weight: 700 !important;
 }
 
 /* ── Filter / chart panel (program_pillar) ─────────────────────── */
 .program_pillar {
   background: #ffffff !important;
-  padding: 24px 28px !important;
+  padding: 20px !important;
   border-radius: 16px !important;
   border: 1px solid rgba(0, 109, 119, 0.1);
   box-shadow: 0 4px 20px rgba(0, 109, 119, 0.06);
@@ -94,7 +94,7 @@ app-evaluator-dashboard {
 }
 
 .program_pillar .input_field label {
-  color: #006D77;
+  color: var(--Primary-Color);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.02em;
@@ -112,7 +112,7 @@ app-evaluator-dashboard {
 }
 
 .program_pillar .calender_icon svg {
-  stroke: #006D77;
+  stroke: var(--Primary-Color);
 }
 
 /* ── Chart containers ───────────────────────────────────────── */
@@ -146,11 +146,11 @@ app-evaluator-dashboard {
   overflow: hidden;
 }
 
-.apx_chart_new:hover {
+/* .apx_chart_new:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0, 109, 119, 0.12) !important;
   border-color: rgba(0, 109, 119, 0.18) !important;
-}
+} */
 
 .card_heading {
   background: linear-gradient(180deg, rgba(0, 109, 119, 0.04) 0%, #ffffff 100%);
@@ -159,7 +159,7 @@ app-evaluator-dashboard {
   position: relative;
 }
 
-.card_heading::after {
+/* .card_heading::after {
   content: '';
   position: absolute;
   left: 24px;
@@ -167,8 +167,8 @@ app-evaluator-dashboard {
   width: 56px;
   height: 3px;
   border-radius: 3px 3px 0 0;
-  background: linear-gradient(90deg, #006D77, #A8E063);
-}
+  background: linear-gradient(90deg, var(--Primary-Color), #A8E063);
+} */
 
 .card_heading h3 {
   color: #003d44 !important;
@@ -201,11 +201,12 @@ app-evaluator-dashboard {
 /* ── Action buttons row ─────────────────────────────────────── */
 .program_pillar .common_button {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 44px;
 }
 
-.program_pillar .common_button:hover {
+/* .program_pillar .common_button:hover {
   transform: translateY(-2px);
-}
+} */
 
 /* ── Loader overlay ─────────────────────────────────────────── */
 .loader_main {

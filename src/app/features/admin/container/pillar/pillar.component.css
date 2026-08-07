@@ -1,5 +1,5 @@
 .table_outer .table td {
-    vertical-align: unset;
+    /* vertical-align: unset; */
 }
 
 .modal_design .modal_tabs form {
@@ -10,6 +10,7 @@
 }
 .table_outer .table tbody td:nth-child(2) {
     font-weight: 700;
+    vertical-align: middle;
 }
 
 .desc {

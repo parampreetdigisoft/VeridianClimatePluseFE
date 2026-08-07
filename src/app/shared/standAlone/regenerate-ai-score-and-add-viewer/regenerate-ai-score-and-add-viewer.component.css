@@ -121,6 +121,6 @@ h5 {
 }
 
 .form-switch input:checked {
-  background-color: #006D77 !important;
-  border-color: #006D77;
+  background-color: var(--Primary-Color) !important;
+  border-color: var(--Primary-Color);
 }

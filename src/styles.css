@@ -7,19 +7,19 @@
 
 :root
 {
-	--Primary-Color: #006D77;
-	--Secondary-Color: #A8E063;
+	--Primary-Color: #01223E;
+	--Secondary-Color: #77B44D;
 	--Hover-Primary-color: #4CAF50;
-	--Accent-Green: #4CAF50;
-	--VCP-Gradient: linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%);
-	--VCP-Gradient-Hover: linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%);
+	--Accent-Green: #77B44D;
+	--VCP-Gradient: linear-gradient(135deg, #087374 0%, #1A7D5E 52%, #28914E 100%);
+	--VCP-Gradient-Hover: linear-gradient(135deg, #28914E 0%, #1A7D5E 52%, #087374 100%);
     --White-Color: #ffffff;
 	--Text-Color: #003d44;
 	--Border-Color: #E4E4E4;
 	--background-Color: #F5F8F7;
 	--Light-Text-Color: #4a5f62;
 	--Light-Bg-Color: #7ec8cf;
-	--Dark-Bg-Color: #005a62;
+	--Dark-Bg-Color: #001A3E;
 	--Light-Border-Color: rgba(0, 0, 0, 0.02);
 	--Green-text-Color: #003d44;
 }
@@ -84,7 +84,7 @@ img, svg
 }
 
 .common_button{
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     background: var(--VCP-Gradient);
     padding: 9px 20px;
     text-align: center;
@@ -322,7 +322,7 @@ margin-left: 5px;
 .input_field .form-control,
 .input_field .form-select
 {
-  border-radius: 50px;
+  border-radius: 8px;
 border: 1px solid var(--Border-Color);
 color: var(--Text-Color);
 font-size: 13px;
@@ -628,7 +628,7 @@ padding-right: 40px;
     font-weight: 700;
 }
 .program_pillar > .align-items-end {
-    background-color: rgba(0, 109, 119, 0.05);
+    /* background-color: rgba(0, 109, 119, 0.05); */
     border-radius: 10px;
     padding: 10px 6px 10px 0;
     margin-bottom: 20px;
@@ -761,7 +761,7 @@ body .content_area .inner_content_area {
 
 .confidence-badge {
     padding: 4px 12px;
-    border-radius: 14px;
+    border-radius: 8px;
     font-size: 12px;
     font-weight: 600;
     text-transform: capitalize;
@@ -792,7 +792,7 @@ body .content_area .inner_content_area {
 }
 .program_img {
     background-color: var(--Primary-Color);
-    border-radius: 15px !important;
+    border-radius: 8px !important;
 }
 
 .last_data td .sparkline-container .score-label {

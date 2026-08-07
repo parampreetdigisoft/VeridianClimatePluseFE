@@ -315,7 +315,7 @@ export class AnalystDashboardComponent implements OnInit {
       ],
 
       chart: {
-        height: 500,
+        height: 450,
         type: "radialBar",
         toolbar: {
           show: false,
@@ -357,7 +357,14 @@ export class AnalystDashboardComponent implements OnInit {
           },
         },
       },
-      colors: [...VCP_CHART.radialBar],
+      colors: [
+        "#01223E",
+        "#5C9CC0",
+        "#77B44D",
+        "#105675",
+        "#074C3E",
+        "#1D5D96",
+      ],
       labels: [
         "Total",
         "Manual Active",
@@ -369,8 +376,9 @@ export class AnalystDashboardComponent implements OnInit {
       legend: {
         show: true,
         floating: false,
-        fontSize: "16px",
+        fontSize: "14px",
         position: "top",
+        horizontalAlign: "left",
         offsetX: 0,
         offsetY: 10,
         onItemClick: {
@@ -390,7 +398,8 @@ export class AnalystDashboardComponent implements OnInit {
           );
         },
         itemMargin: {
-          horizontal: 3,
+          horizontal: 0,
+          vertical: 6,
         },
       },
     };

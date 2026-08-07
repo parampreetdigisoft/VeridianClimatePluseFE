@@ -57,6 +57,8 @@
   font-weight: 600;
   color: #0c2e5d;
   margin-bottom: 8px;
+      display: flex;
+    flex-direction: row-reverse;
 }
 
 .meta-field .form-control {
@@ -67,7 +69,7 @@
 }
 
 .meta-field .form-control:focus {
-  border-color: #77bd3e;
+  border-color: var(--Secondary-Color);
   box-shadow: 0 0 0 3px rgba(119, 189, 62, 0.12);
 }
 
@@ -97,7 +99,7 @@
 }
 
 .reliability-card:focus-within {
-  border-color: #77bd3e;
+  border-color: var(--Secondary-Color);
   box-shadow: 0 0 0 3px rgba(119, 189, 62, 0.12);
 }
 
@@ -156,7 +158,7 @@
 }
 
 .reliability-card input:checked ~ .reliability-switch {
-  background: #77bd3e;
+  background: var(--Secondary-Color);
 }
 
 .reliability-card input:checked ~ .reliability-switch .reliability-switch-thumb {
@@ -229,7 +231,7 @@
 }
 
 .image-file-picker:focus-within {
-  border-color: #77bd3e;
+  border-color: var(--Secondary-Color);
   box-shadow: 0 0 0 3px rgba(119, 189, 62, 0.12);
 }
 
@@ -338,7 +340,7 @@
   border-radius: 999px;
   border: 1px solid #d9e6ff;
   background: #f4f8ff;
-  color: #2c5ea8;
+  color: var(--Light-Text-Color);
   font-size: 11px;
   font-weight: 700;
   line-height: 1.2;
@@ -356,7 +358,7 @@
 }
 
 .kpi-count-badge {
-  background: #77bd3e;
+  background: var(--Secondary-Color);
   color: #fff;
   font-size: 11px;
   font-weight: 600;
@@ -388,7 +390,7 @@
 ::ng-deep .compare_select .pillar-kpi-select {
   min-height: 48px;
   background-color: #ffffff;
-  border-radius: 27px !important;
+  border-radius: 8px !important;
   padding: 6px 12px 6px 4px !important;
   border: 1px solid #d7d7d7 !important;
   font-family: "Poppins", sans-serif !important;
@@ -402,7 +404,7 @@
 ::ng-deep .pillar-kpi-select.ng-select-multiple .ng-value {
   margin: 0 !important;
   border-radius: 5px !important;
-  background-color: #006d77 !important;
+  background-color: var(--Primary-Color) !important;
   color: #ffffff !important;
   padding: 2px 5px !important;
 }
@@ -434,7 +436,7 @@
 
 ::ng-deep .pillar-kpi-select .ng-option-selected {
   background-color: #e8f0ff !important;
-  color: #006d77 !important;
+  color: var(--Primary-Color) !important;
   font-weight: 600;
 }
 
@@ -525,7 +527,7 @@
 
 .kpi-change-pill.lock {
   background: #ecf2ff;
-  color: #2c5ea8;
+  color: var(--Light-Text-Color);
 }
 
 .kpi-details-panel {
@@ -548,7 +550,7 @@
   display: block;
   font-size: 11px;
   font-weight: 700;
-  color: #77bd3e;
+  color: var(--Secondary-Color);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 4px;
@@ -603,7 +605,7 @@
   display: block;
   font-size: 11px;
   font-weight: 700;
-  color: #77bd3e;
+  color: var(--Secondary-Color);
 }
 
 .kpi-detail-count {
@@ -659,7 +661,7 @@
 }
 
 .pillar-radio-option:hover {
-  border-color: #77bd3e;
+  border-color: var(--Secondary-Color);
   box-shadow: 0 8px 20px rgba(119, 189, 62, 0.08);
   transform: translateY(-1px);
 }
@@ -682,8 +684,8 @@
 }
 
 .pillar-radio-option input:checked ~ .pillar-radio-ui {
-  border-color: #77bd3e;
-  background: #77bd3e;
+  border-color: var(--Secondary-Color);
+  background: var(--Secondary-Color);
 }
 
 .pillar-radio-option input:checked ~ .pillar-radio-ui::after {
