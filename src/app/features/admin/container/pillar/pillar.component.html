@@ -44,7 +44,7 @@
             <tr *ngFor="let pillar of pillars; let i = index">
                 <td>{{i+1}}</td>
                 <td>  <img class="program_img" 
-                style="width: 50px; border-radius:5px; height: 50px; object-fit: contain;"
+                style="width: 40px; border-radius:5px; height: 40px; object-fit: contain;padding: 4px;"
                 [src]="urlBase+ '/' +pillar?.imagePath"
                 [alt]="'Profile Image'"
                 (error)="onImgError($event)"
