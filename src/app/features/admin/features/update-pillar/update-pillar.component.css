@@ -724,6 +724,9 @@
   font-size: 12px;
   line-height: 1.5;
 }
+.meta-field.meta-image {
+    max-width: 360px;
+}
 
 @media (max-width: 992px) {
   .kpi-details-grid {

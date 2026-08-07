@@ -121,3 +121,7 @@
 ::ng-deep .analyst_multi_select .ng-arrow-wrapper{
     padding-right: 0 !important;
 }
+
+.program_img{
+    background-color: var(--Primary-Color) !important;
+}

@@ -152,7 +152,7 @@
     <tbody>
       <tr *ngFor="let program of programsResponse?.data; let i = index">
         <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
-        <td> <img class="program_img" style="width: 50px; border-radius:5px; height: 35px; object-fit: cover;"
+        <td> <img class="program_img" style="width: 40px; border-radius:5px; height: 40px; object-fit: contain;padding: 4px;"
             [src]="urlBase+program?.image" [alt]="'Profile Image'" (error)="onImgError($event)" /></td>
         <td>{{ program.programName }}</td>
           <td>{{ program.location }}</td>
