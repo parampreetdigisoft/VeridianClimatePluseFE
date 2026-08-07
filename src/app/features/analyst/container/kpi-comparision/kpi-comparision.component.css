@@ -214,6 +214,10 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
     border-radius: 100px !important;
     padding: 0 !important;
     margin: 0 !important;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    color: var(--Primary-Color);
 }
 p.btn_spinner {
     display: inline-block;

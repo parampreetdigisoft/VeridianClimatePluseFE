@@ -109,7 +109,6 @@ export class KpiComparisionComponent implements OnInit {
     });
   }
   getMutiplekpiLayerResults(layerID: number, viewDetailIndex: number) {
-
     if (this.selectedPrograms.length < 1) {
       this.compareProgramResponseDto = null;
       this.getChartOptions();
