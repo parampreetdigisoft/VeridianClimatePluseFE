@@ -630,7 +630,7 @@ padding-right: 40px;
 .program_pillar > .align-items-end {
     /* background-color: rgba(0, 109, 119, 0.05); */
     border-radius: 10px;
-    padding: 10px 6px 10px 0;
+    padding: 0px 6px 10px 0;
     margin-bottom: 20px;
     margin: 0;
 }
@@ -736,7 +736,7 @@ body .sidebar_area {
     }
 
     body .nav_links {
-    padding: 15px 45px 15px 20px !important;
+    padding: 15px 15px 15px 15px !important;
 }
 body .content_area .inner_content_area {
     padding: 0 !important;

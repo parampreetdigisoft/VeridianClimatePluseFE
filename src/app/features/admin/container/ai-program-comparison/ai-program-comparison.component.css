@@ -467,6 +467,7 @@ h6.city_pile {
 .dashboard_card_inner span img {
     filter: brightness(-1) saturate(100%) invert(13%) sepia(8%) saturate(4078%) hue-rotate(120deg) brightness(97%) contrast(87%);
 }
+
 @media only screen and (max-width:1540px){
   .dashboard_number {
       grid-gap: 0;
@@ -479,4 +480,19 @@ h6.city_pile {
   h6.city_pile{
       font-size: 12px;
   }
+  
 }
+
+@media only screen and (max-width: 1300px) {
+  .page_head_outter {
+      font-size: 16px;
+      max-width: 300px;
+  }
+  ::ng-deep.inner_content_area .heading_area .page_head {
+      font-size: 16px;
+  }
+  .page_head_outter p {
+      font-size: 12px !important;
+  } 
+}
+

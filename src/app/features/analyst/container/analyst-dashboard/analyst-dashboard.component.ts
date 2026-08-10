@@ -376,7 +376,7 @@ export class AnalystDashboardComponent implements OnInit {
       legend: {
         show: true,
         floating: false,
-        fontSize: "14px",
+        fontSize: "13px",
         position: "top",
         horizontalAlign: "left",
         offsetX: 0,
@@ -390,7 +390,7 @@ export class AnalystDashboardComponent implements OnInit {
         formatter: function (seriesName: any, opts: any) {
           return (
             seriesName +
-            ":  " +
+            ": " +
             `${(
               (opts.w.globals.series[opts.seriesIndex] * total) /
               100
@@ -398,8 +398,8 @@ export class AnalystDashboardComponent implements OnInit {
           );
         },
         itemMargin: {
-          horizontal: 0,
-          vertical: 6,
+          horizontal: 8,
+          vertical: 2,
         },
       },
     };

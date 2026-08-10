@@ -198,7 +198,8 @@
     justify-content: flex-start !important;
     align-items: flex-start !important;
     flex-direction: column !important;
-    padding: 0 16px !important;
+    padding: 0px !important;
+    right: 20px !important;
 }
 
 :host ::ng-deep .apx_chart_new .apexcharts-legend-series {

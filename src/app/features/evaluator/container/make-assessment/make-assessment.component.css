@@ -308,7 +308,7 @@
 }
 
 :host ::ng-deep .heading_area .input_field ng-select .ng-select-container {
-    min-height: 40px !important;
+    min-height: 44px !important;
     border: 1px solid #d9dde5 !important;
     border-radius: 14px !important;
     background: #ffffff !important;

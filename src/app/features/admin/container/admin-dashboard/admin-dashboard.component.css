@@ -213,4 +213,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
      .content_area .inner_content_area {
         padding: 20px;
     }
+    .program_pillar .common_button svg {
+        width: 15px;
+    }
 }
