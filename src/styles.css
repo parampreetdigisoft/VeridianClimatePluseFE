@@ -791,7 +791,7 @@ body .content_area .inner_content_area {
     border: 1px solid #ff4d4d !important;
 }
 .program_img {
-    background-color: var(--Primary-Color);
+    background-color: var(--Primary-Color) !important;
     border-radius: 8px !important;
 }
 
