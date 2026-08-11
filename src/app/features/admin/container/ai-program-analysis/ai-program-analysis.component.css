@@ -203,6 +203,11 @@ p.btn_spinner {
     white-space: nowrap;
     color: #ffffff;
     border-radius: 5px;
+    height: 36px;
+    width: 40px;
+        display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Ai date css start */

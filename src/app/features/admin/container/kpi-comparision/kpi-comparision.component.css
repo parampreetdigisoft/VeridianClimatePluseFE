@@ -228,6 +228,20 @@ p.btn_spinner {
     color: #ffffff;
     border-radius: 5px;
 }
-.export_btn{
-  min-width: 64px;
+
+@media only screen and (max-width: 1540px) {
+    ::ng-deep .inner_content_area .heading_area .page_head {
+        font-size: 20px;
+        max-width: 300px;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+  ::ng-deep .inner_content_area .heading_area .page_head {
+      font-size: 16px;
+      max-width: 300px;
+  }
+  ::ng-deep .toggle-labels {
+      font-size: 11px;
+  }
 }
