@@ -3,25 +3,39 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "./app/shared/styles/detail-offcanvas.shared.css";
 
 
 :root
 {
-	--Primary-Color: #01223E;
-	--Secondary-Color: #77B44D;
+	/* Veridian Climate Pulse Ã¢ÂÂ logo + command-console palette */
+	--Primary-Color: #0A2240;
+	--Secondary-Color: #3F8F46;
 	--Hover-Primary-color: #4CAF50;
-	--Accent-Green: #77B44D;
-	--VCP-Gradient: linear-gradient(135deg, #087374 0%, #1A7D5E 52%, #28914E 100%);
-	--VCP-Gradient-Hover: linear-gradient(135deg, #28914E 0%, #1A7D5E 52%, #087374 100%);
-    --White-Color: #ffffff;
-	--Text-Color: #003d44;
-	--Border-Color: #E4E4E4;
-	--background-Color: #F5F8F7;
-	--Light-Text-Color: #4a5f62;
-	--Light-Bg-Color: #7ec8cf;
-	--Dark-Bg-Color: #001A3E;
-	--Light-Border-Color: rgba(0, 0, 0, 0.02);
-	--Green-text-Color: #003d44;
+	--Accent-Green: #4CAF50;
+	--Accent-Lime: #A8E063;
+	--Accent-Blue: #3B9EFF;
+	--VCP-Gradient: linear-gradient(135deg, #1B5E3B 0%, #2E7D32 48%, #4CAF50 100%);
+	--VCP-Gradient-Hover: linear-gradient(135deg, #4CAF50 0%, #2E7D32 52%, #1B5E3B 100%);
+	--White-Color: #ffffff;
+	--Text-Color: #E8EEF8;
+	--Border-Color: rgba(92, 140, 200, 0.22);
+	--background-Color: #050C20;
+	--Page-Bg: #040A1D;
+	--Surface-Color: #0B1633;
+	--Surface-Elevated: #102044;
+	--Light-Text-Color: #9AADC4;
+	--Light-Bg-Color: #5CD6C8;
+	--Dark-Bg-Color: #061228;
+	--Light-Border-Color: rgba(92, 140, 200, 0.12);
+	--Green-text-Color: #A8E063;
+	--Chart-Manual: #3B9EFF;
+	--Chart-AI: #A8E063;
+	--Page-Pad-X: 20px;
+	--Page-Pad-Y: 16px;
+	--Content-Gap: 16px;
+	--Radius-Md: 12px;
+	--Radius-Lg: 16px;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -54,7 +68,9 @@ footer, header, hgroup, menu, nav, section {
 body {
     font-family: "Poppins", sans-serif !important;
     position: relative;
-    background-color: #F5F7F9;
+    background-color: var(--Page-Bg);
+    color: var(--Text-Color);
+    min-height: 100vh;
 }
 ol, ul {
 	list-style: none;
@@ -100,7 +116,7 @@ img, svg
 	justify-content: center;
     cursor: pointer;
     align-items: center;
-    box-shadow: 0 4px 14px rgba(0, 109, 119, 0.22);
+    box-shadow: 0 4px 14px rgba(46, 125, 50, 0.28);
     white-space: nowrap;
 }
 
@@ -108,7 +124,7 @@ img, svg
 {
   background: var(--VCP-Gradient-Hover);
   border-color: transparent;
-  box-shadow: 0 6px 18px rgba(0, 109, 119, 0.28);
+  box-shadow: 0 6px 18px rgba(76, 175, 80, 0.32);
 }
 
 .page_head
@@ -231,11 +247,11 @@ border-bottom:0;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-	background-color: var(--White-Color);
+	background-color: var(--Surface-Color);
 	padding: 16px;
-	border-radius: 10px;
-    /* border: 1px solid #dddddd; */
-    margin: 10px;
+	border-radius: var(--Radius-Md);
+    border: 1px solid var(--Border-Color);
+    margin: 10px 0;
 }
 
 .showing_data
@@ -333,6 +349,7 @@ height: auto;
 min-height: 40px;
 font-weight: 600;
     padding-left: 16px;
+  background-color: var(--Surface-Elevated);
 }
 .input_field select.form-control
 {
@@ -365,8 +382,9 @@ padding-right: 40px;
 .main_area .input_field .form-control:focus {
     box-shadow: none;
     outline: 0;
-    background-color: #ffffff;
-    border-color: rgba(0, 109, 119, 0.28);
+    background-color: var(--Surface-Elevated);
+    border-color: rgba(59, 158, 255, 0.55);
+    color: var(--Text-Color);
 }
 
 .modal_tabs .nav-pills .nav-link.active, .modal_tabs  .nav-pills .show>.nav-link
@@ -385,7 +403,6 @@ padding-right: 40px;
 .modal_design .modal-dialog {
     margin-left: auto;
     margin-right: auto;
-    max-width: calc(100% - 20px);
     width: 800px;
     margin-top: 1.75rem;
 }
@@ -404,22 +421,22 @@ padding-right: 40px;
 }
 
 .inner_content_area .program_pillar .input_field select.form-control{
-    background: #ffffff;
+    background: var(--Surface-Elevated);
     border-radius: 12px !important;
     padding: 10px 16px !important;
-    border: 1px solid #efefef !important;
-    /* box-shadow: 0 4px 12px rgba(0,0,0,0.05); */
+    border: 1px solid var(--Border-Color) !important;
+    color: var(--Text-Color) !important;
     cursor: pointer;
 }
 
 .table_outer .table thead th {
-    background-color: #ffffff;
-    color: #212529;
+    background-color: var(--Surface-Elevated);
+    color: var(--Text-Color);
     font-size: 16px;
 }
 .table_outer tbody tr:hover td {
-    background-color: rgba(0, 109, 119, 0.04);
-    border-color: #d3d7db;
+    background-color: rgba(59, 158, 255, 0.08);
+    border-color: rgba(92, 140, 200, 0.25);
 }
 
 .compare_btn svg {
@@ -431,13 +448,17 @@ padding-right: 40px;
 }
 
 .loader {
-  width: 50px;
-  height: 50px;
-  padding: 8px;
+  width: 72px;
+  height: 72px;
+  padding: 11px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--Primary-Color);
-  --_m: 
+  background: var(--Accent-Lime, #a8e063);
+  box-shadow:
+    0 0 0 8px rgba(168, 224, 99, 0.12),
+    0 0 32px rgba(168, 224, 99, 0.45),
+    0 0 64px rgba(59, 158, 255, 0.2);
+  --_m:
     conic-gradient(#0000 10%,#000),
     linear-gradient(#000 0 0) content-box;
   -webkit-mask: var(--_m);
@@ -449,9 +470,15 @@ padding-right: 40px;
 .loader_main {
     display: flex;
     justify-content: center;
+    align-items: center;
     position: absolute;
     inset: 0;
-    align-items: center;
+    z-index: 120;
+    min-height: calc(100vh - 160px);
+    background: rgba(5, 12, 32, 0.78);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 18px;
 }
 
 @keyframes l3 {to{transform: rotate(1turn)}}
@@ -473,13 +500,9 @@ padding-right: 40px;
     line-height: 200%;
 }
 .inner_content_area{
-    /*background-color: #ffffff;
-     background-color: var(--background-Color); 
-    border: 1px solid var(--Light-Border-Color);*/
     height: 100%;
-    /* border-radius: 10px; */
-    /* padding: 24px; */
     position: relative;
+    min-height: calc(100vh - 140px);
 }
 .city_card_outter {
     display: flex;
@@ -579,17 +602,21 @@ padding-right: 40px;
     display: block;
     position: relative;
     z-index: 5;
-    padding: 24px;
-    border-radius: 16px;
+    padding: 22px;
+    border-radius: var(--Radius-Lg);
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    background-color: #ffffff !important;
+    background-color: var(--Surface-Color) !important;
     background-position: bottom left;
     background-repeat: no-repeat;
     background-size: 80%;
     background-blend-mode: soft-light;
-    box-shadow: 0 4px 16px rgba(0, 109, 119, 0.06);
-    border: 1px solid rgba(0, 109, 119, 0.08);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--Border-Color);
+}
+.dashboard_card:hover {
+    border-color: rgba(59, 158, 255, 0.45);
+    box-shadow: 0 10px 32px rgba(59, 158, 255, 0.12);
 }
 .dashboard_card_inner{
     display: flex;
@@ -599,7 +626,7 @@ padding-right: 40px;
 }
 .dashboard_card_inner span {
     display: flex;
-    background-color: rgba(0, 109, 119, 0.1);
+    background-color: rgba(59, 158, 255, 0.14);
     padding: 10px;
     border-radius: 100px;
     width: 90px;
@@ -612,17 +639,17 @@ padding-right: 40px;
     height: 40px;
 }
 .dashboard_card_inner span svg path{
-    fill: var(--Primary-Color);
+    fill: var(--Accent-Blue);
 }
 .dashboard_number h4 {
-    color: #303030;
+    color: var(--Light-Text-Color);
     line-height: 30px;
     margin: 5px 0;
     font-weight: 500;
     font-size: 20px;
 }
 .dashboard_number h5 {
-    color: var(--Secondary-Color);
+    color: var(--Accent-Lime);
     font-size: 28px;
     line-height: normal;
     font-weight: 700;
@@ -630,7 +657,7 @@ padding-right: 40px;
 .program_pillar > .align-items-end {
     /* background-color: rgba(0, 109, 119, 0.05); */
     border-radius: 10px;
-    padding: 0px 6px 10px 0;
+    padding: 10px 6px 10px 0;
     margin-bottom: 20px;
     margin: 0;
 }
@@ -640,10 +667,12 @@ padding-right: 40px;
     position: relative;
 }
 .program_pillar{
-    background-color: #fff;
-    padding: 24px 34px;
+    background-color: var(--Surface-Color);
+    padding: 22px 28px;
     position: relative;
-    border-radius: 10px;
+    border-radius: var(--Radius-Md);
+    border: 1px solid var(--Border-Color);
+    color: var(--Text-Color);
 }
 .calender_icon {
     position: absolute;
@@ -653,14 +682,15 @@ padding-right: 40px;
 }
 .inner_content_area .heading_area {
     margin-bottom: 0;
-    background-color: #ffffff;
-    padding: 16px;
-    border: 0px solid rgb(222, 226, 230);
-    border-radius:10px;
-    margin-bottom: 10px;
+    background-color: var(--Surface-Color);
+    padding: 16px 18px;
+    border: 1px solid var(--Border-Color);
+    border-radius: var(--Radius-Md);
+    margin-bottom: var(--Content-Gap);
 }
 .inner_content_area .heading_area .page_head {
     font-size: 20px;
+    color: var(--Text-Color);
 }
 
 .table_outer .table tr th{
@@ -669,9 +699,8 @@ padding-right: 40px;
 .vui_header:after {
     content: "";
     width: 100%;
-    height: calc(100% - 20px);
-    background: #ffffff;
-    /* backdrop-filter: blur(5px); */
+    height: calc(100% - 12px);
+    background: var(--Page-Bg);
     display: block;
     position: absolute;
     top: 0;
@@ -682,11 +711,13 @@ padding-right: 40px;
     padding-bottom: 0;
 }
 .table_outer {
-    border: 1px solid #dddddd;
-    border-radius: 10px;
+    border: 1px solid var(--Border-Color);
+    border-radius: var(--Radius-Md);
+    background: var(--Surface-Color);
+    overflow: hidden;
 }
 .table_outer > .table > tbody > tr {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid var(--Border-Color);
     border-radius: 10px;
 }
 .action_td input[type="checkbox"] {
@@ -736,7 +767,7 @@ body .sidebar_area {
     }
 
     body .nav_links {
-    padding: 15px 15px 15px 15px !important;
+    padding: 15px 45px 15px 20px !important;
 }
 body .content_area .inner_content_area {
     padding: 0 !important;
@@ -786,9 +817,9 @@ body .content_area .inner_content_area {
 
 /* Low = Red */
 .confidence-badge.low {
-    background-color: #ffcccc;
-    color: #b30000;
-    border: 1px solid #ff4d4d !important;
+    background-color: rgba(255, 77, 77, 0.16);
+    color: #ff8a80;
+    border: 1px solid rgba(255, 77, 77, 0.4) !important;
 }
 .program_img {
     background-color: var(--Primary-Color) !important;
@@ -803,5 +834,210 @@ body .content_area .inner_content_area {
     .heading_area .input_field.input_flex {
       margin-bottom: 0;
       min-width: 100px;
+  }
+}
+/* ============================================================
+   Veridian global shell Ã¢ÂÂ desktop spacing, dark surfaces, ng-select
+   ============================================================ */
+
+.main_area {
+  background: var(--Page-Bg);
+  min-height: 100vh;
+}
+
+.content_area .inner_content_area {
+  padding: var(--Page-Pad-Y) 4px var(--Page-Pad-Y) 4px;
+}
+
+.page_head {
+  color: var(--Text-Color);
+}
+
+.table_outer .table th {
+  color: var(--Text-Color);
+  background: var(--Surface-Elevated);
+}
+
+.table_outer .table td {
+  color: var(--Light-Text-Color);
+  background: transparent;
+}
+
+.table_outer .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--Text-Color);
+  color: var(--Text-Color);
+}
+
+.modal_design .modal-content {
+  background: var(--Surface-Color);
+  color: var(--Text-Color);
+  border: 1px solid var(--Border-Color);
+  border-radius: var(--Radius-Lg);
+}
+
+.modal_head,
+.modal_design .modal-title {
+  color: var(--Text-Color);
+}
+
+.modal_sub_head {
+  color: var(--Light-Text-Color);
+}
+
+.modal_design .btn-close {
+  filter: invert(1) grayscale(1);
+  opacity: 0.75;
+}
+
+.outline_btn {
+  border-color: var(--Accent-Blue);
+  color: var(--Accent-Blue);
+}
+
+.outline_btn:hover {
+  background: rgba(59, 158, 255, 0.12);
+  color: #fff;
+}
+
+.cus_pagination > li:not(:first-child, :last-child) span {
+  background: var(--Surface-Elevated);
+  color: var(--Text-Color);
+  border: 1px solid var(--Border-Color);
+}
+
+.cus_pagination > li:not(:first-child, :last-child) span.action,
+.cus_pagination > li:not(:first-child, :last-child) span:hover {
+  background-color: var(--Accent-Blue);
+  color: #fff;
+  border-color: var(--Accent-Blue);
+}
+
+.pagi_label {
+  color: var(--Light-Text-Color);
+}
+
+.showing_data {
+  color: var(--Light-Text-Color);
+}
+
+/* ---- Global ng-select (visible text: default / hover / selected / search) ---- */
+.ng-select {
+  font-family: "Poppins", sans-serif;
+}
+
+.ng-select .ng-select-container {
+  min-height: 42px !important;
+  background: var(--Surface-Elevated) !important;
+  border: 1px solid var(--Border-Color) !important;
+  border-radius: 10px !important;
+  color: var(--Text-Color) !important;
+  box-shadow: none !important;
+}
+
+.ng-select.ng-select-focused .ng-select-container,
+.ng-select.ng-select-opened .ng-select-container {
+  border-color: var(--Accent-Blue) !important;
+  box-shadow: 0 0 0 3px rgba(59, 158, 255, 0.18) !important;
+}
+
+.ng-select .ng-value,
+.ng-select .ng-value-label,
+.ng-select .ng-placeholder,
+.ng-select .ng-input > input {
+  color: var(--Text-Color) !important;
+}
+
+.ng-select .ng-placeholder {
+  color: var(--Light-Text-Color) !important;
+}
+
+.ng-select .ng-input > input {
+  color: #ffffff !important;
+  caret-color: var(--Accent-Lime);
+}
+
+.ng-select .ng-arrow-wrapper .ng-arrow {
+  border-color: var(--Light-Text-Color) transparent transparent !important;
+}
+
+.ng-select .ng-clear-wrapper {
+  color: var(--Light-Text-Color) !important;
+}
+
+.ng-select .ng-value .ng-value-icon {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.ng-dropdown-panel {
+  background: var(--Surface-Color) !important;
+  border: 1px solid var(--Border-Color) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+  z-index: 3000 !important;
+  color: var(--Text-Color) !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background: transparent !important;
+  color: #E8EEF8 !important;
+  padding: 10px 14px !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background: rgba(59, 158, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+  background: rgba(76, 175, 80, 0.22) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #6b7c93 !important;
+}
+
+.ng-dropdown-panel .ng-optgroup {
+  color: var(--Accent-Lime) !important;
+  background: transparent !important;
+}
+
+body > .ng-dropdown-panel {
+  z-index: 4000 !important;
+}
+
+body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background: var(--Surface-Color) !important;
+  color: #E8EEF8 !important;
+}
+
+body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option-marked {
+  background: rgba(59, 158, 255, 0.22) !important;
+  color: #fff !important;
+}
+
+body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option-selected {
+  background: rgba(76, 175, 80, 0.24) !important;
+  color: #fff !important;
+}
+
+@media (min-width: 1400px) {
+  :root {
+    --Page-Pad-X: 24px;
+    --Page-Pad-Y: 18px;
+    --Content-Gap: 18px;
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --Page-Pad-X: 28px;
+    --Page-Pad-Y: 20px;
   }
 }

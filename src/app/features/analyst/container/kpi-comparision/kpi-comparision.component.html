@@ -52,11 +52,11 @@
 	</div>
 </div>
 <ng-container *ngIf="!isLoader">
-	<div *ngIf="chartOptions && chartOptions?.series" id="chart">
+	<div *ngIf="chartOptions && chartOptions?.series" id="chart" class="kpi_compare_chart_panel">
 		<apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
 			[yaxis]="chartOptions.yaxis!" [stroke]="chartOptions.stroke!" [tooltip]="chartOptions.tooltip!"
 			[grid]="chartOptions.grid!" [markers]="chartOptions.markers!" [dataLabels]="chartOptions.dataLabels!"
-			[legend]="chartOptions.legend!">
+			[legend]="chartOptions.legend!" [colors]="chartOptions.colors || []">
 		</apx-chart>
 	</div>
 	<ng-container *ngIf="selectedKpis.length == 0 || totalRecords==0">

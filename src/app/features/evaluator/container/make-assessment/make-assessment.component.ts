@@ -29,7 +29,7 @@ import { debounceTime, Subject } from "rxjs";
 @Component({
   selector: "app-make-assessment",
   templateUrl: "./make-assessment.component.html",
-  styleUrl: "./make-assessment.component.css",
+  styleUrls: ["../../../../shared/styles/make-assessment.shared.css"],
 })
 
 export class MakeAssessmentComponent implements OnInit, OnDestroy {

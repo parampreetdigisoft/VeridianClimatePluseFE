@@ -9,55 +9,53 @@
   padding: 0 !important;
 }
 
-/* Modal Container */
 .transfer_popup .modal-content {
   border-radius: 14px;
-  border: none;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-  background: #ffffff;
+  border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22));
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  background: linear-gradient(180deg, #0B1633 0%, #09122A 100%);
+  color: var(--Text-Color, #E8EEF8);
 }
 
-/* Modal Body */
 .transfer_popup .modal-body {
   padding: 28px 30px;
+  color: var(--Light-Text-Color, #9AADC4);
 }
 
-/* Header */
 .modal_head {
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 18px;
-  color: #1f2937;
+  color: var(--Text-Color, #E8EEF8);
 }
 
-/* Close Button */
 .btn-close {
   position: absolute;
   right: 18px;
   top: 18px;
-  opacity: 0.8;
+  opacity: 0.75;
+  filter: invert(1) grayscale(1);
 }
 
-/* Program Info */
 .details_list strong {
   font-weight: 600;
-  color: #374151;
+  color: var(--Text-Color, #E8EEF8);
 }
 
 .details_list span {
   margin-left: 6px;
-  color: #4b5563;
+  color: var(--Light-Text-Color, #9AADC4);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-/* Section Title */
 h5 {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #111827;
+  color: var(--Text-Color, #E8EEF8);
 }
 
-/* AI Options Card */
 .details_list {
   display: flex;
   align-items: center;
@@ -65,34 +63,28 @@ h5 {
   padding: 14px 16px;
   margin-bottom: 10px;
   border-radius: 10px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: rgba(16, 32, 68, 0.72);
+  border: 1px solid rgba(92, 140, 200, 0.18);
   transition: all 0.25s ease;
 }
 
 .details_list:hover {
-  background: #f3f4f6;
-  border-color: #d1d5db;
+  background: rgba(59, 158, 255, 0.12);
+  border-color: rgba(59, 158, 255, 0.3);
 }
 
-/* AI Option Text */
-.details_list span {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* Toggle Switch */
 .form-check-input {
   width: 42px;
   height: 22px;
   cursor: pointer;
+  background-color: rgba(16, 32, 68, 0.9);
+  border-color: rgba(92, 140, 200, 0.35);
 }
 
 .form-check-input:focus {
-  box-shadow: 0 0 0 2px rgba(100, 104, 112, 0.25);
+  box-shadow: 0 0 0 2px rgba(59, 158, 255, 0.25);
 }
 
-/* Viewer Section */
 .input_field {
   margin-top: 22px;
 }
@@ -102,15 +94,13 @@ h5 {
   font-weight: 600;
   margin-bottom: 6px;
   display: block;
-  color: #374151;
+  color: var(--Light-Text-Color, #9AADC4);
 }
 
-/* ng-select customization */
 .analyst_multi_select {
   border-radius: 10px;
 }
 
-/* Spinner */
 .spinner-border {
   width: 16px;
   height: 16px;
@@ -121,6 +111,6 @@ h5 {
 }
 
 .form-switch input:checked {
-  background-color: var(--Primary-Color) !important;
-  border-color: var(--Primary-Color);
+  background-color: var(--Accent-Green, #4CAF50) !important;
+  border-color: var(--Accent-Green, #4CAF50);
 }

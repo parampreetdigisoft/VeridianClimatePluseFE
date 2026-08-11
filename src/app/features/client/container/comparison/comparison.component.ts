@@ -17,6 +17,7 @@ import { ClientService } from '../../client.service';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { CommonModule } from '@angular/common';
 import { debounceTime, Subject } from 'rxjs';
+import { VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 declare var bootstrap: any; 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -188,7 +189,7 @@ export class ComparisonComponent implements OnInit, OnDestroy {
     const colorPalette = this.commonService.kpiColors;
     let series: any[] = [];
     let strokeDashArray: number[] = [];
-
+    const colors: string[] = [];
     (this.compareProgramResponseDto?.series ?? []).forEach((programData, index) => {
       // Skip the last program if AI View is enabled (assuming last program is AI benchmark)
       if (index === (this.compareProgramResponseDto?.series ?? []).length - 1) {
@@ -204,6 +205,7 @@ export class ComparisonComponent implements OnInit, OnDestroy {
         color: baseColor,
         type: 'line'
       });
+      colors.push(baseColor);
       strokeDashArray.push(0); // Solid line
     });
 
@@ -212,10 +214,10 @@ export class ComparisonComponent implements OnInit, OnDestroy {
       chart: {
         height: 400,
         type: "line",
-        zoom: {
-          enabled: false,
-          type: 'x'
-        },
+      background: 'transparent',
+      foreColor: VCP_CHART.textMuted,
+      fontFamily: 'Poppins, sans-serif',
+      zoom: { enabled: false, type: 'x' },
         toolbar: {
           show: true,
           tools: {
@@ -272,28 +274,15 @@ export class ComparisonComponent implements OnInit, OnDestroy {
         }
       },
       grid: {
-        borderColor: '#e7e7e7',
-        strokeDashArray: 3,
+        borderColor: VCP_CHART.grid,
+        strokeDashArray: 4,
         row: {
-          colors: ['#f3f3f3', 'transparent'],
-          opacity: 0.5
+          colors: ['rgba(59, 158, 255, 0.04)', 'transparent'],
+          opacity: 1,
         },
-        xaxis: {
-          lines: {
-            show: true
-          }
-        },
-        yaxis: {
-          lines: {
-            show: true
-          }
-        },
-        padding: {
-          top: 0,
-          right: 10,
-          bottom: 0,
-          left: 10
-        }
+        xaxis: { lines: { show: false } },
+        yaxis: { lines: { show: true } },
+        padding: { top: 8, right: 12, bottom: 0, left: 8 },
       },
       xaxis: {
         type: "category",

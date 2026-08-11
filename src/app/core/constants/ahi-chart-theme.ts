@@ -1,80 +1,81 @@
 /**
- * VCP (Veridian Climate Pulse System) chart palette — aligned with brand logo.
+ * VCP (Veridian Climate Pulse) chart palette — logo green + console navy/blue.
+ * Use hex values (ApexCharts does not resolve CSS variables reliably).
  */
 export const VCP_CHART = {
-  primary: 'var(--Primary-Color)',
-  primaryMid: '#00838f',
-  primarySoft: '#7ec8cf',
+  primary: '#3B9EFF',
+  primaryMid: '#1D5D96',
+  primarySoft: '#5CB8FF',
   secondary: '#A8E063',
   accent: '#4CAF50',
-  deep: '#004d55',
-  text: '#003d44',
-  textMuted: '#4a5f62',
-  grid: '#dce8e9',
-  border: '#c5dddf',
-  hollow: 'rgba(0, 109, 119, 0.06)',
-  tooltipShadow: '0 12px 32px rgba(0, 109, 119, 0.18)',
+  deep: '#0A2240',
+  text: '#E8EEF8',
+  textMuted: '#9AADC4',
+  grid: 'rgba(92, 140, 200, 0.18)',
+  border: 'rgba(92, 140, 200, 0.28)',
+  hollow: 'rgba(59, 158, 255, 0.08)',
+  tooltipShadow: '0 16px 40px rgba(0, 0, 0, 0.45)',
 
   /** Radial / multi-segment status charts */
   radialBar: [
-    'var(--Primary-Color)',
-    '#7ec8cf',
+    '#3B9EFF',
+    '#5CB8FF',
     '#4CAF50',
-    '#00838f',
+    '#1D5D96',
     '#A8E063',
-    '#005a62',
+    '#2E7D32',
   ],
 
   /** Evaluator radial (4 segments) */
-  radialBarShort: ['var(--Primary-Color)', '#7ec8cf', '#A8E063', '#4CAF50'],
+  radialBarShort: ['#3B9EFF', '#5CB8FF', '#A8E063', '#4CAF50'],
 
   /** Line chart: manual / evaluation vs AI */
-  lineEvaluation: 'var(--Primary-Color)',
+  lineEvaluation: '#3B9EFF',
   lineAi: '#A8E063',
 
   /** Area comparison chart strokes */
-  areaEvaluator: '#7ec8cf',
-  areaAi: 'var(--Primary-Color)',
+  areaEvaluator: '#5CB8FF',
+  areaAi: '#A8E063',
 
   /** Early-warning & multi-series trends */
-  trendLines: ['var(--Primary-Color)', '#A8E063', '#4CAF50', '#7ec8cf', '#00838f', '#c5e878'],
+  trendLines: ['#3B9EFF', '#A8E063', '#4CAF50', '#5CB8FF', '#1D5D96', '#c5e878'],
 
   /** Bar / score scale (low → high) */
   scoreScale: [
-    '#b9bdbc',
-    '#8ea89f',
-    '#598175',
-    '#6eb0b6',
-    '#5ab8b8',
+    '#6b7c93',
+    '#5C9CC0',
+    '#3B9EFF',
+    '#2E7D32',
     '#4CAF50',
-    '#3d9a46',
-    '#2d8a6e',
-    'var(--Primary-Color)',
-    '#004d55',
+    '#77B44D',
+    '#A8E063',
+    '#B8F26A',
+    '#1D5D96',
+    '#0A2240',
   ],
 
   /** Pillar bar chart (evaluator) — light to strong */
   pillarBar: [
-    '#b9bdbc',
-    '#8ea89f',
-    '#598175',
-    '#6eb0b6',
-    '#5ab8b8',
+    '#6b7c93',
+    '#5C9CC0',
+    '#3B9EFF',
+    '#2E7D32',
     '#4CAF50',
-    '#3d9a46',
-    '#2d8a6e',
-    'var(--Primary-Color)',
-    '#004d55',
+    '#77B44D',
+    '#A8E063',
+    '#B8F26A',
+    '#1D5D96',
+    '#0A2240',
   ],
 
   completionHigh: '#4CAF50',
   completionMid: '#A8E063',
-  completionLow: '#d97757',
+  completionLow: '#ff8a65',
 } as const;
 
 export function ahiScoreColor(score: number | null | undefined): string {
   if (score === null || score === undefined || Number.isNaN(Number(score))) {
-    return '#d1d5db';
+    return '#6b7c93';
   }
   const safe = Math.min(Math.max(Number(score), 0), 100);
   const index = Math.min(

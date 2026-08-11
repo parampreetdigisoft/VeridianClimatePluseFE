@@ -181,13 +181,13 @@ h4.kpi_head_col {
     font-size: 2.2rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    color: #003d44;
+    color: var(--Text-Color, #E8EEF8);
 }
 
 
 .program_pillar+app-ag-bar {
     border-radius: 15px;
-    background-color: #fff;
+    background-color: rgba(8, 18, 42, 0.9);
     overflow: hidden;
     display: flex;
 }
@@ -214,7 +214,7 @@ span:empty, div:empty{
     flex: 1;
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid #f7f7f7;
+    border: 1px solid rgba(92, 140, 200, 0.18);
     box-shadow: none !important;
     min-width: 200px;
 }
@@ -266,31 +266,31 @@ span:empty, div:empty{
 }
 
 .kpi_custom_table tr:nth-child(even) {
-  background-color: #f3f4f6;
+  background-color: rgba(16, 32, 68, 0.45);
 }
 
 /* .kpi_custom_table tr:hover td {
   background-color: #f9fafb;
 } */
  /* .cross-pillar {
-    background-color: #f7f7f7;
+    background-color: rgba(16, 32, 68, 0.72);
     padding: 30px;
     border-radius: 30px;
-    border: 1px solid #e4e4e4;
+    border: 1px solid rgba(92, 140, 200, 0.18);
 } */
 .cross-pillar h5{
     font-weight: 700;
-    color: #000000;
+    color: var(--Text-Color, #E8EEF8);
 }
 .program_pillar {
-    background-color: #f7f7f7;
+    background-color: rgba(16, 32, 68, 0.72);
     padding: 20px;
     position: relative;
     border-radius: 15px;
-    border: 1px solid #e4e4e4;
+    border: 1px solid rgba(92, 140, 200, 0.18);
 }
 .cross-pillar_outter{
-    border: 1px solid #e4e4e4;
+    border: 1px solid rgba(92, 140, 200, 0.18);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;

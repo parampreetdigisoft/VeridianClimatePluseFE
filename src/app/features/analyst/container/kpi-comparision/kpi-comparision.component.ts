@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexYAxis, ApexStroke, ApexTooltip, ApexDataLabels, ChartComponent, ApexGrid, ApexLegend, ApexMarkers } from "ng-apexcharts";
+import { ChartComponent } from "ng-apexcharts";
 import { Subject, debounceTime } from "rxjs";
 import { ProgramVM } from "src/app/core/models/ProgramVM";
 import { CompareProgramRequestDto } from "src/app/core/models/CompareProgramRequestDto";
@@ -18,20 +18,11 @@ import { AiButtonComponent } from "src/app/shared/standAlone/ai-button/ai-button
 import { GetMutiplekpiLayerResultsDto } from "src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto";
 import { GetMutiplekpiLayerRequestDto } from "src/app/core/models/aiVm/GetMutiplekpiLayerRequestDto";
 import { CompareProgramKpiDetailComponent } from "src/app/shared/standAlone/compare-program-kpi-detail/compare-program-kpi-detail.component";
-declare var bootstrap: any; // 👈 use Bootstrap JS API
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis;
-  stroke: ApexStroke;
-  tooltip: ApexTooltip;
-  dataLabels: ApexDataLabels;
-  markers: ApexMarkers;
-  legend: ApexLegend;
-  grid: ApexGrid;
-
-};
+import {
+  KpiComparisonChartOptions,
+  buildKpiComparisonChartOptions,
+} from "src/app/core/constants/kpi-comparison-chart.util";
+declare var bootstrap: any;
 
 @Component({
   standalone: true,
@@ -51,7 +42,7 @@ export class KpiComparisionComponent implements OnInit {
   totalRecords: number = 10;
   kpis: AnalyticalLayerResponseDto[] = [];
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions> = {};
+  public chartOptions: Partial<KpiComparisonChartOptions> = {};
   compareProgramResponseDto: CompareProgramResponseDto | null = null;
   isLoader: boolean = false;
   environment = environment.apiUrl;
@@ -187,257 +178,13 @@ export class KpiComparisionComponent implements OnInit {
       this.chartTableData.map(x => [x.layerCode, x.layerName])
     );
 
-    const colorPalette = this.commonService.kpiColors;
-    
-    let series: any[] = [];
-    let strokeDashArray: number[] = [];
-
-    (this.compareProgramResponseDto?.series ?? []).forEach((programData, index) => {
-      // Skip the last program if AI View is enabled (assuming last program is AI benchmark)
-      if (index === (this.compareProgramResponseDto?.series ?? []).length - 1 && this.isAiViewEnabled) {
-        return;
-      }
-
-      const baseColor = colorPalette[index % colorPalette.length];
-
-      // Evaluation series (solid line)
-      series.push({
-        name: `${programData.name} (Evaluation)`,
-        data: programData.data,
-        color: baseColor,
-        type: 'line'
-      });
-      strokeDashArray.push(0); // Solid line
-
-      // AI series (dashed line) - only if AI view is enabled
-      if (this.isAiViewEnabled && programData.aiData) {
-        series.push({
-          name: `${programData.name} (AI)`,
-          data: programData.aiData,
-          color: this.lightenColor(baseColor, 20), // Slightly lighter shade
-          type: 'line'
-        });
-        strokeDashArray.push(8); // Dashed line
-      }
+    this.chartOptions = buildKpiComparisonChartOptions({
+      programSeries: this.compareProgramResponseDto?.series ?? [],
+      categories: this.compareProgramResponseDto?.categories,
+      kpiMap,
+      colorPalette: this.commonService.kpiColors,
+      isAiViewEnabled: this.isAiViewEnabled,
     });
-
-    let option: Partial<ChartOptions> = {
-      series: series,
-      chart: {
-       height: 400,
-        type: "line",
-        zoom: {
-          enabled: false,
-          type: 'x'
-        },
-        toolbar: {
-          show: true,
-          tools: {
-            download: true,
-            zoom: true,
-            zoomin: true,
-            zoomout: true,
-            pan: true,
-            reset: true
-          }
-        },
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 800
-        } as any
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: "smooth",
-        width: 3,
-        dashArray: strokeDashArray // Different dash patterns for each series
-      },
-      markers: {
-        size: 5,
-        strokeWidth: 2,
-        hover: {
-          size: 7,
-          sizeOffset: 3
-        }
-      },
-      legend: {
-        show: true,
-        position: 'top',
-        horizontalAlign: 'center',
-        fontSize: '13px',
-        fontWeight: 500,
-        markers: {
-          width: 20,
-          height: 3,
-          radius: 0
-        } as any,
-        itemMargin: {
-          horizontal: 15,
-          vertical: 5
-        },
-        onItemClick: {
-          toggleDataSeries: true
-        },
-        onItemHover: {
-          highlightDataSeries: true
-        }
-      },
-      grid: {
-        borderColor: '#e7e7e7',
-        strokeDashArray: 3,
-        row: {
-          colors: ['#f3f3f3', 'transparent'],
-          opacity: 0.5
-        },
-        xaxis: {
-          lines: {
-            show: true
-          }
-        },
-        yaxis: {
-          lines: {
-            show: true
-          }
-        },
-        padding: {
-          top: 0,
-          right: 10,
-          bottom: 0,
-          left: 10
-        }
-      },
-      xaxis: {
-        type: "category",
-        categories: this.compareProgramResponseDto?.categories,
-        labels: {
-          rotate: -15,
-          rotateAlways: true,
-          style: {
-            fontSize: '11px',
-            fontWeight: 500
-          },
-          trim: false
-        },
-        tooltip: {
-          enabled: false
-        },
-        axisBorder: {
-          show: true,
-          color: '#78909C'
-        },
-        axisTicks: {
-          show: true,
-          color: '#78909C'
-        }
-      },
-      yaxis: {
-        min: 0,
-        max: 100,
-        tickAmount: 10,
-        forceNiceScale: true,
-        decimalsInFloat: 0,
-        labels: {
-          show: true,
-          formatter: (val: number) => parseInt(val.toString(), 10).toString(),
-          style: {
-            fontSize: '12px',
-            fontWeight: 500
-          }
-        },
-        title: {
-          text: "Score Difference",
-          style: {
-            fontSize: '14px',
-            fontWeight: 600,
-            color: '#263238'
-          }
-        },
-        axisBorder: {
-          show: true,
-          color: '#78909C'
-        }
-      },
-      tooltip: {
-        shared: true,
-        intersect: false,
-        custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-          const layerCode = this.compareProgramResponseDto?.categories?.[dataPointIndex] ?? "";
-          const layerName = kpiMap.get(layerCode) ?? "";
-
-          let tooltipHtml = `
-          <div style="padding: 12px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 250px;">
-            <div style="font-weight: 600; margin-bottom: 10px; color: #333; font-size: 13px; border-bottom: 2px solid #e7e7e7; padding-bottom: 6px;">
-              ${layerCode} - ${layerName}
-            </div>
-        `;
-
-          // Group evaluation and AI values together
-          const programs = this.compareProgramResponseDto?.series ?? [];
-          programs.forEach((program, idx) => {
-            // Skip last program if it's the AI benchmark
-            if (idx === programs.length - 1 && this.isAiViewEnabled) {
-              return;
-            }
-
-            const evalValue = program.data[dataPointIndex];
-            const aiValue = program.aiData?.[dataPointIndex];
-            const color = colorPalette[idx % colorPalette.length];
-            const difference = aiValue != null ? (evalValue - aiValue) : 0;
-
-            tooltipHtml += `
-            <div style="margin: 8px 0; padding: 8px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 6px; border-left: 3px solid ${color};">
-              <div style="font-weight: 600; color: ${color}; margin-bottom: 6px; font-size: 12px;">
-                ${program.name}
-              </div>
-              <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
-                <span style="color: #666;">📊 Evaluation:</span>
-                <span style="font-weight: 600; color: #333;">${evalValue.toFixed(2)}</span>
-              </div>
-          `;
-
-            if (this.isAiViewEnabled && aiValue != null) {
-              tooltipHtml += `
-              <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
-                <span style="color: #666;">🤖 AI:</span>
-                <span style="font-weight: 600; color: #333;">${aiValue.toFixed(2)}</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 6px; padding-top: 6px; border-top: 1px solid #dee2e6;">
-                <span style="color: #666;">📈 Difference:</span>
-                <span style="font-weight: 600; color: ${Math.abs(difference) > 10 ? '#dc3545' : '#28a745'};">
-                  ${difference > 0 ? '+' : ''}${difference.toFixed(2)}
-                </span>
-              </div>
-            `;
-            }
-
-            tooltipHtml += `</div>`;
-          });
-
-          tooltipHtml += '</div>';
-          return tooltipHtml;
-        }
-      }
-    };
-
-    this.chartOptions = option;
-  }
-
-  // Helper function to lighten colors for AI lines
-  private lightenColor(color: string, percent: number): string {
-    const num = parseInt(color.replace("#", ""), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = (num >> 16) + amt;
-    const G = (num >> 8 & 0x00FF) + amt;
-    const B = (num & 0x0000FF) + amt;
-    return "#" + (
-      0x1000000 +
-      (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
-      (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
-      (B < 255 ? (B < 1 ? 0 : B) : 255)
-    ).toString(16).slice(1);
   }
 
   getProgramScore(climateProgramID: number, isAi: boolean = false): string {

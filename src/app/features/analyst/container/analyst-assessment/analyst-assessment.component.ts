@@ -30,7 +30,7 @@ import { AssessmentPhase } from "src/app/core/enums/AssessmentPhase";
 @Component({
   selector: "app-analyst-assessment",
   templateUrl: "./analyst-assessment.component.html",
-  styleUrls: ["./analyst-assessment.component.css"], // ✅ fixed  
+  styleUrls: ["../../../../shared/styles/make-assessment.shared.css"],
 })
 export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];

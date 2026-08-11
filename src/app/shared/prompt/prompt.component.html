@@ -1,4 +1,4 @@
-<div class="modal fade" [id]="uniqueId" tabindex="-1" aria-hidden="true">
+<div class="modal fade prompt_modal modal_design" [id]="uniqueId" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header text-white">
@@ -19,7 +19,7 @@
         <button type="button" class="btn btn_cancel" data-bs-dismiss="modal" (click)="onCancel()">
           {{ cancelText }}
         </button>
-        <button *ngIf="showConfirmButton" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onConfirm()">
+        <button *ngIf="showConfirmButton" type="button" class="btn btn_confirm" data-bs-dismiss="modal" (click)="onConfirm()">
           {{ confirmText }}
         </button>
       </div>

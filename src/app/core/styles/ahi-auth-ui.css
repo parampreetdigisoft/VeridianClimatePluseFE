@@ -14,8 +14,8 @@
   overflow: hidden;
   background:
     radial-gradient(ellipse 80% 60% at 10% 0%, rgba(168, 224, 99, 0.18) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 50% at 95% 100%, rgba(0, 109, 119, 0.22) 0%, transparent 50%),
-    linear-gradient(145deg, #003d44 0%, var(--Primary-Color) 38%, #004d55 72%, #002a30 100%);
+    radial-gradient(ellipse 70% 50% at 95% 100%, rgba(59, 158, 255, 0.16) 0%, transparent 50%),
+    linear-gradient(145deg, #040A1D 0%, #0A2240 38%, #061228 72%, #020816 100%);
 }
 
 .vui_before_login::before {

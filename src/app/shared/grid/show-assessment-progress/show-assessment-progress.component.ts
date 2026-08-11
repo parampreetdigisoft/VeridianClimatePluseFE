@@ -88,7 +88,7 @@ export class ShowAssessmentProgressComponent implements OnInit, OnChanges, OnDes
             }
           },
           track: {
-            background: "#ffffff",
+            background: "#102044",
             strokeWidth: "50%",
             margin: 3, // margin is in pixels
             dropShadow: {

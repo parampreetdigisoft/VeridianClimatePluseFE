@@ -2,28 +2,34 @@
 {
     display: flex;
     flex-wrap: wrap;
+    background: var(--Page-Bg, #040A1D);
+    min-height: 100vh;
+    padding-bottom: 12px;
 }
 
 .sidebar_area
 {
-    width: 400px;
-    padding: 0 20px 20px 20px;
+    width: 380px;
+    padding: 0 16px 20px 20px;
 }
 
 .content_area
 {
     flex: 1;
-    padding-bottom: 20px;
+    padding-bottom: 12px;
     padding-right: 20px;
-    width: calc(100% - 400px);
+    width: calc(100% - 380px);
 }
 
 @media only screen and (max-width:1540px) {
   .sidebar_area{
-      width: 335px;
-      padding: 0 7px 20px 7px;
+      width: 330px;
+      padding: 0 10px 20px 12px;
   }
- 
+  .content_area {
+      padding-right: 12px;
+      width: calc(100% - 330px);
+  }
 }
 
 @media only screen and (max-width:1339px){
@@ -31,8 +37,8 @@
         font-size: 14px;
     }
     ::ng-deep .main_area .inner_sidebar {
-        padding: 22px 15px 22px;
-        border-radius: 20px;
+        padding: 16px 12px 18px;
+        border-radius: 14px;
     }
     ::ng-deep .main_area .nav_links svg {
         width: 22px;
@@ -43,7 +49,7 @@
         height: auto;
     }
     .main_area .sidebar_area{
-        width: 330px;
+        width: 300px;
     }
     ::ng-deep .dashboard_card_inner span {
         padding: 10px !important;
@@ -58,7 +64,6 @@
 
 @media only screen and (max-width:767px){
     .sidebar_area {
-        /* transform: translateX(-100%); */
         width: 100%;
     }
 }

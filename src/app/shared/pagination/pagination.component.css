@@ -1,10 +1,9 @@
-
 .cus_pagination>li.active span {
-    background: var(--Primary-Color);
+    background: var(--Accent-Blue, #3B9EFF);
     color: #fff;
 }
 .pagi_label:hover {
-    color: #2e9573;
+    color: var(--Accent-Lime, #A8E063);
 }
 .pagi_label {
     transition: 0.3s all;
@@ -16,13 +15,12 @@
   justify-content: center;
   margin-top: 80px;
   text-align: center;
-  color: #6c757d; /* subtle grey */
-  padding-bottom: 50px;
+  color: var(--Light-Text-Color, #9AADC4);
 }
 
-.no_result_found h3 {    
-  font-weight: 600;        /* semi-bold, cleaner */
+.no_result_found h3 {
+  font-weight: 600;
   font-size: 20px;
-  color: #495057;          /* darker grey for text */
+  color: var(--Text-Color, #E8EEF8);
   letter-spacing: 0.5px;
 }

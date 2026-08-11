@@ -2,22 +2,7 @@
   <div class="pulse-ambient" aria-hidden="true"></div>
 
   <ng-container *ngIf="!isPageLoader">
-    <section class="pulse-summary-row" *ngIf="summaryCards?.length">
-      <article
-        class="pulse-summary-card"
-        *ngFor="let card of summaryCards; trackBy: trackByTitle; let i = index"
-        [style.animation-delay]="i * 80 + 'ms'"
-        [attr.data-accent]="card.accent || 'green'">
-        <div class="pulse-summary-icon">
-          <i class="bi" [ngClass]="card.icon"></i>
-        </div>
-        <div class="pulse-summary-body">
-          <span class="pulse-summary-title">{{ card.title }}</span>
-          <strong class="pulse-summary-value">{{ card.value }}</strong>
-          <span class="pulse-summary-sub">{{ card.subtitle }}</span>
-        </div>
-      </article>
-    </section>
+    
 
     <section class="pulse-toolbar">
       <div class="pulse-toolbar-left">

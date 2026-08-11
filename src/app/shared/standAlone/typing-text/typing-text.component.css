@@ -16,7 +16,7 @@
 .cursor {
   display: inline-block;
   width: 2px;
-  background: #333;
+  background: var(--Accent-Lime, #A8E063);
   margin-left: 4px;
   animation: blink 0.8s infinite;
 }
@@ -24,7 +24,7 @@
 .toggle-btn {
   border: none;
   background: transparent;
-  color: #12352f;
+  color: var(--Accent-Blue, #3B9EFF);
   font-weight: 600;
   cursor: pointer;
   font-size: 13px;

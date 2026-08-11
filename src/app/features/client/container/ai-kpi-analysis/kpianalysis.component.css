@@ -190,6 +190,7 @@ app-kpianalysis app-ag-bar:nth-child(3) {
 }
 .faq_sidebar_item.active .faq_sidebar_item_inner p{
     opacity: 1 !important;
+    color: #ffff;
 }
 
 .table-responsive tbody td.action_td table {

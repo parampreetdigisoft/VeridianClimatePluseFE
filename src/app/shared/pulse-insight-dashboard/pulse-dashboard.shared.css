@@ -11,11 +11,11 @@
   --pulse-border: rgba(92, 140, 200, 0.22);
   --pulse-border-hover: rgba(59, 158, 255, 0.55);
   --pulse-text: #e8eef8;
-  --pulse-muted: #8b9bb4;
+  --pulse-muted: #9aadc4;
   --pulse-blue: #3b9eff;
   --pulse-green: #a8e063;
   --pulse-teal: #5cd6c8;
-  --pulse-cyan: #77B44D;
+  --pulse-cyan: #4CAF50;
   --pulse-warn: #ff8a65;
   --pulse-glow-blue: rgba(59, 158, 255, 0.35);
   --pulse-glow-green: rgba(168, 224, 99, 0.35);
@@ -25,14 +25,14 @@
   position: relative;
   isolation: isolate;
   min-height: calc(100vh - 120px);
-  margin: -8px -8px 0;
-  padding: 22px 18px 36px;
+  margin: 0;
+  padding: 20px 18px 32px;
   border-radius: 18px;
   color: var(--pulse-text);
   font-family: var(--pulse-font);
   background:
     radial-gradient(ellipse 80% 50% at 10% -10%, rgba(59, 158, 255, 0.12), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 95% 5%, rgba(168, 224, 99, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 95% 5%, rgba(76, 175, 80, 0.1), transparent 50%),
     linear-gradient(180deg, var(--pulse-bg) 0%, var(--pulse-bg-2) 55%, #060f22 100%);
   overflow: visible;
 }
@@ -311,7 +311,8 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option-selected {
 
 .pulse-insight-dashboard .pulse-ng-select .ng-option-marked,
 .pulse-insight-dashboard .pulse-ng-select .ng-option-selected {
-  background: rgba(59, 158, 255, 0.16) !important;
+  background: rgba(76, 175, 80, 0.2) !important;
+  color: #fff !important;
 }
 
 .pulse-toolbar-actions {

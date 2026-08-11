@@ -17,6 +17,7 @@ import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexYAxis, ApexDataLabels, A
 import { AdminService } from "../../admin.service";
 import { ExportType } from "src/app/core/enums/exportEnum";
 import { ActivatedRoute } from "@angular/router";
+import { buildPillarComparisonBarChartOptions } from "src/app/core/constants/pillar-comparison-bar-chart.util";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -35,7 +36,7 @@ export type ChartOptions = {
 @Component({
   selector: "app-comparision",
   templateUrl: "./comparision.component.html",
-  styleUrl: "./comparision.component.css",
+  styleUrls: ["../../../../shared/styles/assessment-comparison.shared.css"],
 })
 
 export class ComparisionComponent implements OnInit {
@@ -223,149 +224,14 @@ export class ComparisionComponent implements OnInit {
     evaluators: Object.fromEntries(pillar.evaluators)
   }));
 
-  const pillarCount = categories.length;
-  let barMaxWidth: number | undefined = 120;
-  let columnWidthPercent = 70;
-  const totalBars = pillarCount * (series[0]?.data?.length ? series.length : 0);
-
-  if (!hasData) {
-    columnWidthPercent = 40;
-  } else if (totalBars == 1) {
-    columnWidthPercent = 5;
-    barMaxWidth = 50;
-  } else if (totalBars == 2) {
-    columnWidthPercent = 10;
-  } else if (totalBars <= 3) {
-    columnWidthPercent = 15;
-  } else if (totalBars <= 4) {
-    columnWidthPercent = 20;
-    barMaxWidth = 100;
-  } else if (totalBars <= 6) {
-    columnWidthPercent = 30;
-  } else if (totalBars <= 10) {
-    columnWidthPercent = 45;
-  } else {
-    columnWidthPercent = 60;
-    barMaxWidth = 120;
-  }
-
-  this.chartOptions = {
-    series: series,
-    chart: {
-      type: 'bar',
-      height: 500,
-      toolbar: {
-        show: true,
-        tools: {
-          download: true,
-          selection: false,
-          zoom: false,
-          zoomin: false,
-          zoomout: false,
-          pan: false,
-          reset: false
-        }
-      },
-      fontFamily: 'Inter, sans-serif',
-      animations: {
-        enabled: true,
-        easing: 'easeinout',
-        speed: 800,
-        animateGradually: { enabled: true, delay: 150 },
-        dynamicAnimation: { enabled: true, speed: 350 }
-      }
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: `${columnWidthPercent}%`,
-        ...(barMaxWidth && { barHeight: barMaxWidth }),
-        borderRadius: 6,
-        borderRadiusApplication: 'end',
-        dataLabels: { position: 'top' }
-      }
-    },
-    dataLabels: {
-      enabled: true,
-      formatter: function (val: number) { return ''; },
-      offsetY: -20,
-      style: { fontSize: '11px', fontWeight: 600, colors: ['#304758'] }
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ['transparent']
-    },
-    xaxis: {
-      categories: categories,
-      labels: {
-        style: { fontSize: '12px', fontWeight: 500, colors: '#64748b' },
-        rotate: pillarCount > 8 ? -45 : 0,
-        rotateAlways: false,
-        trim: true,
-        maxHeight: 120
-      },
-      title: {
-        text: 'Pillars',
-        style: { fontSize: '14px', fontWeight: 600, color: '#475569' }
-      }
-    },
-    yaxis: {
-      title: {
-        text: 'Score',
-        style: { fontSize: '14px', fontWeight: 600, color: '#475569' }
-      },
-      labels: {
-        formatter: function (val: number) { return val.toFixed(0) + ''; },
-        style: { fontSize: '12px', colors: '#64748b' }
-      },
-      min: 0,
-      max: 100
-    },
-    tooltip: {
-      shared: true,
-      intersect: false,
-      y: {
-        formatter: function (val: number, opts) {
-          if (!hasData) {
-            return 'No data';
-          }
-          const seriesIndex = opts.seriesIndex;
-          const dataPointIndex = opts.dataPointIndex;
-          const evaluatorName = uniqueEvaluators[seriesIndex];
-          const pillarData = tooltipData[dataPointIndex];
-          const evaluatorData = pillarData.evaluators[evaluatorName];
-
-          if (evaluatorData) {
-            return `${val.toFixed(1)} (${evaluatorData.ansQuestion}/${evaluatorData.totalQuestion} questions)`;
-          }
-          return val.toFixed(1) + '';
-        }
-      },
-      style: { fontSize: '13px' },
-      theme: 'light'
-    },
-    legend: {
-      show: hasData,
-      position: 'top',
-      horizontalAlign: 'center',
-      offsetY: 0,
-      fontSize: '13px',
-      fontWeight: 500,
-      markers: { width: 12, height: 12, radius: 3 },
-      itemMargin: { horizontal: 12, vertical: 8 }
-    },
-    grid: {
-      borderColor: '#e2e8f0',
-      strokeDashArray: 4,
-      xaxis: { lines: { show: false } },
-      yaxis: { lines: { show: true } },
-      padding: { top: 0, right: 20, bottom: 0, left: 10 }
-    },
-    colors: hasData
-      ? (this.commonService.PillarColors ?? []).slice(0, uniqueEvaluators.length)
-      : ['#cbd5e1'] // neutral gray for the empty-state bar
-  };
+  this.chartOptions = buildPillarComparisonBarChartOptions({
+    series,
+    categories,
+    hasData,
+    uniqueEvaluators,
+    tooltipData,
+    colors: (this.commonService.PillarColors ?? []).slice(0, Math.max(uniqueEvaluators.length, 1)),
+  });
 }
 
   loadPillars() {

@@ -23,11 +23,11 @@ import {
   PulseSummaryCard,
 } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard.models';
 import {
+  PULSE_THEME,
   PulseAreaChartOptions,
   PulseRadialChartOptions,
   buildPulseKpiCards,
-  buildPulsePillarAreaChart,
-  buildPulseRadialChart,
+  buildPulsePillarAreaChart
 } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard-chart.util';
 import {
   PULSE_KPI_TABS,
@@ -111,7 +111,7 @@ export class ClientPulseDashboardComponent implements OnInit {
       next: (res) => {
         this.programHistory = res.result;
         this.buildSummaryCards();
-        this.radialChartOptions = buildPulseRadialChart(this.programHistory, 'aiOnly');
+        this.radialChartOptions = this.buildPulseRadialChart(this.programHistory);
       },
     });
   }
@@ -218,6 +218,7 @@ export class ClientPulseDashboardComponent implements OnInit {
       showAi: true,
       showManual: false,
     });
+    this.radialChartOptions = this.buildPulseRadialChart(this.programHistory);
     this.buildIndexHero();
   }
 
@@ -331,5 +332,70 @@ export class ClientPulseDashboardComponent implements OnInit {
     } else {
       this.toaster.showWarning('Please select program to export the records');
     }
+  }
+
+  buildPulseRadialChart(history: ProgramHistoryDto | null): Partial<PulseRadialChartOptions> {
+    const pillarCount = this.aiPillars?.length ?? 0;
+    const avgFromPillars =
+      pillarCount > 0
+        ? this.aiPillars.reduce((sum, x) => sum + Number(x.aiValue ?? 0), 0) / pillarCount
+        : null;
+
+    const rawScore = Number(avgFromPillars ?? history?.overallVitalityScore ?? 0);
+    const score = Math.max(0, Math.min(100, Number(rawScore.toFixed(1))));
+
+    return {
+      series: [score],
+      chart: {
+        height: 340,
+        type: 'radialBar',
+        background: 'transparent',
+        toolbar: { show: false },
+        fontFamily: 'Poppins, system-ui, sans-serif',
+        parentHeightOffset: 0,
+        sparkline: { enabled: false },
+      },
+      plotOptions: {
+        radialBar: {
+          startAngle: -135,
+          endAngle: 135,
+          hollow: {
+            margin: 0,
+            size: '62%',
+            background: 'transparent',
+          },
+          track: {
+            background: 'rgba(92, 140, 200, 0.12)',
+            strokeWidth: '100%',
+            margin: 0,
+          },
+          dataLabels: {
+            show: true,
+            name: {
+              show: true,
+              offsetY: -12,
+              color: PULSE_THEME.textMuted,
+              fontSize: '13px',
+            },
+            value: {
+              show: true,
+              offsetY: 8,
+              color: PULSE_THEME.text,
+              fontSize: '28px',
+              fontWeight: 700,
+              formatter: (value: number) => `${Number(value).toFixed(1)}`,
+            },
+            total: {
+              show: false,
+            },
+          },
+        },
+      },
+      colors: [PULSE_THEME.green],
+      labels: ['Score'],
+      legend: {
+        show: false,
+      },
+    };
   }
 }

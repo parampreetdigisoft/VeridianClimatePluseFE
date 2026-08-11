@@ -1,7 +1,7 @@
 <div class="heading_area">
   <div class="row justify-content-between align-items-center gap-2 custom_gap">
     <div class="col">
-      <h3 class="page_head">Assesment</h3>
+      <h3 class="page_head">Assessment</h3>
     </div>
         <div class="col-lg-auto">
           <div class="header_btns">
@@ -35,7 +35,7 @@
           <ul class="dropdown-menu">
             <li>
               <a class="dropdown-item" href="javascript:void(0)" (click)="downloadAssessment('excel')">
-                Download Assesment Template - Excel
+                Download Assessment Template - Excel
               </a>
             </li>
             <li>
@@ -188,11 +188,11 @@
           </button>
         </div>
       </form>
-
-      <div *ngIf="isLoader" class="loader_main">
-        <div class="loader"></div>
-      </div>
     </div>
+  </div>
+
+  <div *ngIf="isLoader" class="loader_main">
+    <div class="loader"></div>
   </div>
 </div>
 

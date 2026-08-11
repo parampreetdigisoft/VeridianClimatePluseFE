@@ -169,7 +169,7 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
       stroke: {
         lineCap: "round"
       },
-      labels: ["Performance"]
+      labels: ["Score"]
     };
   }
 

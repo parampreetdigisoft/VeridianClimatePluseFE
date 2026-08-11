@@ -98,7 +98,7 @@ h4.kpi_head_col {
     font-size: 2.2rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    color: #003d44;
+    color: var(--Text-Color, #E8EEF8);
 }
 
 
@@ -135,11 +135,14 @@ button.btn-close:focus-visible {
 }
 
 .modal-box {
-  background: #fff;
+  background: linear-gradient(180deg, #0B1633 0%, #09122A 100%);
   width: 600px;
-  border-radius: 10px;
+  border-radius: 14px;
   overflow: hidden;
   animation: fadeIn 0.3s ease;
+  border: 1px solid rgba(92, 140, 200, 0.22);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+  color: var(--Text-Color, #E8EEF8);
 }
 
 .modal-header {
@@ -209,7 +212,9 @@ button.btn-close:focus-visible {
 .file-item {
   display: flex;
   justify-content: space-between;
-  background: #f1f1f1;
+  background: rgba(16, 32, 68, 0.85);
+  border: 1px solid rgba(92, 140, 200, 0.18);
+  color: var(--Text-Color, #E8EEF8);
   padding: 6px 10px;
   margin-top: 6px;
   border-radius: 5px;
@@ -281,7 +286,7 @@ td.file_size {
     font-weight: 600;
     line-height: normal;
     text-transform: capitalize;
-    color: #2c2c2c;
+    color: var(--Text-Color, #E8EEF8);
 }
 /* .modal-box .upload-btn {
     all: unset;
