@@ -10,6 +10,7 @@ import { AddUpdateEvaluatorComponent } from './features/add-update-evaluator/add
 import { EvaluatorResponsesComponent } from './container/evaluator-responses/evaluator-responses.component';
 import { EvaluatorResponseViewComponent } from './container/evaluator-response-view/evaluator-response-view.component';
 import { AnalystDashboardComponent } from './container/analyst-dashboard/analyst-dashboard.component';
+import { AnalystPulseDashboardComponent } from './container/analyst-pulse-dashboard/analyst-pulse-dashboard.component';
 import { ComparisionComponent } from './container/comparision/comparision.component';
 import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 const routes: Routes = [
@@ -19,7 +20,8 @@ const routes: Routes = [
     data: { roles: [] },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: AnalystDashboardComponent },
+      { path: 'dashboard', component: AnalystPulseDashboardComponent },
+      { path: 'dashboard-classic', component: AnalystDashboardComponent },
       { path: 'rosew-dashboard', component: RealTimeOperationalStressComponent },
       { path: 'assigned-program', component: AssignedProgramComponent },
       { path: 'evaluator-view', component: EvaluatorViewComponent },
@@ -74,7 +76,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    AnalystPulseDashboardComponent
   ]
 })
 export class AnalystModule { } 

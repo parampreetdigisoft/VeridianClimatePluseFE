@@ -164,4 +164,22 @@ export class AnalystService {
     return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { climateProgramID })
     .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
+
+  public getAmbitionDeliveryIndexDashboard(climateProgramID: number) {
+    return this.http
+      .getWithQueryParams(`Dashboard/getAmbitionDeliveryIndexDashboard`, { climateProgramID })
+      .pipe(map((x) => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+
+  public getDiplomaticRiskDashboard(climateProgramID: number) {
+    return this.http
+      .getWithQueryParams(`Dashboard/getDiplomaticRiskDashboard`, { climateProgramID })
+      .pipe(map((x) => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+
+  public getReadinessScorecardDashboard(climateProgramID: number) {
+    return this.http
+      .getWithQueryParams(`Dashboard/getReadinessScorecardDashboard`, { climateProgramID })
+      .pipe(map((x) => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
 }

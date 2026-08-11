@@ -13,6 +13,7 @@ import { EvaluatoinResponseViewComponent } from './container/evaluatoin-response
 import { UpdatePillarComponent } from './features/update-pillar/update-pillar.component';
 import { QuillModule } from 'ngx-quill';
 import { AdminDashboardComponent } from './container/admin-dashboard/admin-dashboard.component';
+import { AdminPulseDashboardComponent } from './container/admin-pulse-dashboard/admin-pulse-dashboard.component';
 import { ComparisionComponent } from './container/comparision/comparision.component';
 import { TransterAssessmentComponent } from './features/transter-assessment/transter-assessment.component';
 import { KpiComparisionComponent } from './container/kpi-comparision/kpi-comparision.component';
@@ -47,6 +48,7 @@ import { ProgramsComponent } from './container/programs/programs.component';
     CommonModule,
     SharedModule,
     AdminRoutingModule,
+    AdminPulseDashboardComponent,
     QuillModule.forRoot({
       theme: 'snow',
       format: 'html' ,
