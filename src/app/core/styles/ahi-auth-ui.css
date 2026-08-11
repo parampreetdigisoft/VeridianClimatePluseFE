@@ -1,5 +1,6 @@
 /* ============================================================
    VCP Auth UI — login, sign-up, forgot/reset, 2FA
+   Logo palette + global dark theme tokens
    Loaded via account.component (ViewEncapsulation.None)
    ============================================================ */
 
@@ -13,9 +14,11 @@
   padding: 28px 20px;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(168, 224, 99, 0.18) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 50% at 95% 100%, rgba(59, 158, 255, 0.16) 0%, transparent 50%),
-    linear-gradient(145deg, #040A1D 0%, #0A2240 38%, #061228 72%, #020816 100%);
+    radial-gradient(ellipse 80% 60% at 8% 0%, rgba(168, 224, 99, 0.16) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 95% 100%, rgba(59, 158, 255, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(63, 143, 70, 0.08) 0%, transparent 60%),
+    linear-gradient(145deg, var(--Page-Bg) 0%, var(--Primary-Color) 42%, var(--Dark-Bg-Color) 72%, #020816 100%);
+  color: var(--Text-Color);
 }
 
 .vui_before_login::before {
@@ -23,11 +26,11 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(168, 224, 99, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 158, 255, 0.035) 1px, transparent 1px);
   background-size: 48px 48px;
   pointer-events: none;
-  opacity: 0.45;
+  opacity: 0.55;
 }
 
 .vui_before_login::after {
@@ -36,7 +39,7 @@
   width: 520px;
   height: 520px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(168, 224, 99, 0.12) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(168, 224, 99, 0.14) 0%, transparent 68%);
   top: -180px;
   right: -120px;
   pointer-events: none;
@@ -78,9 +81,11 @@
   min-height: min(720px, calc(100dvh - 48px));
   border-radius: 24px;
   overflow: hidden;
+  background: var(--Surface-Color);
+  border: 1px solid var(--Border-Color);
   box-shadow:
-    0 32px 64px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
+    0 32px 64px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(168, 224, 99, 0.06);
   animation: ahiAuthCardIn 0.55s ease-out;
 }
 
@@ -91,8 +96,11 @@
 
 .ahi_auth_brand {
   flex: 0 0 42%;
-  background: linear-gradient(160deg, #004d55 0%, var(--Primary-Color) 45%, #00838f 100%);
-  color: #fff;
+  background:
+    radial-gradient(circle at 18% 85%, rgba(168, 224, 99, 0.22) 0%, transparent 42%),
+    radial-gradient(circle at 90% 8%, rgba(59, 158, 255, 0.16) 0%, transparent 40%),
+    linear-gradient(160deg, #061228 0%, var(--Primary-Color) 42%, #1B5E3B 100%);
+  color: var(--Text-Color);
   padding: 44px 40px;
   display: flex;
   flex-direction: column;
@@ -106,8 +114,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 80%, rgba(168, 224, 99, 0.2) 0%, transparent 45%),
-    radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
+    linear-gradient(180deg, rgba(4, 10, 29, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(76, 175, 80, 0.12) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -122,7 +130,10 @@
 
 .ahi_auth_brand .vui_logo img {
   width: 220px;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  height: auto;
+  max-height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
 }
 
 .ahi_auth_badge {
@@ -131,9 +142,9 @@
   gap: 6px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(168, 224, 99, 0.18);
-  border: 1px solid rgba(168, 224, 99, 0.45);
-  color: #e8ffc4;
+  background: rgba(168, 224, 99, 0.14);
+  border: 1px solid rgba(168, 224, 99, 0.4);
+  color: var(--Accent-Lime);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -146,13 +157,13 @@
   font-weight: 700;
   line-height: 1.25;
   margin: 0 0 12px;
-  color: #fff;
+  color: #ffffff;
 }
 
 .ahi_auth_brand_desc {
   font-size: 15px;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(232, 238, 248, 0.82);
   margin: 0 0 28px;
 }
 
@@ -171,7 +182,7 @@
   gap: 12px;
   font-size: 14px;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(232, 238, 248, 0.9);
 }
 
 .ahi_auth_features li i {
@@ -179,8 +190,8 @@
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: rgba(168, 224, 99, 0.2);
-  color: #A8E063;
+  background: rgba(168, 224, 99, 0.18);
+  color: var(--Accent-Lime);
   display: inline-grid;
   place-items: center;
   font-size: 14px;
@@ -194,12 +205,14 @@
   width: 100%;
   max-width: 480px;
   border-radius: 20px;
-  background: #ffffff;
+  background: linear-gradient(180deg, var(--Surface-Elevated) 0%, var(--Surface-Color) 100%);
   padding: 44px 40px;
+  border: 1px solid var(--Border-Color);
   box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.18),
-    0 0 0 1px rgba(0, 109, 119, 0.06);
+    0 24px 48px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   animation: ahiAuthCardIn 0.5s ease-out;
+  color: var(--Text-Color);
 }
 
 .ahi_auth_shell .ahi_auth_card {
@@ -207,8 +220,11 @@
   max-width: none;
   border-radius: 0;
   box-shadow: none;
+  border: none;
+  border-left: 1px solid var(--Border-Color);
   overflow-y: auto;
   padding: 40px 44px;
+  background: var(--Surface-Color);
 }
 
 .ahi_auth_card--narrow {
@@ -223,13 +239,15 @@
   right: 24px;
   height: 4px;
   border-radius: 0 0 4px 4px;
-  background: var(--VCP-Gradient, linear-gradient(90deg, var(--Primary-Color), #4CAF50, #A8E063));
+  background: var(--VCP-Gradient);
 }
 
 .vui_logo img {
-  width: 100%;
-  max-width: 100%;
-  height: 167px;
+  width: auto;
+  max-width: 220px;
+  height: auto;
+  max-height: 72px;
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 
@@ -239,19 +257,20 @@
 
 .vui_logo > a {
   display: table;
-  margin: 0 auto 10px;
+  margin: 0 auto 16px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 12px;
+  padding: 10px 18px 8px;
+  border: 1px solid rgba(168, 224, 99, 0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .vui_before_signup .vui_logo > a {
-  background: #ffffff;
-    border-radius: 10px;
-    padding: 7px 15px 5px 15px;
-    margin-left: 0;
+  margin-left: 0;
 }
 
-
 .before_login_card_head {
-  color: #003d44;
+  color: var(--Text-Color);
   font-size: 24px;
   font-weight: 700;
   line-height: 1.25;
@@ -259,7 +278,7 @@
 }
 
 .before_login_card_desc {
-  color: #5a6f72;
+  color: var(--Light-Text-Color);
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
@@ -287,7 +306,7 @@
 
 .vui_before_login .input_field label,
 .vui_before_login .form-label {
-  color: var(--Primary-Color);
+  color: var(--Light-Text-Color);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -299,31 +318,38 @@
 .vui_before_login .input_field .form-control,
 .vui_before_login .input_field .form-select {
   border-radius: 12px !important;
-  border: 1px solid #dce8e9 !important;
+  border: 1px solid var(--Border-Color) !important;
   min-height: 44px;
   padding: 10px 16px !important;
   font-weight: 500;
+  color: var(--Text-Color) !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  background: #fafcfc;
+  background: var(--Surface-Elevated) !important;
+}
+
+.vui_before_login .input_field .form-control::placeholder {
+  color: var(--Light-Text-Color) !important;
+  opacity: 0.75;
 }
 
 .vui_before_login .input_field .form-control:hover,
 .vui_before_login .input_field .form-select:hover {
-  border-color: rgba(0, 109, 119, 0.28) !important;
-  background: #fff;
+  border-color: rgba(168, 224, 99, 0.35) !important;
+  background: #12254c !important;
 }
 
 .vui_before_login .input_field .form-control:focus,
 .vui_before_login .input_field .form-select:focus {
-  border-color: var(--Primary-Color) !important;
-  box-shadow: 0 0 0 3px rgba(168, 224, 99, 0.22) !important;
-  background: #fff;
+  border-color: var(--Accent-Blue) !important;
+  box-shadow: 0 0 0 3px rgba(59, 158, 255, 0.2) !important;
+  background: #12254c !important;
   outline: none;
+  color: #ffffff !important;
 }
 
 .vui_before_login .error-msg,
 .vui_before_login .text-danger {
-  color: #c62828 !important;
+  color: #ff8a80 !important;
   font-size: 12px;
   margin-top: 6px;
 }
@@ -356,18 +382,18 @@
 }
 
 .vui_before_login .password_eye_icon:hover {
-  background: rgba(0, 109, 119, 0.08);
+  background: rgba(168, 224, 99, 0.12);
   transform: translateY(-50%) scale(1);
 }
 
 .vui_before_login .password_eye_icon i {
   font-size: 18px;
-  color: var(--Primary-Color);
+  color: var(--Accent-Lime);
   line-height: 1;
 }
 
 .vui_before_login .password_eye_icon path {
-  fill: var(--Primary-Color);
+  fill: var(--Accent-Lime);
 }
 
 /* Icon-prefixed inputs */
@@ -381,11 +407,11 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  color: var(--Primary-Color);
+  color: var(--Accent-Lime);
   font-size: 17px;
   line-height: 1;
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .ahi_input_wrap .form-control {
@@ -393,59 +419,72 @@
 }
 
 .ahi_input_wrap:focus-within .ahi_input_icon {
-  color: #004d55;
+  color: var(--Accent-Blue);
   opacity: 1;
 }
 
 /* ── Checkbox & switch ──────────────────────────────────────── */
+.vui_before_login .vui_checkbox .form-check-label {
+  color: var(--Light-Text-Color);
+  font-size: 13px;
+}
+
+.vui_before_login .vui_checkbox .form-check-input {
+  background-color: var(--Surface-Elevated);
+  border-color: var(--Border-Color);
+}
+
 .vui_before_login .vui_checkbox .form-check-input:checked {
-  border-color: var(--Primary-Color) !important;
-  background-color: var(--Primary-Color);
+  border-color: var(--Secondary-Color) !important;
+  background-color: var(--Secondary-Color);
 }
 
 .vui_before_login .form-switch .form-check-input {
   width: 2.4em;
   height: 1.25em;
   cursor: pointer;
+  background-color: var(--Surface-Elevated);
+  border-color: var(--Border-Color);
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .vui_before_login .form-switch .form-check-input:checked {
-  background-color: var(--Primary-Color) !important;
-  border-color: var(--Primary-Color) !important;
+  background-color: var(--Secondary-Color) !important;
+  border-color: var(--Secondary-Color) !important;
 }
 
 .vui_before_login .form-switch .form-check-label {
   font-size: 13px;
   font-weight: 500;
-  color: #3d5255;
+  color: var(--Text-Color);
   cursor: pointer;
 }
 
-.vui_before_login .auth_text {
+.vui_before_login .auth_text,
+.vui_before_login .text-muted {
   font-size: 12px;
-  color: #6b8083 !important;
+  color: var(--Light-Text-Color) !important;
   line-height: 1.45;
 }
 
 .vui_before_login .ahi_2fa_box {
   padding: 14px 16px;
   border-radius: 12px;
-  background: rgba(0, 109, 119, 0.05);
-  border: 1px solid rgba(0, 109, 119, 0.1);
+  background: rgba(63, 143, 70, 0.1);
+  border: 1px solid rgba(168, 224, 99, 0.22);
   margin-top: 4px;
 }
 
 /* ── Links ──────────────────────────────────────────────────── */
 .vui_before_login .vui_reset_pass_link {
-  color: var(--Primary-Color) !important;
+  color: var(--Accent-Lime) !important;
   font-weight: 600;
   text-decoration: none !important;
   transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .vui_before_login .vui_reset_pass_link:hover {
-  color: #004d55 !important;
+  color: var(--Hover-Primary-color) !important;
   opacity: 1;
   text-decoration: underline !important;
 }
@@ -454,7 +493,7 @@
   font-size: 15px;
   text-decoration: underline !important;
   padding-top: 16px;
-  color: var(--Primary-Color) !important;
+  color: var(--Accent-Lime) !important;
 }
 
 /* ── Primary button in auth ───────────────────────────────────── */
@@ -463,12 +502,15 @@
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  background: var(--VCP-Gradient);
+  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
 }
 
 .vui_before_login .common_button:not(:disabled):hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0, 109, 119, 0.28);
+  background: var(--VCP-Gradient-Hover);
+  box-shadow: 0 10px 24px rgba(46, 125, 50, 0.4);
 }
 
 .vui_before_login .common_button:disabled {
@@ -478,21 +520,21 @@
 
 /* ── Divider & social ─────────────────────────────────────────── */
 .vui_before_login .or {
-  border-top: 1px solid #e8efef;
+  border-top: 1px solid var(--Border-Color);
   margin-top: 24px;
   margin-bottom: 20px;
 }
 
 .vui_before_login .or span {
-  border: 1px solid #e8efef;
+  border: 1px solid var(--Border-Color);
   border-radius: 999px;
   padding: 4px 16px;
   font-size: 13px;
-  color: #6b8083;
-  background: #fff;
+  color: var(--Light-Text-Color);
+  background: var(--Surface-Elevated);
   top: -14px;
-      margin: 10px auto 0 auto;
-    display: table;
+  margin: 10px auto 0 auto;
+  display: table;
 }
 
 .vui_before_login .face_button {
@@ -532,34 +574,35 @@
   border-radius: 12px !important;
   font-size: 22px !important;
   font-weight: 700;
-  color: #003d44;
-  border: 2px solid #dce8e9 !important;
-  background: #fafcfc;
+  color: var(--Text-Color) !important;
+  border: 2px solid var(--Border-Color) !important;
+  background: var(--Surface-Elevated) !important;
   padding: 6px !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .vui_before_login .otp_field > input:focus {
-  border-color: var(--Primary-Color) !important;
-  box-shadow: 0 0 0 3px rgba(168, 224, 99, 0.25) !important;
+  border-color: var(--Accent-Blue) !important;
+  box-shadow: 0 0 0 3px rgba(59, 158, 255, 0.22) !important;
   transform: scale(1.04);
   outline: none;
+  color: #ffffff !important;
 }
 
 .vui_before_login .resend_code {
   font-size: 14px;
-  color: #5a6f72;
+  color: var(--Light-Text-Color);
 }
 
 .vui_before_login .resend_code a {
-  color: var(--Primary-Color);
+  color: var(--Accent-Lime);
   font-weight: 700;
   text-decoration: none;
 }
 
 .vui_before_login .resend_code a:hover:not(.disabled) {
   text-decoration: underline;
-  color: #004d55;
+  color: var(--Hover-Primary-color);
 }
 
 .vui_before_login .resend_code a.disabled {
@@ -590,6 +633,8 @@
 
   .ahi_auth_shell .ahi_auth_card {
     padding: 32px 28px;
+    border-left: none;
+    border-top: 1px solid var(--Border-Color);
   }
 }
 
@@ -601,6 +646,11 @@
 
   .before_login_card_head {
     font-size: 21px;
+  }
+
+  .vui_logo img {
+    max-width: 180px;
+    max-height: 60px;
   }
 }
 
