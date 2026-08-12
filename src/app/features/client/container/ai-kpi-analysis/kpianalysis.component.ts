@@ -576,7 +576,7 @@ export class KPIAnalysisComponent implements OnInit {
                   text-transform: uppercase;
                   letter-spacing: 0.8px;
                   font-weight: 600;
-                  color: #6b7280;
+                  color: #FFFFFF;
                 ">
                   <span>Progress</span>
                   <span>${progressPercent.toFixed(1)}</span>
@@ -625,7 +625,7 @@ export class KPIAnalysisComponent implements OnInit {
                 ">
                   <div style="
                     font-size: 11px;
-                    color: #6b7280;
+                    color: #FFFFFF;
                     margin-bottom: 4px;
                     font-weight: 600;
                   ">
@@ -647,7 +647,7 @@ export class KPIAnalysisComponent implements OnInit {
                 ">
                   <div style="
                     font-size: 11px;
-                    color: #6b7280;
+                    color: #FFFFFF;
                     margin-bottom: 4px;
                     font-weight: 600;
                   ">

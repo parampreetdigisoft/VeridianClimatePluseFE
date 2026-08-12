@@ -27,8 +27,6 @@ import { AiProgramDocumentRequestDto, AiProgramPillarDocumentRequestDto, DeleteP
   styleUrl: './ai-documents.component.css'
 })
 export class AiDocumentsComponent {
-
-  selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
   selectedProgram: GetProgramDocumentResponseDto | null | undefined = null;
   selectedclimateProgramID?: number;
@@ -106,14 +104,17 @@ export class AiDocumentsComponent {
   }
 
   getProgramUserPrograms() {
-    this.adminService.getAllProgramsByUserId(this.userService.userInfo.userID ?? 0).subscribe({
-      next: (res) => {
-        if (res.succeeded) {
-          this.programList = res.result ?? [];
-        }
+  this.adminService.getAllProgramsByUserId(this.userService.userInfo.userID ?? 0).subscribe({
+    next: (res) => {
+      if (res.succeeded) {
+        this.programList = (res.result ?? []).sort(
+          (a, b) => (b.aiScore ?? 0) - (a.aiScore ?? 0)
+        );
       }
-    });
-  }
+    }
+  });
+}
+
   getAIProgramPillarDocuments(isOpen = true) {
     let payload: AiProgramPillarDocumentRequestDto = {
       climateProgramID: this.selectedProgram?.climateProgramID ?? 0

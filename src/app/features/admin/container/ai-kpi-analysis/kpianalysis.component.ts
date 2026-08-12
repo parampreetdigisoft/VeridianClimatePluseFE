@@ -14,7 +14,8 @@ import {
   ApexFill,
   ApexStates,
   ChartComponent,
-  ApexDataLabels
+  ApexDataLabels,
+  ApexGrid
 } from 'ng-apexcharts';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AiProgramPillarResponseDto, AiProgramPillarVM } from 'src/app/core/models/aiVm/AiProgramPillarResponseDto';
@@ -50,6 +51,7 @@ export type ChartOptions = {
   fill: ApexFill;
   states: ApexStates;
   dataLabels: ApexDataLabels;
+  grid: ApexGrid;
 };
 
 @Component({
@@ -185,11 +187,11 @@ export class KPIAnalysisComponent implements OnInit {
       x.isAccess ? (x.discrepancy ?? 0) : getLockedScore(x.pillarID)
     );
 
-    let colors = [
-      "#728da7",
-      "#85c451",
-      "#2c547b",
-    ]
+    const colors = [
+      '#3b9eff',
+      '#A8E063',
+      '#FFB84D',
+    ];
 
     this.chartOptions = {
       series: [
@@ -260,42 +262,64 @@ export class KPIAnalysisComponent implements OnInit {
           rotate: -45,
           rotateAlways: false,
           style: {
-            fontSize: '11px'
+            fontSize: '11px',
+            colors: '#C9D6EA'
           }
+        },
+        axisBorder: {
+          color: 'rgba(92, 140, 200, 0.35)'
+        },
+        axisTicks: {
+          color: 'rgba(92, 140, 200, 0.35)'
         }
       },
 
       yaxis: {
-        title: { text: 'Score' },
+        title: {
+          text: 'Score',
+          style: {
+            color: '#C9D6EA',
+            fontWeight: 600
+          }
+        },
         min: 0,
-        max: 100, // Add padding at top so 100% labels don't get cut off
+        max: 100,
         tickAmount: 5,
         labels: {
+          style: {
+            colors: '#C9D6EA'
+          },
           formatter: (val) => {
-            // Only show positive values
             return val >= 0 ? `${Math.round(val)}` : '';
           }
         }
       },
 
-      // 🎨 Disabled color for locked pillars
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shade: 'light',
-        type: 'vertical',
-        shadeIntensity: 0.3,
-        gradientToColors: [
-          "#728da7", // AI lighter
-          "#85c451", // Evaluator lighter
-          "#2c547b", // Discrepancy lighter
-        ],
-        inverseColors: false,
-        opacityFrom: 1,
-        opacityTo: 0.9,
-        stops: [0, 100]
-      }
-    },
+      grid: {
+        borderColor: 'rgba(92, 140, 200, 0.22)',
+        strokeDashArray: 4,
+        xaxis: {
+          lines: { show: false }
+        }
+      },
+
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'dark',
+          type: 'vertical',
+          shadeIntensity: 0.15,
+          gradientToColors: [
+            '#6CB8FF',
+            '#C5F066',
+            '#FFD080',
+          ],
+          inverseColors: false,
+          opacityFrom: 1,
+          opacityTo: 0.85,
+          stops: [0, 100]
+        }
+      },
       colors: colors,
 
       states: {
@@ -341,7 +365,7 @@ export class KPIAnalysisComponent implements OnInit {
               <div style="
                 font-weight:600;
                 font-size:14px;
-                color:#1f2937;
+                color:#ffffff;
                 margin-bottom:8px;
               ">
                 ${pillar.pillarName}
@@ -351,14 +375,14 @@ export class KPIAnalysisComponent implements OnInit {
               <div style="display:grid; row-gap:6px;">
 
                 <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#6b7280;">AI Score</span>
+                  <span style="color:#FFFFFF;">AI Score</span>
                   <span style="font-weight:600; color:#2d5e56;">
                     ${pillar.aiProgress?.toFixed(2) ?? '0.00'}
                   </span>
                 </div>
 
                 <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#6b7280;">Evaluator</span>
+                  <span style="color:#FFFFFF;">Evaluator</span>
                   <span style="font-weight:600; color:#39539E;">
                     ${pillar.evaluatorScore?.toFixed(2) ?? '0.00'}
                   </span>
@@ -371,7 +395,7 @@ export class KPIAnalysisComponent implements OnInit {
                   margin-top:6px;
                   border-top:1px dashed #e5e7eb;
                 ">
-                  <span style="color:#6b7280;">Discrepancy</span>
+                  <span style="color:#FFFFFF;">Discrepancy</span>
                   <span style="
                     font-weight:600;
                     color:${(pillar.discrepancy ?? 0) > 0 ? 'var(--Primary-Color)' : 'var(--Secondary-Color)'};
@@ -388,7 +412,13 @@ export class KPIAnalysisComponent implements OnInit {
       legend: {
         position: 'bottom',
         horizontalAlign: 'center',
-        offsetY: 0
+        offsetY: 0,
+        labels: {
+          colors: '#E8EEF8'
+        },
+        markers: {
+          strokeWidth: 0
+        }
       }
     };
   }

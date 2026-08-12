@@ -241,7 +241,7 @@ app-kpianalysis app-ag-bar:nth-child(3) {
 }
 .pillar_confidence_outer > p {
     font-weight: 600;
-    color: #12352f;
+    color: #0ccbaa;
 }
 .action_icons a svg g path, .action_icons a svg path {
     fill: #ffffff !important;

@@ -23,7 +23,7 @@ export interface SelectedFileModel {
 
 export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
 
-  selectProgramDocuemnt?: number | string;
+  selectProgramDocument?: number | string;
   totalFiles = computed(() => (this.selectedProgram()?.noOfFiles ?? 0) + this.selectedFiles().length);
   selectedProgram = input<GetProgramDocumentResponseDto | null | undefined>(null);
   documents = input<GetProgramPillarDocumentResponseDto[]>([]);
@@ -47,9 +47,10 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedFiles.set([]);
-    this.selectProgramDocuemnt = this.selectedProgram()?.climateProgramID
+    this.selectProgramDocument = this.selectedProgram()?.climateProgramID
   }
   onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/Frame 1321315029.png';
@@ -83,7 +84,6 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
         }
 
         this.selectedFiles.update(files => [...files, f]);
-        this.selectedPillarID = undefined;
       }
     }
 
@@ -102,8 +102,8 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
 
   uploadDocuments() {
     const formData = new FormData();
-    if (this.selectProgramDocuemnt && this.selectProgramDocuemnt != undefined && this.selectProgramDocuemnt != "undefined") {
-      formData.append('climateProgramID', this.selectProgramDocuemnt.toString());
+    if (this.selectProgramDocument && this.selectProgramDocument != undefined && this.selectProgramDocument != "undefined") {
+      formData.append('climateProgramID', this.selectProgramDocument.toString());
     }
     this.selectedFiles().forEach((item, index) => {
       formData.append('Files', item.file); 

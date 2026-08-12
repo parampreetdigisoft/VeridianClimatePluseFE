@@ -336,14 +336,14 @@ export class KPIAnalysisComponent implements OnInit {
               <div style="display:grid; row-gap:6px;">
 
                 <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#6b7280;">AI Score</span>
+                  <span style="color:#FFFFFF;">AI Score</span>
                   <span style="font-weight:600; color:#2d5e56;">
                     ${pillar.aiProgress?.toFixed(2) ?? '0.00'}
                   </span>
                 </div>
 
                 <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#6b7280;">Evaluator</span>
+                  <span style="color:#FFFFFF;">Evaluator</span>
                   <span style="font-weight:600; color:#39539E;">
                     ${pillar.evaluatorScore?.toFixed(2) ?? '0.00'}
                   </span>
@@ -356,7 +356,7 @@ export class KPIAnalysisComponent implements OnInit {
                   margin-top:6px;
                   border-top:1px dashed #e5e7eb;
                 ">
-                  <span style="color:#6b7280;">Discrepancy</span>
+                  <span style="color:#FFFFFF;">Discrepancy</span>
                   <span style="
                     font-weight:600;
                     color:${(pillar.discrepancy ?? 0) > 0 ? 'var(--Primary-Color)' : 'var(--Secondary-Color)'};

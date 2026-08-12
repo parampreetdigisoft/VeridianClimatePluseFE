@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { map } from 'rxjs';
 import { AiProgramSummeryDto } from '../models/aiVm/AiProgramSummeryDto';
-import { AiProgramDocumentRequestDto, AiProgramPillarDocumentRequestDto, AiProgramSummeryRequestDto, AiPillarQuetionsRequestDto, DeleteProgramDocumentRequestDto } from '../models/aiVm/AiProgramSummeryRequestDto';
+import { AiProgramDocumentRequestDto, AiProgramPillarDocumentRequestDto, AiProgramSummeryRequestDto, AiPillarQuestionsRequestDto, DeleteProgramDocumentRequestDto } from '../models/aiVm/AiProgramSummeryRequestDto';
 import { PaginationResponse } from '../models/PaginationResponse';
 import { AiProgramPillarResponseDto } from '../models/aiVm/AiProgramPillarResponseDto';
 import { ResultResponseDto } from '../models/ResultResponseDto';
@@ -15,7 +15,7 @@ import { AiProgramSummeryRequestPdfDto } from '../models/aiVm/AiProgramSummeryRe
 import { AITransferAssessmentRequestDto } from '../models/aiVm/AITransferAssessmentRequestDto';
 import { DownloadReportDto } from '../models/aiVm/DownloadReportDto';
 import { GetProgramDocumentResponseDto, GetProgramPillarDocumentResponseDto } from '../models/aiVm/GetProgramDocumentResponseDto';
-import { UpdateAIProgramScoreDto } from '../models/aiVm/UpdateAiScoreDtos';
+import { UpdateAIPillarScoreDto, UpdateAIProgramScoreDto } from '../models/aiVm/UpdateAiScoreDtos';
 
 @Injectable({
   providedIn: 'root'
@@ -40,13 +40,17 @@ export class AiComputationService {
     return this.http.post(`AiComputation/updateAIProgramScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
    }
 
+  public updateAIPillarScore(payload: UpdateAIPillarScoreDto) {
+    return this.http.post(`AiComputation/updateAIPillarScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
+  }
+
   public getAIProgramPillars(request: AiProgramSummeryRequestPdfDto) {
     return this.http
       .getWithQueryParams(`AiComputation/getAIProgramPillars`, request)
       .pipe(map((x) => x as ResultResponseDto<AiProgramPillarResponseDto>));
   }
 
-  public getAIPillarQuestions(request: AiPillarQuetionsRequestDto) {
+  public getAIPillarQuestions(request: AiPillarQuestionsRequestDto) {
     return this.http
       .getWithQueryParams(`AiComputation/getAIPillarQuestions`, request)
       .pipe(map((x) => x as PaginationResponse<AIEstimatedQuestionScoreDto>));

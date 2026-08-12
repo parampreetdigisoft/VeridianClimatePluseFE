@@ -14,7 +14,7 @@ import { ToasterService } from 'src/app/core/services/toaster.service';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { PaginationComponent } from 'src/app/shared/pagination/pagination.component';
-import { AiPillarQuetionsRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
+import { AiPillarQuestionsRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
 import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
 import { AIEstimatedQuestionScoreDto } from 'src/app/core/models/aiVm/AIEstimatedQuestionScoreDto';
 import { ChangeDetectorRef, Component, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
@@ -133,12 +133,11 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
   getAIPillarQuestions(currentPage: any = 1) {
     this.isLoader = true;
-    let payload: AiPillarQuetionsRequestDto = {
+    let payload: AiPillarQuestionsRequestDto = {
       sortDirection: SortDirection.DESC,
       sortBy: 'AIProgress',
       pageNumber: currentPage,
-      pageSize: this.pageSize,
-      year: this.selectedYear
+      pageSize: this.pageSize
     }
     if (this.selectedclimateProgramID > 0) {
       payload.climateProgramID = this.selectedclimateProgramID;

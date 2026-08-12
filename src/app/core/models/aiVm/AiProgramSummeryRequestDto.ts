@@ -2,10 +2,9 @@ import { PaginationRequest } from "../PaginationRequest";
 
 export interface AiProgramSummeryRequestDto extends PaginationRequest {
   climateProgramID?:number;
-  year?:number
 }
 
-export interface AiPillarQuetionsRequestDto extends AiProgramSummeryRequestDto {
+export interface AiPillarQuestionsRequestDto extends AiProgramSummeryRequestDto {
   pillarID?:number;
 }
 

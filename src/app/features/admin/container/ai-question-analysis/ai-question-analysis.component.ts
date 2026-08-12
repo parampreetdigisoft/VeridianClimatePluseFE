@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { forkJoin } from 'rxjs';
 import { SortDirection } from 'src/app/core/enums/SortDirection';
-import { AiPillarQuetionsRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
+import { AiPillarQuestionsRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
 import { AIEstimatedQuestionScoreDto } from 'src/app/core/models/aiVm/AIEstimatedQuestionScoreDto';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
@@ -35,7 +35,6 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './ai-question-analysis.component.css'
 })
 export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
-  selectedYear = new Date().getFullYear();
   selectedclimateProgramID!: number;
   selectedPillarID!: number;
   selectedQuestion: AIEstimatedQuestionScoreDto | null = null;
@@ -85,11 +84,9 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     this.route.queryParams.subscribe(params => {
       let cid = +params['climateProgramID'] || null;
       let pid = +params['pillarID'] || null;
-      let sYear = +params['year'] || this.selectedYear;
       if (pid && cid) {
         this.selectedclimateProgramID = Number(cid);
         this.selectedPillarID = Number(pid);
-        this.selectedYear = Number(sYear);
         this.getAIPillarQuestions();
       }
     });
@@ -133,12 +130,11 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
   getAIPillarQuestions(currentPage: any = 1) {
     this.isLoader = true;
-    let payload: AiPillarQuetionsRequestDto = {
+    let payload: AiPillarQuestionsRequestDto = {
       sortDirection: SortDirection.DESC,
       sortBy: 'AIProgress',
       pageNumber: currentPage,
-      pageSize: this.pageSize,
-      year: this.selectedYear
+      pageSize: this.pageSize
     }
     if (this.selectedclimateProgramID > 0) {
       payload.climateProgramID = this.selectedclimateProgramID;

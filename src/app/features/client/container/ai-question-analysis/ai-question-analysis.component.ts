@@ -5,7 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SortDirection } from 'src/app/core/enums/SortDirection';
-import { AiPillarQuetionsRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
+import { AiPillarQuestionsRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
 import { AIEstimatedQuestionScoreDto } from 'src/app/core/models/aiVm/AIEstimatedQuestionScoreDto';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
@@ -127,12 +127,11 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
   getAIPillarQuestions(currentPage: any = 1) {
     this.isLoader = true;
-    let payload: AiPillarQuetionsRequestDto = {
+    let payload: AiPillarQuestionsRequestDto = {
       sortDirection: SortDirection.DESC,
       sortBy: 'AIProgress',
       pageNumber: currentPage,
-      pageSize: this.pageSize,
-      year: this.selectedYear
+      pageSize: this.pageSize
     }
     if (this.selectedclimateProgramID > 0) {
       payload.climateProgramID = this.selectedclimateProgramID;

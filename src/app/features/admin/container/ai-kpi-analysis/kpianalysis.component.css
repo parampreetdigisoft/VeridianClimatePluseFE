@@ -125,7 +125,6 @@ app-kpianalysis app-ag-bar:nth-child(3) {
 
 ::ng-deep .compare_select .ng-select-container {
   border: none !important;
-  background-color: #ffffff !important;
   min-height: auto !important;
   height: 100% !important;
 }
@@ -240,7 +239,7 @@ app-kpianalysis app-ag-bar:nth-child(3) {
 }
 .pillar_confidence_outer > p {
     font-weight: 600;
-    color: #12352f;
+    color: #0ccbaa;
 }
 .action_icons a svg g path, .action_icons a svg path {
     fill: #ffffff !important;
@@ -307,7 +306,6 @@ p.btn_spinner {
 .compare_select .analyst_multi_select {
     flex: 1;
     height: auto;
-    background-color: #ffffff;
     min-height: 36px;
     align-items: center;
     font-family: "Poppins", sans-serif !important;

@@ -949,7 +949,7 @@ body .content_area .inner_content_area {
 }
 
 .ng-select .ng-placeholder {
-  color: var(--Light-Text-Color) !important;
+  color: #243850 !important;
 }
 
 .ng-select .ng-input > input {

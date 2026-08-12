@@ -465,67 +465,63 @@ export class ChatService {
       .pipe(map(x => x as ResultResponseDto<ChatResponseDto>));
   }
 
-  // Questions for a single Program
+  // Questions for a single climate program
   ProgramQuickQuestions = [
     {
-      label: 'Health summary',
-      question: 'Summarize the recent health progress and overall stability of this Program.'
+      label: 'Program summary',
+      question: 'Summarize this climate program\'s overall AI score, confidence level, and recent performance trends.'
     },
     {
-      label: 'health initiatives',
-      question: 'What major health initiatives or diplomatic efforts are currently taking place in this Program?'
+      label: 'Pillar performance',
+      question: 'How are the VCP pillars performing for this program, and which pillars show the strongest or weakest scores?'
     },
     {
-      label: 'Security risks',
-      question: 'What are the major security risks or conflict concerns affecting this Program?'
+      label: 'Evidence gaps',
+      question: 'What evidence gaps, data transparency issues, or assessment limitations exist for this program?'
+    },
+    {
+      label: 'Red flags',
+      question: 'What red flags, stress-test vulnerabilities, or governance risks are identified for this climate program?'
+    },
+    {
+      label: 'Mitigation & adaptation',
+      question: 'What does the AI assessment reveal about this program\'s mitigation ambition and adaptation readiness?'
     },
     {
       label: 'Recommendations',
-      question: 'What recommendations can improve health, security, and stability in this Program?'
+      question: 'What strategic recommendations would improve this program\'s climate governance and pillar outcomes?'
     },
     {
-      label: 'Recent improvements',
-      question: 'What recent improvements have been observed in this Program’s health and stability indicators?'
-    },
-    {
-      label: 'Risk factors',
-      question: 'What are the biggest political, social, or economic risks impacting this Program?'
-    },
-    {
-      label: 'health trends',
-      question: 'What are the latest health trends and international cooperation efforts related to this Program?'
+      label: 'Cross-pillar patterns',
+      question: 'What cross-pillar patterns, dependencies, or discrepancies stand out in this program\'s assessment?'
     }
   ];
 
   // Questions for all programs globally
   globalQuickQuestions = [
     {
-      label: 'health summary',
-      question: 'Summarize the health across all programs in recent days.'
+      label: 'Portfolio overview',
+      question: 'Provide an overview of climate program performance and AI scores across all programs in the portfolio.'
     },
     {
-      label: 'health leaders',
-      question: 'Which programs are showing the strongest health initiatives recently?'
+      label: 'Top performers',
+      question: 'Which climate programs show the strongest overall AI scores and pillar performance recently?'
     },
     {
-      label: 'Security risks',
-      question: 'What are the major security risks affecting programs globally?'
+      label: 'At-risk programs',
+      question: 'Which programs face the highest climate governance, resilience, or implementation risks?'
     },
     {
-      label: 'Recommendations',
-      question: 'What are the key recommendations for enhancing global health and stability?'
+      label: 'Compare programs',
+      question: 'Compare key pillar scores and risk indicators across the leading climate programs in the portfolio.'
     },
     {
-      label: 'Improved programs',
-      question: 'Which nations have experienced the most significant improvement in health indicators recently?'
+      label: 'Mitigation leaders',
+      question: 'Which programs demonstrate the strongest mitigation ambition and delivery progress?'
     },
     {
-      label: 'Risk programs',
-      question: 'Which programs are facing the highest conflict or instability risks?'
-    },
-    {
-      label: 'health trends',
-      question: 'What are the latest global health trends and international cooperation efforts?'
+      label: 'Adaptation gaps',
+      question: 'Where are the largest adaptation and resilience gaps across programs globally?'
     }
   ];
 }

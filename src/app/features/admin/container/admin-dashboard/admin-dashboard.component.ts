@@ -63,7 +63,6 @@ export type PillarChartOptions = {
 })
 
 export class AdminDashboardComponent implements OnInit, AfterViewInit {
-  selectedYear = new Date().getFullYear();
   programs: ProgramVM[] | null = [];
   selectedPrograms: number | any = "";
   programHistory: ProgramHistoryDto | null = null;

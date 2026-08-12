@@ -99,8 +99,7 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
       sortDirection: SortDirection.DESC,
       sortBy: 'AIProgress',
       pageNumber: currentPage,
-      pageSize: this.pageSize,
-      year:this.selectedYear
+      pageSize: this.pageSize
     }
     if (this.userService?.userInfo?.userID == null || this.filterProgram > 0) {
       payload.climateProgramID = this.filterProgram;

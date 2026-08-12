@@ -12,6 +12,8 @@ export class AiEditToolbarComponent {
   @Input() canEdit = false;
   @Input() editMode = false;
   @Input() saving = false;
+  @Input() editDisabled = false;
+  @Input() editDisabledReason = 'No score record is available to edit yet.';
   @Input() title = 'Details';
 
   @Output() edit = new EventEmitter<void>();
