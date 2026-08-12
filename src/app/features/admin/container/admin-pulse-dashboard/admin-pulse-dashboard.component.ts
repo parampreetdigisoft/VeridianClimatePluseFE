@@ -62,7 +62,6 @@ export class AdminPulseDashboardComponent implements OnInit {
   modeDashboard: DashboardModeResponseDto | null = null;
   activeKpiTab: PulseKpiTab = 'ambitionDelivery';
   selectedKpi: PulseKpiCard | null = null;
-
   summaryCards: PulseSummaryCard[] = [];
   kpiCards: PulseKpiCard[] = [];
   indexHero: PulseIndexHero | null = null;
@@ -298,7 +297,7 @@ export class AdminPulseDashboardComponent implements OnInit {
     const program = this.programs?.find((x) => x.climateProgramID == this.selectedPrograms);
     if (this.pillarResponse?.pillars && program) {
       const exportData = this.pillarResponse.pillars.map((x) => ({
-        programName: program.programName,
+        ProgramName: program.programName,
         PillarName: x.pillarName,
         AIScore: x.aiValue?.toFixed(2),
         EvaluationScore: x.evaluationValue?.toFixed(2),

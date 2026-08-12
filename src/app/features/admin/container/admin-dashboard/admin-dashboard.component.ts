@@ -169,7 +169,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
     if (this.programQuestionHistoryResponse?.pillars && program) {
       var exportData = this.programQuestionHistoryResponse?.pillars.map((x) => {
         return {
-          programName: program?.programName,
+          ProgramName: program?.programName,
           PillarName: x.pillarName,
           AIScore: x.aiValue?.toFixed(2),
           EvaluationScore: x.evaluationValue?.toFixed(2)
