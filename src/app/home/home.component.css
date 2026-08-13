@@ -60,7 +60,7 @@
 
 /* Chat route: fill viewport height; scroll inside chat, not the page shell */
 .content_area:has(app-chat-container) {
-    overflow: hidden;
+    overflow: scroll;
     padding-bottom: 0;
 }
 
