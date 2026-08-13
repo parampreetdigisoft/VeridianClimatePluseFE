@@ -10,6 +10,21 @@
 .inner_content_area {
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+}
+
+.inner_content_area:has(app-chat-container) {
+    overflow: hidden;
+    padding: 0 !important;
+}
+
+.inner_content_area app-chat-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .footer_tagline p {

@@ -1,5 +1,5 @@
 .error-msg {
-  color: red;
+  color: #ff7b7b;
   font-size: 12px;
   margin-top: 2px;
 }
@@ -11,7 +11,7 @@
     display: block;
     margin-bottom: 10px;
     margin-left: 5px;
-    color: red;
+    color: #ff7b7b;
 }
 
 .pp_pic
@@ -21,9 +21,11 @@
   border-radius: 12px;
   object-fit: cover;
 }
-::ng-deep .analyst_multi_select  .ng-select-container {
-    border: 0;
-    min-height: 30px;
+::ng-deep .analyst_multi_select .ng-select-container {
+    min-height: 44px !important;
+    background: var(--Surface-Elevated, #102044) !important;
+    border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
+    border-radius: 12px !important;
     outline: none !important;
     box-shadow: none !important;
 }
@@ -31,12 +33,6 @@
     padding: 0 !important;
 }
  
-::ng-deep .analyst_multi_select .ng-option-selected {
-    background-color: #e8f0ff !important;
-    color: #304a43 !important;
-    font-weight: 600;
-}
-
 ::ng-deep .analyst_multi_select .ng-select-container .ng-value-container .ng-input > input {
   color: var(--Text-Color) !important;
   caret-color: var(--Text-Color) !important;

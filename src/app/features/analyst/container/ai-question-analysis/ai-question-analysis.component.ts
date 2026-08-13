@@ -35,7 +35,6 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './ai-question-analysis.component.css'
 })
 export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
-  selectedYear = new Date().getFullYear();
   selectedclimateProgramID!: number;
   selectedPillarID!: number;
   selectedQuestion: AIEstimatedQuestionScoreDto | null = null;
@@ -85,11 +84,9 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     this.route.queryParams.subscribe(params => {
       let cid = +params['climateProgramID'] || null;
       let pid = +params['pillarID'] || null;
-      let sYear = +params['year'] || this.selectedYear;
       if (pid && cid) {
         this.selectedclimateProgramID = Number(cid);
         this.selectedPillarID = Number(pid);
-        this.selectedYear = Number(sYear);
         this.getAIPillarQuestions();
       }
     });

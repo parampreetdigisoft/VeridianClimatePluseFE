@@ -56,6 +56,14 @@
   margin-bottom: 0;
 }
 
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
 .inner_content_area {
   /* background-color: var(--background-Color);
     border: 1px solid var(--Light-Border-Color); */
@@ -63,5 +71,28 @@
   /* border-radius: 30px; */
   /* padding: 40px; */
   position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.inner_content_area > :not(router-outlet) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.inner_content_area:has(app-chat-container) {
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.inner_content_area app-chat-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 

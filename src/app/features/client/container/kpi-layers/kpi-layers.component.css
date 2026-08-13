@@ -107,18 +107,6 @@
   }
 }
 
-::ng-deep .analyst_multi_select .ng-option-selected {
-  background-color: rgba(76, 175, 80, 0.22) !important;
-  color: #ffffff !important;
-  font-weight: 600;
-}
-
-::ng-deep .analyst_multi_select .ng-option:hover,
-::ng-deep .analyst_multi_select .ng-option-marked {
-  background-color: rgba(59, 158, 255, 0.2) !important;
-  color: #ffffff !important;
-}
-
 .input_field {
   margin-bottom: 0;
 }

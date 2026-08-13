@@ -111,7 +111,7 @@
     line-height: 20px;
 }
 .faqtextarea textarea {
-    color: #7A7A7A;
+    color: var(--Light-Text-Color);
     font-size: 12px !important;
     font-style: normal;
     font-weight: 400;
@@ -178,7 +178,7 @@
 /* Keep the menu attached to the control so it moves with the question scroller. */
 :host ::ng-deep .assessment_select .ng-select-container {
     min-height: 42px;
-    border: 1px solid #d7d7d7;
+    border: 1px solid var(--Border-Color);
     border-radius: 8px;
     box-shadow: none;
 }
@@ -207,7 +207,7 @@
     overflow: hidden;
     border: 1px solid #d8e4e0;
     border-radius: 10px;
-    background: #fff;
+    background: var(--Surface-Elevated);
     box-shadow: 0 12px 30px rgba(15, 14, 23, 0.16);
 }
 
@@ -269,7 +269,7 @@
 /* Core (based on your UI tone) */
 
 /* Muted & Eye-Friendly Icon Backgrounds */
-.faq_sidebar_item:nth-child(1) .faq_inner_svg { background-color: #ffffff; } /* Soft Blue */
+.faq_sidebar_item:nth-child(1) .faq_inner_svg { background-color: var(--Surface-Elevated); } /* Soft Blue */
 /*color shades close*/
 
 .heading_area .input_field {
@@ -311,7 +311,7 @@
     min-height: 44px !important;
     border: 1px solid #d9dde5 !important;
     border-radius: 14px !important;
-    background: #ffffff !important;
+    background: var(--Surface-Elevated) !important;
     box-shadow: none !important;
     padding: 4px 0px 4px 12px !important;
     color: #8b9099 !important;
@@ -370,7 +370,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M0.765098 1.70703L4.97795 5.91988C5.47548 6.41741 6.28962 6.41741 6.78715 5.91988L11 1.70703' stroke='%23888888' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
     background-repeat: no-repeat;
     background-position: center right 13px;
-    color: #7A7A7A;
+    color: var(--Light-Text-Color);
     /* font-family: 'Montserrat'; */
     font-size: 13px;
     font-style: normal;

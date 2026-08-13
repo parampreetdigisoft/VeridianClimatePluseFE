@@ -23,7 +23,6 @@ declare var bootstrap: any;
   styleUrl: "./assesment.component.css",
 })
 export class AssesmentComponent implements OnInit {
-  selectedYear = new Date().getFullYear();
   isLoader: boolean = false;
   isOpendialog = false;
   selectedclimateProgramID: number | any = "";

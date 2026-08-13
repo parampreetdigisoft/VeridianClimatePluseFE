@@ -58,8 +58,6 @@ export type ChartOptions = {
 })
 export class KPIAnalysisComponent implements OnInit {
   urlBase = environment.apiUrl;
-  currentYear = new Date().getFullYear();
-  selectedYear = this.currentYear;
   pillers: PillarsVM[] = [];
   selectedProgram?: number;
   programs: ProgramVM[] | null = [];
@@ -88,11 +86,9 @@ export class KPIAnalysisComponent implements OnInit {
     this.isLoader = true;
     this.route.queryParams.subscribe(params => {
       let cid = +params['climateProgramID'] || null;
-      let sYear = +params['year'] || this.selectedYear;
 
       if (cid) {
         this.selectedProgram = Number(cid);
-        this.selectedYear = Number(sYear);
       }
     });
     this.getClientPrograms();
@@ -173,8 +169,7 @@ export class KPIAnalysisComponent implements OnInit {
     this.router.navigate(['/programuser/ai/questions-analysis'], {
       queryParams: {
         climateProgramID: this.selectedProgram,
-        pillarID: pillar.pillarID,
-        year:this.selectedYear
+        pillarID: pillar.pillarID
       }
     });
   }

@@ -5,7 +5,6 @@
 }
 
 .pillar-modal-dialog {
-  max-width: 1040px;
   overflow: visible !important;
 }
 
@@ -46,7 +45,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   padding: 14px;
-  background: #fff;
+  background: var(--Surface-Elevated);
   border: 1px solid #e4eaf2;
   border-radius: 14px;
 }
@@ -88,7 +87,7 @@
   min-height: 74px;
   border: 1px solid #e0e4e8;
   border-radius: 14px;
-  background: #fff;
+  background: var(--Surface-Elevated);
   cursor: pointer;
   font-weight: 400;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -152,7 +151,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--Surface-Elevated);
   box-shadow: 0 1px 3px rgba(0, 45, 91, 0.18);
   transition: transform 0.2s ease;
 }
@@ -173,7 +172,7 @@
   padding: 14px 16px;
   border: 1px dashed #c2cfe0;
   border-radius: 14px;
-  background: #fff;
+  background: var(--Surface-Elevated);
   max-width: 500px;
 }
 
@@ -219,7 +218,7 @@
   min-height: 36px;
   border: 1px solid #d7dde8;
   border-radius: 10px;
-  background: #fff;
+  background: var(--Surface-Elevated);
   overflow: hidden;
   cursor: pointer;
   margin: 0;
@@ -269,7 +268,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background: #fff;
+  background: var(--Surface-Elevated);
 }
 
 .pillar-primary-stack {
@@ -279,7 +278,7 @@
 }
 
 .primary-panel {
-  background: #fff;
+  background: var(--Surface-Elevated);
   border: 1px solid #e4eaf2;
   border-radius: 14px;
   padding: 14px 16px;
@@ -375,13 +374,6 @@
   width: 100%;
 }
 
-::ng-deep .compare_select .ng-select-container {
-  border: none !important;
-  background-color: #ffffff !important;
-  min-height: auto !important;
-  height: 100% !important;
-}
-
 ::ng-deep .compare_select .ng-select-container:hover,
 ::ng-deep .compare_select .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
   box-shadow: none !important;
@@ -389,10 +381,10 @@
 
 ::ng-deep .compare_select .pillar-kpi-select {
   min-height: 48px;
-  background-color: #ffffff;
+  background-color: var(--Surface-Elevated);
   border-radius: 8px !important;
   padding: 6px 12px 6px 4px !important;
-  border: 1px solid #d7d7d7 !important;
+  border: 1px solid var(--Border-Color) !important;
   font-family: "Poppins", sans-serif !important;
   font-size: 13px;
 }
@@ -435,13 +427,13 @@
 }
 
 ::ng-deep .pillar-kpi-select .ng-option-selected {
-  background-color: #e8f0ff !important;
+  background-color: rgba(76, 175, 80, 0.22) !important;
   color: var(--Primary-Color) !important;
   font-weight: 600;
 }
 
 ::ng-deep .pillar-kpi-select .ng-option:hover {
-  background-color: #f2f6ff !important;
+  background-color: rgba(59, 158, 255, 0.2) !important;
 }
 
 ::ng-deep body > .ng-dropdown-panel {
@@ -581,7 +573,7 @@
 .kpi-detail-card {
   border: 1px solid #dfe7f1;
   border-radius: 14px;
-  background: #fff;
+  background: var(--Surface-Elevated);
   padding: 12px;
   box-shadow: 0 8px 24px rgba(12, 46, 93, 0.06);
 }
@@ -627,7 +619,7 @@
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid #e4eaf2;
-  background: #fff;
+  background: var(--Surface-Elevated);
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -693,7 +685,7 @@
   position: absolute;
   inset: 4px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--Surface-Elevated);
 }
 
 .pillar-radio-content {
@@ -747,7 +739,7 @@
   gap: 10px;
   padding: 12px 22px;
   border-top: 1px solid #e8edf4;
-  background: #fff;
+  background: var(--Surface-Elevated);
 }
 
 .pillar-cancel-btn {

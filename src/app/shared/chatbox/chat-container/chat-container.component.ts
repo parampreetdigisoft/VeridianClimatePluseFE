@@ -28,10 +28,6 @@ import {
   PillarsUserHistroyResponseDto,
 } from 'src/app/core/models/chat/ChatProgramExecutiveSlidesResponse';
 import {
-  ChatEmergingTrendsResponse,
-  EmergingTrendProgramCard
-} from 'src/app/core/models/chat/EmergingTrendsResponse';
-import {
   PillarLiveSignalCard,
   PillarLiveSignalsResult,
 } from 'src/app/core/models/chat/PillarLiveSignalsResponse';
@@ -65,10 +61,8 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   unreadCount = signal(0);
   programSlide: ProgramExecutiveSlidesResult | null = null;
   programSlidesLoading = signal(false);
-  emergingTrends = signal<ChatEmergingTrendsResponse | null>(null);
-  emergingTrendsLoading = signal(false);
-  emergingTrendsError = signal<string | null>(null);
-  selectedTrendCode = signal<string | null>(null);
+  programPillarScores = signal<PillarsUserHistroyResponseDto[]>([]);
+  programPillarsLoading = signal(false);
   pillarLiveSignals = signal<PillarLiveSignalsResult | null>(null);
   pillarLiveSignalsLoading = signal(false);
   pillarLiveSignalsError = signal<string | null>(null);
@@ -81,7 +75,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   protected messages = this.chatService.messages;
   protected selectedProgram = this.chatService.selectedProgram;
   protected selectedPillar = this.chatService.selectedPillar;
-  isExpanded = true;
+  isExpanded = false;
 
   // ─── Computed ─────────────────────────────────────────────────────────────
   protected hasContext = computed(() =>
@@ -178,8 +172,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     this.chatService.getAllPrograms();
     this.chatService.getPillars();
     this.chatService.getFAQDs();
-    this.loadEmergingTrends();
-    this.loadPillarLiveSignals();
+    this.loadProgramSlides(0);
     this.startSlider();
     this.startPromptRotation();
     if (this.chatService.crossComparisionprogramIDs.value.length > 0) {
@@ -187,25 +180,35 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  onProgramChange(city: ProgramVM | null): void {
+  onProgramChange(program: ProgramVM | null): void {
     this.analysisModalOpen.set(false);
     this.sliderItems = [];
     this.currentSlide = 0;
+    this.isExpanded = false;
+    this.programPillarScores.set([]);
     clearInterval(this.intervalId);
-    this.chatService.selectedProgram.set(city ?? null);
+    this.chatService.selectedProgram.set(program ?? null);
+    this.chatService.selectedPillar.set(null);
 
-    if (!city?.climateProgramID) {
-      this.programSlide = null;
-      this.programSlidesLoading.set(false);
-      this.cdr.markForCheck();
+    if (program?.climateProgramID == null) {
+      this.loadProgramSlides(0);
       return;
     }
 
+    this.loadProgramSlides(program.climateProgramID, program);
+  }
+
+  private loadProgramSlides(climateProgramID: number, program?: ProgramVM | null): void {
     this.programSlide = null;
+    this.programPillarScores.set([]);
+    if (climateProgramID === 0) {
+      this.sliderItems = [];
+      clearInterval(this.intervalId);
+    }
     this.programSlidesLoading.set(true);
     this.cdr.markForCheck();
 
-    this.chatService.getProgramSlides(city.climateProgramID).pipe(
+    this.chatService.getProgramSlides(climateProgramID).pipe(
       takeUntil(this.destroy$),
       finalize(() => {
         this.programSlidesLoading.set(false);
@@ -213,35 +216,48 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
       })
     ).subscribe({
       next: res => {
-        const data = res?.result?.result;
+        const data = this.chatService.unwrapProgramSlides(res);
         this.programSlide = data ?? null;
 
         if (!data) return;
 
-        const earlyWarnings = Array.isArray(data.earlyWarnings)
-          ? data.earlyWarnings
-          : [];
+        if (climateProgramID === 0) {
+          this.sliderItems = [];
+          this.cdr.markForCheck();
+          return;
+        }
 
-        const combinedRisks = Array.isArray(data.combinedRisks)
-          ? data.combinedRisks
-          : [];
+        const slidePillars = this.normalizeSlidePillars(data.program?.pillars);
+        if (slidePillars.length && this.programSlide?.program) {
+          this.programSlide = {
+            ...this.programSlide,
+            program: { ...this.programSlide.program, pillars: slidePillars },
+          };
+        }
+
+        if (climateProgramID > 0) {
+          this.loadProgramPillarScores(climateProgramID);
+        }
+
+        const headerProgramName = data.program?.programName ?? program?.programName ?? 'Program';
+        const headerLocation = data.program?.location ?? program?.location ?? '';
+        const headerYear = data.program?.dataYear ?? program?.year ?? null;
 
         this.sliderItems = [
           {
-            title: `${data.program.programName} recent performance`,
-            subtitle: data.recentPerformance?.summary,
-            trend: "Recent"
-          },
-          ...combinedRisks.map((x: any) => ({
-            title: 'Risk Overview',
-            subtitle: x.summary || x.description,
-            trend: "Risk"
-          })),
-          ...earlyWarnings.map((x: any) => ({
-            title: x.title || 'Early Warning',
-            subtitle: x.description || x.summary,
-            trend: "Early Warning"
-          })),
+            title: headerProgramName,
+            headerMeta: this.formatProgramHeaderMeta(headerLocation, headerYear),
+           },
+          // ...combinedRisks.map((x: any) => ({
+          //   title: 'Risk Overview',
+          //   subtitle: x.summary || x.description,
+          //   trend: "Risk"
+          // })),
+          // ...earlyWarnings.map((x: any) => ({
+          //   title: x.title || 'Early Warning',
+          //   subtitle: x.description || x.summary,
+          //   trend: "Early Warning"
+          // })),
         ];
 
         this.currentSlide = 0;
@@ -250,10 +266,70 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.programSlide = null;
+        this.programPillarScores.set([]);
         this.sliderItems = [];
         this.cdr.markForCheck();
       },
     });
+  }
+
+  private loadProgramPillarScores(climateProgramID: number): void {
+    this.programPillarsLoading.set(true);
+    this.cdr.markForCheck();
+
+    this.chatService.getProgramPillarScores(climateProgramID).pipe(
+      takeUntil(this.destroy$),
+      finalize(() => {
+        this.programPillarsLoading.set(false);
+        this.cdr.markForCheck();
+      })
+    ).subscribe({
+      next: res => {
+        const pillars = res?.result?.pillars ?? [];
+        const mapped = pillars
+          .map(p => ({
+            pillarID: p.pillarID,
+            pillarName: p.pillarName,
+            imagePath: p.imagePath ?? '',
+            pillarScore: p.aiScore ?? 0,
+            displayOrder: p.displayOrder ?? 0,
+          }))
+          .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+
+        this.programPillarScores.set(mapped);
+
+        const existing = this.normalizeSlidePillars(this.programSlide?.program?.pillars);
+        const merged = mapped.length ? mapped : existing;
+
+        if (merged.length && this.programSlide?.program) {
+          this.programSlide = {
+            ...this.programSlide,
+            program: { ...this.programSlide.program, pillars: merged },
+          };
+        }
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.programPillarScores.set([]);
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  private normalizeSlidePillars(
+    pillars: PillarsUserHistroyResponseDto[] | null | undefined
+  ): PillarsUserHistroyResponseDto[] {
+    if (!Array.isArray(pillars) || !pillars.length) return [];
+    return [...pillars]
+      .map(p => ({
+        pillarID: p.pillarID ?? (p as any).PillarID,
+        pillarName: p.pillarName ?? (p as any).PillarName ?? '',
+        imagePath: p.imagePath ?? (p as any).ImagePath ?? '',
+        pillarScore: p.pillarScore ?? (p as any).PillarScore ?? null,
+        displayOrder: p.displayOrder ?? (p as any).DisplayOrder ?? 0,
+      }))
+      .filter(p => p.pillarID != null)
+      .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
   }
 
   ngOnDestroy(): void {
@@ -400,13 +476,46 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Pillars from program slide, ordered for sidebar display. */
+  /** Pillars from program slide, AI scores, or global pillar catalog. */
   get sidebarPillars(): PillarsUserHistroyResponseDto[] {
-    const pillars = this.programSlide?.program?.pillars;
-    if (!pillars?.length) return [];
-    return [...pillars].sort(
-      (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
-    );
+    const fromSlide = this.normalizeSlidePillars(this.programSlide?.program?.pillars);
+    if (fromSlide.length) return fromSlide;
+
+    const fromScores = this.programPillarScores();
+    if (fromScores.length) return fromScores;
+
+    const global = this.chatService.pillars.value ?? [];
+    if (global.length && this.selectedProgram()) {
+      return global.map(p => ({
+        pillarID: p.pillarID,
+        pillarName: p.pillarName,
+        imagePath: p.imagePath ?? '',
+        pillarScore: 0,
+        displayOrder: p.displayOrder ?? 0,
+      }));
+    }
+    return [];
+  }
+
+  /** Pillar options for the header selector (program-scoped). */
+  get programPillarSelectOptions(): PillarsVM[] {
+    const pillars = this.sidebarPillars;
+    if (pillars.length) {
+      return pillars.map(p => ({
+        pillarID: p.pillarID,
+        pillarName: p.pillarName,
+        description: '',
+        displayOrder: p.displayOrder ?? 0,
+        weight: 0,
+        reliability: true,
+        imagePath: p.imagePath,
+      }));
+    }
+    return this.chatService.pillars.value ?? [];
+  }
+
+  protected pillarsPanelLoading(): boolean {
+    return this.programSlidesLoading() || this.programPillarsLoading();
   }
 
   /** 0–100 peace index → VCP pillar palette (higher = more peaceful). */
@@ -485,58 +594,17 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     return p.pillarID;
   }
 
-  loadEmergingTrends(): void {
-    this.emergingTrendsLoading.set(true);
-    this.emergingTrendsError.set(null);
-    this.cdr.markForCheck();
-
-    this.chatService.getEmergingTrendsAndIssues(8).pipe(
-      takeUntil(this.destroy$),
-      finalize(() => {
-        this.emergingTrendsLoading.set(false);
-        this.cdr.markForCheck();
-      })
-    ).subscribe({
-      next: res => {
-        const payload = res?.succeeded ? res.result : null;
-        const programs = payload?.programs?.filter(c => c?.program && c?.sourceUrl) ?? [];
-
-        if (!payload || !programs.length) {
-          this.emergingTrends.set(null);
-          this.emergingTrendsError.set(
-            res?.errors?.[0] ?? res?.messages?.join(", ") ?? 'Unable to load global trends right now.'
-          );
-          return;
-        }
-
-        this.emergingTrends.set({ ...payload, programs });
-        this.selectedTrendCode.set(programs[0]?.programCode ?? null);
-        this.emergingTrendsError.set(null);
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.emergingTrends.set(null);
-        this.emergingTrendsError.set('Unable to load global trends. Please try again.');
-        this.cdr.markForCheck();
-      },
-    });
+  protected glanceScoreLabel(): string {
+    return this.selectedProgram() ? 'Health Score' : 'Global Score';
   }
 
-  retryEmergingTrends(): void {
-    this.loadEmergingTrends();
+  protected glanceRankLabel(): string {
+    return this.selectedProgram() ? 'Location Rank' : 'Global Rank';
   }
 
-  selectTrendCard(card: EmergingTrendProgramCard): void {
-    this.selectedTrendCode.set(card.programCode);
-    this.cdr.markForCheck();
-  }
-
-  isTrendSelected(card: EmergingTrendProgramCard): boolean {
-    return this.selectedTrendCode() === card.programCode;
-  }
-
-  trackTrendCard(_: number, card: EmergingTrendProgramCard): string {
-    return card.programCode;
+  formatGlanceScore(score: number | null | undefined): string {
+    if (score == null || isNaN(Number(score))) return '—';
+    return Number(score).toFixed(1);
   }
 
   trendAccentColor(color: string | null | undefined): string {
@@ -637,6 +705,20 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
 
   getTrendLabel(item: any): string {
     return item?.trend;
+  }
+
+  formatProgramHeaderMeta(
+    location: string | null | undefined,
+    year: number | string | null | undefined
+  ): string {
+    const segments: string[] = [];
+    const safeLocation = location?.toString().trim();
+    const safeYear = year?.toString().trim();
+
+    if (safeLocation) segments.push(safeLocation);
+    if (safeYear) segments.push(safeYear);
+
+    return segments.join(' • ');
   }
 
   get activeAnalysisSlide(): { title?: string; subtitle?: string; trend?: string } | null {

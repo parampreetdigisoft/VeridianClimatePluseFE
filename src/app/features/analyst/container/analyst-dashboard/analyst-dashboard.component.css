@@ -21,7 +21,6 @@
     width: 100%;
 }
 
-
 .program_pillar {
     background-color: #fff;
     padding: 20px;
@@ -57,28 +56,23 @@
 }
 
 ::ng-deep .program_pillar .input_field .analyst_multi_select .ng-select-container {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    min-height: 36px;
-    align-items: center;
-    /* font-family: Montserrat; */
+    background-color: var(--Surface-Elevated, #102044) !important;
+    border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
+    min-height: 44px !important;
+    max-height: 92px !important;
+    align-items: flex-start !important;
     font-size: 13px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    appearance: none!important;
-    height: 100%;
-    border-radius: 100px;
+    appearance: none !important;
+    height: auto !important;
     border-radius: 12px !important;
-    padding: 10px!important;
-    border: 1px solid #ddd !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 5px 34px 5px 8px !important;
+    box-shadow: none !important;
+    overflow-y: auto !important;
 }
 
 ::ng-deep .program_pillar .input_field .analyst_multi_select input[type=text] {
     line-height: 26px;
 }
-
 
 .program_pillar {
     background-color: #fff;
@@ -101,19 +95,17 @@
 }
 
 .program_pillar .input_field .analyst_multi_select .ng-select-container{
-    background-color: #fff;
-    border: 1px solid #ccc;
-    min-height: 36px;
-    align-items: center;
-    /* color: #7a7a7a; */
-    /* font-family: Montserrat; */
+    background-color: var(--Surface-Elevated, #102044) !important;
+    border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
+    min-height: 44px !important;
+    max-height: 92px !important;
+    align-items: flex-start !important;
     font-size: 13px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
     appearance: none !important;
-    height: 100%;
-    border-radius: 100px;
+    height: auto !important;
+    border-radius: 12px !important;
+    padding: 5px 34px 5px 8px !important;
+    overflow-y: auto !important;
 }
 
 .program_pillar .input_field .analyst_multi_select .ng-select-container .ng-value-container {
@@ -132,7 +124,7 @@
 .program_pillar + app-ag-bar
 {
     border-radius: 15px;
-    background-color: #ffffff;
+    background-color: var(--Surface-Elevated);
     overflow: hidden;
     display: flex;
 }
@@ -209,8 +201,6 @@
 :host ::ng-deep .apx_chart_new .apexcharts-canvas {
     margin: 0 auto;
 }
-
-
 
 @media only screen and (max-width:1530px){
     .dashboard_number h4 {

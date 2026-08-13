@@ -114,58 +114,23 @@
   margin-top: 5px;
 }
 
-::ng-deep .analyst_multi_select .ng-option-selected {
-  background-color: rgba(76, 175, 80, 0.22) !important;
-  color: #ffffff !important;
-  font-weight: 600;
-}
-
-::ng-deep .analyst_multi_select .ng-option:hover,
-::ng-deep .analyst_multi_select .ng-option-marked {
-  background-color: rgba(59, 158, 255, 0.2) !important;
-  color: #ffffff !important;
-}
-
-::ng-deep .compare_select .ng-select-container {
-  border: none !important;
-  background-color: var(--Surface-Elevated, #102044) !important;
-  min-height: auto !important;
-  height: 100% !important;
-  color: var(--Text-Color, #E8EEF8) !important;
-}
-
-::ng-deep .compare_select .ng-select-container:hover,
-::ng-deep .compare_select .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
-  box-shadow: none !important;
-}
-
 .compare_select .analyst_multi_select {
   flex: 1;
-  height: auto;
-  background-color: var(--Surface-Elevated, #102044);
-  min-height: 36px;
-  align-items: center;
-  font-family: "Poppins", sans-serif !important;
-  font-size: 13px;
-  font-weight: 400;
-  appearance: none !important;
-  border-radius: 12px !important;
-  padding: 6px 10px 6px 3px !important;
-  border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
-  color: var(--Text-Color, #E8EEF8);
-}
-
-::ng-deep .compare_select .ng-value-container .ng-value,
-span.selexted_piller {
-  white-space: nowrap;
-  padding: 2px 8px !important;
-  border-radius: 5px !important;
-  background-color: rgba(59, 158, 255, 0.28) !important;
-  color: #ffffff !important;
+  width: 100%;
+  min-width: 0;
 }
 
 ::ng-deep .compare_select .ng-placeholder,
 ::ng-deep .compare_select .ng-input > input {
+  color: var(--Text-Color, #E8EEF8) !important;
+}
+
+span.selexted_piller {
+  white-space: nowrap;
+  padding: 2px 8px !important;
+  border-radius: 8px !important;
+  background-color: rgba(59, 158, 255, 0.18) !important;
+  border: 1px solid rgba(92, 140, 200, 0.35) !important;
   color: var(--Text-Color, #E8EEF8) !important;
 }
 

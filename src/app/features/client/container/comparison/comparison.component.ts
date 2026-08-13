@@ -40,8 +40,6 @@ export type ChartOptions = {
   imports: [CommonModule, SharedModule, CircularScoreComponent,CompareProgramKpiDetailComponent]
 })
 export class ComparisonComponent implements OnInit, OnDestroy {
-
-  selectedYear = new Date().getFullYear();
   pillers: PillarsVM[] = [];
   selectedPrograms: number[] = [];
   selectedKpis: number[] = [];
@@ -118,7 +116,6 @@ export class ComparisonComponent implements OnInit, OnDestroy {
 
     let payload: GetMutiplekpiLayerRequestDto = {
       climateProgramIDs: this.selectedPrograms,
-      year: this.selectedYear,
       layerID: layerID
     }
     this.clientService.getMutiplekpiLayerResults(payload).subscribe({

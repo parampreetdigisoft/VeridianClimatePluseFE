@@ -1,22 +1,11 @@
 
 .error-msg {
-  color: red;
+  color: #ff7b7b;
   font-size: 12px;
   margin-top: 2px;
 }
 
 /* Highlight selected options */
-::ng-deep .analyst_multi_select .ng-option-selected {
-  background-color: #e8f0ff !important;
-  color: #304a43 !important;
-  font-weight: 600;
-}
-
-/* Optional: hover style */
-::ng-deep .analyst_multi_select .ng-option:hover {
-  background-color: #f2f6ff !important;
-}
-
 .alert-info {
   background-color: #E7F1EE;
   color: #304A43;

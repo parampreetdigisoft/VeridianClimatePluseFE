@@ -33,7 +33,7 @@
     background-position: center right 13px;
     color: #7a7a7a;
     height: auto;
-    background-color: #ffffff;
+    background-color: var(--Surface-Elevated);
     min-height: 36px;
     align-items: center;
     font-family: "Poppins", sans-serif !important;
@@ -44,7 +44,7 @@
     appearance: none !important;
     border-radius: 12px !important;
     padding: 10px 30px 10px 10px !important;
-    border: 1px solid #d7d7d7 !important;
+    border: 1px solid var(--Border-Color) !important;
 }
 
 .action_td input[type="checkbox"] {
@@ -126,52 +126,10 @@
     padding: 0 !important;
 }
 
-::ng-deep .analyst_multi_select .ng-option-selected {
-  background-color: #e8f0ff !important;
-  color: var(--Primary-Color) !important;
-  font-weight: 600;
-}
-
-/* Optional: hover style */
-::ng-deep .analyst_multi_select .ng-option:hover {
-  background-color: #f2f6ff !important;
-}
-
-::ng-deep .compare_select .ng-select-container {
-    border: none !important;
-    background-color: #ffffff !important;
-    min-height: auto !important;
-    height: 100% !important;
-}
-::ng-deep .compare_select  .ng-select-container:hover {
-    box-shadow: none !important;
-}
-::ng-deep .compare_select .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-    box-shadow: none !important;
-}
 .compare_select .analyst_multi_select {
-    flex: 1;
-    height: auto;
-    background-color: #ffffff;
-    min-height: 36px;
-    align-items: center;
-    font-family: "Poppins", sans-serif !important;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    appearance: none!important;
-    border-radius: 12px !important;
-    padding: 6px 10px 6px 3px !important;
-    border: 1px solid #d7d7d7 !important;
-}
-
-::ng-deep .compare_select .ng-value-container .ng-value {
-    white-space: nowrap;
-    padding: 2px 5px !important;
-    border-radius: 5px !important;
-    background-color: var(--Primary-Color) !important;
-    color: #ffffff !important;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
 }
 
 .compare_city_table table {
@@ -235,9 +193,6 @@
         padding-left: 10px;
         padding-right: 30px;
     }
-    ::ng-deep .compare_select .ng-value-container .ng-value {
-        font-size: 11px;
-    }
     .compare_select .analyst_multi_select .ng-input {
         padding-right: 30px;
     }
@@ -249,7 +204,4 @@
         text-align: center;
     }
 }
-
-
-
 

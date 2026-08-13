@@ -16,7 +16,6 @@ import { ProgramUserRow } from "../models/ProgramUserRow";
 export class CommonService {
   location: string | null = null;
 
-  private years = new BehaviorSubject<number[]>(this.getYearList(2025));
 
   constructor(private http: HttpService, private userService: UserService, private toaster: ToasterService) { }
 
@@ -50,9 +49,7 @@ export class CommonService {
           }
         }));
   }
-  get applicateYears() {
-    return this.years.value;
-  }
+
   getStartOfYearLocal(year: number): string {
     return `${year}-01-01T00:00:00`;
   }
@@ -113,16 +110,6 @@ export class CommonService {
     return { paddingInner, paddingOuter };
   }
 
-  getYearList(startYear: number): number[] {
-    const currentYear = new Date().getFullYear();
-    const years: number[] = [];
-
-    for (let year = startYear; year <= currentYear; year++) {
-      years.push(year);
-    }
-    return years;
-  }
-  
   public getLatitudeLongitude(Program: any) {
   const params = {
     q: Program,

@@ -3,35 +3,38 @@
     <div class="col-md-auto">
       <h3 class="page_head">Assessment Results</h3>
     </div>
-    <div class="col-md">
+        <div class="col-md">
       <div class="input_field input_flex">
-        <select
+        <ng-select
+          class="form-control vcp-filter-select"
+          [items]="programs || []"
+          bindLabel="programName"
+          bindValue="climateProgramID"
           [(ngModel)]="selectedclimateProgramID"
-          name="climateProgramID"
-          class="form-control"
+          [searchable]="true"
+          [clearable]="true"
+          placeholder="Search by Program"
+          dropdownPosition="bottom"
+          panelClass="vcp-filter-dropdown"
           (change)="getAssessments()"
         >
-          <option value="">Search by Program</option>
-          <option *ngFor="let program of programs" [value]="program.climateProgramID">
-            {{ program.programName }}
-          </option>
-        </select>
+        </ng-select>
 
-        <select
+        <ng-select
           *ngIf="!assessmentUserID"
+          class="form-control vcp-filter-select"
+          [items]="evaluators || []"
+          bindLabel="fullName"
+          bindValue="userID"
           [(ngModel)]="selecteduserID"
-          name="climateProgramID"
-          class="form-control"
+          [searchable]="true"
+          [clearable]="true"
+          placeholder="Search by Evaluator"
+          dropdownPosition="bottom"
+          panelClass="vcp-filter-dropdown"
           (change)="getAssessments()"
         >
-          <option value="">Search by Evaluator</option>
-          <option
-            *ngFor="let evaluator of evaluators"
-            [value]="evaluator.userID"
-          >
-            {{ evaluator.fullName }}
-          </option>
-        </select>
+        </ng-select>
       </div>
     </div>
   </div>
@@ -148,7 +151,6 @@
               </a>
             </ng-container>
             <ng-container  *ngIf="!assessmentUserID">
-            <!-- && assessment.assessmentYear != selectedYear -->
               <a         
                data-bs-toggle="modal"
                 data-bs-target="#confirmModal"

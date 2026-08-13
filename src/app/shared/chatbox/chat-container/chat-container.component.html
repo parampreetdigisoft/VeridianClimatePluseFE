@@ -27,7 +27,8 @@
             </div>
         <div class="cb__selector-inner">
           <ng-select [items]="chatService.programs | async" [searchable]="true" [searchFn]="customSearchFn"
-            [clearable]="true" appendTo="body" [ngModel]="selectedProgram()" (ngModelChange)="onProgramChange($event)"
+            [clearable]="true" appendTo="body" panelClass="vcp-context-select"
+            [ngModel]="selectedProgram()" (ngModelChange)="onProgramChange($event)"
             class="analyst_multi_select vcp-context-select" placeholder="Select program" bindLabel="programName"
             notFoundText="No programs match your search" typeToSearchText="Type to search programs">
             <ng-template ng-label-tmp let-item="item">{{ item?.programName }}</ng-template>
@@ -50,7 +51,9 @@
           </svg>
         </div>
         <div class="cb__selector-inner">
-          <ng-select [items]="chatService.pillars | async" [searchable]="true" [clearable]="true" appendTo="body"
+          <!-- <ng-select [items]="programPillarSelectOptions" [searchable]="true" [clearable]="true" appendTo="body"
+            panelClass="vcp-context-select" -->
+             <ng-select [items]="chatService.pillars | async" [searchable]="true" [clearable]="true" appendTo="body"
             [ngModel]="selectedPillar()" (ngModelChange)="onPillarChange($event)" class="analyst_multi_select vcp-context-select"
             placeholder="Select pillar" bindLabel="pillarName"
             notFoundText="No pillars match your search" typeToSearchText="Type to search pillars">
@@ -94,10 +97,17 @@
           <div class="flip-hero__viewport">
             <div class="flip-hero__slider" [class.slide]="animate">
               <article class="flip-hero__card" *ngIf="sliderItems.length > 0 && selectedProgram()">
-                <header class="flip-hero__header flip-hero__header--clickable" (click)="toggleSlide()">
+                <header class="flip-hero__header flip-hero__header--clickable">
                   <div class="flip-hero__title-wrapper">
                     <div class="flip-hero__title-content">
                       <h2 class="flip-hero__title">{{ sliderItems[currentSlide]?.title }}</h2>
+                      <p class="flip-hero__meta" *ngIf="sliderItems[currentSlide]?.headerMeta">
+                        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M8 1.5C5.1 1.5 2.75 3.85 2.75 6.75C2.75 10.35 7.15 14.1 7.34 14.26C7.72 14.58 8.28 14.58 8.66 14.26C8.85 14.1 13.25 10.35 13.25 6.75C13.25 3.85 10.9 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.2"/>
+                          <circle cx="8" cy="6.75" r="1.7" stroke="currentColor" stroke-width="1.2"/>
+                        </svg>
+                        {{ sliderItems[currentSlide]?.headerMeta }}
+                      </p>
                     </div>
                   </div>
                   <div class="flip-hero__actions" *ngIf="getTrendLabel(sliderItems[currentSlide])">
@@ -121,10 +131,10 @@
                     </div>
  
 
-                  <div class="flip-hero__svg">
+                  <div class="flip-hero__svg" aria-hidden="true">
                     <svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_254_79)">
-                        <rect width="220" height="220" fill="white"/>
+                        <rect width="220" height="220" fill="transparent"/>
                         <path d="M110 200C159.706 200 200 159.706 200 110C200 60.2944 159.706 20 110 20C60.2944 20 20 60.2944 20 110C20 159.706 60.2944 200 110 200Z" stroke="#E6EFE2"/>
                         <path d="M110 180C148.66 180 180 148.66 180 110C180 71.3401 148.66 40 110 40C71.3401 40 40 71.3401 40 110C40 148.66 71.3401 180 110 180Z" stroke="#E6EFE2"/>
                         <path d="M110 160C137.614 160 160 137.614 160 110C160 82.3858 137.614 60 110 60C82.3858 60 60 82.3858 60 110C60 137.614 82.3858 160 110 160Z" stroke="#E6EFE2"/>
@@ -154,7 +164,7 @@
                         </g>
                         <defs>
                         <clipPath id="clip0_254_79">
-                        <rect width="220" height="220" fill="white"/>
+                        <rect width="220" height="220" fill="transparent"/>
                         </clipPath>
                         </defs>
                     </svg>
@@ -165,7 +175,12 @@
               </article>
             </div>
             <nav class="suggestions-rail" aria-label="Suggested inquiries">
-              <span class="rail__label">TRY ASKING</span>
+              <span class="rail__label">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M6 1L7.2 4.4H10.8L7.8 6.6L8.9 10L6 8.1L3.1 10L4.2 6.6L1.2 4.4H4.8L6 1Z" fill="currentColor"/>
+                </svg>
+                TRY ASKING
+              </span>
               <div class="suggestions-rail__viewport">
                 <div class="suggestions-rail__marquee"
                   [style.--rail-marquee-duration]="railMarqueeDuration() + 's'"
@@ -207,60 +222,73 @@
 
     <section *ngIf="showWorkspaceEmpty()" class="workspace-empty">
 
-      <p class="workspace-empty__eyebrow">AI Insights for you</p>
+      <div class="workspace-empty__hero">
+        <div class="workspace-empty__visual" aria-hidden="true">
+          <span class="workspace-empty__ring"></span>
+          <span class="workspace-empty__ring workspace-empty__ring--delayed"></span>
+          <div class="workspace-empty__orb">
+            <svg width="52" height="52" viewBox="0 0 50 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M30.8359 17.6865H19.1641C16.9331 17.6886 14.7942 18.5757 13.2167 20.1532C11.6392 21.7307 10.7521 23.8697 10.75 26.1006V31.8271C10.7521 34.0581 11.6392 36.197 13.2167 37.7745C14.7942 39.352 16.9331 40.2391 19.1641 40.2412H30.8359C33.0669 40.2391 35.2058 39.352 36.7833 37.7745C38.3608 36.197 39.2479 34.0581 39.25 31.8271V26.1006C39.2479 23.8697 38.3608 21.7307 36.7833 20.1532C35.2058 18.5757 33.0669 17.6886 30.8359 17.6865Z" fill="#A8E063"/>
+              <path d="M44.7188 21.9445C44.3528 18.9497 42.9047 16.1919 40.6471 14.1904C38.3895 12.1889 35.478 11.0818 32.4609 11.0773H25.7812V7.03828C26.6367 6.846 27.3912 6.34502 27.9003 5.63121C28.4095 4.9174 28.6375 4.04091 28.5408 3.16948C28.444 2.29805 28.0293 1.49289 27.3761 0.908112C26.7228 0.323331 25.8768 0 25 0C24.1232 0 23.2772 0.323331 22.6239 0.908112C21.9707 1.49289 21.556 2.29805 21.4592 3.16948C21.3625 4.04091 21.5905 4.9174 22.0997 5.63121C22.6088 6.34502 23.3633 6.846 24.2188 7.03828V11.0539H17.5391C14.5184 11.059 11.604 12.1695 9.34586 14.1758C7.0877 16.1821 5.6419 18.9455 5.28125 21.9445C2.34375 22.3508 0 25.343 0 28.9602C0 32.5773 2.34375 35.5695 5.28125 35.9914C5.64351 38.9898 7.08979 41.7522 9.3476 43.7582C11.6054 45.7642 14.5189 46.8752 17.5391 46.882H32.4609C35.4823 46.875 38.3968 45.7629 40.6548 43.7553C42.9127 41.7477 44.3583 38.9834 44.7188 35.9836C47.6875 35.5695 50 32.5852 50 28.9523C50 25.3195 47.6563 22.3508 44.7188 21.9445Z" fill="#4CAF50"/>
+            </svg>
+          </div>
+        </div>
 
-      <h2 class="workspace-empty__headline rotator" [class.rotator--out]="promptAnimating()">
-        <span class="rotator__text">{{ rotatingHeadlines[rotatingIndex()] }}</span>
-      </h2>
+        <div class="workspace-empty__copy">
+          <p class="workspace-empty__eyebrow">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M7 1.5L8.6 5.2L12.5 5.7L9.75 8.5L10.5 12.4L7 10.6L3.5 12.4L4.25 8.5L1.5 5.7L5.4 5.2L7 1.5Z" fill="currentColor"/>
+            </svg>
+            AI Insights for you
+          </p>
+
+          <h2 class="workspace-empty__headline rotator" [class.rotator--out]="promptAnimating()">
+            <span class="rotator__text">{{ rotatingHeadlines[rotatingIndex()] }}</span>
+          </h2>
+        </div>
+      </div>
 
       <p class="workspace-empty__lede">
         Get Insights on:
       </p>
 
       <ul class="workspace-empty__domains">
-        <li>
-          <span class="domain-icons">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.5 3.5V24.5H24.5" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8.16675 16.333L11.6667 12.833L15.1667 15.1663L21.0001 9.33301" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M20.9999 10.5003C21.6443 10.5003 22.1666 9.97799 22.1666 9.33366C22.1666 8.68933 21.6443 8.16699 20.9999 8.16699C20.3556 8.16699 19.8333 8.68933 19.8333 9.33366C19.8333 9.97799 20.3556 10.5003 20.9999 10.5003Z" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <li class="domain-card" style="--domain-delay: 0s">
+          <span class="domain-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.5 3.5V24.5H24.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8.16675 16.333L11.6667 12.833L15.1667 15.1663L21.0001 9.33301" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-
-        </span>
-        Stability &amp; conflict dynamics
-      </li>
-        <li>
-            <span class="domain-icons">
-
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.5 11.667L14 4.66699L24.5 11.667" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M5.83325 11.667V21.0003" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M11.6667 11.667V21.0003" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16.3333 11.667V21.0003" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M22.1667 11.667V21.0003" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M3.5 21H24.5" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-
           </span>
-          Governance &amp; institutional risk
+          <span class="domain-label">Stability &amp; conflict dynamics</span>
         </li>
-
-
-        <li><span class="domain-icons">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M13.9999 3.5L22.1666 7V12.8333C22.1666 18.6667 18.0833 22.1667 13.9999 24.5C9.91659 22.1667 5.83325 18.6667 5.83325 12.8333V7L13.9999 3.5Z" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M11.0833 14.0003L13.4166 16.3337L16.9166 11.667" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-
-        </span>Humanitarian &amp; security pressure</li>
-        <li><span class="domain-icons">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M14 24.5C19.799 24.5 24.5 19.799 24.5 14C24.5 8.20101 19.799 3.5 14 3.5C8.20101 3.5 3.5 8.20101 3.5 14C3.5 19.799 8.20101 24.5 14 24.5Z" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M3.5 14H24.5" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14 3.5C16.2719 6.52918 17.5 10.2135 17.5 14C17.5 17.7865 16.2719 21.4708 14 24.5" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14 3.5C11.7281 6.52918 10.5 10.2135 10.5 14C10.5 17.7865 11.7281 21.4708 14 24.5" stroke="var(--Secondary-Color)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>Cross-program comparison</li>
+        <li class="domain-card" style="--domain-delay: 0.08s">
+          <span class="domain-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.5 11.667L14 4.66699L24.5 11.667" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.83325 11.667V21.0003M11.6667 11.667V21.0003M16.3333 11.667V21.0003M22.1667 11.667V21.0003M3.5 21H24.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="domain-label">Governance &amp; institutional risk</span>
+        </li>
+        <li class="domain-card" style="--domain-delay: 0.16s">
+          <span class="domain-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.9999 3.5L22.1666 7V12.8333C22.1666 18.6667 18.0833 22.1667 13.9999 24.5C9.91659 22.1667 5.83325 18.6667 5.83325 12.8333V7L13.9999 3.5Z" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11.0833 14.0003L13.4166 16.3337L16.9166 11.667" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="domain-label">Humanitarian &amp; security pressure</span>
+        </li>
+        <li class="domain-card" style="--domain-delay: 0.24s">
+          <span class="domain-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 24.5C19.799 24.5 24.5 19.799 24.5 14C24.5 8.20101 19.799 3.5 14 3.5C8.20101 3.5 3.5 8.20101 3.5 14C3.5 19.799 8.20101 24.5 14 24.5Z" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3.5 14H24.5M14 3.5C16.2719 6.52918 17.5 10.2135 17.5 14C17.5 17.7865 16.2719 21.4708 14 24.5M14 3.5C11.7281 6.52918 10.5 10.2135 10.5 14C10.5 17.7865 11.7281 21.4708 14 24.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="domain-label">Cross-program comparison</span>
+        </li>
       </ul>
     </section>
 
@@ -401,12 +429,10 @@
       <!-- dashboard-card.component.html -->
     <div class="stats-card">
       <h3 class="title">AT A GLANCE</h3>
-
-      <ng-container *ngIf="selectedProgram(); else glanceNoProgram">
       <ng-container *ngIf="programSlidesLoading(); else glanceLoaded">
         <div class="sidebar-loading" aria-live="polite" aria-busy="true">
           <div class="sidebar-loading__spinner" aria-hidden="true"></div>
-          <p class="sidebar-loading__text">Loading program intelligence…</p>
+          <p class="sidebar-loading__text">{{ selectedProgram() ? 'Loading program intelligence…' : 'Loading global score…' }}</p>
           <div class="sidebar-loading__skeleton">
             <span class="sidebar-loading__bar"></span>
             <span class="sidebar-loading__bar"></span>
@@ -416,13 +442,13 @@
       </ng-container>
       <ng-template #glanceLoaded>
       <ng-container *ngIf="programSlide; else glanceLoadFailed">
-      <!-- Health Score -->
+      <!-- Health / Global Score -->
       <div class="stat-row">
         <div class="left">
-          <p class="label">Health Score</p>
+          <p class="label">{{ glanceScoreLabel() }}</p>
 
           <div class="score-line">
-            <span class="score">{{programSlide.program.programAIScore}}</span>
+            <span class="score">{{ formatGlanceScore(programSlide.program.programAIScore) }}</span>
             <span>/</span>
             <span class="max">100</span>
           </div>
@@ -449,7 +475,7 @@
       <!-- Rank -->
       <div class="stat-row">
         <div class="left">
-          <p class="label">Location Rank</p>
+          <p class="label">{{ glanceRankLabel() }}</p>
 
           <div class="rank-line">
             <span class="rank">{{programSlide.program.programRank}}</span>
@@ -476,114 +502,13 @@
         </div>
       </div>
       <!-- Trend -->
-      <div class="stat-row no-border">
-        <div class="left">
-          <p class="label">Trend</p>
-
-          <div class="trend">{{programSlide.recentPerformance.trend}}</div>
-
-          <p class="sub-text">vs last year</p>
-        </div>
-
-        <div class="chart chart--dynamic"
-          [style.--chart-color]="trendChartColor(programSlide.recentPerformance.trend)">
-          <svg viewBox="0 0 120 60" preserveAspectRatio="none">
-            <path
-              d="M5 50
-                C15 48, 22 38, 30 40
-                S42 34, 50 28
-                S65 18, 75 20
-                S90 10, 100 12
-                S110 5, 115 4"
-            />
-          </svg>
-
-          <span class="dot"></span>
-        </div>
-      </div>
+     
       </ng-container>
       </ng-template>
       <ng-template #glanceLoadFailed>
         <div class="sidebar-empty-state">
-          <p class="sidebar-empty-state__text">No data available for this program.</p>
+          <p class="sidebar-empty-state__text">{{ selectedProgram() ? 'No data available for this program.' : 'Unable to load global score right now.' }}</p>
         </div>
-      </ng-template>
-      </ng-container>
-
-      <ng-template #glanceNoProgram>
-            <div class="stats-card emerging-trends">
-      <ng-container *ngIf="emergingTrendsLoading(); else emergingTrendsReady">
-        <div class="sidebar-loading emerging-trends__loading" aria-live="polite" aria-busy="true">
-          <div class="sidebar-loading__spinner" aria-hidden="true"></div>
-          <p class="sidebar-loading__text">Scanning global signals…</p>
-          <div class="emerging-trends__skeleton">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-template #emergingTrendsReady>
-        <ng-container *ngIf="emergingTrends() as feed; else emergingTrendsFailed">
-          <header class="emerging-trends__header">
-            <h3 class="title">{{ feed.headline || 'Emerging Issues & Trends' }}</h3>
-            <time class="emerging-trends__updated" *ngIf="feed.updatedAt">
-              Updated {{ formatTrendUpdatedAt(feed.updatedAt) }}
-            </time>
-          </header>
-
-          <div class="emerging-trends__list" role="list">
-            <button
-              type="button"
-              class="trend-card"
-              role="listitem"
-              *ngFor="let card of feed.programs; trackBy: trackTrendCard"
-              [class.trend-card--active]="isTrendSelected(card)"
-              [attr.aria-expanded]="isTrendSelected(card)"
-              [style.--trend-accent]="trendAccentColor(card.color)"
-              (click)="selectTrendCard(card)"
-            >
-              <span class="trend-card__accent" aria-hidden="true"></span>
-              <div class="trend-card__row">
-                <span class="trend-card__code">{{ card.programCode }}</span>
-                <span class="trend-card__program">{{ card.program }}</span>
-                <span class="trend-card__badge" [class.trend-card__badge--risk]="card.type === 'risk'">
-                  {{ card.type === 'risk' ? 'Risk' : 'Trend' }}
-                </span>
-              </div>
-              <h4 class="trend-card__title">{{ card.title }}</h4>
-              <div class="trend-card__meta">
-                <span class="trend-card__pill">{{ card.status }}</span>
-                <span class="trend-card__pill trend-card__pill--muted">{{ card.category }}</span>
-              </div>
-              <div class="trend-card__body" *ngIf="isTrendSelected(card)">
-                <p class="trend-card__summary">{{ card.summary }}</p>
-                <a
-                  class="trend-card__link"
-                  [href]="card.sourceUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  (click)="$event.stopPropagation()"
-                >
-                  Read more
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
-              </div>
-            </button>
-          </div>
-        </ng-container>
-
-        <ng-template #emergingTrendsFailed>
-          <div class="emerging-trends__error">
-            <p>{{ emergingTrendsError() || 'Unable to load global trends.' }}</p>
-            <button type="button" class="emerging-trends__retry" (click)="retryEmergingTrends()">
-              Retry
-            </button>
-          </div>
-        </ng-template>
-      </ng-template>
-    </div>
       </ng-template>
     </div>
     
@@ -601,90 +526,11 @@
         </div>
 
         <ng-container *ngIf="!selectedProgram()">
-          <ng-container *ngIf="pillarLiveSignalsLoading(); else pillarSignalsReady">
-            <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
-              <div class="sidebar-loading__spinner" aria-hidden="true"></div>
-              <p class="sidebar-loading__text">Loading live pillar signals…</p>
-            </div>
-          </ng-container>
-
-          <ng-template #pillarSignalsReady >
-            <ng-container *ngIf="pillarLiveSignals() as pillarFeed; else pillarSignalsFailed">
-              <header class="pillar-signals__header">
-                <p class="pillar-signals__eyebrow">{{ pillarFeed.headline || 'Live Pillar Signals' }}</p>
-                <time class="pillar-signals__updated" *ngIf="pillarFeed.updatedAt">
-                  Updated {{ formatTrendUpdatedAt(pillarFeed.updatedAt) }}
-                </time>
-              </header>
-
-              <div class="pillar-signals__list" role="list">
-                <button
-                  type="button"
-                  class="pillar-signal-card"
-                  role="listitem"
-                  *ngFor="let p of pillarFeed.pillars; trackBy: trackPillarSignal"
-                  [class.pillar-signal-card--active]="isPillarSignalSelected(p)"
-                  [attr.aria-expanded]="isPillarSignalSelected(p)"
-                  [style.--pillar-accent]="trendAccentColor(p.color)"
-                  (click)="selectPillarSignal(p)"
-                >
-                  <span class="pillar-signal-card__accent" aria-hidden="true"></span>
-                  <div class="pillar-signal-card__head">
-                    <div class="pillar-signal-card__icon"
-                      [style.--pillar-color]="trendAccentColor(p.color)">
-                      <img *ngIf="p.imagePath"
-                        [src]="urlBase + '/' + p.imagePath"
-                        [alt]="pillarSignalLabel(p)" />
-                      <span *ngIf="!p.imagePath" class="pillar-signal-card__id">{{ p.pillarId }}</span>
-                    </div>
-                    <div class="pillar-signal-card__meta-head">
-                      <span class="pillar-signal-card__name">{{ pillarSignalLabel(p) }}</span>
-                      <span class="pillar-signal-card__badge"
-                        [class.pillar-signal-card__badge--risk]="p.type === 'risk'">
-                        {{ p.type === 'risk' ? 'Risk' : 'Trend' }}
-                      </span>
-                    </div>
-                  </div>
-                  <h4 class="pillar-signal-card__title">{{ p.title }}</h4>
-                  <div class="pillar-signal-card__pills">
-                    <span class="pillar-signal-card__pill">{{ p.status }}</span>
-                  </div>
-                  <div class="pillar-signal-card__body" *ngIf="isPillarSignalSelected(p)">
-                    <p class="pillar-signal-card__summary">{{ p.summary }}</p>
-                    <a
-                      class="pillar-signal-card__link"
-                      [href]="p.sourceUrl"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      (click)="$event.stopPropagation()"
-                    >
-                      Read more
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </a>
-                  </div>
-                </button>
-              </div>
-            </ng-container>
-
-            <ng-template #pillarSignalsFailed>
-              <div class="pillar-signals__error">
-                <p>{{ pillarLiveSignalsError() || 'Unable to load pillar signals.' }}</p>
-                <button type="button" class="pillar-signals__retry" (click)="retryPillarLiveSignals()">
-                  Retry
-                </button>
-              </div>
-            </ng-template>
-          </ng-template>
+          <p class="pillar-empty pillar-empty--prompt">Select a program to view pillar scores.</p>
         </ng-container>
-        
 
         <ng-container *ngIf="selectedProgram()">
-          <div class="pillar-signals__divider">
-            <span>Program pillar scores</span>
-          </div>
-          <ng-container *ngIf="programSlidesLoading(); else pillarsLoaded">
+          <ng-container *ngIf="pillarsPanelLoading(); else pillarsLoaded">
             <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
               <div class="sidebar-loading__spinner" aria-hidden="true"></div>
               <p class="sidebar-loading__text">Loading pillars…</p>

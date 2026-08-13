@@ -59,7 +59,7 @@
   align-items: flex-end;
   gap: 16px;
   flex-wrap: wrap;
-  background: #fff;
+  background: var(--Surface-Elevated);
   border-radius: 16px;
   padding: 18px 20px;
   box-shadow: 0 6px 22px var(--pe-shadow);
@@ -185,7 +185,7 @@
   position: relative;
   border: 1px solid var(--pe-border);
   border-radius: 12px;
-  background: linear-gradient(180deg, #fff, #f8faff);
+  background: var(--Surface-Elevated, #102044);
   min-height: 42px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -289,7 +289,7 @@
    ============================================================ */
 
 .tab_body {
-  background: #fff;
+  background: var(--Surface-Elevated);
   border-radius: 16px;
   padding: 26px 28px;
   box-shadow: 0 8px 24px rgba(0, 109, 119, 0.07);
@@ -668,7 +668,6 @@
   border-color: rgba(168, 224, 99, 0.45);
 }
 
-
 .signal_card--clickable:hover .signal_view_hint {
   opacity: 1;
   transform: translateY(0);
@@ -1015,7 +1014,7 @@
 }
 
 .trend_panel {
-  background: #fff;
+  background: var(--Surface-Elevated);
   position: relative;
 }
 
@@ -1293,21 +1292,14 @@
    ng-select overrides
    ============================================================ */
 
-.analyst_multi_select .ng-option-selected { background-color: #e8f0ff !important; color: var(--pe-primary) !important; font-weight: 700; }
-.analyst_multi_select .ng-option:hover { background-color: #f2f6ff !important; }
+.analyst_multi_select .ng-option-selected { background-color: rgba(76, 175, 80, 0.22) !important; color: var(--pe-primary) !important; font-weight: 700; }
+.analyst_multi_select .ng-option:hover { background-color: rgba(59, 158, 255, 0.2) !important; }
 
 ::ng-deep .filter_select_shell .ng-select-container {
   border: none !important;
   background: transparent !important;
   min-height: 40px !important;
   box-shadow: none !important;
-}
-
-::ng-deep .compare_select .ng-select-container {
-  border: none !important;
-  background-color: transparent !important;
-  min-height: auto !important;
-  height: 100% !important;
 }
 
 ::ng-deep .compare_select .ng-select-container:hover,
@@ -1317,25 +1309,8 @@
 
 .compare_select .analyst_multi_select {
   flex: 1;
-  height: auto;
-  background-color: transparent;
-  min-height: 40px;
-  align-items: center;
-  font-family: var(--pe-font-display) !important;
-  font-size: 13px;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 4px 8px !important;
-  box-shadow: none !important;
-}
-
-::ng-deep .compare_select .ng-value-container .ng-value {
-  white-space: nowrap;
-  padding: 2px 9px !important;
-  border-radius: 7px !important;
-  background-color: var(--pe-primary) !important;
-  color: #ffffff !important;
-  font-weight: 600;
+  width: 100%;
+  min-width: 0;
 }
 
 ::ng-deep .compare_select .ng-dropdown-panel {
@@ -1506,9 +1481,6 @@
   animation: loaderSpin 0.9s linear infinite;
 }
 
-
-
-
 @keyframes loaderSpin {
   to { transform: rotate(360deg); }
 }
@@ -1606,7 +1578,7 @@
 }
 
 .pillar_overview_item {
-  background: #fff;
+  background: var(--Surface-Elevated);
   border: 1px solid var(--pe-border);
   border-radius: 12px;
   overflow: hidden;
@@ -1699,7 +1671,7 @@
 }
 
 .glance_chart_card {
-  background: #fff;
+  background: var(--Surface-Elevated);
   border: 1px solid var(--pe-border);
   border-radius: 16px;
   padding: 18px 16px 8px;
@@ -1840,7 +1812,7 @@
 
 .split_card {
   flex: 1;
-  background: #fff;
+  background: var(--Surface-Elevated);
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 16px;

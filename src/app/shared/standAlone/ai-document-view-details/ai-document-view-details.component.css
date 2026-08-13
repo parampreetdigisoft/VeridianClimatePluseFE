@@ -136,7 +136,8 @@ button.btn-close:focus-visible {
 
 .modal-box {
   background: linear-gradient(180deg, #0B1633 0%, #09122A 100%);
-  width: 600px;
+  width: 100%;
+  max-width: min(720px, calc(100vw - 32px));
   border-radius: 14px;
   overflow: hidden;
   animation: fadeIn 0.3s ease;

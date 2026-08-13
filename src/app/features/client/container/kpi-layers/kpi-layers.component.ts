@@ -25,7 +25,6 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './kpi-layers.component.css'
 })
 export class KpiLayersComponent {
-    selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
   selectedKpi: GetAnalyticalLayerResultDto | null | undefined = null;
   selectedclimateProgramID?: number;
@@ -68,9 +67,6 @@ export class KpiLayersComponent {
     }
       if (this.selectedkpiLayerID != undefined && this.selectedkpiLayerID != 0) {
       payload.layerID = this.selectedkpiLayerID
-    }
-    if(this.selectedYear > 0){
-      payload.year = Number(this.selectedYear);
     }
     this.clientService.GetAnalyticalLayerResults(payload).subscribe(kpiLayers => {
       this.kpiLayersResponse = kpiLayers;

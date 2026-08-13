@@ -4,7 +4,6 @@
     /* 👈 set your desired width */
 }
 
-
 app-comparision {
     display: flex;
     flex-wrap: wrap;
@@ -29,14 +28,13 @@ app-comparision app-ag-bar:nth-child(3) {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M0.765098 1.70703L4.97795 5.91988C5.47548 6.41741 6.28962 6.41741 6.78715 5.91988L11 1.70703' stroke='%23888888' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
     background-repeat: no-repeat;
     background-position: center right 13px;
-    color: #7A7A7A;
+    color: var(--Light-Text-Color);
     /* font-family: 'Montserrat'; */
     font-size: 13px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
-
 
 .input_flex {
     display: flex;
@@ -79,12 +77,12 @@ app-comparision app-ag-bar:nth-child(3) {
     border-radius: 15px;
     overflow: hidden;
     padding-top: 30px;
-    background-color: #ffffff;
+    background-color: var(--Surface-Elevated);
 }
 
 .evaluater_design
 {
-  background-color: #ffffff;
+  background-color: var(--Surface-Elevated);
   border-radius: 15px;
     overflow: hidden;
     padding: 25px;
@@ -119,7 +117,7 @@ app-comparision app-ag-bar:nth-child(3) {
 {
       padding: 10px 20px;
     border-color: #dee2e6;
-    background-color: #ffffff;
+    background-color: var(--Surface-Elevated);
 }
 
 .evaluater_design .mat-mdc-row
@@ -182,7 +180,6 @@ width: 500px;
   
 }
 
-
 /* .evaluater_design .mat-elevation-z8 tr th:has(:nth-child(3)),
 .evaluater_design .mat-elevation-z8 tr td:has(:nth-child(3)),
 .evaluater_design .mat-elevation-z2 tr th:has(:nth-child(3)),
@@ -200,7 +197,6 @@ width: 500px;
 {
   stroke: #ffffff;
 }
-
 
 .table_responsive
 {
@@ -300,44 +296,10 @@ min-width: max-content;
     padding: 2px 10px;
     border-radius: 20px;
 }
-::ng-deep .analyst_multi_select .ng-option-selected {
-  background-color: #e8f0ff !important;
-  color: var(--Primary-Color) !important;
-  font-weight: 600;
-}
-
-/* Optional: hover style */
-::ng-deep .analyst_multi_select .ng-option:hover {
-  background-color: #f2f6ff !important;
-}
-
-::ng-deep .compare_select .ng-select-container {
-    border: none !important;
-    background-color: #ffffff !important;
-    min-height: auto !important;
-    height: 100% !important;
-}
-::ng-deep .compare_select  .ng-select-container:hover {
-    box-shadow: none !important;
-}
-::ng-deep .compare_select .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-    box-shadow: none !important;
-}
 .compare_select .analyst_multi_select {
-    flex: 1;
-    height: auto;
-    background-color: #ffffff;
-    min-height: 36px;
-    align-items: center;
-    font-family: "Poppins", sans-serif !important;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    appearance: none!important;
-    border-radius: 12px !important;
-    padding: 6px 10px 6px 3px !important;
-    border: 1px solid #d7d7d7 !important;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
 }
 .table_custom_inner {
     overflow: auto;
@@ -349,14 +311,6 @@ min-width: max-content;
 .card_title {
     align-items: flex-start;
     flex-direction: column;
-}
-
-::ng-deep .compare_select .ng-value-container .ng-value {
-    white-space: nowrap;
-    padding: 2px 5px !important;
-    border-radius: 5px !important;
-    background-color: var(--Primary-Color) !important;
-    color: #ffffff !important;
 }
 
 .kpi_program.kpi_td_data {

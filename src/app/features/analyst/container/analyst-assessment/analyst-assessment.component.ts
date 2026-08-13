@@ -53,8 +53,6 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   isAssessementFinalized = false;
   isProgramSubmissionAction = false;
   isAItransfer: boolean = false;
-  selectedYear = new Date().getFullYear();
-  ROSEWPillarID = 22;
   constructor(
     private analystService: AnalystService,
     private userService: UserService,

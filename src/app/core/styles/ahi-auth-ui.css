@@ -246,9 +246,10 @@
   width: auto;
   max-width: 220px;
   height: auto;
-  max-height: 72px;
+  max-height: 112px;
   object-fit: contain;
   transition: transform 0.3s ease;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
 }
 
 .vui_logo > a:hover img {
@@ -258,11 +259,11 @@
 .vui_logo > a {
   display: table;
   margin: 0 auto 16px;
-  background: rgba(255, 255, 255, 0.96);
+  background: transparent;
   border-radius: 12px;
-  padding: 10px 18px 8px;
-  border: 1px solid rgba(168, 224, 99, 0.25);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .vui_before_signup .vui_logo > a {
@@ -349,7 +350,7 @@
 
 .vui_before_login .error-msg,
 .vui_before_login .text-danger {
-  color: #ff8a80 !important;
+  color: #ff7b7b !important;
   font-size: 12px;
   margin-top: 6px;
 }

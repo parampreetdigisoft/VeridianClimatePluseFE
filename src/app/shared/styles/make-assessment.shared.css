@@ -1,6 +1,15 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
   overflow: hidden;
+}
+
+:host .heading_area {
+  flex-shrink: 0;
+  margin-bottom: 12px;
 }
 
 .header_btns {
@@ -127,19 +136,24 @@
 /* Main assessment shell */
 .body_faq {
   display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
   position: relative;
   padding: 12px;
   border-radius: 16px;
   border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22));
   background: linear-gradient(180deg, #0B1633 0%, #09122A 100%);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
-  min-height: calc(100vh - 280px);
 }
 
 .body_faq_inner {
   display: flex;
   width: 100%;
-  flex-wrap: wrap;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-wrap: nowrap;
+  align-items: stretch;
   gap: 16px;
   overflow: hidden; /* avoid a 3rd nested scrollbar */
   position: relative;
@@ -147,13 +161,16 @@
 }
 
 .faq_sidebar {
+  flex: 0 0 290px;
   max-width: 290px;
   padding: 8px 6px;
-  width: 100%;
-  position: sticky;
-  top: 0;
-  height: calc(100dvh - 300px);
-  overflow: auto;
+  width: 290px;
+  position: relative;
+  top: auto;
+  height: auto;
+  min-height: 0;
+  align-self: stretch;
+  overflow-y: auto;
   border-radius: 14px;
   background: rgba(8, 18, 42, 0.55);
   border: 1px solid rgba(92, 140, 200, 0.14);
@@ -255,15 +272,17 @@
 }
 
 .faq_main_section {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  min-height: 0;
   border-radius: 14px;
   border: 1px solid rgba(92, 140, 200, 0.16);
   background: rgba(8, 18, 42, 0.72);
   padding: 14px;
   position: relative;
   overflow-y: auto;
-  height: calc(100vh - 300px);
+  height: auto;
+  align-self: stretch;
   scrollbar-width: thin;
   scrollbar-color: rgba(92, 140, 200, 0.45) transparent;
 }
@@ -551,6 +570,34 @@
 .faq_sidebar_item:nth-child(22) .faq_inner_svg { background-color: #20BF6B; }
 .faq_sidebar_item:nth-child(23) .faq_inner_svg { background-color: #5F27CD; }
 
+@media only screen and (min-width: 1200px) and (max-width: 1680px) {
+  .faq_sidebar {
+    flex-basis: 260px;
+    max-width: 260px;
+    width: 260px;
+  }
+
+  .body_faq {
+    padding: 10px;
+  }
+
+  .faq_main_section {
+    padding: 12px;
+  }
+}
+
+@media only screen and (min-width: 1681px) {
+  .body_faq_inner {
+    gap: 20px;
+  }
+
+  .faq_sidebar {
+    flex-basis: 300px;
+    max-width: 300px;
+    width: 300px;
+  }
+}
+
 @media only screen and (max-width: 1550px) {
   :host ::ng-deep .heading_area .input_field ng-select .ng-select-container,
   :host ::ng-deep .heading_area .compare_select ng-select .ng-select-container {
@@ -594,15 +641,21 @@
 }
 
 @media only screen and (max-width: 1024px) {
+  .body_faq_inner {
+    flex-wrap: wrap;
+  }
+
   .faq_sidebar {
+    flex: 1 1 100%;
     max-width: 100%;
-    height: auto;
+    width: 100%;
     max-height: 220px;
+    height: auto;
   }
 
   .faq_main_section {
-    height: auto;
-    min-height: 420px;
+    flex: 1 1 100%;
+    min-height: 360px;
   }
 }
 

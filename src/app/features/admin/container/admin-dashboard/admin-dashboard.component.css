@@ -78,21 +78,18 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
 }
 
 .program_pillar .input_field .analyst_multi_select .ng-select-container{
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    min-height: 36px;
-    align-items: center;
+    background-color: var(--Surface-Elevated, #102044) !important;
+    border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
+    min-height: 44px !important;
+    max-height: 92px !important;
+    align-items: flex-start !important;
     font-family: "Poppins", sans-serif !important;
     font-size: 13px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
     appearance: none!important;
-    height: 100%;
-    border-radius: 100px;
+    height: auto !important;
     border-radius: 12px !important;
-    padding: 10px!important;
-    border: 1px solid #efefef  !important;
+    padding: 5px 34px 5px 8px !important;
+    overflow-y: auto !important;
 }
 
 .program_pillar .input_field .analyst_multi_select .ng-select-container .ng-value-container {
@@ -111,7 +108,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
 .program_pillar + app-ag-bar
 {
     border-radius: 15px;
-    background-color: #ffffff;
+    background-color: var(--Surface-Elevated);
     overflow: hidden;
     display: flex;
 }

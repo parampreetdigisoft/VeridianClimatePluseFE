@@ -20,7 +20,6 @@
   width: 100%;
 }
 
-
 .program_piller {
   background-color: #fff;
   padding: 20px;
@@ -53,7 +52,7 @@
   border-radius: 15px;
   overflow: hidden;
   padding-top: 30px;
-  background-color: #ffffff;
+  background-color: var(--Surface-Elevated);
   flex: 1;
 }
 
@@ -83,14 +82,13 @@ app-program-details app-ag-bar:nth-child(3) {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M0.765098 1.70703L4.97795 5.91988C5.47548 6.41741 6.28962 6.41741 6.78715 5.91988L11 1.70703' stroke='%23888888' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
   background-repeat: no-repeat;
   background-position: center right 13px;
-  color: #7A7A7A;
+  color: var(--Light-Text-Color);
   /* font-family: 'Montserrat'; */
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
-
 
 .input_flex {
   display: flex;
@@ -132,11 +130,11 @@ app-program-details app-ag-bar:nth-child(3) {
   border-radius: 15px;
   overflow: hidden;
   padding-top: 30px;
-  background-color: #ffffff;
+  background-color: var(--Surface-Elevated);
 }
 
 .evaluater_design {
-  background-color: #ffffff;
+  background-color: var(--Surface-Elevated);
   border-radius: 15px;
   overflow: hidden;
   padding: 25px;
@@ -170,7 +168,7 @@ app-program-details app-ag-bar:nth-child(3) {
 .evaluater_design th {
   padding: 10px 20px;
   border-color: #dee2e6;
-  background-color: #ffffff;
+  background-color: var(--Surface-Elevated);
 }
 
 .evaluater_design .mat-mdc-row {
@@ -226,7 +224,6 @@ app-program-details app-ag-bar:nth-child(3) {
 
 }
 
-
 /* .evaluater_design .mat-elevation-z8 tr th:has(:nth-child(3)),
 .evaluater_design .mat-elevation-z8 tr td:has(:nth-child(3)),
 .evaluater_design .mat-elevation-z2 tr th:has(:nth-child(3)),
@@ -242,7 +239,6 @@ app-program-details app-ag-bar:nth-child(3) {
 .evaluater_design .mat-elevation-z2 tr td .expand-toggle svg {
   stroke: #ffffff;
 }
-
 
 .table_responsive {
   overflow-x: auto;
@@ -335,8 +331,6 @@ min-width: max-content;
     font-size: 18px;
     margin: 0;
 }
-
-
 
 @media only screen and (max-width:1530px){
     .dashboard_number h4 {

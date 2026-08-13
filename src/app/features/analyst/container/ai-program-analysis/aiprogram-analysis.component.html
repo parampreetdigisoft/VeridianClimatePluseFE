@@ -8,15 +8,6 @@
 
 		<div class="col-md-5">
 			<div class="compare_select input_field input_flex">
-				<select [(ngModel)]="selectedYear"
-					(change)="yearChanged()"
-					name="selectedYear"
-					class="form-control">
-					<option *ngFor="let year of commonService.applicateYears"
-						[value]="year">
-						{{ year }}
-					</option>
-				</select>
 				<ng-select [items]="programs"
 					[searchable]="true"
 					[searchFn]="customSearchFn"
@@ -208,7 +199,7 @@
 												</span>
 											</a>
 
-											<a *ngIf="!program.isVerified && selectedYear == currentYear"
+											<a *ngIf="!program.isVerified"
 												(click)="selectProgramToChangedStatus(program, i);  $event.preventDefault()"
 												style="cursor: pointer"
 												data-bs-toggle="modal"
@@ -231,7 +222,7 @@
 												</p>
 											</a>
 
-											<a *ngIf="program.isVerified && selectedYear == currentYear"
+											<a *ngIf="program.isVerified"
 												(click)="selectProgramToChangedStatus(program, i);  $event.preventDefault()"
 												style="cursor: pointer"
 												data-bs-toggle="modal"

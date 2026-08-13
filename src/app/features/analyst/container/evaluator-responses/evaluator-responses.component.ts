@@ -27,10 +27,8 @@ import { SendRequestMailToUpdateProgram } from "src/app/core/models/AnalystVM";
   styleUrl: "./evaluator-responses.component.css",
 })
 export class EvaluatorResponsesComponent implements OnInit {
-  currentYear = new Date().getFullYear();
-  selectedYear = this.currentYear;
-  selectedclimateProgramID: number | any = "";
-  selecteduserID: number | any = "";
+  selectedclimateProgramID: number | null = null;
+  selecteduserID: number | null = null;
   selectedAssessment: GetAssessmentResponse | any = "";
   changeAssessment: ChangeAssessmentStatusRequestDto | any = "";
   assessmentsResponse: PaginationResponse<GetAssessmentResponse> | undefined;
@@ -56,8 +54,8 @@ export class EvaluatorResponsesComponent implements OnInit {
       let uid = params.get("userID");
       let cid = params.get("climateProgramID");
       if (uid && cid && !this.assessmentUserID) {
-        this.selectedclimateProgramID = cid;
-        this.selecteduserID = uid;
+        this.selectedclimateProgramID = Number(cid);
+        this.selecteduserID = Number(uid);
       }
     });
     this.getAllProgramsByUserId();

@@ -33,7 +33,6 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './aiprogram-analysis.component.css'
 })
 export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
-  selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
   totalRecords: number = 0;
   pageSize: number = 10;

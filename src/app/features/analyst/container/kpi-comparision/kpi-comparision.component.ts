@@ -32,7 +32,6 @@ declare var bootstrap: any;
   imports: [CommonModule, SharedModule, CircularScoreComponent, AiButtonComponent, CompareProgramKpiDetailComponent]
 })
 export class KpiComparisionComponent implements OnInit {
-  selectedYear = new Date().getFullYear();
   pillers: PillarsVM[] = [];
   selectedPrograms: number[] = [];
   selectedKpis: number[] = [];
@@ -109,7 +108,6 @@ export class KpiComparisionComponent implements OnInit {
 
     let payload: GetMutiplekpiLayerRequestDto = {
       climateProgramIDs: this.selectedPrograms,
-      year: this.selectedYear,
       layerID: layerID
     }
     this.analystService.getMutiplekpiLayerResults(payload).subscribe({

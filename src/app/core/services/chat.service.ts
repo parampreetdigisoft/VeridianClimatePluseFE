@@ -15,9 +15,10 @@ import { ToasterService } from './toaster.service';
 import { ResultResponseDto } from '../models/ResultResponseDto';
 import { AIAssistantFAQDto } from '../models/chat/AIAssistantFAQDto';
 import { UserRole } from '../enums/UserRole';
-import { ChatProgramExecutiveSlidesResponse } from '../models/chat/ChatProgramExecutiveSlidesResponse';
+import { ChatProgramExecutiveSlidesResponse, ProgramExecutiveSlidesResult } from '../models/chat/ChatProgramExecutiveSlidesResponse';
 import { ChatEmergingTrendsResponse } from '../models/chat/EmergingTrendsResponse';
 import { PillarLiveSignalsResult } from '../models/chat/PillarLiveSignalsResponse';
+import { AiProgramPillarResponseDto } from '../models/aiVm/AiProgramPillarResponseDto';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
@@ -413,6 +414,28 @@ export class ChatService {
       `Chat/ProgramSlides`,
       climateProgramID as any
     );
+  }
+
+  getProgramPillarScores(climateProgramID: number): Observable<ResultResponseDto<AiProgramPillarResponseDto>> {
+    const payload = { climateProgramID };
+    const url = this.userService.userInfo.role === UserRole.ProgramUser
+      ? 'Client/getAIProgramPillars'
+      : 'AiComputation/getAIProgramPillars';
+    return this.http
+      .getWithQueryParams(url, payload)
+      .pipe(map(x => x as ResultResponseDto<AiProgramPillarResponseDto>));
+  }
+
+  /** Normalize ProgramSlides API payloads (direct or nested result). */
+  unwrapProgramSlides(
+    res: ResultResponseDto<ChatProgramExecutiveSlidesResponse> | null | undefined
+  ): ProgramExecutiveSlidesResult | null {
+    const outer = res?.result;
+    if (!outer) return null;
+    if ('program' in outer && outer.program) {
+      return outer as unknown as ProgramExecutiveSlidesResult;
+    }
+    return (outer as ChatProgramExecutiveSlidesResponse)?.result ?? null;
   }
 
   getEmergingTrendsAndIssues(ProgramCount = 6): Observable<ResultResponseDto<ChatEmergingTrendsResponse>> {
