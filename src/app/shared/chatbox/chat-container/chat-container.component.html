@@ -27,7 +27,7 @@
             </div>
         <div class="cb__selector-inner">
           <ng-select [items]="chatService.programs | async" [searchable]="true" [searchFn]="customSearchFn"
-            [clearable]="true" appendTo="body" panelClass="vcp-context-select"
+            [clearable]="true" panelClass="vcp-context-select"
             [ngModel]="selectedProgram()" (ngModelChange)="onProgramChange($event)"
             class="analyst_multi_select vcp-context-select" placeholder="Select program" bindLabel="programName"
             notFoundText="No programs match your search" typeToSearchText="Type to search programs">
@@ -53,7 +53,8 @@
         <div class="cb__selector-inner">
           <!-- <ng-select [items]="programPillarSelectOptions" [searchable]="true" [clearable]="true" appendTo="body"
             panelClass="vcp-context-select" -->
-             <ng-select [items]="chatService.pillars | async" [searchable]="true" [clearable]="true" appendTo="body"
+             <ng-select [items]="chatService.pillars | async" [searchable]="true" [clearable]="true"
+            panelClass="vcp-context-select"
             [ngModel]="selectedPillar()" (ngModelChange)="onPillarChange($event)" class="analyst_multi_select vcp-context-select"
             placeholder="Select pillar" bindLabel="pillarName"
             notFoundText="No pillars match your search" typeToSearchText="Type to search pillars">

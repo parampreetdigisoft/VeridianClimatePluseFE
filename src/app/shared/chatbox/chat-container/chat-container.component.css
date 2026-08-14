@@ -20,10 +20,12 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   height: 100%;
   min-height: 0;
-  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
   font-family: 'DM Sans', sans-serif;
   color: var(--vcp-text);
 }
@@ -31,7 +33,11 @@
 .vcp-chat_header {
   flex: 0 0 auto;
   flex-shrink: 0;
+  margin-top: 0;
   margin-bottom: 8px;
+  overflow: visible;
+  position: relative;
+  z-index: 20;
 }
 
 /* ── Root: single column, full height ───────────────────────── */
@@ -39,7 +45,7 @@
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   width: 100%;
   min-height: 0;
   overflow: hidden;
@@ -199,10 +205,12 @@
 /* Desktop: stable min-heights so hero does not vanish when chat grows */
 @media (min-width: 992px) {
   :host {
-    padding-top: 0;
+    padding: 0;
+    margin: 0;
   }
 
   .vcp-chat_header {
+    margin-top: 0;
     margin-bottom: 6px;
   }
 
@@ -266,7 +274,7 @@
    ══════════════════════════════════════════════════════════════ */
 .command-bar {
     position: relative;
-    z-index: 10;
+    z-index: 20;
     padding: 12px 18px;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -276,6 +284,14 @@
     border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22));
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    overflow: visible;
+}
+
+.cb__selectors,
+.cb__selector-field,
+.cb__selector-group,
+.cb__selector-inner {
+  overflow: visible;
 }
 
 /* ── Identity block ─────────────────────────────────────────── */
@@ -585,99 +601,129 @@
   background: rgba(231, 76, 60, 0.12) !important;
 }
 
+::ng-deep .cb__selector-inner .ng-select {
+  overflow: visible !important;
+  position: relative;
+}
+
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel,
 ::ng-deep body > .ng-dropdown-panel.vcp-context-select {
-  border: 1px solid rgba(0, 109, 119, 0.14) !important;
+  border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
   border-radius: 14px !important;
-  box-shadow: 0 12px 40px rgba(0, 10, 40, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
   overflow: hidden !important;
   font-size: 13px !important;
-  z-index: 10050 !important;
-  background: #ffffff !important;
-  color: #1e293b !important;
+  z-index: 40 !important;
+  background: var(--Surface-Elevated, #102044) !important;
+  color: var(--Text-Color, #E8EEF8) !important;
   margin-top: 6px !important;
   min-width: 260px !important;
-  max-height: 320px !important;
+  max-height: min(320px, 50vh) !important;
+  position: absolute !important;
 }
 
-::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option,
-::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option.ng-option-marked,
-::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option.ng-option-selected {
-  background: #ffffff !important;
-  color: #1e293b !important;
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-panel-items,
+::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items {
+  background: var(--Surface-Elevated, #102044) !important;
 }
 
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
+::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option {
+  background: transparent !important;
+  color: var(--Text-Color, #E8EEF8) !important;
+}
+
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked,
 ::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option.ng-option-marked {
   background: rgba(168, 224, 99, 0.14) !important;
-  color: #1a4a1e !important;
+  color: var(--Accent-Lime, #A8E063) !important;
 }
 
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
 ::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option.ng-option-selected {
-  background: rgba(54, 126, 59, 0.1) !important;
-  color: #2d6a32 !important;
+  background: rgba(76, 175, 80, 0.22) !important;
+  color: #ffffff !important;
   font-weight: 600 !important;
 }
 
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .option-main,
 ::ng-deep body > .ng-dropdown-panel.vcp-context-select .option-main {
-  color: #1e293b !important;
+  color: var(--Text-Color, #E8EEF8) !important;
 }
 
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .option-sub,
 ::ng-deep body > .ng-dropdown-panel.vcp-context-select .option-sub {
-  color: #64748b !important;
+  color: var(--Light-Text-Color, #9AADC4) !important;
   opacity: 1 !important;
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-header,
-::ng-deep body > .ng-dropdown-panel .ng-dropdown-header {
+::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-header {
   padding: 10px 12px !important;
-  border-bottom: 1px solid rgba(0, 109, 119, 0.08) !important;
+  border-bottom: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.18)) !important;
+  background: var(--Surface-Color, #0B1633) !important;
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-panel-items,
-::ng-deep body > .ng-dropdown-panel .ng-dropdown-panel-items {
+::ng-deep body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items {
   max-height: 260px !important;
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-option {
   padding: 9px 14px !important;
-  color: #334e68 !important;
+  color: var(--Text-Color, #E8EEF8) !important;
   font-size: 12.5px !important;
   line-height: 1.45 !important;
-  transition: background 0.12s, padding-left 0.12s;
-  background: #fff !important;
+  transition: background 0.12s, padding-left 0.12s, color 0.12s;
+  background: transparent !important;
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-option:hover,
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-option.ng-option-marked {
-  background: rgba(168, 224, 99, 0.08) !important;
-  color: #1a4a1e !important;
+  background: rgba(168, 224, 99, 0.14) !important;
+  color: var(--Accent-Lime, #A8E063) !important;
   padding-left: 18px !important;
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-option.ng-option-selected {
-  background: rgba(54, 126, 59, 0.07) !important;
-  color: #2d6a32 !important;
+  background: rgba(76, 175, 80, 0.22) !important;
+  color: #ffffff !important;
   font-weight: 600 !important;
 }
 
 .option-main {
   display: block;
   font-weight: 500;
-  color: #1e293b;
+  color: var(--Text-Color, #E8EEF8);
 }
 
 .option-sub {
   display: block;
   margin-top: 2px;
-  opacity: 0.65;
+  opacity: 1;
   font-size: 10.5px;
-  color: #64748b;
+  color: var(--Light-Text-Color, #9AADC4);
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-option {
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-option.ng-option-disabled,
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-option.ng-option-filtered {
+  color: var(--Light-Text-Color, #9AADC4) !important;
+}
+
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel::-webkit-scrollbar,
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-panel-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+::ng-deep .cb__selector-inner .ng-select .ng-dropdown-panel .ng-dropdown-panel-items::-webkit-scrollbar-thumb {
+  background: rgba(168, 224, 99, 0.28);
+  border-radius: 4px;
 }
 
 /* ── Status / actions (right column) ─────────────────────────── */
@@ -4377,15 +4423,26 @@ aside.vcp-sidebar {
   cursor: pointer;
 }
 
-/* ── Desktop: fill viewport height, fluid sidebar ─────────────── */
+/* ── Desktop: fill remaining column height, fluid sidebar ───────── */
 @media (min-width: 1024px) {
   aside.vcp-sidebar {
     flex: 0 0 auto;
     width: clamp(300px, 24vw, 420px);
     max-width: clamp(300px, 24vw, 420px);
+    align-self: stretch;
+    height: auto;
+    max-height: none;
   }
 
   .vcp-chat {
+    flex: 1 1 0%;
+    min-height: 0;
+  }
+
+  .vcp-chat-inner,
+  .analyst_chat,
+  .vcp-chat-body {
+    flex: 1 1 0%;
     min-height: 0;
   }
 }

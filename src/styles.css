@@ -502,9 +502,52 @@ padding-right: 40px;
     min-height: calc(100vh - 140px);
 }
 
+/* Chat page: fill the column under the header on every desktop size.
+   Global (unencapsulated) so router-outlet hosts actually stretch. */
+.content_area:has(app-chat-container) {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 12px;
+}
+
+.content_area:has(app-chat-container) > router-outlet,
+.inner_content_area:has(app-chat-container) > router-outlet {
+    display: none !important;
+    flex: 0 0 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.content_area:has(app-chat-container) > :not(router-outlet),
+.inner_content_area:has(app-chat-container) {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    min-height: 0;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    overflow: visible;
+}
+
+.inner_content_area:has(app-chat-container) app-chat-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    min-height: 0;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    overflow: visible;
+}
+
 .inner_content_area:has(app-chat-container) {
     padding: 0 !important;
-    min-height: 0 !important;
 }
 .city_card_outter {
     display: flex;
@@ -1018,25 +1061,33 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option-selected {
 }
 
 body > .ng-dropdown-panel.vcp-context-select {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 109, 119, 0.14) !important;
-  color: #1e293b !important;
+  background: var(--Surface-Elevated, #102044) !important;
+  border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
+  color: var(--Text-Color, #E8EEF8) !important;
   z-index: 10050 !important;
 }
 
 body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option {
-  background: #ffffff !important;
-  color: #1e293b !important;
+  background: transparent !important;
+  color: var(--Text-Color, #E8EEF8) !important;
 }
 
 body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option-marked {
   background: rgba(168, 224, 99, 0.14) !important;
-  color: #1a4a1e !important;
+  color: var(--Accent-Lime, #A8E063) !important;
 }
 
 body > .ng-dropdown-panel.vcp-context-select .ng-dropdown-panel-items .ng-option-selected {
-  background: rgba(54, 126, 59, 0.1) !important;
-  color: #2d6a32 !important;
+  background: rgba(76, 175, 80, 0.22) !important;
+  color: #ffffff !important;
+}
+
+body > .ng-dropdown-panel.vcp-context-select .option-main {
+  color: var(--Text-Color, #E8EEF8) !important;
+}
+
+body > .ng-dropdown-panel.vcp-context-select .option-sub {
+  color: var(--Light-Text-Color, #9AADC4) !important;
 }
 
 @keyframes vcpFilterDropdownIn {

@@ -58,23 +58,11 @@
     overflow: hidden;
 }
 
-/* Chat route: fill viewport height; scroll inside chat, not the page shell */
+/* Chat route: fill remaining column; scroll lives inside the chat, not this shell */
 .content_area:has(app-chat-container) {
-    overflow: scroll;
-    padding-bottom: 0;
-}
-
-.content_area:has(app-chat-container) > * {
-    flex: 1 1 auto;
-    min-height: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.content_area .inner_content_area:has(app-chat-container) {
-    padding: 0 !important;
-    min-height: 0 !important;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 12px;
 }
 
 .content_area::-webkit-scrollbar {

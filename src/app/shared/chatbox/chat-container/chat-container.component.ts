@@ -31,7 +31,7 @@ import {
   PillarLiveSignalCard,
   PillarLiveSignalsResult,
 } from 'src/app/core/models/chat/PillarLiveSignalsResponse';
-import { CommonService } from 'src/app/core/services/common.service';
+import { CommonService } from 'src/app/core/services/common.service'; 
 import { environment } from 'src/environments/environment';
 
 @Component({
