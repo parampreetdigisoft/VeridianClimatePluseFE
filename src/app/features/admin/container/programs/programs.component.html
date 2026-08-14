@@ -68,7 +68,7 @@
         <ul class="dropdown-menu">
           <li>
             <a class="dropdown-item" style="cursor:pointer" (click)="exportPrograms(false,true, false)">
-              Program Ranking Report
+              Program Ranking Sheet
             </a>
           </li>
           <li>
@@ -91,7 +91,7 @@
         <button [matTooltip]="'Export reports for the selected programs'"
           style="cursor:pointer" class="dropdown-toggle"
           data-bs-toggle="dropdown" aria-expanded="false"
-          [disabled]="isReportExporting || selectedPrograms.length < 1" 
+          [disabled]="isReportExporting" 
           class="common_button">
           Report
           <ng-container *ngIf="!isReportExporting">
@@ -114,12 +114,12 @@
         <ul class="dropdown-menu">
           <li>
             <a class="dropdown-item" style="cursor:pointer" (click)="aiAllProgramDetailsReport('pdf')">
-             Download PDF
+             Program Ranking PDF
             </a>
           </li>
           <li>
             <a class="dropdown-item" style="cursor:pointer" (click)="aiAllProgramDetailsReport('docx')">
-              Download DOCX  
+              Program Ranking DOCX
             </a>
           </li>
         </ul>

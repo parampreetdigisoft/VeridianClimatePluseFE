@@ -16,6 +16,7 @@ import { AITransferAssessmentRequestDto } from '../models/aiVm/AITransferAssessm
 import { DownloadReportDto } from '../models/aiVm/DownloadReportDto';
 import { GetProgramDocumentResponseDto, GetProgramPillarDocumentResponseDto } from '../models/aiVm/GetProgramDocumentResponseDto';
 import { UpdateAIPillarScoreDto, UpdateAIProgramScoreDto } from '../models/aiVm/UpdateAiScoreDtos';
+import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from '../models/SummarizeKpiDto';
 
 @Injectable({
   providedIn: 'root'
@@ -133,4 +134,8 @@ export class AiComputationService {
     return this.http
       .ImportFile(`AiComputation/downloadDocument/` + programDocumentID);
   }
+
+  public summarizeKpiPerformance(params: SummarizeKpiRequestDto) {
+    return this.http.post(`Kpi/SummarizeKpiPerformance`, params).pipe(map(x=> x as ResultResponseDto<SummarizeKpiResponseDto>))
+  }  
 }

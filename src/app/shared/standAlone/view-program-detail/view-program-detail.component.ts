@@ -170,7 +170,7 @@ export class ViewProgramDetailComponent implements OnChanges {
       next: (res) => {
         this.saving = false;
         if (res.succeeded) {
-          this.applyDraftToCountry();
+          this.applyDraftToProgram();
           this.editMode = false;
           this.ApexGetPieOptions();
           this.toaster.showSuccess(res.messages?.join(', ') || 'Changes saved successfully.');
@@ -252,7 +252,7 @@ export class ViewProgramDetailComponent implements OnChanges {
     });
   }
 
-  private applyDraftToCountry() {
+  private applyDraftToProgram() {
     if (!this.program) {
       return;
     }

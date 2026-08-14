@@ -224,11 +224,6 @@ export class ProgramsComponent implements OnInit, OnDestroy {
 
   aiAllProgramDetailsReport(format: string = 'pdf') {
 
-    if (!this.selectedPrograms.length) {
-      this.toaster.showWarning('Please select at least one program');
-      return;
-    }
-
     this.isReportExporting = true;
 
     const payload: DownloadReportDto = {
@@ -245,7 +240,7 @@ export class ProgramsComponent implements OnInit, OnDestroy {
           const url = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
-          link.download = `All_Programs_Details_${new Date().toISOString().split('T')[0]}.${ext}`;
+          link.download = `Program_Ranking_Report_${new Date().toISOString().split('T')[0]}.${ext}`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);

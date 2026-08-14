@@ -4,7 +4,7 @@ import { HttpService } from 'src/app/core/http/http.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ProgramVM } from '../../core/models/ProgramVM';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
-import { ProgramHistoryDto, ProgramPillarHistoryResponseDto, GetProgramsSubmitionHistoryResponseDto, GetProgramQuestionHistoryResponseDto, UserProgramRequestDto } from 'src/app/core/models/ProgramHistoryDto';
+import { ProgramHistoryDto, GetProgramsSubmitionHistoryResponseDto, GetProgramQuestionHistoryResponseDto, UserProgramRequestDto } from 'src/app/core/models/ProgramHistoryDto';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { GetProgramPillarHistoryRequestDto } from 'src/app/core/models/AssessmentRequest';
 import { QuestionsByUserPillarsResponsetDto } from 'src/app/core/models/GetQuestionHistoryResponseDto ';

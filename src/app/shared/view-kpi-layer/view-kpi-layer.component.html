@@ -45,6 +45,52 @@
             <h5>{{selectedLayer?.layerName}} ({{selectedLayer?.layerCode}}) :</h5>
             &nbsp;
             <div [innerHtml]="selectedLayer?.purpose"></div>
+            <div class="kpi-ai-summary" *ngIf="canShowAiSummary">
+                <button type="button"
+                    class="kpi-ai-btn"
+                    (click)="generateAiSummary()"
+                    [disabled]="isSummarizing || !selectedLayer?.layerResultID">
+                    <span class="kpi-ai-btn-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </span>
+                    <span>{{ isSummarizing ? 'Generating summary...' : (aiSummary ? 'Regenerate AI Summary' : 'Generate AI Summary') }}</span>
+                    <span *ngIf="isSummarizing" class="spinner-border spinner-border-sm ms-1" role="status"></span>
+                </button>
+
+                <div class="kpi-ai-response" *ngIf="isSummarizing || aiSummary || aiSummaryError">
+                    <div class="kpi-ai-response-header">
+                        <span class="kpi-ai-badge">AI Insight</span>
+                        <span class="kpi-ai-title">KPI Performance Summary</span>
+                    </div>
+
+                    <div class="kpi-ai-loading" *ngIf="isSummarizing">
+                        <span class="spinner-border spinner-border-sm" role="status"></span>
+                        Analyzing this KPI using purpose, scores, and interpretation bands...
+                    </div>
+
+                    <div class="kpi-ai-error" *ngIf="!isSummarizing && aiSummaryError">
+                        {{ aiSummaryError }}
+                    </div>
+
+                    <ng-container *ngIf="!isSummarizing && aiSummary">
+                        <p class="kpi-ai-summary-text">{{ aiSummary.summary }}</p>
+
+                        <p class="kpi-ai-score-context" *ngIf="aiSummary.scoreInterpretation">
+                            {{ aiSummary.scoreInterpretation }}
+                        </p>
+
+                        <ul class="kpi-ai-takeaways" *ngIf="aiSummary.keyTakeaways?.length">
+                            <li *ngFor="let item of aiSummary.keyTakeaways">{{ item }}</li>
+                        </ul>
+
+                        <p class="kpi-ai-outlook" *ngIf="aiSummary.outlook">
+                            <strong>Outlook:</strong> {{ aiSummary.outlook }}
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
         </div>
 
         <div class="integrate_outter">

@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
 import { GetAnalyticalLayerResultDto } from 'src/app/core/models/GetAnalyticalLayerResultDto';
 import { environment } from 'src/environments/environment';
 import {
@@ -9,6 +10,11 @@ import {
   ChartComponent,
   ApexStroke
 } from "ng-apexcharts";
+import { ToasterService } from 'src/app/core/services/toaster.service';
+import { AiComputationService } from 'src/app/core/services/ai-computation.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { UserRole } from 'src/app/core/enums/UserRole';
+import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from 'src/app/core/models/SummarizeKpiDto';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -33,15 +39,74 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
   }
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
+ canShowAiSummary = false;
+  isSummarizing = false;
+  aiSummary: SummarizeKpiResponseDto | null = null;
+  aiSummaryError: string | null = null;
 
+  constructor(
+    private userService: UserService,
+    private aiComputationService: AiComputationService,
+    private toaster: ToasterService,
+  ) {}
 
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.ApexGetPieOptions();
+    this.updateAiSummaryVisibility();
+    if (changes['selectedLayer']) {
+      this.aiSummary = null;
+      this.aiSummaryError = null;
+      this.isSummarizing = false;
+    }
   }
   onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/Frame 1321315029.png';
+  }
+
+  private updateAiSummaryVisibility(): void {
+    const role = this.userService.userInfo?.role;
+    this.canShowAiSummary =
+      role === UserRole.Admin ||
+      role === UserRole.Analyst ||
+      role === UserRole.ProgramUser;
+  }
+
+  generateAiSummary(): void {
+    if (!this.canShowAiSummary || this.isSummarizing) return;
+
+    const layerResultID = this.selectedLayer?.layerResultID;
+    if (!layerResultID) {
+      this.toaster.showError('KPI result is missing. Please reopen the KPI details.');
+      return;
+    }
+
+    this.isSummarizing = true;
+    this.aiSummaryError = null;
+
+    const payload: SummarizeKpiRequestDto = { layerResultID };
+    this.aiComputationService.summarizeKpiPerformance(payload).subscribe({
+      next: (res) => {
+        const response = res as ResultResponseDto<SummarizeKpiResponseDto>;
+        this.isSummarizing = false;
+        if (response?.succeeded && response.result?.summary) {
+          this.aiSummary = response.result;
+          this.aiSummaryError = null;
+        } else {
+          const message = response?.errors?.[0] || 'Failed to generate AI summary. Please try again.';
+          this.aiSummary = null;
+          this.aiSummaryError = message;
+          this.toaster.showError(message);
+        }
+      },
+      error: () => {
+        this.isSummarizing = false;
+        this.aiSummary = null;
+        this.aiSummaryError = 'Unable to reach the AI service. Please try again later.';
+        this.toaster.showError(this.aiSummaryError);
+      }
+    });
   }
 
   getConditionByid() {
