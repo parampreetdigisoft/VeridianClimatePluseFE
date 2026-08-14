@@ -13,7 +13,6 @@
             [items]="programs || []"
             [searchable]="true"
             [searchFn]="customSearchFn"
-            [appendTo]="'body'"
             [placeholder]="!selectedPrograms ? 'Select Program' : ''"
             [(ngModel)]="selectedPrograms"
             (ngModelChange)="onProgramChanged()"

@@ -377,24 +377,6 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
 }
 
 /* ---- responsive widths ---- */
-@media only screen and (max-width: 1550px) {
-  .compare_select ng-select,
-  .input_flex ng-select,
-  .input_field ng-select,
-  .heading_area ng-select {
-    max-width: 240px;
-  }
-}
-
-@media only screen and (max-width: 1440px) {
-  .compare_select ng-select,
-  .input_flex ng-select,
-  .input_field ng-select,
-  .heading_area ng-select {
-    max-width: 220px;
-  }
-}
-
 @media only screen and (max-width: 991px) {
   .input_flex {
     flex-wrap: wrap;

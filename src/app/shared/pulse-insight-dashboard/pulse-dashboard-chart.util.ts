@@ -717,8 +717,11 @@ function mapQuestionToKpi(
 ): PulseKpiCard {
   const aiScore = options.showAi ? q.aiScore ?? null : null;
   const manualScore = options.showManual ? q.evaluationScore ?? null : null;
-  const primaryScore = options.showAi ? aiScore : manualScore;
-  const interp = interpretationByScore(primaryScore, interpretations);
+  const aiInterp = interpretationByScore(aiScore, interpretations);
+  const manualInterp = interpretationByScore(manualScore, interpretations);
+  const primaryCondition = options.showAi ? aiInterp.condition : manualInterp.condition;
+  const primaryInterpretation = options.showAi ? aiInterp.description : manualInterp.description;
+
   return {
     id: q.questionID,
     code: `Q${q.questionID}`,
@@ -726,42 +729,149 @@ function mapQuestionToKpi(
     description: q.questionDescription || 'No description available.',
     aiScore,
     manualScore,
-    condition: interp.condition,
-    interpretation: interp.description,
+    condition: primaryCondition,
+    aiCondition: aiInterp.condition,
+    manualCondition: manualInterp.condition,
+    interpretation: primaryInterpretation,
+    aiInterpretation: aiInterp.description,
+    manualInterpretation: manualInterp.description,
+    aiStrategicAction: aiInterp.description,
+    manualStrategicAction: manualInterp.description,
     icon: kpiIcon(q.questionDescription),
     isAlert: ['critical', 'elevated', 'fragile', 'watch'].some((x) =>
-      interp.condition.toLowerCase().includes(x)
+      primaryCondition.toLowerCase().includes(x)
     ),
   };
+}
+
+function lookupSignalInterpretation(
+  interpretations: SignalCardDto['interpretations'] | undefined,
+  interpretationId?: number | null,
+  condition?: string | null
+): { condition: string; description: string } {
+  if (interpretations?.length && interpretationId) {
+    const match = interpretations.find((x) => x.interpretationID === interpretationId);
+    if (match) {
+      return {
+        condition: match.condition || condition || 'Stable',
+        description: match.descriptor || 'No interpretation available.',
+      };
+    }
+  }
+  if (interpretations?.length && condition) {
+    const match = interpretations.find((x) => x.condition === condition);
+    if (match) {
+      return {
+        condition: match.condition || condition,
+        description: match.descriptor || 'No interpretation available.',
+      };
+    }
+  }
+  return { condition: condition || 'Stable', description: '' };
+}
+
+function signalAiScore(signal: SignalCardDto): number | null {
+  if (signal.aiValue !== null && signal.aiValue !== undefined) return Number(signal.aiValue);
+  if (signal.value !== null && signal.value !== undefined) return Number(signal.value);
+  return null;
+}
+
+function signalManualScore(signal: SignalCardDto): number | null {
+  if (signal.manualValue !== null && signal.manualValue !== undefined) return Number(signal.manualValue);
+  return null;
+}
+
+/** Resolve AI score from a signal card (supports legacy `value` field). */
+export function getSignalAiScore(signal: SignalCardDto | null | undefined): number | null {
+  return signal ? signalAiScore(signal) : null;
+}
+
+/** Resolve manual score from a signal card. */
+export function getSignalManualScore(signal: SignalCardDto | null | undefined): number | null {
+  return signal ? signalManualScore(signal) : null;
 }
 
 function mapSignalToKpi(
   signal: SignalCardDto,
   interpretations: DashboardInterpretationDto[] | undefined,
   options: { showAi: boolean; showManual: boolean },
-  manualByCode?: Map<string, number>
+  dashboard?: DashboardModeResponseDto | null,
+  manualByCode?: Map<string, number>,
+  signalIndex = 0
 ): PulseKpiCard {
   const code = signal.code || signal.layerCode || 'KPI';
-  const aiScore = options.showAi ? (signal.value ?? null) : null;
+  const aiScore = options.showAi ? signalAiScore(signal) : null;
   const manualFromMap = manualByCode?.get(code.toLowerCase()) ?? manualByCode?.get((signal.layerCode || '').toLowerCase());
-  const manualScore = options.showManual ? (manualFromMap ?? null) : null;
-  const primaryScore = options.showAi ? aiScore : manualScore;
-  const interp = interpretationByScore(
-    primaryScore,
-    interpretations,
-    signal.interpretations
+  let manualScore = options.showManual ? signalManualScore(signal) ?? manualFromMap ?? null : null;
+
+  if (options.showManual && manualScore == null) {
+    const raw = signal as SignalCardDto & {
+      evaluationScore?: number | null;
+      evaluationValue?: number | null;
+      manualScore?: number | null;
+    };
+    const fromSignal = raw.evaluationScore ?? raw.evaluationValue ?? raw.manualScore;
+    if (fromSignal !== null && fromSignal !== undefined) {
+      manualScore = Number(fromSignal);
+    }
+  }
+  if (options.showManual && manualScore == null && dashboard && signalIndex === 0) {
+    manualScore = dashboard.manualProgramScore ?? dashboard.manualValue ?? null;
+  }
+
+  const aiInterpFromRange = interpretationByScore(aiScore, interpretations, signal.interpretations);
+  const manualInterpFromRange = interpretationByScore(manualScore, interpretations, signal.interpretations);
+  const aiInterpFromId = lookupSignalInterpretation(
+    signal.interpretations,
+    signal.aiInterpretationID ?? signal.interpretationID,
+    signal.aiCondition || signal.condition
+  );
+  const manualInterpFromId = lookupSignalInterpretation(
+    signal.interpretations,
+    signal.manualInterpretationID,
+    signal.manualCondition
   );
 
+  const aiCondition =
+    signal.aiCondition || signal.condition || aiInterpFromId.condition || dashboard?.vcpCondition || aiInterpFromRange.condition;
+  const manualCondition =
+    signal.manualCondition || manualInterpFromId.condition || dashboard?.manualCondition || manualInterpFromRange.condition;
+
+  const aiInterpretation =
+    aiInterpFromId.description ||
+    signal.descriptor ||
+    dashboard?.vcpDescriptor ||
+    aiInterpFromRange.description ||
+    'No interpretation available.';
+  const manualInterpretation =
+    manualInterpFromId.description ||
+    signal.narrative ||
+    signal.descriptor ||
+    dashboard?.manualDescriptor ||
+    manualInterpFromRange.description ||
+    'No interpretation available.';
+
+  const aiStrategicAction = signal.strategicAction || aiInterpretation;
+  const manualStrategicAction = signal.strategicAction || manualInterpretation;
+  const primaryCondition = options.showAi ? aiCondition : manualCondition;
+  const primaryInterpretation = options.showAi ? aiInterpretation : manualInterpretation;
+
   return {
-    id: signal.layerID || code,
+    id: signal.layerID ?? code,
     code,
     name: signal.name || signal.layerName || code,
-    description: signal.description || signal.descriptor || 'No description available.',
+    description: signal.description || signal.descriptor || dashboard?.description || 'No description available.',
     aiScore,
     manualScore,
-    condition: signal.condition || interp.condition,
-    interpretation: interp.description,
-    narrative: signal.narrative,
+    condition: primaryCondition,
+    aiCondition,
+    manualCondition,
+    interpretation: primaryInterpretation,
+    aiInterpretation,
+    manualInterpretation,
+    narrative: aiStrategicAction || undefined,
+    aiStrategicAction: aiStrategicAction || undefined,
+    manualStrategicAction: manualStrategicAction || undefined,
     icon: kpiIcon(code),
     isAlert: !!signal.isAlert,
   };
@@ -773,7 +883,6 @@ export function buildPulseKpiCards(
   options: { showAi: boolean; showManual: boolean }
 ): PulseKpiCard[] {
   if (!dashboard) return [];
-
   const interpretations = dashboard.dashboardInterpretations;
   const signals = dashboard.primarySignals?.length
     ? dashboard.primarySignals
@@ -790,25 +899,21 @@ export function buildPulseKpiCards(
 
   if (signals.length) {
     return signals.map((s, index) => {
-      const card = mapSignalToKpi(s, interpretations, options, manualByCode);
+      const card = mapSignalToKpi(s, interpretations, options, dashboard, manualByCode, index);
       if (
         options.showManual &&
         (card.manualScore === null || card.manualScore === undefined) &&
         questions[index]?.evaluationScore != null
       ) {
         card.manualScore = Number(questions[index].evaluationScore);
+        const manualInterp = interpretationByScore(card.manualScore, interpretations, s.interpretations);
+        card.manualCondition = dashboard?.manualCondition || manualInterp.condition;
+        card.manualInterpretation = dashboard?.manualDescriptor || manualInterp.description;
+        card.manualStrategicAction = dashboard?.manualDescriptor || manualInterp.description;
       }
-      // Optional API fields on signal payloads
-      const raw = s as SignalCardDto & {
-        evaluationScore?: number | null;
-        evaluationValue?: number | null;
-        manualScore?: number | null;
-      };
-      if (options.showManual && card.manualScore == null) {
-        const fromSignal = raw.evaluationScore ?? raw.evaluationValue ?? raw.manualScore;
-        if (fromSignal !== null && fromSignal !== undefined) {
-          card.manualScore = Number(fromSignal);
-        }
+      if (options.showAi && (card.aiScore === null || card.aiScore === undefined) && index === 0 && dashboard) {
+        card.aiScore = dashboard.aiProgramScore ?? null;
+        card.aiCondition = card.aiCondition || dashboard.vcpCondition;
       }
       return card;
     });

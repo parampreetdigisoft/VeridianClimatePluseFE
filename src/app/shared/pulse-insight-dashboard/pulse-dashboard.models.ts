@@ -30,9 +30,17 @@ export interface PulseKpiCard {
   description: string;
   aiScore: number | null;
   manualScore: number | null;
+  /** Primary condition shown on KPI card badge (AI when available). */
   condition: string;
+  aiCondition: string;
+  manualCondition: string;
+  /** Primary interpretation shown on KPI card preview (AI when available). */
   interpretation: string;
+  aiInterpretation: string;
+  manualInterpretation: string;
   narrative?: string;
+  aiStrategicAction?: string;
+  manualStrategicAction?: string;
   icon: string;
   isAlert?: boolean;
 }

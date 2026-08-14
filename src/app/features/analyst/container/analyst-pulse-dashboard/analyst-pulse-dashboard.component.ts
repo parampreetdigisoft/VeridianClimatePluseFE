@@ -33,11 +33,13 @@ import {
   buildPulsePillarAreaChart,
   buildPulseProgressLineChart,
   buildPulseRadialChart,
+  getSignalAiScore,
 } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard-chart.util';
 import {
   PULSE_KPI_TABS,
   closePulseKpiModal,
   formatPulseScore,
+  isPulseGapScore,
   openPulseKpiModal,
   pulseConditionClass,
   pulseProgramSearchFn,
@@ -57,6 +59,7 @@ export class AnalystPulseDashboardComponent implements OnInit {
   readonly customSearchFn = pulseProgramSearchFn;
   readonly formatScore = formatPulseScore;
   readonly scoreProgress = pulseScoreProgress;
+  readonly isGapScore = isPulseGapScore;
   readonly conditionClass = pulseConditionClass;
 
   isPageLoader = false;
@@ -257,8 +260,9 @@ export class AnalystPulseDashboardComponent implements OnInit {
         ? pillars.reduce((s, p) => s + (Number(p.aiValue ?? 0) + Number(p.evaluationValue ?? 0)) / 2, 0) /
           pillars.length
         : 0;
-    const avg = d ? Number(d.vcp ?? 0) : avgFromPillars;
-    const condition = d?.vcpCondition || (avg >= 70 ? 'Stable' : avg >= 40 ? 'Watch' : 'Critical');
+    const aiScore = d ? Number(d.aiProgramScore ?? 0) : avgFromPillars;
+    const manualScore = d ? Number(d.manualProgramScore ?? d.manualValue ?? 0) : avgFromPillars;
+    const aiCondition = d?.vcpCondition || (aiScore >= 70 ? 'Stable' : aiScore >= 40 ? 'Watch' : 'Critical');
     const signals = d?.primarySignals?.length ? d.primarySignals : d?.signals ?? [];
     const fallbackMode =
       this.activeKpiTab === 'diplomaticRisk'
@@ -272,16 +276,17 @@ export class AnalystPulseDashboardComponent implements OnInit {
       programLabel: program
         ? `${program.programName} · ${program.year || '—'} · ${program.location || '—'}`
         : 'Select a program',
-      overallLabel: `Overall Score ${avg.toFixed(1)}/100 · ${condition}`,
+      overallLabel: `AI ${aiScore.toFixed(1)}/100 · Manual ${manualScore.toFixed(1)}/100 · ${aiCondition}`,
       stats: [
-        { label: 'VCP', value: d ? Number(d.vcp ?? 0).toFixed(1) : avg.toFixed(1) },
+        { label: 'AI Score', value: aiScore.toFixed(1) },
+        { label: 'Manual Score', value: manualScore.toFixed(1) },
         {
           label: signals[1]?.code || signals[1]?.layerCode || 'SIG',
-          value: signals[1] ? Number(signals[1].value ?? 0).toFixed(1) : '0.0',
+          value: signals[1] ? (getSignalAiScore(signals[1]) ?? 0).toFixed(1) : '0.0',
         },
         {
-          label: signals[2]?.code || signals[2]?.layerCode || 'KPI',
-          value: signals[2] ? Number(signals[2].value ?? 0).toFixed(1) : '0.0',
+          label: 'Manual',
+          value: d?.manualCondition || (manualScore >= 70 ? 'Stable' : manualScore >= 40 ? 'Watch' : 'Critical'),
         },
       ],
     };

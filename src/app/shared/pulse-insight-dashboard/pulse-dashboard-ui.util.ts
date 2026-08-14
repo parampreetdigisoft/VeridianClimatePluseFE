@@ -22,9 +22,20 @@ export function formatPulseScore(score: number | null | undefined): string {
   return Number(score).toFixed(1);
 }
 
+/** Gap/delta KPI scores can fall outside the 0–100 program score range. */
+export function isPulseGapScore(score: number | null | undefined): boolean {
+  if (score === null || score === undefined || Number.isNaN(Number(score))) return false;
+  const n = Number(score);
+  return n < 0 || n > 100;
+}
+/** Maps score to 0–100 bar width; supports gap scores from -100 to 100. */
 export function pulseScoreProgress(score: number | null | undefined): number {
   if (score === null || score === undefined || Number.isNaN(Number(score))) return 0;
-  return Math.max(0, Math.min(100, Number(score)));
+  const n = Number(score);
+  if (n < 0 || n > 100) {
+    return Math.max(0, Math.min(100, (n + 100) / 2));
+  }
+  return Math.max(0, Math.min(100, n));
 }
 
 export function pulseConditionClass(condition?: string | null): string {

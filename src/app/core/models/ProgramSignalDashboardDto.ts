@@ -35,10 +35,14 @@ export interface DashboardModeResponseDto {
   description: string | null;
   year: number;
   vcp: number;
-  programScore: number;
+  aiProgramScore: number;
+  manualProgramScore: number;
+  manualValue: number;
   vcpDirectionalMovement: number;
   vcpCondition: string;
+  manualCondition: string;
   vcpDescriptor: string;
+  manualDescriptor: string;
   vcpStrategicAction: string;
   signals: SignalCardDto[];
   primarySignals: SignalCardDto[];
