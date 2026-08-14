@@ -201,6 +201,12 @@ export function buildPulsePillarAreaChart(
       enabled: true,
       shared: true,
       intersect: false,
+      fixed: {
+        enabled: true,
+        position: 'centerRight',
+        offsetX: 0,
+        offsetY: 0
+      },
       followCursor: true,
       custom: ({ dataPointIndex }) => {
         const pillar = data[dataPointIndex];

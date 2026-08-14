@@ -430,6 +430,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
       tooltip: {
         enabled: true,
+                fixed: {
+          enabled: true,
+          position: 'bottomRight',
+          offsetX: 0,
+          offsetY: 0
+        },
         theme: 'light',
         custom: ({ dataPointIndex }) => {
           const pillar = data[dataPointIndex];
