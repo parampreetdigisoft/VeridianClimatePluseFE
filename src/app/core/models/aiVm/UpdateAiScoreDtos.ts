@@ -80,8 +80,7 @@ export interface UpdateAIDataSourceCitationDto {
 }
 
 export interface UpdateAIEstimatedQuestionScoreDto {
-  programID: number;
-  climateProgramID?: number;
+  climateProgramID: number;
   pillarID: number;
   questionID: number;
   year: number;
@@ -96,14 +95,10 @@ export interface UpdateAIEstimatedQuestionScoreDto {
   temporalScope?: string | null;
   distortionScreening?: string | null;
   relationalDependencies?: string | null;
-  stressPoliticalShock?: string | null;
-  stressEconomicShock?: string | null;
-  stressNarrativeShock?: string | null;
   stressGeopoliticalShock?: string | null;
   stressFinanceShock?: string | null;
   stressLegitimacyShock?: string | null;
   stressOverallResilienceShock?: string | null;
-  inequalityAdjustment?: string | null;
   inclusionEquityAdjustment?: string | null;
   opacityRisk?: string | null;
   redFlag?: string | null;
@@ -123,6 +118,7 @@ export interface AiEditableFieldConfig {
   type: AiFieldType;
   showInTable?: boolean;
   section?: 'scores' | 'summary' | 'evidence' | 'source';
+  max?: number;
 }
 
 export const CONFIDENCE_LEVEL_OPTIONS = ['Low', 'Medium', 'High'];

@@ -277,13 +277,16 @@ span:empty, div:empty{
     border-radius: 15px;
     background: rgba(8, 18, 42, 0.45);
 }
+
 tr.active_row  {
-    background-color: #087374;
+    background-color: #0beef1;
     color: #ffffff;
 }
-.active_row td .score_label_tab {
-    /* background-color: rgba(255,255,255,0.08) !important; */
+
+tr.active_ai {
+    background-color: rgba(196, 198, 214, 0.925) !important;
 }
+
 .last_data td {
     background-color: #087374;
     color: #ffffff;
@@ -310,7 +313,7 @@ button.btn-close:focus-visible {
     margin-top: 0;
 }
 .active_ai td {
-   background-color: rgba(9, 124, 231, 0.15) !important;
+   background-color: rgba(127, 139, 150, 0.15) !important;
 }
 
 /* AI KPI Summary */

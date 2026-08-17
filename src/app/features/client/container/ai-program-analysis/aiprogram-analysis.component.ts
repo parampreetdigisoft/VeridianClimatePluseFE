@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ViewProgramDetailComponent } from '../../features/view-program-detail/view-program-detail.component';
+import { ViewProgramDetailComponent } from 'src/app/shared/standAlone/view-program-detail/view-program-detail.component';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { AiProgramSummeryRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
@@ -157,4 +157,8 @@ export class AIProgramAnalysisComponent implements OnInit, OnDestroy {
       item.programAliasName?.toLowerCase().includes(term)
     );
 }
+
+  onProgramDetailSaved() {
+    this.getAIPrograms(this.currentPage);
+  }
 }

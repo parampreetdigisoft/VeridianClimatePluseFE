@@ -182,17 +182,18 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
             show: true,
             name: {
               fontSize: "14px",
-              color: "#666"
+              color: "#e4e7ed"
             },
             value: {
               fontSize: "22px",
               fontWeight: 600,
-              color: "#111",
+              color: "#878fa0",
               formatter: (val: number) => `${val}`
             },
             total: {
               show: true,
               label: "Manual vs AI",
+              color: "#e4e7ed",
               formatter: () => `${manual} / ${ai}`
             }
           }
@@ -200,7 +201,7 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
       },
       fill: {
         type: "solid",
-        colors: ["var(--Primary-Color)", "#d6ebc4"] // Manual, AI
+        colors: ["#325685", "#4068be"] // Manual, AI
       },
       stroke: {
         lineCap: "round"

@@ -1,21 +1,20 @@
-<div class="offcanvas-header">
-  <h5 id="offcanvasLabel">
-    Analysis of :
-    {{ question?.questionText ?? "" }}
-    <!-- <app-typing-text [text]="question?.questionText ?? ''" [speed]="40"
-            [numberOfWordAfterHideText]="25">
-        </app-typing-text> -->
-  </h5>
-
-  <button
-    type="button"
-    class="btn-close text-reset"
-    data-bs-dismiss="offcanvas"
-  ></button>
+<div class="offcanvas-header ai-detail-header">
+  <app-ai-edit-toolbar
+    [title]="'Analysis of: ' + (question?.questionText ?? '')"
+    [canEdit]="canEdit"
+    [editMode]="editMode"
+    [saving]="saving"
+    [editDisabled]="!hasQuestionScoreRecord"
+    editDisabledReason="No question score record is available to edit yet."
+    (edit)="startEdit()"
+    (cancel)="cancelEdit()"
+    (save)="saveChanges()">
+  </app-ai-edit-toolbar>
+  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
 </div>
 
 <ng-container>
-  <div class="cross-pillar_outter">
+  <div [class.ai-edit-surface]="editMode" class="cross-pillar_outter question-detail-content">
     <div class="integrate_outter">
       <div class="integrate_list">
         <table class="kpi_custom_table">
@@ -33,234 +32,74 @@
           <tbody>
             <tr class="last_data">
               <td>
-                <span
-                  class="confidence-badge"
-                  [ngClass]="(question?.confidenceLevel ?? 'low').toLowerCase()"
-                >
-                  {{ question?.confidenceLevel ?? "NA" }}
-                </span>
+                <app-ai-editable-field
+                  [editMode]="editMode"
+                  [showLabel]="false"
+                  [value]="getFieldValue('confidenceLevel')"
+                  (valueChange)="setFieldValue('confidenceLevel', $event)"
+                  fieldType="confidence">
+                </app-ai-editable-field>
               </td>
-              <td>{{ question?.sourcesConsulted ?? "" }}</td>
+              <td>
+                <app-ai-editable-field
+                  [editMode]="editMode"
+                  [showLabel]="false"
+                  [value]="getFieldValue('sourcesConsulted')"
+                  (valueChange)="setFieldValue('sourcesConsulted', $event)"
+                  fieldType="number">
+                </app-ai-editable-field>
+              </td>
+              <td>
+                <app-ai-editable-field
+                  *ngIf="editMode; else aiScoreView"
+                  [editMode]="true"
+                  [showLabel]="false"
+                  [value]="getFieldValue('aiScore')"
+                  (valueChange)="setFieldValue('aiScore', $event)"
+                  fieldType="score">
+                </app-ai-editable-field>
+                <ng-template #aiScoreView>
+                  <app-circular-score [value]="question?.aiScore ?? 0"></app-circular-score>
+                </ng-template>
+              </td>
+              <td>
+                <app-circular-score [value]="question?.evaluatorScore ?? 0"></app-circular-score>
+              </td>
+              <td>
+                <app-sparkline-score [value]="discrepancy(question)"></app-sparkline-score>
+              </td>
+              <td>
+                {{ (question?.year ?? 0) > 0 ? question?.year : 'NA' }}
+              </td>
               <td>
                 <app-circular-score
-                  [value]="question?.aiScore ?? 0"
-                ></app-circular-score>
-              </td>
-              <td>
-                <app-circular-score
-                  [value]="question?.evaluatorScore ?? 0"
-                ></app-circular-score>
-              </td>
-              <td>
-                <app-sparkline-score
-                  [value]="discrepancy(question)"
-                ></app-sparkline-score>
-              </td>
-              <td> 
-                  {{ (question?.year ?? 0) > 0 ? question?.year : 'NA' }}            
-              </td>
-              <td>
-                <app-circular-score
-                  [value]="
-                    ((question?.aiScore ?? 0) +
-                      (question?.evaluatorScore ?? 0)) /
-                    2
-                  "
-                ></app-circular-score>
+                  [value]="editMode ? averageScore : (((question?.aiScore ?? 0) + (question?.evaluatorScore ?? 0)) / 2)">
+                </app-circular-score>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="cross-pillar">
-        <h5>Evidence Summary</h5>
-        &nbsp;
-        <div *ngIf="question?.evidenceSummary">
-          <app-typing-text
-            [text]="question?.evidenceSummary ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="50"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-
-      <div class="cross-pillar">
-        <h5>Red Flag</h5>
-        &nbsp;
-        <div *ngIf="question?.redFlag">
-          <app-typing-text
-            [text]="question?.redFlag ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="10"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-
-      <div class="cross-pillar">
-        <h5>Inclusion & Equity Adjustment</h5>
-        &nbsp;
-        <div *ngIf="question?.inclusionEquityAdjustment">
-          <app-typing-text
-            [text]="question?.inclusionEquityAdjustment ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="10"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Structural Evidence</h5>
-        &nbsp;
-        <div *ngIf="question?.structuralEvidence">
-          <app-typing-text
-            [text]="question?.structuralEvidence ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="50"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Operational Evidence</h5>
-        &nbsp;
-        <div *ngIf="question?.operationalEvidence">
-          <app-typing-text
-            [text]="question?.operationalEvidence ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="50"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Outcome Evidence</h5>
-        &nbsp;
-        <div *ngIf="question?.outcomeEvidence">
-          <app-typing-text
-            [text]="question?.outcomeEvidence ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="50"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Perception Evidence</h5>
-        &nbsp;
-        <div *ngIf="question?.perceptionEvidence">
-          <app-typing-text
-            [text]="question?.perceptionEvidence ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="50"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Temporal Scope</h5>
-        &nbsp;
-        <div *ngIf="question?.temporalScope">
-          <app-typing-text
-            [text]="question?.temporalScope ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Distortion Screening</h5>
-        &nbsp;
-        <div *ngIf="question?.distortionScreening">
-          <app-typing-text
-            [text]="question?.distortionScreening ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Relational Dependencies</h5>
-        &nbsp;
-        <div *ngIf="question?.relationalDependencies">
-          <app-typing-text
-            [text]="question?.relationalDependencies ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Geopolitical Shock</h5>
-        &nbsp;
-        <div *ngIf="question?.stressGeopoliticalShock">
-          <app-typing-text
-            [text]="question?.stressGeopoliticalShock ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Finance Shock</h5>
-        &nbsp;
-        <div *ngIf="question?.stressFinanceShock">
-          <app-typing-text
-            [text]="question?.stressFinanceShock ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Legitimacy Shock</h5>
-        &nbsp;
-        <div *ngIf="question?.stressLegitimacyShock">
-          <app-typing-text
-            [text]="question?.stressLegitimacyShock ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Overall Resilience</h5>
-        &nbsp;
-        <div *ngIf="question?.stressOverallResilienceShock">
-          <app-typing-text
-            [text]="question?.stressOverallResilienceShock ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
-      </div>
-      <div class="cross-pillar">
-        <h5>Opacity Risk</h5>
-        &nbsp;
-        <div *ngIf="question?.opacityRisk">
-          <app-typing-text
-            [text]="question?.opacityRisk ?? ''"
-            [speed]="10"
-            [numberOfWordAfterHideText]="20"
-          >
-          </app-typing-text>
-        </div>
+      <div
+        *ngFor="let field of textFields"
+        [hidden]="!shouldShowField(field)"
+        class="cross-pillar">
+        <h5>{{ field.label }}</h5>
+        <app-ai-editable-field
+          [label]="field.label"
+          [showLabel]="false"
+          [editMode]="editMode"
+          [fieldType]="field.type"
+          [hideAfterWords]="50"
+          [value]="getFieldValue(field.key)"
+          (valueChange)="setFieldValue(field.key, $event)">
+        </app-ai-editable-field>
       </div>
     </div>
   </div>
 
-  &nbsp;
-
-  <div class="cus_table kpi_table">
+  <div [class.ai-edit-surface]="editMode" class="cus_table kpi_table question-source-table">
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -270,30 +109,26 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Source Type</td>
-            <td>{{ question?.sourceType ?? "" }}</td>
-          </tr>
-          <tr>
-            <td>Source Name</td>
-
+          <tr *ngFor="let field of sourceFields">
+            <td>{{ field.label }}</td>
             <td>
-              <a [href]="question?.sourceURL" target="_blank">
-                {{ question?.sourceName ?? "" }}
-              </a>
+              <app-ai-editable-field
+                *ngIf="field.key !== 'sourceName' || editMode; else sourceNameLink"
+                [label]="field.label"
+                [showLabel]="false"
+                [editMode]="editMode"
+                [fieldType]="field.type"
+                [trustLevels]="aiTrustLevels"
+                [value]="getFieldValue(field.key)"
+                [max]="field.max ?? null"
+                (valueChange)="setFieldValue(field.key, $event)">
+              </app-ai-editable-field>
+              <ng-template #sourceNameLink>
+                <a [href]="question?.sourceURL" target="_blank" rel="noopener noreferrer">
+                  {{ question?.sourceName ?? '' }}
+                </a>
+              </ng-template>
             </td>
-          </tr>
-          <tr>
-            <td>Data Year</td>
-            <td>{{ (question?.sourceDataYear ?? 0) > 0 ? question?.sourceDataYear : 'NA' }}</td>
-          </tr>
-          <tr>
-            <td>Trust Level</td>
-            <td>{{ getLabelDesById(question?.sourceHierarchyLevel ?? 0) }}</td>
-          </tr>
-          <tr>
-            <td>Data Extract</td>
-            <td>{{ question?.sourceDataExtract ?? "" }}</td>
           </tr>
         </tbody>
       </table>

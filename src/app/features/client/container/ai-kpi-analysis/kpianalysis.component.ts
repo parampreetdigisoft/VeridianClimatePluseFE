@@ -254,7 +254,7 @@ export class KPIAnalysisComponent implements OnInit {
         style: {
           fontSize: '11px',
           fontWeight: 700,
-          colors: ['#040e46']
+          colors: ['#E8EEF8']
         },
         background: {
           enabled: true,
@@ -270,7 +270,7 @@ export class KPIAnalysisComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#040e46']
+        colors: ['#3B9EFF']
       },
 
       fill: {
@@ -318,16 +318,16 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '11px',
             fontWeight: 500,
-            colors: '#253658'
+            colors: '#C9D6EA'
           }
         },
         axisBorder: {
           show: true,
-          color: '#e5e7eb'
+          color: 'rgba(92, 140, 200, 0.35)'
         },
         axisTicks: {
           show: true,
-          color: '#e5e7eb'
+          color: 'rgba(92, 140, 200, 0.35)'
         }
       },
 
@@ -337,7 +337,7 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '13px',
             fontWeight: 600,
-            color: '#83b0ee'
+            color: '#C9D6EA'
           }
         },
         min: 0,
@@ -347,13 +347,13 @@ export class KPIAnalysisComponent implements OnInit {
           formatter: (val) => val >= 0 ? `${Math.round(val)}` : '',
           style: {
             fontSize: '12px',
-            colors: '#3b5281'
+            colors: '#C9D6EA'
           }
         }
       },
 
       grid: {
-        borderColor: '#e5e7eb',
+        borderColor: 'rgba(92, 140, 200, 0.22)',
         strokeDashArray: 4,
         xaxis: {
           lines: { show: false }

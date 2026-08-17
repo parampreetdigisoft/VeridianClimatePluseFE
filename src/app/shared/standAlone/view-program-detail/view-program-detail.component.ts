@@ -309,26 +309,25 @@ export class ViewProgramDetailComponent implements OnChanges {
           hollow: {
             margin: 0,
             size: "40%",
-            background: "#25453f0d",
+            background: "rgba(16, 32, 68, 0.55)",
             image: undefined,
             position: "front",
-            // dropShadow: {
-            //   enabled: true,
-            //   top: 3,
-            //   left: 1,
-            //   blur: 5,
-            //   opacity: 0.44
-            // }
           },
           dataLabels: {
             show: true,
             name: {
               show: true,
               offsetY: -10,
+              color: '#C9D6EA',
+              fontSize: '13px',
+              fontWeight: 500,
             },
             value: {
               show: true,
               offsetY: 10,
+              color: '#E8EEF8',
+              fontSize: '15px',
+              fontWeight: 600,
               formatter: (value: number) => {
                 const v = Number(value);
                 return isNaN(v) ? '0.00' : v.toFixed(2);
@@ -337,19 +336,20 @@ export class ViewProgramDetailComponent implements OnChanges {
             total: {
               show: true,
               label: "Avg Score",
-              formatter: (value: any) => {
-                return `${avgProgress.toFixed(2)}`;
-              },
+              color: '#C9D6EA',
+              fontSize: '13px',
+              fontWeight: 600,
+              formatter: () => `${avgProgress.toFixed(2)}`,
             }
           }
         }
       },
-      colors: ["#51eea5", "#486363", "#383836d9", "#099176"],
+      colors: ['#3B9EFF', '#A8E063', '#FFB84D', '#5CD6C8'],
       labels: ["AI Score", "Evaluator Score", "Discrepancy", "Avg Score"],
       legend: {
         show: true,
         floating: true,
-        fontSize: "16px",
+        fontSize: "14px",
         position: "left",
         offsetX: 10,
         offsetY: -10,
@@ -357,7 +357,8 @@ export class ViewProgramDetailComponent implements OnChanges {
           toggleDataSeries: false,
         },
         labels: {
-          useSeriesColors: true
+          colors: '#E8EEF8',
+          useSeriesColors: false,
         },
         formatter: function (seriesName: any, opts: any) {
           return seriesName + ":  " + `${((opts.w.globals.series[opts.seriesIndex])).toFixed(2)}`;

@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "./app/shared/styles/detail-offcanvas.shared.css";
+@import "./app/shared/styles/ai-analysis-page.shared.css";
 @import "./app/shared/styles/vcp-dropdown.shared.css";
 @import "./app/shared/styles/vcp-modal.shared.css";
 
@@ -1136,4 +1137,19 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container {
     --Page-Pad-X: 28px;
     --Page-Pad-Y: 20px;
   }
+}
+
+.icon-refresh svg path {
+  fill: var(--Accent-Lime, #A8E063) !important;
+  transition: fill 0.2s ease;
+}
+
+.icon-refresh:hover svg path {
+  fill: #C5F066 !important;
+}
+
+.apexcharts-menu.apexcharts-menu-open {
+  background: var(--Surface-Elevated, #102044) !important;
+  border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
+  color: var(--Text-Color, #E8EEF8) !important;
 }

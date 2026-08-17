@@ -251,7 +251,7 @@
 }
 
 .pulse-insight-dashboard .pulse-ng-select.ng-select {
-  width: 100%;
+  width: 81%;
   position: relative;
   z-index: 115 !important;
 }
@@ -1155,17 +1155,16 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option-selected {
 }
 
 .pulse-insight-dashboard .loader_main {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 120;
-  min-height: calc(100vh - 120px);
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(5, 12, 32, 0.78);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border-radius: 18px;
+  background: rgba(5, 12, 32, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 0;
 }
 
 .pulse-insight-dashboard .loader_main .loader {

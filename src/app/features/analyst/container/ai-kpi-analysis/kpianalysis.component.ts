@@ -12,7 +12,8 @@ import {
   ApexStates,
   ChartComponent,
   ApexDataLabels,
-  ApexStroke
+  ApexStroke,
+  ApexGrid
 } from 'ng-apexcharts';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { AnalystService } from '../../analyst.service';
@@ -49,6 +50,7 @@ export type ChartOptions = {
   states: ApexStates;
   dataLabels: ApexDataLabels;
   stroke: ApexStroke;
+  grid: ApexGrid;
 };
 
 @Component({
@@ -183,9 +185,9 @@ export class KPIAnalysisComponent implements OnInit {
     );
 
     let colors = [
-      "#728da7",
-      "#85c451",
-      "#2c547b",
+      '#3B9EFF',
+      '#A8E063',
+      '#FFB84D',
     ]
 
     this.chartOptions = {
@@ -257,42 +259,64 @@ export class KPIAnalysisComponent implements OnInit {
           rotate: -45,
           rotateAlways: false,
           style: {
-            fontSize: '11px'
+            fontSize: '11px',
+            colors: '#C9D6EA'
           }
+        },
+        axisBorder: {
+          color: 'rgba(92, 140, 200, 0.35)'
+        },
+        axisTicks: {
+          color: 'rgba(92, 140, 200, 0.35)'
         }
       },
 
       yaxis: {
-        title: { text: 'Score' },
+        title: {
+          text: 'Score',
+          style: {
+            color: '#C9D6EA',
+            fontWeight: 600
+          }
+        },
         min: 0,
-        max: 100, // Add padding at top so 100% labels don't get cut off
+        max: 100,
         tickAmount: 5,
         labels: {
+          style: {
+            colors: '#C9D6EA'
+          },
           formatter: (val) => {
-            // Only show positive values
             return val >= 0 ? `${Math.round(val)}` : '';
           }
         }
       },
 
-      // 🎨 Disabled color for locked pillars
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shade: 'light',
-        type: 'vertical',
-        shadeIntensity: 0.3,
-        gradientToColors: [
-          "#728da7", // AI lighter
-          "#85c451", // Evaluator lighter
-          "#2c547b", // Discrepancy lighter
-        ],
-        inverseColors: false,
-        opacityFrom: 1,
-        opacityTo: 0.9,
-        stops: [0, 100]
-      }
-    },
+      grid: {
+        borderColor: 'rgba(92, 140, 200, 0.22)',
+        strokeDashArray: 4,
+        xaxis: {
+          lines: { show: false }
+        }
+      },
+
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'dark',
+          type: 'vertical',
+          shadeIntensity: 0.15,
+          gradientToColors: [
+            '#6CB8FF',
+            '#C5F066',
+            '#FFD080',
+          ],
+          inverseColors: false,
+          opacityFrom: 1,
+          opacityTo: 0.85,
+          stops: [0, 100]
+        }
+      },
       stroke: {
         show: true,
         width: 2,
@@ -390,7 +414,13 @@ export class KPIAnalysisComponent implements OnInit {
       legend: {
         position: 'bottom',
         horizontalAlign: 'center',
-        offsetY: 0
+        offsetY: 0,
+        labels: {
+          colors: '#E8EEF8'
+        },
+        markers: {
+          strokeWidth: 0
+        }
       }
     };
   }

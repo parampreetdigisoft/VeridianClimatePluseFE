@@ -344,6 +344,10 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
     this.getAIPrograms(this.currentPage);
   }
 
+  onProgramDetailSaved() {
+    this.getAIPrograms(this.currentPage);
+  }
+
   reCalculateKpis() {
     this.isRecalcualteKpi = true;
 

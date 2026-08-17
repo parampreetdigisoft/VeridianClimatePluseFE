@@ -50,7 +50,7 @@
         <div class="pulse-panel-head">
           <h3>AI Program Performance</h3>
           <div class="pulse-legend">
-            <span class="pulse-legend-item"><i class="dot dot-green"></i> AI Score</span>
+            <span class="pulse-legend-item"><i class="dot dot-green"></i>Score</span>
           </div>
         </div>
         <div class="pulse-chart-wrap" *ngIf="pillarChartOptions?.series?.length; else emptyPillar">
@@ -147,7 +147,7 @@
           <div class="pulse-kpi-score-row">
             <strong class="pulse-kpi-score">{{ formatScore(kpi.aiScore) }}</strong>
             <span class="pulse-kpi-unit">/ 100</span>
-            <span class="pulse-kpi-score-label">AI Score</span>
+            <span class="pulse-kpi-score-label">Score</span>
           </div>
 
           <div class="pulse-kpi-track" *ngIf="kpi.aiScore != null">
@@ -193,7 +193,7 @@
       <div class="modal-body">
         <div class="pulse-kpi-detail-stats">
           <div class="pulse-kpi-detail-stat">
-            <span>AI Score</span>
+            <span>Score</span>
             <strong class="score-ai">{{ formatScore(kpi.aiScore) }}</strong>
           </div>
           <div class="pulse-kpi-detail-stat">
@@ -210,11 +210,6 @@
         <div class="pulse-kpi-detail-block">
           <h6><i class="bi bi-info-circle"></i> Interpretation Condition</h6>
           <p>{{ kpi.interpretation || 'No interpretation available.' }}</p>
-        </div>
-
-        <div class="pulse-kpi-detail-block" *ngIf="kpi.narrative">
-          <h6><i class="bi bi-compass"></i> Strategic Action</h6>
-          <p>{{ kpi.narrative }}</p>
         </div>
       </div>
     </div>

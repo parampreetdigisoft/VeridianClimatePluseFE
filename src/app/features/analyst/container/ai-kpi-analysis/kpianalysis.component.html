@@ -27,6 +27,7 @@
             </ng-template>
           </ng-select>
           <a
+            class="icon-refresh"
             style="cursor: pointer"
             [matTooltip]="'Refresh..'"
             (click)="getAIProgramPillars(); $event.preventDefault()"
@@ -78,6 +79,7 @@
       [states]="chartOptions.states!"
       [stroke]="chartOptions.stroke!"
       [dataLabels]="chartOptions.dataLabels!"
+      [grid]="chartOptions.grid!"
     ></apx-chart>
   </div>
   <div
