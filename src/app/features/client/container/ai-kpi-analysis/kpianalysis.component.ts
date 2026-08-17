@@ -32,6 +32,7 @@ import { ViewAiPillarDetailsComponent } from '../../features/view-ai-pillar-deta
 import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestPdfDto';
 import { CommonService } from 'src/app/core/services/common.service';
 import { buildAiKpiClientProgressTooltipHtml } from 'src/app/core/constants/ai-kpi-pillar-tooltip.util';
+import { ahiScoreColor, VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -228,9 +229,12 @@ export class KPIAnalysisComponent implements OnInit {
         data: aiSeries
       }],
 
+      colors: [VCP_CHART.primary],
+
       chart: {
         type: 'area',
         height: 420,
+        background: 'transparent',
         toolbar: { show: false },
         zoom: { enabled: false },
         animations: {
@@ -259,11 +263,11 @@ export class KPIAnalysisComponent implements OnInit {
         },
         background: {
           enabled: true,
-          foreColor: '#ffffff',
+          foreColor: '#E8EEF8',
           padding: 6,
-          borderRadius: 4,
+          borderRadius: 6,
           borderWidth: 1,
-          borderColor: '#7f8feb',
+          borderColor: 'rgba(92, 140, 200, 0.35)',
           opacity: 0.95
         }
       },
@@ -278,33 +282,21 @@ export class KPIAnalysisComponent implements OnInit {
         type: 'gradient',
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.2,
-          stops: [0, 90, 100],
+          opacityFrom: 0.55,
+          opacityTo: 0.06,
+          stops: [0, 85, 100],
           colorStops: [
-            {
-              offset: 0,
-              color: '#5975c2',
-              opacity: 0.8
-            },
-            {
-              offset: 50,
-              color: '#78bef7',
-              opacity: 0.5
-            },
-            {
-              offset: 100,
-              color: '#a5bef5',
-              opacity: 0.2
-            }
+            { offset: 0, color: VCP_CHART.primary, opacity: 0.65 },
+            { offset: 50, color: VCP_CHART.primaryMid, opacity: 0.3 },
+            { offset: 100, color: VCP_CHART.deep, opacity: 0.04 }
           ]
         }
       },
 
       markers: {
         size: data.map(p => p.isAccess ? 6 : 4),
-        colors: data.map(p => p.isAccess ? this.PillarColorByScore(p) : '#d3d3d3'),
-        strokeColors: '#fff',
+        colors: data.map(p => p.isAccess ? this.PillarColorByScore(p) : '#6b7c93'),
+        strokeColors: VCP_CHART.deep,
         strokeWidth: 2,
         hover: {
           size: 8,
@@ -383,27 +375,7 @@ export class KPIAnalysisComponent implements OnInit {
   }
 
   PillarColorByScore(pillar: any): string {
-    let score = pillar.aiProgress;
-    const colors = [
-      "#E3ECF7", // very light blue
-      "#C9DBF0",
-      "#AFC9E9",
-      "#95B8E2",
-      "#7BA6DB",
-      "#053168",
-      "#314e74",
-      "#28374e",
-      "#14213a",
-      "#030b13"  // deep navy (highest)
-    ];
-
-    if (score === null || score === undefined || isNaN(score)) {
-      return "#d3d3d3";
-    }
-
-    const safeScore = Math.min(Math.max(score, 0), 100);
-    const index = Math.min(Math.floor(safeScore / 10), colors.length - 1);
-    return colors[index];
+    return ahiScoreColor(pillar.aiProgress ?? 0);
   }
 
   buildUniqueCategories(data: { pillarName: string }[]): string[] {

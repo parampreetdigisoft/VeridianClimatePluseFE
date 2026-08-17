@@ -550,28 +550,28 @@ padding-right: 40px;
 .inner_content_area:has(app-chat-container) {
     padding: 0 !important;
 }
-.city_card_outter {
+.program_card_outter {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 20px;
     height: 100%;
 }
-.city_card {
+.program_card {
     flex: 1;
 }
-.city_card_ul {
+.program_card_ul {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 5px;
 }
-.city_card_ul li {
+.program_card_ul li {
     background-color: var(--Primary-Color);
     padding: 3px 10px;
     border-radius: 5px;
     color: #fff;
     font-size: 14px;
 }
-.city_card_img .score {
+.program_card_img .score {
     background: var(--VCP-Gradient);
     color: #ffffff;
     display: inline-block;
@@ -582,30 +582,30 @@ padding-right: 40px;
     left: 10px;
     top: 10px;
 }
-.city_cards_p {
+.program_cards_p {
     display: flex;
     align-items: center;
     font-weight: 600;
     grid-gap: 3px;
 }
-.city_cards_p path {
+.program_cards_p path {
     fill: var(--Primary-Color);
 }
-.city_cards_disc {
+.program_cards_disc {
     margin: 10px 0 15px;
 }
-.city_card_outter img {
+.program_card_outter img {
     max-width: 400px;
     width: 100%;
     border-radius: 18px;
     height: 100%;
     object-fit: cover;
 }
-.city_card_inner {
+.program_card_inner {
     padding:0px;
 }
 
-.city_cards_h1 {
+.program_cards_h1 {
     font-size: 30px;
     line-height: normal;
     font-weight: 600;
@@ -617,7 +617,7 @@ padding-right: 40px;
     grid-gap: 10px;
     flex-wrap: wrap;
 }
-.city_card_img , .table_col_one{
+.program_card_img , .table_col_one{
     position: relative;
 }
 

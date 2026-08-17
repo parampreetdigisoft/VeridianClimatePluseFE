@@ -30,20 +30,20 @@
   border: 1px solid rgba(59, 158, 255, 0.35);
 }
 
-::ng-deep .kpi_sidebar app-view-client-kpi-layer .city_card_outter .city_card_img img {
+::ng-deep .kpi_sidebar app-view-client-kpi-layer .program_card_outter .program_card_img img {
   max-width: 300px;
 }
 
-::ng-deep .kpi_sidebar app-view-client-kpi-layer .city_card_outter .city_card_inner {
+::ng-deep .kpi_sidebar app-view-client-kpi-layer .program_card_outter .program_card_inner {
   padding: 10px 0;
 }
 
-::ng-deep .kpi_sidebar app-view-client-kpi-layer .city_card_outter .city_card_inner .city_cards_h1 {
+::ng-deep .kpi_sidebar app-view-client-kpi-layer .program_card_outter .program_card_inner .program_cards_h1 {
   font-size: 24px;
   color: var(--Text-Color, #E8EEF8);
 }
 
-::ng-deep .kpi_sidebar .city_cards_disc {
+::ng-deep .kpi_sidebar .program_cards_disc {
   margin: 10px 0 0 !important;
   font-size: 14px;
   color: var(--Light-Text-Color, #9AADC4);

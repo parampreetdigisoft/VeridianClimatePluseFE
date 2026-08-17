@@ -15,6 +15,7 @@ import { AiComputationService } from 'src/app/core/services/ai-computation.servi
 import { UserService } from 'src/app/core/services/user.service';
 import { UserRole } from 'src/app/core/enums/UserRole';
 import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from 'src/app/core/models/SummarizeKpiDto';
+import { VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -163,6 +164,7 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
       chart: {
         height: 360,
         type: "radialBar",
+        background: 'transparent',
         toolbar: {
           show: false
         }
@@ -172,28 +174,29 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
           startAngle: -135,
           endAngle: 225,
           hollow: {
-            size: "55%"
+            size: "55%",
+            background: "transparent",
           },
           track: {
-            background: "#f2f2f2",
+            background: "rgba(92, 140, 200, 0.12)",
             strokeWidth: "100%"
           },
           dataLabels: {
             show: true,
             name: {
               fontSize: "14px",
-              color: "#e4e7ed"
+              color: VCP_CHART.textMuted
             },
             value: {
               fontSize: "22px",
               fontWeight: 600,
-              color: "#878fa0",
+              color: VCP_CHART.textMuted,
               formatter: (val: number) => `${val}`
             },
             total: {
               show: true,
               label: "Manual vs AI",
-              color: "#e4e7ed",
+              color: VCP_CHART.textMuted,
               formatter: () => `${manual} / ${ai}`
             }
           }
@@ -201,7 +204,7 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
       },
       fill: {
         type: "solid",
-        colors: ["#325685", "#4068be"] // Manual, AI
+        colors: [VCP_CHART.primaryMid, VCP_CHART.primary]
       },
       stroke: {
         lineCap: "round"

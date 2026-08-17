@@ -74,12 +74,12 @@
 
 					<th *ngFor="let program of chartTableData[0].programValues">
 						<div class="card_title">
-							<h1 class="city_cards_h1">{{ program.programName }}</h1>
+							<h1 class="program_cards_h1">{{ program.programName }}</h1>
 							<div class="header_Score">
-								<p class="city_cards_p">
+								<p class="program_cards_p">
 									Evaluation : {{ getProgramScore(program.climateProgramID) }}
 								</p>
-								<p *ngIf="isAiViewEnabled" class="city_cards_p">
+								<p *ngIf="isAiViewEnabled" class="program_cards_p">
 									AI Score : {{ getProgramScore(program.climateProgramID,true) }}
 								</p>
 							</div>
@@ -89,16 +89,16 @@
 
 					<th *ngIf="!isAiViewEnabled">
 						<div class="card_title">
-							<h1 class="city_cards_h1">Peer Group</h1>
-							<p class="city_cards_p">
+							<h1 class="program_cards_h1">Peer Group</h1>
+							<p class="program_cards_p">
 								Score : {{ getPeerScore() }}
 							</p>
 						</div>
 					</th>
 					<th>
 						<div class="card_title">
-							<h1 class="city_cards_h1">Action</h1>
-							<p class="city_cards_p">
+							<h1 class="program_cards_h1">Action</h1>
+							<p class="program_cards_p">
 								Details
 							</p>
 						</div>

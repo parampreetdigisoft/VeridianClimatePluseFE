@@ -1,21 +1,21 @@
-.city_card_outter {
+.program_card_outter {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 20px;
     height: 100%;
 }
 
-.city_card {
+.program_card {
     flex: 1;
 }
 
-.city_card_ul {
+.program_card_ul {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 5px;
 }
 
-.city_card_ul li {
+.program_card_ul li {
     background-color: rgb(48 74 67);
     padding: 3px 10px;
     border-radius: 5px;
@@ -23,7 +23,7 @@
     font-size: 14px;
 }
 
-.city_card_img .score {
+.program_card_img .score {
     background-color: #A8E063;
     color: #ffffff;
     display: inline-block;
@@ -35,33 +35,33 @@
     top: 10px;
 }
 
-.city_cards_p {
+.program_cards_p {
     display: flex;
     align-items: center;
     font-weight: 600;
     grid-gap: 3px;
 }
 
-.city_cards_p path {
+.program_cards_p path {
     fill: rgb(48 74 67);
 }
 
-.city_cards_disc {
+.program_cards_disc {
     margin: 10px 0 15px;
 }
 
-.city_card_outter img {
+.program_card_outter img {
     max-width: 400px;
     border-radius: 18px;
     height: 100%;
     object-fit: cover;
 }
 
-.city_card_inner {
+.program_card_inner {
     padding: 20px 0px;
 }
 
-.city_cards_h1 {
+.program_cards_h1 {
     font-size: 30px;
     line-height: normal;
     font-weight: 600;
@@ -75,7 +75,7 @@
     flex-wrap: wrap;
 }
 
-.city_card_img,
+.program_card_img,
 .table_col_one {
     position: relative;
 }
@@ -202,7 +202,22 @@ span:empty, div:empty{
 .integrate_outter .outer_graph {
     width: 300px;
     max-width: 100%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
 }
+
+.integrate_outter .outer_graph #card,
+.integrate_outter .outer_graph #chart {
+    background: transparent;
+}
+
+::ng-deep .integrate_outter .outer_graph .apexcharts-canvas,
+::ng-deep .integrate_outter .outer_graph .apexcharts-svg {
+    background: transparent !important;
+}
+
 ::ng-deep .integrate_outter .outer_graph ag-charts{
     height: 270px !important;
 }
@@ -278,13 +293,18 @@ span:empty, div:empty{
     background: rgba(8, 18, 42, 0.45);
 }
 
-tr.active_row  {
-    background-color: #0beef1;
-    color: #ffffff;
+tr.active_row,
+tr.active_row td {
+    background-color: rgba(59, 158, 255, 0.22) !important;
+    color: #E8EEF8 !important;
 }
 
 tr.active_ai {
-    background-color: rgba(196, 198, 214, 0.925) !important;
+    background-color: rgba(168, 224, 99, 0.14) !important;
+}
+
+tr.active_ai td {
+   background-color: rgba(168, 224, 99, 0.14) !important;
 }
 
 .last_data td {
@@ -311,9 +331,6 @@ button.btn-close:focus-visible {
 }
 ::ng-deep .kpi_sidebar .sidebar_table .bold_num {
     margin-top: 0;
-}
-.active_ai td {
-   background-color: rgba(127, 139, 150, 0.15) !important;
 }
 
 /* AI KPI Summary */

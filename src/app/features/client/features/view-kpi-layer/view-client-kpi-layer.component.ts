@@ -17,6 +17,7 @@ import { AiComputationService } from 'src/app/core/services/ai-computation.servi
 import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from 'src/app/core/models/SummarizeKpiDto';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
 import { UserRole } from 'src/app/core/enums/UserRole';
+import { VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -145,90 +146,67 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
     return aiValue !== undefined && aiValue !== null ? aiValue : '0';
   }
 
-  private getScoreColor(score: number): string {
-    if (score >= 75) return "#575c59";   // Green – strong
-    if (score >= 50) return "#f59e0b";   // Amber – moderate
-    return "#dc2626";                    // Red – weak
-  }
-
   ApexGetPieOptions() {
     const round = (val: number) =>
-    Math.round((val + Number.EPSILON) * 100) / 100;
+      Math.round((val + Number.EPSILON) * 100) / 100;
 
     const aiValue = this.selectedLayer?.aiCalValue5 ?? 0;
     const value = round(aiValue);
-    const scoreColor = this.getScoreColor(value);
+    const displayValue =
+      aiValue === 100 || aiValue === 0 ? aiValue.toFixed(0) : aiValue.toFixed(2);
 
     this.chartOptions = {
-      series: [value],
+      series: [Math.max(0, value)],
       chart: {
         height: 360,
-        type: "radialBar",
+        type: 'radialBar',
+        background: 'transparent',
         animations: {
           enabled: true,
-          easing: "easeinout",
-          speed: 900
+          easing: 'easeinout',
+          speed: 900,
         },
-        toolbar: { show: false }
+        toolbar: { show: false },
       },
-
       plotOptions: {
         radialBar: {
           startAngle: -135,
           endAngle: 225,
           hollow: {
             margin: 0,
-            size: "70%",
-            background: "#fff",
-            image: undefined,
-            position: "front",
-            dropShadow: {
-              enabled: true,
-              top: 3,
-              left: 0,
-              blur: 4,
-              opacity: 0.24
-            }
+            size: '70%',
+            background: 'transparent',
           },
           track: {
-            background: "#fff",
-            strokeWidth: "67%",
-            margin: 0, // margin is in pixels
-            dropShadow: {
-              enabled: true,
-              top: -3,
-              left: 0,
-              blur: 4,
-              opacity: 0.35
-            }
+            background: 'rgba(92, 140, 200, 0.12)',
+            strokeWidth: '67%',
+            margin: 0,
           },
           dataLabels: {
             show: true,
             name: {
               offsetY: -10,
               show: true,
-              color: "#888",
-              fontSize: "17px"
+              color: VCP_CHART.textMuted,
+              fontSize: '17px',
             },
             value: {
-              formatter: function (val) {
-                return val.toString();
-              },
-              color: "#111",
-              fontSize: "36px",
-              show: true
-            }
-          }
-        }
+              formatter: () => displayValue,
+              color: VCP_CHART.text,
+              fontSize: '36px',
+              show: true,
+            },
+          },
+        },
       },
       fill: {
-        type: "solid",
-        colors: ["var(--Secondary-Color)"]
+        type: 'solid',
+        colors: [VCP_CHART.primary],
       },
       stroke: {
-        lineCap: "round"
+        lineCap: 'round',
       },
-      labels: ["Score"]
+      labels: ['Score'],
     };
   }
 

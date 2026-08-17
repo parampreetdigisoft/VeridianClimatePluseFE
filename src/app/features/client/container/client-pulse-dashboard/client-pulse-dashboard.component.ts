@@ -143,7 +143,7 @@ export class ClientPulseDashboardComponent implements OnInit {
           pillarName: p.pillarName || `Pillar ${index + 1}`,
           displayOrder: p.displayOrder ?? index,
           evaluationValue: 0,
-          aiValue: Number(p.aiScore ?? 0),
+          aiValue: Number(p.aiProgress ?? 0),
         }));
         this.refreshDerivedViews();
       },

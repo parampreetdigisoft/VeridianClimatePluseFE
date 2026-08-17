@@ -79,7 +79,7 @@
   margin-top: 8px;
 }
 
-.city_card_outter {
+.program_card_outter {
   display: flex;
   flex-direction: column;
   grid-gap: 0;
@@ -92,7 +92,7 @@
   width: 100%;
 }
 
-.compare_piller .city_card {
+.compare_piller .program_card {
   padding: 0;
 }
 
@@ -103,12 +103,12 @@
   font-size: 18px;
 }
 
-.compare_table.table .city_cards_disc {
+.compare_table.table .program_cards_disc {
   font-weight: 400;
   color: var(--Light-Text-Color, #9AADC4);
 }
 
-.compare_table.table .city_cards_h1,
+.compare_table.table .program_cards_h1,
 .cross_city .program_header_name {
   font-size: 18px;
   line-height: 1.3;
@@ -141,7 +141,7 @@
   width: 100%;
 }
 
-.compare_table thead th .city_card_outter,
+.compare_table thead th .program_card_outter,
 .compare_table thead th .program_card_outter {
   display: block;
   grid-gap: 0;
@@ -149,9 +149,9 @@
   flex-wrap: nowrap;
 }
 
-.compare_table thead th .city_card,
 .compare_table thead th .program_card,
-.compare_table thead th .city_card_inner,
+.compare_table thead th .program_card,
+.compare_table thead th .program_card_inner,
 .compare_table thead th .program_card_inner,
 .compare_table thead th .melbourne-card-text {
   background: transparent !important;
@@ -179,7 +179,7 @@
   font-size: 18px;
 }
 
-.city_cards_p {
+.program_cards_p {
   font-size: 13px;
   background-color: rgba(76, 175, 80, 0.2);
   color: var(--Accent-Lime, #A8E063);

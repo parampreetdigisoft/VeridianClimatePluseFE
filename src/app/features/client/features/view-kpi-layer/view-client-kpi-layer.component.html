@@ -10,8 +10,7 @@
                 <div class="program_card_img">
                     <img [src]="urlBase+program?.image " [alt]="'Profile Image'" (error)="onImgError($event)" />
                     <div class="score">
-                        Evaluation : {{ getEvaluationCalculatedValue }} , AI : {{ getAiCalculatedValue }}
-
+                        Score : {{ getAiCalculatedValue }}
                     </div>
                 </div>
                 <div class="program_card">
