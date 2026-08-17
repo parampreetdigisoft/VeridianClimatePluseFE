@@ -73,27 +73,15 @@
 
 
 					<th *ngFor="let program of chartTableData[0].programValues">
-						<div class="program_pillar compare_piller">
-							<div class="position-relative city_card_outter">
-								<div class="city_card">
-									<div class="city_card_inner">
-										<div class="melbourne-card-text">
-											<div class="card_title">
-												<h1 class="city_cards_h1">{{ program.programName }}</h1>
-												<div class="header_Score">
-													<p class="city_cards_p">
-														Evaluation : {{ getProgramScore(program.climateProgramID) }}
-													</p>
-													<p *ngIf="isAiViewEnabled" class="city_cards_p">
-														AI Score : {{ getProgramScore(program.climateProgramID,true) }}
-													</p>
-												</div>
-
-
-											</div>
-										</div>
-									</div>
-								</div>
+						<div class="card_title">
+							<h1 class="city_cards_h1">{{ program.programName }}</h1>
+							<div class="header_Score">
+								<p class="city_cards_p">
+									Evaluation : {{ getProgramScore(program.climateProgramID) }}
+								</p>
+								<p *ngIf="isAiViewEnabled" class="city_cards_p">
+									AI Score : {{ getProgramScore(program.climateProgramID,true) }}
+								</p>
 							</div>
 						</div>
 					</th>

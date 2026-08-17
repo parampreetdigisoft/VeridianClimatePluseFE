@@ -1,4 +1,6 @@
 /* Default Bootstrap width is 400px */
+@import url('../../../../shared/styles/ai-program-comparison.shared.css');
+
 .custom-sidebar {
     width: 775px !important;
     /* 👈 set your desired width */

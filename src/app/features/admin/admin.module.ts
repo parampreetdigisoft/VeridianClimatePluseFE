@@ -16,12 +16,9 @@ import { AdminDashboardComponent } from './container/admin-dashboard/admin-dashb
 import { AdminPulseDashboardComponent } from './container/admin-pulse-dashboard/admin-pulse-dashboard.component';
 import { ComparisionComponent } from './container/comparision/comparision.component';
 import { TransterAssessmentComponent } from './features/transter-assessment/transter-assessment.component';
-import { KpiComparisionComponent } from './container/kpi-comparision/kpi-comparision.component';
-import { KpiLayersComponent } from './container/kpi-layers/kpi-layers.component';
 import { AddUpdateProgramComponent } from './features/add-update-program/add-update-program.component';
 import { ClientViewComponent } from './container/client-view/client-view.component';
 import { AddUpdateClientComponent } from './features/add-update-client/add-update-client.component';
-import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 import { ProgramsComponent } from './container/programs/programs.component';
 
 @NgModule({
@@ -42,7 +39,6 @@ import { ProgramsComponent } from './container/programs/programs.component';
     TransterAssessmentComponent,
     ClientViewComponent,
     AddUpdateClientComponent,
-    RealTimeOperationalStressComponent,
   ],
   imports: [
     CommonModule,

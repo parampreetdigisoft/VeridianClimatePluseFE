@@ -237,3 +237,19 @@ p.btn_spinner {
       width: 330px;
   }
 }
+
+/* ApexCharts custom tooltip — inline HTML controls bg/text colors */
+:host ::ng-deep .apexcharts-tooltip,
+:host ::ng-deep .apexcharts-tooltip.apexcharts-theme-light,
+:host ::ng-deep .apexcharts-tooltip.apexcharts-theme-dark {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  color: inherit !important;
+}
+
+:host ::ng-deep .apexcharts-tooltip .apexcharts-tooltip-series-group,
+:host ::ng-deep .apexcharts-tooltip .apexcharts-tooltip-title {
+  display: none !important;
+}

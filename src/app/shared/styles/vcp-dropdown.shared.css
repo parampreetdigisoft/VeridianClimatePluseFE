@@ -327,6 +327,29 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   transition: background-color 0.16s ease, color 0.16s ease;
 }
 
+/* Scrollable modals: keep ng-select panel in DOM — do not use appendTo="body" */
+.modal_design .modal-body .ng-select,
+.pillar-modal-body .ng-select {
+  position: relative;
+}
+
+.modal_design .modal-body .ng-select.ng-select-opened,
+.pillar-modal-body .ng-select.ng-select-opened {
+  z-index: 20051;
+}
+
+.modal_design .modal-body .ng-select .ng-dropdown-panel,
+.pillar-modal-body .ng-select .ng-dropdown-panel {
+  z-index: 20050 !important;
+  animation: vcpDropdownIn 0.2s ease;
+  transform-origin: top center;
+}
+
+.modal_design .modal-body .ng-select .ng-dropdown-panel .ng-option,
+.pillar-modal-body .ng-select .ng-dropdown-panel .ng-option {
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
 /* ---- dashboard / filter shells ---- */
 .program_pillar .input_field .analyst_multi_select .ng-select-container,
 .program_pillar .input_field .form-control {

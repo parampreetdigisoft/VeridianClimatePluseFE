@@ -13,10 +13,10 @@
                 [clearable]="false"
                 [placeholder]="'Search by Program'" [searchFn]="customSearchFn">
                 <ng-template ng-label-tmp let-item="item">
-                  {{ item.programName }} {{ item.location }}
+                  {{ item.programName }},{{ item.location }}
                 </ng-template>
                 <ng-template ng-option-tmp let-item="item">
-                  {{ item.programName }} {{ item.location }}
+                  {{ item.programName }},{{ item.location }},{{ item.year }}
                 </ng-template>
               </ng-select>
             </div>

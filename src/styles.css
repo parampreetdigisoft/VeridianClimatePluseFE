@@ -163,7 +163,7 @@ padding: 12px 15px;
 
 .table_outer .table td
 {
-color: #dedef3 !important;
+color: #ffffff !important;
 font-size: 14px;
 font-style: normal;
 font-weight: 400;
@@ -760,7 +760,7 @@ padding-right: 40px;
     border: 1px solid var(--Border-Color);
     border-radius: var(--Radius-Md);
     background: var(--Surface-Color);
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .table_outer > .table > tbody > tr {
     border-bottom: 1px solid var(--Border-Color);

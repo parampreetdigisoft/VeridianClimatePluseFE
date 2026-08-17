@@ -36,6 +36,7 @@ import { ViewAiPillarDetailsComponent } from '../../../../shared/standAlone/view
 import { RegenerateAiScoreAndAddViewerComponent } from 'src/app/shared/standAlone/regenerate-ai-score-and-add-viewer/regenerate-ai-score-and-add-viewer.component';
 import { UtcToLocalTooltipDirective } from 'src/app/shared/directives/utc-to-local-tooltip.directive';
 import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestPdfDto';
+import { buildAiKpiPillarTooltipHtml } from 'src/app/core/constants/ai-kpi-pillar-tooltip.util';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -158,20 +159,20 @@ export class KPIAnalysisComponent implements OnInit {
   }
 
   buildPillarComparisonChart() {
-    // 🔹 Stable fake score generator for locked pillars (15–35)
+    // Stable fake score generator for locked pillars (15–35)
     const getLockedScore = (pillarId: number) => {
       return 15 + (pillarId * 7) % 20;
     };
 
-    // 1️⃣ Reorder: accessible first, locked last
+    // Reorder: accessible first, locked last
     const data = [...(this.aiProgramPillarResponseDto?.pillars ?? [])].sort(
       (a, b) => Number(b.isAccess) - Number(a.isAccess)
     );
 
-    // 2️⃣ Generate categories (pillar names)
+    //  Generate categories (pillar names)
     const categories = this.buildUniqueCategories(data);
 
-    // 3️⃣ Series (real data for access, placeholder for locked)
+    // Series (real data for access, placeholder for locked)
     const aiSeries = data.map(x =>
       x.isAccess ? (x.aiProgress ?? 0) : getLockedScore(x.pillarID)
     );
@@ -231,7 +232,7 @@ export class KPIAnalysisComponent implements OnInit {
         formatter: (val: number, opts) => {
           const pillar = data[opts.dataPointIndex];
 
-          // 🔒 Hide label for locked pillars
+          //  Hide label for locked pillars
           if (!pillar.isAccess) {
             return '';
           }
@@ -335,81 +336,8 @@ export class KPIAnalysisComponent implements OnInit {
       tooltip: {
         shared: true,
         intersect: false,
-        custom: ({ dataPointIndex }) => {
-          const pillar = data[dataPointIndex];
-
-          // 🔒 Locked pillar tooltip
-          if (!pillar.isAccess) {
-            return `
-            <div style="padding:10px; font-size:13px; color:#666; background: white; border: 1px solid #ddd; border-radius: 4px;">
-              <strong>${pillar.pillarName}</strong><br/>
-              🔒 Upgrade your plan to unlock real insights<br/>
-              
-            </div>
-          `;
-          }
-
-          // ✅ Accessible pillar tooltip
-          return `
-            <div style="
-              padding:12px 14px;
-              min-width:220px;
-              background:#ffffff;
-              border-radius:8px;
-              box-shadow:0 8px 24px rgba(0,0,0,0.12);
-              border:1px solid #e6e6e6;
-              font-family: Inter, system-ui, -apple-system, sans-serif;
-              font-size:13px;
-              transition: all .2s ease;
-            ">
-
-              <!-- Header -->
-              <div style="
-                font-weight:600;
-                font-size:14px;
-                color:#1f2937;
-                margin-bottom:8px;
-              ">
-                ${pillar.pillarName}
-              </div>
-
-              <!-- Metrics -->
-              <div style="display:grid; row-gap:6px;">
-
-                <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#FFFFFF;">AI Score</span>
-                  <span style="font-weight:600; color:#2d5e56;">
-                    ${pillar.aiProgress?.toFixed(2) ?? '0.00'}
-                  </span>
-                </div>
-
-                <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#FFFFFF;">Evaluator</span>
-                  <span style="font-weight:600; color:#39539E;">
-                    ${pillar.evaluatorScore?.toFixed(2) ?? '0.00'}
-                  </span>
-                </div>
-
-                <div style="
-                  display:flex;
-                  justify-content:space-between;
-                  padding-top:6px;
-                  margin-top:6px;
-                  border-top:1px dashed #e5e7eb;
-                ">
-                  <span style="color:#FFFFFF;">Discrepancy</span>
-                  <span style="
-                    font-weight:600;
-                    color:${(pillar.discrepancy ?? 0) > 0 ? 'var(--Primary-Color)' : 'var(--Secondary-Color)'};
-                  ">
-                    ${pillar.discrepancy?.toFixed(2) ?? '0.00'}
-                  </span>
-                </div>
-
-              </div>
-            </div>
-          `;
-        }
+        theme: 'dark',
+        custom: ({ dataPointIndex }) => buildAiKpiPillarTooltipHtml(data[dataPointIndex]),
       },
       legend: {
         position: 'bottom',

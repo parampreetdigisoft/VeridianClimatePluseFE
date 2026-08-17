@@ -9,7 +9,6 @@ import { AssessmentViewResultComponent } from './container/assessment-view-resul
 import { AssignedProgramComponent } from './container/assigned-program/assigned-program.component';
 import { EvaluatorDashboardComponent } from './container/evaluator-dashboard/evaluator-dashboard.component';
 import { EvaluatorPulseDashboardComponent } from './container/evaluator-pulse-dashboard/evaluator-pulse-dashboard.component';
-import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 
 const routes: Routes = [
   {
@@ -17,8 +16,7 @@ const routes: Routes = [
     component: EvaluatorComponent,
     data: { roles: [] },
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
-      { path: "rosew-dashboard", component: RealTimeOperationalStressComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },       
       { path: 'dashboard', component: EvaluatorPulseDashboardComponent },
       { path: 'dashboard-classic', component: EvaluatorDashboardComponent },
       { path: 'assigned-program', component: AssignedProgramComponent },
@@ -49,7 +47,6 @@ const routes: Routes = [
     AssignedProgramComponent,
     EvaluatorDashboardComponent,
     AssessmentViewResultComponent,
-    RealTimeOperationalStressComponent
   ],
   imports: [
     CommonModule,

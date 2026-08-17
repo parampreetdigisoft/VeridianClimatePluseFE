@@ -3182,6 +3182,7 @@ aside.vcp-sidebar {
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
+  cursor: default;
 }
 .value {
   font-size: 14px;

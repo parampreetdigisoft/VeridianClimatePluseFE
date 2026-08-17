@@ -433,7 +433,7 @@
       <ng-container *ngIf="programSlidesLoading(); else glanceLoaded">
         <div class="sidebar-loading" aria-live="polite" aria-busy="true">
           <div class="sidebar-loading__spinner" aria-hidden="true"></div>
-          <p class="sidebar-loading__text">{{ selectedProgram() ? 'Loading program intelligence…' : 'Loading global score…' }}</p>
+          <p class="sidebar-loading__text">{{ selectedProgram() ? 'Loading program intelligence…' : 'Loading Average score…' }}</p>
           <div class="sidebar-loading__skeleton">
             <span class="sidebar-loading__bar"></span>
             <span class="sidebar-loading__bar"></span>
@@ -443,7 +443,7 @@
       </ng-container>
       <ng-template #glanceLoaded>
       <ng-container *ngIf="programSlide; else glanceLoadFailed">
-      <!-- Health / Global Score -->
+      <!-- Health / Average Score -->
       <div class="stat-row">
         <div class="left">
           <p class="label">{{ glanceScoreLabel() }}</p>
@@ -508,7 +508,7 @@
       </ng-template>
       <ng-template #glanceLoadFailed>
         <div class="sidebar-empty-state">
-          <p class="sidebar-empty-state__text">{{ selectedProgram() ? 'No data available for this program.' : 'Unable to load global score right now.' }}</p>
+          <p class="sidebar-empty-state__text">{{ selectedProgram() ? 'No data available for this program.' : 'Unable to load average score right now.' }}</p>
         </div>
       </ng-template>
     </div>
@@ -526,18 +526,14 @@
           </div>
         </div>
 
-        <ng-container *ngIf="!selectedProgram()">
-          <p class="pillar-empty pillar-empty--prompt">Select a program to view pillar scores.</p>
-        </ng-container>
 
-        <ng-container *ngIf="selectedProgram()">
-          <ng-container *ngIf="pillarsPanelLoading(); else pillarsLoaded">
-            <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
-              <div class="sidebar-loading__spinner" aria-hidden="true"></div>
-              <p class="sidebar-loading__text">Loading pillars…</p>
-            </div>
-          </ng-container>
-          <ng-template #pillarsLoaded>
+        <ng-container *ngIf="pillarsPanelLoading(); else pillarsLoaded">
+          <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
+            <div class="sidebar-loading__spinner" aria-hidden="true"></div>
+            <p class="sidebar-loading__text">Loading pillars…</p>
+          </div>
+        </ng-container>
+        <ng-template #pillarsLoaded>
         <div class="pillar-list" *ngIf="sidebarPillars.length; else noPillarData">
           <div class="pillar-row" *ngFor="let p of sidebarPillars; trackBy: trackPillarId">
             <div class="pillar-img-wrap"
@@ -552,9 +548,9 @@
                 <div class="info">
                   <div class="name"
                     [matTooltip]="p.pillarName"
-                    [matTooltipDisabled]="!isPillarNameTruncated(p.pillarName)"
+                    [matTooltipDisabled]="!shouldShowPillarNameTooltip(p.pillarName)"
                     matTooltipPosition="above">
-                    {{ truncatePillarName(p.pillarName) }}
+                    {{ p.pillarName }}
                   </div>
                 </div>
               </div>
@@ -570,10 +566,9 @@
           </div>
         </div>
         <ng-template #noPillarData>
-          <p class="pillar-empty">No pillar data available for this program.</p>
+          <p class="pillar-empty">No pillar data available right now.</p>
         </ng-template>
-          </ng-template>
-        </ng-container>
+        </ng-template>
       </div>
     </section>
     

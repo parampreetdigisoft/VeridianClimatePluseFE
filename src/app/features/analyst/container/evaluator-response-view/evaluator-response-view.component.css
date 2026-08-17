@@ -24,7 +24,7 @@
     font-weight: 700 !important;
 }
 .user_name_active{
-    color:var(--Primary-Color) !important;
+    color:#b5c4d6 !important;
 }
 
 .no_result_found {
@@ -56,7 +56,7 @@
 }
 
 .read-more {
-  color: #12352f;
+  color:#37b8a2;
   font-weight: 600;
   cursor: pointer;
   font-size: 13px;

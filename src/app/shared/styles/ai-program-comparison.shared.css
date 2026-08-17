@@ -5,6 +5,36 @@
   min-height: 360px;
 }
 
+/*
+ * Match prior 80% browser-zoom appearance at 100% zoom.
+ * Scoped to this wrapper so kpi-comparision (which also imports shared styles) is unaffected.
+ */
+.vcp-program-comparison-root {
+  zoom: 0.8;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@supports not (zoom: 0.8) {
+  .vcp-program-comparison-root {
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: 125%;
+  }
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.limit-exceed-message--inline {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
 .page_head_outter p {
   color: var(--Light-Text-Color, #9AADC4) !important;
 }
@@ -87,9 +117,55 @@
   margin: 0;
 }
 
+.compare_table thead th:not(:first-child) {
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
 .cross_city .compare_table thead th:not(:first-child) {
   padding: 8px 10px;
   vertical-align: top;
+}
+
+/* Program column headers: avoid nested card box inside bordered th */
+.compare_table thead th .program_pillar,
+.compare_table thead th .program_piller,
+.compare_table thead th .compare_piller {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+}
+
+.compare_table thead th .city_card_outter,
+.compare_table thead th .program_card_outter {
+  display: block;
+  grid-gap: 0;
+  height: auto;
+  flex-wrap: nowrap;
+}
+
+.compare_table thead th .city_card,
+.compare_table thead th .program_card,
+.compare_table thead th .city_card_inner,
+.compare_table thead th .program_card_inner,
+.compare_table thead th .melbourne-card-text {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.compare_table thead th .card_title,
+.compare_table thead th .card_title--compact {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
 }
 
 .cross_city .card_title--compact {
@@ -275,10 +351,30 @@ tr.pillar_disabled {
 
 .comparison-wrapper {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 16px;
   align-items: stretch;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+}
+
+.kpi-section,
+.chart-section {
+  min-width: 0;
+}
+
+@media only screen and (min-width: 1100px) {
+  .comparison-wrapper {
+    grid-template-columns: minmax(260px, 32%) minmax(0, 1fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .comparison-wrapper {
+    grid-template-columns: minmax(280px, 30%) minmax(0, 1fr);
+    gap: 20px;
+  }
 }
 
 .chart-section {
@@ -288,6 +384,7 @@ tr.pillar_disabled {
   border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22));
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
   overflow: hidden;
+  min-height: 400px;
 }
 
 .chart-section ::ng-deep .apexcharts-canvas,
@@ -412,7 +509,7 @@ h6.city_pile {
   color: #FF8A65 !important;
 }
 
-@media only screen and (max-width: 1540px) {
+@media only screen and (max-width: 1099px) {
   .dashboard_number {
     grid-gap: 0;
     flex-direction: column-reverse;
@@ -420,21 +517,7 @@ h6.city_pile {
 
   .dashboard_number h4,
   .dashboard_number h5 {
-    line-height: 22px;
-    font-size: 17px;
-  }
-
-  h6.city_pile {
-    font-size: 12px;
-  }
-
-  .comparison-wrapper {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .comparison-wrapper {
-    grid-template-columns: 1fr;
+    line-height: 20px;
+    font-size: 15px;
   }
 }

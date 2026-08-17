@@ -43,7 +43,7 @@
   align-items: center;
   justify-content: center;
   width: 44px;
-  height: 44px;
+  height: 36px;
   border-radius: 12px;
   border: 1px solid var(--Border-Color);
   background: var(--Surface-Elevated);
@@ -56,9 +56,6 @@
   background: #132a52;
 }
 
-.ai-analysis-toolbar__refresh svg path {
-  fill: var(--Accent-Lime, #A8E063) !important;
-}
 
 /* Table polish */
 .compare_city_table.ai-analysis-table .table thead th {

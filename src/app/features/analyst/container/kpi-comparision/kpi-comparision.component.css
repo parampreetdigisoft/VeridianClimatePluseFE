@@ -1,4 +1,6 @@
 /* Default Bootstrap width is 400px */
+@import url('../../../../shared/styles/ai-program-comparison.shared.css');
+
 :host {
   display: block;
   position: relative;

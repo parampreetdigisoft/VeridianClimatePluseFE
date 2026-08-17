@@ -41,7 +41,6 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
   kpiPillarDetails: Record<number, AnalyticalLayerPillarMappingDTO[]> = {};
   selectedPillarByKpi: Record<number, number | null> = {};
   @ViewChild('fileInput') fileInput!: ElementRef;
-  @ViewChild('kpiSelectContainer') kpiSelectContainer?: ElementRef<HTMLElement>;
 
   constructor(private fb: FormBuilder, private adminService: AdminService) { }
 
@@ -317,15 +316,6 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
       item.layerCode?.toLowerCase().includes(term) ||
       item.layerName?.toLowerCase().includes(term)
     );
-  }
-
-  onKpiDropdownOpen() {
-    setTimeout(() => {
-      document.querySelectorAll('body > .ng-dropdown-panel').forEach((panel) => {
-        const element = panel as HTMLElement;
-        element.style.zIndex = '20050';
-      });
-    });
   }
 
   onKpiSelectionChange(selectedValues?: Array<number | string | { layerID?: number | string }> | null) {

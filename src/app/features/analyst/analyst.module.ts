@@ -12,7 +12,6 @@ import { EvaluatorResponseViewComponent } from './container/evaluator-response-v
 import { AnalystDashboardComponent } from './container/analyst-dashboard/analyst-dashboard.component';
 import { AnalystPulseDashboardComponent } from './container/analyst-pulse-dashboard/analyst-pulse-dashboard.component';
 import { ComparisionComponent } from './container/comparision/comparision.component';
-import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 const routes: Routes = [
   {
     path: '',
@@ -22,7 +21,6 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AnalystPulseDashboardComponent },
       { path: 'dashboard-classic', component: AnalystDashboardComponent },
-      { path: 'rosew-dashboard', component: RealTimeOperationalStressComponent },
       { path: 'assigned-program', component: AssignedProgramComponent },
       { path: 'evaluator-view', component: EvaluatorViewComponent },
       { path: 'evaluator-response/:assessmentUserID', component: EvaluatorResponsesComponent },
@@ -63,7 +61,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AnalystComponent,
-    RealTimeOperationalStressComponent,
     AssignedProgramComponent,
     EvaluatorViewComponent,
     AnalystAssessmentComponent,
