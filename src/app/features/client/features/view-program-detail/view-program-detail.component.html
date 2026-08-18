@@ -245,6 +245,26 @@
                             </app-typing-text>
                         </td>
                     </tr>
+                    <tr *ngIf="program?.keyFindings">
+                        <td><span class="score_label_tab">Key Findings</span></td>
+                        <td>
+                            <app-typing-text
+                                [text]="program!.keyFindings!"
+                                [speed]="5"
+                                [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr *ngIf="program?.recommendations">
+                        <td><span class="score_label_tab">Recommendations</span></td>
+                        <td>
+                            <app-typing-text
+                                [text]="program!.recommendations!"
+                                [speed]="5"
+                                [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

@@ -34,8 +34,6 @@ export type ChartOptions = {
 };
 
 const PROGRAM_EVIDENCE_FIELDS: AiEditableFieldConfig[] = [
-  { key: 'keyFindings', label: 'Key Findings', type: 'textarea', showInTable: true },
-  { key: 'recommendations', label: 'Recommendations', type: 'textarea', showInTable: true },
   { key: 'structuralEvidence', label: 'Structural Evidence', type: 'textarea', showInTable: true },
   { key: 'operationalEvidence', label: 'Operational Evidence', type: 'textarea', showInTable: true },
   { key: 'outcomeEvidence', label: 'Outcome Evidence', type: 'textarea', showInTable: true },
@@ -56,6 +54,8 @@ const PROGRAM_EVIDENCE_FIELDS: AiEditableFieldConfig[] = [
   { key: 'equityAssessment', label: 'Equity Assessment', type: 'textarea', showInTable: true },
   { key: 'strategicRecommendation', label: 'Strategic Recommendation', type: 'textarea', showInTable: true },
   { key: 'assessmentValueNote', label: 'Data Transparency Note', type: 'textarea', showInTable: true },
+  { key: 'keyFindings', label: 'Key Findings', type: 'textarea', showInTable: true },
+  { key: 'recommendations', label: 'Recommendations', type: 'textarea', showInTable: true },
 ];
 
 @Component({
