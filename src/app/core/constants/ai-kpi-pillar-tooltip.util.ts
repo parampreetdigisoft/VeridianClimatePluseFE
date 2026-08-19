@@ -59,7 +59,7 @@ export function buildAiKpiPillarTooltipHtml(pillar: AiKpiPillarTooltipPillar): s
           </span>
         </div>
         <div style="display: flex; justify-content: space-between; gap: 16px;">
-          <span style="color: ${VCP_CHART.textMuted};">Evaluator</span>
+          <span style="color: ${VCP_CHART.textMuted};">Evaluation</span>
           <span style="font-weight: 600; color: ${VCP_CHART.primary};">
             ${(pillar.evaluatorScore ?? 0).toFixed(2)}
           </span>

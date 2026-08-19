@@ -51,7 +51,7 @@ export const VCP_CHART = {
     '#A8E063',
     '#B8F26A',
     '#1D5D96',
-    '#0A2240',
+    '#4675af',
   ],
 
   /** Pillar bar chart (evaluator) — light to strong */
@@ -65,7 +65,7 @@ export const VCP_CHART = {
     '#A8E063',
     '#B8F26A',
     '#1D5D96',
-    '#0A2240',
+    '#396397',
   ],
 
   completionHigh: '#4CAF50',

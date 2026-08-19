@@ -197,7 +197,7 @@ export class KPIAnalysisComponent implements OnInit {
     this.chartOptions = {
       series: [
         { name: 'AI Score', data: aiSeries },
-        { name: 'Evaluator Score', data: evaluatorSeries },
+        { name: 'Evaluation Score', data: evaluatorSeries },
         { name: 'Discrepancy', data: discrepancySeries }
       ],
 

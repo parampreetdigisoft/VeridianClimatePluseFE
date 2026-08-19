@@ -99,14 +99,16 @@ export class KPIAnalysisComponent implements OnInit {
   getAiAccessProgram() {
     this.evaluatorService.getAiAccessProgram(this.userService.userInfo?.userID ?? 0).subscribe({
       next: (p) => {
-
         this.programs = p.result || [];
         if (this.programs?.length && !this.selectedProgram) {
           this.selectedProgram = this.programs[0].climateProgramID;
           this.getAIProgramPillars();
         }
-        else {
+        else if (!this.programs?.length) {
           this.toaster.showWarning("You don't have access of AI data");
+        }
+        else if (this.selectedProgram) {
+          this.getAIProgramPillars();
         }
       },
       error: () => {
@@ -180,7 +182,7 @@ export class KPIAnalysisComponent implements OnInit {
     this.chartOptions = {
       series: [
         { name: 'AI Score', data: aiSeries },
-        { name: 'Evaluator Score', data: evaluatorSeries },
+        { name: 'Evaluation Score', data: evaluatorSeries },
         { name: 'Discrepancy', data: discrepancySeries }
       ],
 

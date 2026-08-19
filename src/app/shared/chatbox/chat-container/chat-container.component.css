@@ -2136,6 +2136,21 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
 }
 
+.brief__body .markdown-body a,
+.brief__body a.chat-markdown-link {
+  color: #A8E063;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.brief__body .markdown-body a:hover,
+.brief__body a.chat-markdown-link:hover {
+  color: #4CAF50;
+  opacity: 0.9;
+}
+
 /* Streaming cursor */
 .stream-cursor {
   display: inline-block;
