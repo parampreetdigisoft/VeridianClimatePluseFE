@@ -14,6 +14,7 @@ import { ProgramPillarDashboardPillarValueDto } from 'src/app/core/models/AiProg
 import { GetProgramsSubmitionHistoryResponseDto } from 'src/app/core/models/ProgramHistoryDto';
 import { ProgramHistoryDto } from 'src/app/core/models/ProgramHistoryDto';
 import { PulseKpiCard } from './pulse-dashboard.models';
+import { UserRole } from 'src/app/core/enums/UserRole';
 import {
   DashboardInterpretationDto,
   DashboardModeResponseDto,
@@ -99,8 +100,19 @@ function truncateCategories(data: { pillarName: string }[]): string[] {
 
 export function buildPulsePillarAreaChart(
   pillars: ProgramPillarDashboardPillarValueDto[],
-  options: { showAi: boolean; showManual: boolean }
+  options: {
+    showAi: boolean;
+    showManual: boolean;
+    userRole?: UserRole | string;
+    isProgramUser?: boolean;
+  }
 ): Partial<PulseAreaChartOptions> {
+  const isProgramUser =
+    options.isProgramUser ||
+    options.userRole === UserRole.ProgramUser ||
+    (typeof options.userRole === 'string' && options.userRole.toLowerCase() === 'programuser');
+  const aiLabel = isProgramUser ? 'Score' : 'AI Score';
+
   const data = [...(pillars ?? [])];
   const categories = truncateCategories(data);
   const series: ApexAxisChartSeries = [];
@@ -113,11 +125,11 @@ export function buildPulsePillarAreaChart(
   }
   if (options.showAi) {
     series.push({
-      name: 'AI Score',
+      name: aiLabel,
       data: data.map((x) => Number(x.aiValue ?? 0)),
     });
   }
-
+  
   const colors = [
     ...(options.showManual ? [PULSE_THEME.blue] : []),
     ...(options.showAi ? [PULSE_THEME.green] : []),
@@ -268,7 +280,7 @@ export function buildPulsePillarAreaChart(
                   ${avgScore.toFixed(0)}
                 </div>
               </div>
-              ${showAi ? scoreBar('AI Score', aiVal, aiColor) : ''}
+              ${showAi ? scoreBar(aiLabel, aiVal, aiColor) : ''}
               ${showManual ? scoreBar('Manual Score', manualVal, manualColor) : ''}
               ${
                 showAi && showManual
@@ -493,8 +505,19 @@ export function buildPulseRadialChart(
 
 export function buildPulseProgressLineChart(
   programsHistory: GetProgramsSubmitionHistoryResponseDto[],
-  options: { showAi: boolean; showManual: boolean }
+  options: {
+    showAi: boolean;
+    showManual: boolean;
+    userRole?: UserRole | string;
+    isProgramUser?: boolean;
+  }
 ): Partial<PulseLineChartOptions> {
+  const isProgramUser =
+    options.isProgramUser ||
+    options.userRole === UserRole.ProgramUser ||
+    (typeof options.userRole === 'string' && options.userRole.toLowerCase() === 'programuser');
+  const aiLabel = isProgramUser ? 'Score' : 'AI Score';
+
   const categories = programsHistory.map((x) => x.programName);
   const series: ApexAxisChartSeries = [];
   const colors: string[] = [];
@@ -508,7 +531,7 @@ export function buildPulseProgressLineChart(
   }
   if (options.showAi) {
     series.push({
-      name: 'AI Score',
+      name: aiLabel,
       data: programsHistory.map((x) => x.aiScore ?? 0),
     });
     colors.push(PULSE_THEME.green);

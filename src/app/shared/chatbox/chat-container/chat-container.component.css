@@ -2138,17 +2138,47 @@
 
 .brief__body .markdown-body a,
 .brief__body a.chat-markdown-link {
-  color: #A8E063;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--Accent-Blue, #3B9EFF);
+  background: rgba(59, 158, 255, 0.12);
+  border: 1px solid rgba(59, 158, 255, 0.28);
+  padding: 1.5px 8px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: 500;
-  transition: color 0.15s ease, opacity 0.15s ease;
+  line-height: 1.45;
+  text-decoration: none !important;
+  word-break: break-word;
+  vertical-align: baseline;
+  margin: 1px 2px;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .brief__body .markdown-body a:hover,
 .brief__body a.chat-markdown-link:hover {
-  color: #4CAF50;
-  opacity: 0.9;
+  color: #ffffff;
+  background: rgba(59, 158, 255, 0.24);
+  border-color: rgba(59, 158, 255, 0.6);
+  box-shadow: 0 2px 8px rgba(59, 158, 255, 0.25);
+  text-decoration: none !important;
+}
+
+.brief__body .markdown-body a svg.chat-link-icon,
+.brief__body a.chat-markdown-link svg.chat-link-icon {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  stroke: currentColor;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.brief__body .markdown-body a:hover svg.chat-link-icon,
+.brief__body a.chat-markdown-link:hover svg.chat-link-icon {
+  opacity: 1;
+  transform: translate(1px, -1px);
 }
 
 /* Streaming cursor */
@@ -2394,6 +2424,47 @@
 ::ng-deep .markdown-body.cus_markdown-body p,
 ::ng-deep .markdown-body.cus_markdown-body ul {
   color: var(--vcp-text-muted);
+}
+
+::ng-deep .markdown-body.cus_markdown-body a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--Accent-Blue, #3B9EFF) !important;
+  background: rgba(59, 158, 255, 0.12) !important;
+  border: 1px solid rgba(59, 158, 255, 0.28) !important;
+  padding: 1.5px 8px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+  text-decoration: none !important;
+  word-break: break-word !important;
+  vertical-align: baseline !important;
+  margin: 1px 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+::ng-deep .markdown-body.cus_markdown-body a:hover {
+  color: #ffffff !important;
+  background: rgba(59, 158, 255, 0.24) !important;
+  border-color: rgba(59, 158, 255, 0.6) !important;
+  box-shadow: 0 2px 8px rgba(59, 158, 255, 0.25) !important;
+  text-decoration: none !important;
+}
+
+::ng-deep .markdown-body.cus_markdown-body a svg.chat-link-icon {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  stroke: currentColor;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+::ng-deep .markdown-body.cus_markdown-body a:hover svg.chat-link-icon {
+  opacity: 1;
+  transform: translate(1px, -1px);
 }
 
 /* ══════════════════════════════════════════════════════════════

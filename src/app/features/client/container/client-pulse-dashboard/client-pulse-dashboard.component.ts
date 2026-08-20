@@ -11,6 +11,7 @@ import { ToasterService } from 'src/app/core/services/toaster.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { ProgramHistoryDto } from 'src/app/core/models/ProgramHistoryDto';
+import { UserRole } from 'src/app/core/enums/UserRole';
 import { AiProgramPillarVM } from 'src/app/core/models/aiVm/AiProgramPillarResponseDto';
 import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestPdfDto';
 import { DashboardModeResponseDto } from 'src/app/core/models/ProgramSignalDashboardDto';
@@ -27,7 +28,8 @@ import {
   PulseAreaChartOptions,
   PulseRadialChartOptions,
   buildPulseKpiCards,
-  buildPulsePillarAreaChart
+  buildPulsePillarAreaChart,
+  getSignalAiScore,
 } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard-chart.util';
 import {
   PULSE_KPI_TABS,
@@ -217,6 +219,7 @@ export class ClientPulseDashboardComponent implements OnInit {
     this.pillarChartOptions = buildPulsePillarAreaChart(this.aiPillars, {
       showAi: true,
       showManual: false,
+      userRole: UserRole.ProgramUser,
     });
     this.radialChartOptions = this.buildPulseRadialChart(this.programHistory);
     this.buildIndexHero();
@@ -260,12 +263,22 @@ export class ClientPulseDashboardComponent implements OnInit {
   private buildIndexHero(): void {
     const program = this.programs?.find((p) => p.climateProgramID === this.selectedPrograms);
     const d = this.modeDashboard;
-    const avg =
-      this.aiPillars.length > 0
-        ? this.aiPillars.reduce((s, p) => s + Number(p.aiValue ?? 0), 0) / this.aiPillars.length
-        : Number(d?.vcp ?? 0);
-    const condition = d?.vcpCondition || (avg >= 70 ? 'Stable' : avg >= 40 ? 'Watch' : 'Critical');
     const signals = d?.primarySignals?.length ? d.primarySignals : d?.signals ?? [];
+    const vcpCard = this.kpiCards[0];
+    const adgCard = this.kpiCards[1];
+    const fcigCard = this.kpiCards[2];
+    const vcpScore =
+      vcpCard?.aiScore ??
+      (d ? Number(d.aiProgramScore ?? d.vcp ?? 0) : null) ??
+      (this.aiPillars.length > 0
+        ? this.aiPillars.reduce((s, p) => s + Number(p.aiValue ?? 0), 0) / this.aiPillars.length
+        : 0);
+    const adgScore = adgCard?.aiScore ?? getSignalAiScore(signals[1]) ?? 0;
+    const fcigScore = fcigCard?.aiScore ?? getSignalAiScore(signals[2]) ?? 0;
+    const condition =
+      d?.vcpCondition ||
+      vcpCard?.condition ||
+      (Number(vcpScore) >= 70 ? 'Stable' : Number(vcpScore) >= 40 ? 'Watch' : 'Critical');
     const fallbackMode =
       this.activeKpiTab === 'diplomaticRisk'
         ? 'DIPLOMATIC RISK & TRUST INDEX'
@@ -278,16 +291,19 @@ export class ClientPulseDashboardComponent implements OnInit {
       programLabel: program
         ? `${program.programName} · ${program.year || '—'} · ${program.location || '—'}`
         : 'Select a program',
-      overallLabel: `Overall Score ${avg.toFixed(1)}/100 · ${condition}`,
+      overallLabel: `Overall Score ${Number(vcpScore).toFixed(1)}/100 · ${condition}`,
       stats: [
-        { label: 'VCP', value: d ? Number(d.vcp ?? 0).toFixed(1) : avg.toFixed(1) },
         {
-          label: signals[1]?.code || signals[1]?.layerCode || 'SIG',
-          value: signals[1] ? Number(signals[1].value ?? 0).toFixed(1) : avg.toFixed(1),
+          label: vcpCard?.code || signals[0]?.code || signals[0]?.layerCode || 'VCP',
+          value: Number(vcpScore).toFixed(1),
         },
         {
-          label: signals[2]?.code || signals[2]?.layerCode || 'KPI',
-          value: signals[2] ? Number(signals[2].value ?? 0).toFixed(1) : '0.0',
+          label: adgCard?.code || signals[1]?.code || signals[1]?.layerCode || 'ADG',
+          value: Number(adgScore).toFixed(1),
+        },
+        {
+          label: fcigCard?.code || signals[2]?.code || signals[2]?.layerCode || 'FCIG',
+          value: Number(fcigScore).toFixed(1),
         },
       ],
     };

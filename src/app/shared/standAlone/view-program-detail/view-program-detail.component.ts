@@ -88,6 +88,12 @@ export class ViewProgramDetailComponent implements OnChanges {
     return role === UserRole.Admin || role === UserRole.Analyst;
   }
 
+  get hasProgramScoreRecord(): boolean {
+    return (this.program?.climateProgramID ?? 0) > 0
+      && this.program?.aiProgress !== null
+      && this.program?.aiProgress !== undefined;
+  }
+
   get averageProgress(): number {
     return (((this.getDraftNumber('aiProgress') ?? this.program?.aiProgress ?? 0) +
       (this.getDraftNumber('evaluatorScore') ?? this.program?.evaluatorScore ?? 0)) / 2);

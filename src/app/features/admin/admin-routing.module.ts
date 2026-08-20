@@ -6,7 +6,6 @@ import { PillarComponent } from "./container/pillar/pillar.component";
 import { QuestionComponent } from "./container/question/question.component";
 import { AssesmentComponent } from "./container/assesment/assesment.component";
 import { AnalystViewComponent } from "./container/analyst-view/analyst-view.component";
-import { AdminDashboardComponent } from "./container/admin-dashboard/admin-dashboard.component";
 import { AdminPulseDashboardComponent } from "./container/admin-pulse-dashboard/admin-pulse-dashboard.component";
 import { ComparisionComponent } from "./container/comparision/comparision.component";
 import { EvaluatoinResponseViewComponent } from "./container/evaluatoin-response-view/evaluatoin-response-view.component";
@@ -20,7 +19,6 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
       { path: "dashboard", component: AdminPulseDashboardComponent },
-      { path: "dashboard-classic", component: AdminDashboardComponent },
       { path: "programs", component: ProgramsComponent },
       { path: "analyst", component: AnalystViewComponent },
       { path: "client", component: ClientViewComponent },

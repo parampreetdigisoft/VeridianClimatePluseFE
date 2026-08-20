@@ -110,9 +110,11 @@ export class ProgramsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/noImageAvailable.png';
   }
+
   addUpdateProgram(formData: FormData) {
     this.loading = true;
     this.adminService.addUpdateProgram(formData).subscribe({
@@ -120,6 +122,7 @@ export class ProgramsComponent implements OnInit, OnDestroy {
         this.closeModal();
         if (res.succeeded) {
           this.getPrograms(this.currentPage);
+          this.getProgramUserPrograms();
           this.toaster.showSuccess(res?.messages?.join(', '));
         } else {
           this.toaster.showError(res?.errors?.join(', '));

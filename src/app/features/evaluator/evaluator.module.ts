@@ -7,7 +7,6 @@ import { MakeAssessmentComponent } from './container/make-assessment/make-assess
 import { SharedModule } from 'src/app/shared/share.module';
 import { AssessmentViewResultComponent } from './container/assessment-view-result/assessment-view-result.component';
 import { AssignedProgramComponent } from './container/assigned-program/assigned-program.component';
-import { EvaluatorDashboardComponent } from './container/evaluator-dashboard/evaluator-dashboard.component';
 import { EvaluatorPulseDashboardComponent } from './container/evaluator-pulse-dashboard/evaluator-pulse-dashboard.component';
 
 const routes: Routes = [
@@ -18,7 +17,6 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },       
       { path: 'dashboard', component: EvaluatorPulseDashboardComponent },
-      { path: 'dashboard-classic', component: EvaluatorDashboardComponent },
       { path: 'assigned-program', component: AssignedProgramComponent },
       { path: 'make-assessment', component: MakeAssessmentComponent },
       { path: 'assessment-result', component: AssessmentResultComponent },
@@ -45,7 +43,6 @@ const routes: Routes = [
     AssessmentResultComponent,
     MakeAssessmentComponent,
     AssignedProgramComponent,
-    EvaluatorDashboardComponent,
     AssessmentViewResultComponent,
   ],
   imports: [

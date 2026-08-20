@@ -8,6 +8,7 @@ export const VCP_CHART = {
   primarySoft: '#5CB8FF',
   secondary: '#A8E063',
   accent: '#4CAF50',
+  discrepancy: '#FFB84D',
   deep: '#0A2240',
   text: '#E8EEF8',
   textMuted: '#9AADC4',

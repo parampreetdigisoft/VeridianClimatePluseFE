@@ -99,7 +99,17 @@
 
 .compare_city_table.ai-analysis-table .table_custom_inner {
   overflow-x: auto;
+  min-height: 240px;
 }
+
+.compare_city_table.ai-analysis-table {
+  min-height: 260px;
+}
+
+.compare_city_table.ai-analysis-table .action_td .dropdown {
+  position: relative;
+}
+
 
 @media (max-width: 991px) {
   .ai-analysis-toolbar__filters {

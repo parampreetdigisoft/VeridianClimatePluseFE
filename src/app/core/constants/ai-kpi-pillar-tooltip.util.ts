@@ -36,8 +36,7 @@ export function buildAiKpiPillarTooltipHtml(pillar: AiKpiPillarTooltipPillar): s
   }
 
   const discrepancy = pillar.discrepancy ?? 0;
-  const discrepancyColor =
-    discrepancy > 0 ? VCP_CHART.completionLow : VCP_CHART.secondary;
+  const discrepancyColor = VCP_CHART.discrepancy;
 
   return `
     <div style="${tooltipShellStyle}">
@@ -54,13 +53,13 @@ export function buildAiKpiPillarTooltipHtml(pillar: AiKpiPillarTooltipPillar): s
       <div style="display: grid; row-gap: 6px;">
         <div style="display: flex; justify-content: space-between; gap: 16px;">
           <span style="color: ${VCP_CHART.textMuted};">AI Score</span>
-          <span style="font-weight: 600; color: ${VCP_CHART.secondary};">
+          <span style="font-weight: 600; color: ${VCP_CHART.primary};">
             ${(pillar.aiProgress ?? 0).toFixed(2)}
           </span>
         </div>
         <div style="display: flex; justify-content: space-between; gap: 16px;">
           <span style="color: ${VCP_CHART.textMuted};">Evaluation</span>
-          <span style="font-weight: 600; color: ${VCP_CHART.primary};">
+          <span style="font-weight: 600; color: ${VCP_CHART.secondary};">
             ${(pillar.evaluatorScore ?? 0).toFixed(2)}
           </span>
         </div>

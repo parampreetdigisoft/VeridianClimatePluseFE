@@ -254,7 +254,7 @@ border-bottom:0;
 	padding: 16px;
 	border-radius: var(--Radius-Md);
     border: 1px solid var(--Border-Color);
-    margin: 10px 0;
+    margin: 0px 0;
 }
 
 .showing_data
@@ -760,7 +760,8 @@ padding-right: 40px;
     border: 1px solid var(--Border-Color);
     border-radius: var(--Radius-Md);
     background: var(--Surface-Color);
-    /* overflow: hidden; */
+    min-height: 220px;
+    position: relative;
 }
 .table_outer > .table > tbody > tr {
     border-bottom: 1px solid var(--Border-Color);
@@ -892,7 +893,7 @@ body .content_area .inner_content_area {
 }
 
 .content_area .inner_content_area:not(:has(app-chat-container)) {
-  padding: var(--Page-Pad-Y) 4px var(--Page-Pad-Y) 4px;
+  padding:  0px;
 }
 
 .page_head {
@@ -1126,7 +1127,7 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container {
 
 @media (min-width: 1400px) {
   :root {
-    --Page-Pad-X: 24px;
+    --Page-Pad-X: 12px;
     --Page-Pad-Y: 18px;
     --Content-Gap: 18px;
   }

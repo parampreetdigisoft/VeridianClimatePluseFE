@@ -1,7 +1,7 @@
 <div class="heading_area">
     <div class="row justify-content-between align-items-center gap-2">
         <div class="col-md-auto">
-            <h3 class="page_head">{{tier>1 ? 'Compare':'View'}} Program</h3>
+            <h3 class="page_head">{{tier>1 ? 'Compare':'View'}} Programs</h3>
         </div>
         <div class="col-md-3">
             <div class="input_field justify-content-end input_flex"
@@ -39,6 +39,7 @@
             <tr>
                 <th>S.No.</th>
                 <th>Program</th>
+                <th>Conference Year</th>
                 <th>Location</th>
                 <th>Score</th>
                 <th class="action_th">Actions</th>
@@ -49,6 +50,7 @@
                 <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
 
                 <td>{{ program.programName }}</td>
+                <td>{{ program.year }}</td>
                 <td>{{ program.location }}</td>
                 <td><span class="bold_num">{{ program.score?.toFixed(2) || 'NA' }}</span></td>
                 <td class="action_td">

@@ -9,7 +9,6 @@ import { SharedModule } from 'src/app/shared/share.module';
 import { AddUpdateEvaluatorComponent } from './features/add-update-evaluator/add-update-evaluator.component';
 import { EvaluatorResponsesComponent } from './container/evaluator-responses/evaluator-responses.component';
 import { EvaluatorResponseViewComponent } from './container/evaluator-response-view/evaluator-response-view.component';
-import { AnalystDashboardComponent } from './container/analyst-dashboard/analyst-dashboard.component';
 import { AnalystPulseDashboardComponent } from './container/analyst-pulse-dashboard/analyst-pulse-dashboard.component';
 import { ComparisionComponent } from './container/comparision/comparision.component';
 const routes: Routes = [
@@ -20,7 +19,6 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AnalystPulseDashboardComponent },
-      { path: 'dashboard-classic', component: AnalystDashboardComponent },
       { path: 'assigned-program', component: AssignedProgramComponent },
       { path: 'evaluator-view', component: EvaluatorViewComponent },
       { path: 'evaluator-response/:assessmentUserID', component: EvaluatorResponsesComponent },
@@ -67,7 +65,6 @@ const routes: Routes = [
     AddUpdateEvaluatorComponent,
     EvaluatorResponsesComponent,
     EvaluatorResponseViewComponent,
-    AnalystDashboardComponent,
     ComparisionComponent
   ],
   imports: [

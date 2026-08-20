@@ -42,7 +42,7 @@
     height: 40px;
     font-weight: 600;
     padding-left: 16px;
-    color: #7A7A7A;
+    color: #ffffff;
 /* font-family: 'Montserrat'; */
 font-size: 13px;
 font-style: normal;
@@ -81,7 +81,7 @@ line-height: normal;
 .tier-dot {
     position: absolute;
     top: 50%;
-    right: 16px;
+    right: 36px;
     transform: translateY(-50%);
     font-size: 16px;
     pointer-events: none;
