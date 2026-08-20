@@ -121,7 +121,7 @@ export interface AiEditableFieldConfig {
   max?: number;
 }
 
-export const CONFIDENCE_LEVEL_OPTIONS = ['Low', 'Medium', 'High'];
+export const CONFIDENCE_LEVEL_OPTIONS = ['Low', 'Medium', 'High','Indeterminate'];
 
 export function mapCitationsForUpdate(citations?: AIDataSourceCitation[] | null): UpdateAIDataSourceCitationDto[] {
   return (citations ?? []).map(c => ({

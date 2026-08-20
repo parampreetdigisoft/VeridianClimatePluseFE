@@ -260,3 +260,27 @@ button.btn-close:focus-visible {
 ::ng-deep .kpi_custom_table .last_data app-ai-editable-field .confidence-badge {
     margin: 0 auto;
 }
+
+::ng-deep .kpi_custom_table .confidence-badge.low {
+    background-color: #ffcccc !important;
+    color: #b30000 !important;
+    border: 1px solid #ff4d4d !important;
+}
+
+::ng-deep .kpi_custom_table .confidence-badge.indeterminate {
+    background-color: #e0e0e0 !important;
+    color: #6c757d !important;
+    border: 1px solid #d6d6d6 !important;
+}
+
+::ng-deep .kpi_custom_table .confidence-badge.medium {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+    border: 1px solid #ffe69c !important;
+}
+
+::ng-deep .kpi_custom_table .confidence-badge.high {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    border: 1px solid #75d69c !important;
+}
