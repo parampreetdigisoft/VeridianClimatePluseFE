@@ -59,6 +59,9 @@ export class ProgramsComponent implements OnInit, OnDestroy {
     }
 
     this.adminService.getPrograms(payload).subscribe(programs => {
+      if (programs?.data) {
+        programs.data = [...programs.data].sort((a, b) => Number(b.score ?? 0) - Number(a.score ?? 0));
+      }
       this.programsResponse = programs;
       this.totalRecords = programs.totalRecords;
       this.currentPage = currentPage;
