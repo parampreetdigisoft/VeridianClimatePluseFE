@@ -394,8 +394,8 @@
           <span class="dot"></span>
         </div>
       </div>
-      <!-- Rank -->
-      <div class="stat-row">
+      <!-- Rank — only shown when a program is selected -->
+      <div class="stat-row" *ngIf="selectedProgram()">
         <div class="left">
           <p class="label">{{ glanceRankLabel() }}</p>
 

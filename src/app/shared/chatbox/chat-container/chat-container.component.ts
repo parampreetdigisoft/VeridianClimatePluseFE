@@ -601,7 +601,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   protected glanceRankLabel(): string {
-    return this.selectedProgram() ? 'Location Rank' : 'Average Rank';
+    return 'Location Rank';
   }
 
   formatGlanceScore(score: number | null | undefined): string {
