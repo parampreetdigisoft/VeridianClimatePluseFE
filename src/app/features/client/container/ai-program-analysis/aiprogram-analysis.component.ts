@@ -19,6 +19,7 @@ import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgra
 import { CommonService } from 'src/app/core/services/common.service';
 import { DocumentFormat } from 'src/app/core/enums/documentFormat';
 import { ClientService } from '../../client.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var bootstrap: any; // 👈 use Bootstrap JS API
 @Component({
@@ -44,17 +45,23 @@ export class AIProgramAnalysisComponent implements OnInit, OnDestroy {
   selectedIndex: number = -1;
 
   constructor(private aiComputationService: AiComputationService, private clientService: ClientService,
-    private toaster: ToasterService, private userService: UserService, private cdr: ChangeDetectorRef,public commonService: CommonService) { }
+    private toaster: ToasterService, private userService: UserService, private cdr: ChangeDetectorRef, public commonService: CommonService, private route: ActivatedRoute) { }
 
   ngOnDestroy(): void {
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
   }
 
-  ngOnInit(): void {
+   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params["climateProgramID"]) {
+        this.filterProgram = +params["climateProgramID"];
+      }
+    });
     this.getClientPrograms();
     this.getAIPrograms();
   }
+  
 
   getClientPrograms() {
     this.clientService.getClientPrograms().subscribe({

@@ -260,12 +260,13 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
   }
   
   loadKpiPillarDetails(layerIds: number[]) {
-    const uniqueLayerIds = Array.from(new Set(this.normalizeKpiIds(layerIds)));
+    const uniqueLayerIds = Array.from(new Set(this.normalizeKpiIds(layerIds)))
+      .filter((layerID) => !this.kpiPillarDetails[layerID]);
+
     if (!uniqueLayerIds.length) {
-      this.clearKpiDetails();
       return;
     }
-    
+
     this.isLoadingKpiDetails = true;
     forkJoin(
       uniqueLayerIds.map((layerID) =>
@@ -281,26 +282,21 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
       next: (results) => {
         results.forEach(({ layerID, pillars }) => {
           this.kpiPillarDetails[layerID] = pillars;
+          this.replacementPillarsByCategoryCache[layerID] =
+            this.getReplacementPillarsByCategory(layerID, pillars);
         });
         this.isLoadingKpiDetails = false;
-        this.replacementPillarsByCategoryCache = {};
-        Object.keys(this.kpiPillarDetails).forEach((key) => {
-          const layerID = Number(key);
-          this.replacementPillarsByCategoryCache[layerID] =
-          this.getReplacementPillarsByCategory(layerID, this.kpiPillarDetails[layerID]);
-        });
       },
       error: () => {
-        this.clearKpiDetails();
         this.isLoadingKpiDetails = false;
       },
     });
   }
-  
+
   trackByPillarId(_: number, item: AnalyticalLayerPillarMappingDTO) {
     return item.pillarID;
   }
-  
+
   trackByCategoryKey(_: number, item: { key: string }) {
     return item.key;
   }
@@ -308,8 +304,9 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
   clearKpiDetails() {
     this.kpiPillarDetails = {};
     this.selectedPillarByKpi = {};
+    this.replacementPillarsByCategoryCache = {};
   }
-  
+
   customSearchFn(term: string, item: AnalyticalLayerResponseDto) {
     term = term.toLowerCase();
     return (
@@ -322,8 +319,22 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
     const currentIds = this.normalizeKpiSelectionInput(selectedValues);
     this.replacementValidationMessage = '';
     this.setKpiLayerIds(currentIds);
-    if(selectedValues && selectedValues.length > 0){
-    this.loadKpiPillarDetails(currentIds);
+
+    // Clean up removed KPIs from cached details and selections
+    const currentIdSet = new Set(currentIds);
+    Object.keys(this.kpiPillarDetails).forEach((key) => {
+      const layerId = Number(key);
+      if (!currentIdSet.has(layerId)) {
+        delete this.kpiPillarDetails[layerId];
+        delete this.selectedPillarByKpi[layerId];
+        delete this.replacementPillarsByCategoryCache[layerId];
+      }
+    });
+
+    // Only load details for newly added KPIs that haven't been fetched yet
+    const idsToFetch = currentIds.filter((id) => !this.kpiPillarDetails[id]);
+    if (idsToFetch.length > 0) {
+      this.loadKpiPillarDetails(idsToFetch);
     }
   }
 
