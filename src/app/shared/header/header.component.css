@@ -1,6 +1,6 @@
 .vui_header
 {
-    padding: 4px var(--Page-Pad-X, 20px) 0;
+    padding: 20px;
     position: sticky;
     top: 0;
     z-index: 99;

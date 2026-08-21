@@ -136,4 +136,12 @@ p.btn_spinner {
     border-radius: 15px;
     border: 1px solid #e4e4e4;
     margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+
+::ng-deep span.spinner-border.spinner-border-sm
+{
+    width: 20px !important;
+    height: 20px !important;
 }
