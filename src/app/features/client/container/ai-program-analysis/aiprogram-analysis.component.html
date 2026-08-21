@@ -32,10 +32,10 @@
         <tr>
           <th>S.No.</th>
           <th class="program-col">Program</th>
+          <th>Conference Year</th>   
           <th>Location</th>          
           <th>Score</th>
           <th>Rank</th>
-          <!-- <th>Region Rank</th> -->
           <th class="action_th">View Details</th>
         </tr>
       </thead>
@@ -45,6 +45,9 @@
           <td class="city-col">
             {{ program.programName }}
           </td>
+            <td class="city-col">
+            {{ program.year }}
+          </td>  
           <td class="city-col">
             {{ program.location }}
           </td>          
@@ -54,9 +57,6 @@
           <td class="city-col">
             {{ program.rank }}
           </td>
-          <!-- <td class="city-col">
-            {{ program.regionRank }}
-          </td> -->
 
           <td class="action_td">
             <table>
