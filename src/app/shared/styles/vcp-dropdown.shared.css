@@ -33,7 +33,7 @@ ng-select.form-control .ng-select-container,
     transform 0.18s ease;
 }
 
-.compare_select .ng-select .ng-select-container:hover,
+/* .compare_select .ng-select .ng-select-container:hover,
 .input_flex ng-select .ng-select-container:hover,
 .input_field ng-select .ng-select-container:hover,
 .heading_area ng-select .ng-select-container:hover,
@@ -43,7 +43,7 @@ ng-select.analyst_multi_select .ng-select-container:hover,
 .vcp-filter-select .ng-select-container:hover {
   border-color: rgba(92, 140, 200, 0.42) !important;
   background: #132a52 !important;
-}
+} */
 
 .compare_select .ng-select.ng-select-focused .ng-select-container,
 .compare_select .ng-select.ng-select-opened .ng-select-container,
@@ -59,6 +59,7 @@ ng-select.analyst_multi_select .ng-select-container:hover,
 .vcp-filter-select.ng-select-opened .ng-select-container {
   border-color: var(--Accent-Blue, #3B9EFF) !important;
   box-shadow: 0 0 0 3px rgba(59, 158, 255, 0.18) !important;
+  min-width: 100% !important;
 }
 
 /* ---- ng-select text / arrow ---- */
@@ -176,7 +177,7 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container,
 .analyst_multi_select.ng-select-multiple .ng-select-container,
 .compare_select ng-select.analyst_multi_select .ng-select-container,
 .input_flex ng-select.analyst_multi_select .ng-select-container {
-  min-height: 33px !important;
+  min-height: 44px !important;
   /* max-height: 92px !important; */
   height: auto !important;
   overflow-y: auto !important;
@@ -185,6 +186,7 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container,
   padding: 5px 4px 5px 8px !important;
   scrollbar-width: thin;
   scrollbar-color: rgba(92, 140, 200, 0.45) transparent;
+  align-items: center !important;
 }
 
 ng-select.analyst_multi_select.ng-select-multiple .ng-value-container,

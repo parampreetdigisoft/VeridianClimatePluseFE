@@ -211,7 +211,7 @@
 
   .vcp-chat_header {
     margin-top: 0;
-    margin-bottom: 6px;
+    margin-bottom: 11px;
   }
 
   .vcp-chat {
@@ -2741,7 +2741,6 @@ aside.vcp-sidebar {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: rgb(217 224 231) rgba(0, 109, 119, 0.06);
-  scrollbar-gutter: stable;
 }
 
 .vcp-sidebar__scroll::-webkit-scrollbar {
@@ -4527,4 +4526,8 @@ aside.vcp-sidebar {
     align-items: flex-start;
     gap: 12px;
   }
+}
+
+::ng-deep .ng-dropdown-panel {
+    left: -40px;
 }
