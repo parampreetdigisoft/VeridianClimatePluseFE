@@ -170,7 +170,7 @@ button.btn-close:focus-visible {
   cursor: pointer;
     white-space: nowrap;
     border-radius: 5px !important;
-    background-color: var(--Primary-Color) !important;
+    background-color: #3d6391 !important;
     color: #ffffff !important;
     display: inline-block;
     padding: 8px 10px;

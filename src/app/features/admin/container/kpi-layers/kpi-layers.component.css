@@ -72,7 +72,7 @@
 
 .compare_city_table tbody td.action_td table .action_icons a.mat-mdc-tooltip-trigger span {
     display: inline-block;
-    background-color: var(--Primary-Color);
+    background-color: #3a5b83 !important;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;

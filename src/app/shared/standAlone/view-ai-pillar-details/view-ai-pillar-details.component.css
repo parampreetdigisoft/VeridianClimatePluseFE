@@ -151,8 +151,14 @@
 }
 
 .kpi_table td a {
-    color: #23db2b;
-    font-weight: 600;
+  color: var(--Accent-Blue, #3B9EFF);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.kpi_table td a:hover {
+  color: var(--Accent-Lime, #A8E063);
+  text-decoration: underline;
 }
 
 .cus_table .table td:last-child {

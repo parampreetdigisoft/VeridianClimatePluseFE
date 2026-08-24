@@ -103,7 +103,7 @@
 
 .modal_design .modal_tabs .input_field input[type="file"] {
   line-height: normal;
-  padding: 8px 12px;
+  padding: 4px 11px;
   font-size: 13px;
   max-width: 100%;
 }

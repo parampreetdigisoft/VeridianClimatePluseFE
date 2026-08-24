@@ -340,9 +340,9 @@ export class ClientPulseDashboardComponent implements OnInit {
     const program = this.programs?.find((x) => x.climateProgramID == this.selectedPrograms);
     if (this.aiPillars.length && program) {
       const exportData = this.aiPillars.map((x) => ({
-        programName: program.programName,
+        ProgramName: program.programName,
         PillarName: x.pillarName,
-        AIScore: Number(x.aiValue ?? 0).toFixed(2),
+        Score: Number(x.aiValue ?? 0).toFixed(2),
       }));
       this.commonService.exportExcel(exportData);
     } else {
