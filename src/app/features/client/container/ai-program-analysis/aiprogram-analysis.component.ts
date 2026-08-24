@@ -8,7 +8,6 @@ import { UserService } from 'src/app/core/services/user.service';
 import { AiProgramSummeryDto } from 'src/app/core/models/aiVm/AiProgramSummeryDto';
 import { environment } from 'src/environments/environment';
 import { CommonModule } from '@angular/common';
-import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
 import { PaginationComponent } from 'src/app/shared/pagination/pagination.component';
@@ -25,7 +24,7 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
 @Component({
   selector: 'app-aiprogram-analysis',
   standalone: true,
-  imports: [TypingTextComponent, CommonModule,
+    imports: [CommonModule,
     ViewProgramDetailComponent, CircularScoreComponent, PaginationComponent, FormsModule, NgSelectModule,
     MatTooltipModule],
   templateUrl: './aiprogram-analysis.component.html',
