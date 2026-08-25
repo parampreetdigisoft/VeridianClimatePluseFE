@@ -228,7 +228,7 @@ export class ComparisionComponent implements OnInit {
   }));
 
   this.chartOptions = buildPillarComparisonBarChartOptions({
-    series,
+    series : series ?? [],
     categories,
     hasData,
     uniqueEvaluators,

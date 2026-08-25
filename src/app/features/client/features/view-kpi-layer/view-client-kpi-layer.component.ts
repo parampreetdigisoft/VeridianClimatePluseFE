@@ -38,6 +38,7 @@ export type ChartOptions = {
 export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
 
   @Input() selectedLayer?: GetAnalyticalLayerResultDto | null = null;
+  @Input() listPage?: number;
   urlBase = environment.apiUrl;
   get program() {
     return this.selectedLayer?.program;
@@ -50,6 +51,8 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
   isSummarizing = false;
   aiSummary: SummarizeKpiResponseDto | null = null;
   aiSummaryError: string | null = null;
+  summaryCache = new Map<number, SummarizeKpiResponseDto>();
+  summarizingLayerId: number | null = null;
 
   constructor(
     private userService: UserService,
@@ -59,10 +62,17 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
   
   ngOnInit(): void {
     this.updateAiSummaryVisibility();
+    this.clearSummaryCache();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.ApexGetPieOptions();
+    if (changes['listPage'] && !changes['listPage'].firstChange) {
+      this.clearSummaryCache();
+    } 
+    if (changes['selectedLayer']) {
+      this.restoreCachedSummary();
+    }
   }
 
   onImgError(event: Event) {
@@ -89,32 +99,70 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
     }
 
     this.isSummarizing = true;
+    this.summarizingLayerId = layerResultID;
     this.aiSummaryError = null;
 
     const payload: SummarizeKpiRequestDto = { layerResultID };
     this.aiComputationService.summarizeKpiPerformance(payload).subscribe({
       next: (res) => {
         const response = res as ResultResponseDto<SummarizeKpiResponseDto>;
-        this.isSummarizing = false;
+        const isCurrentRow = this.selectedLayer?.layerResultID === layerResultID;
+        if (this.summarizingLayerId === layerResultID) {
+          this.summarizingLayerId = null;
+        }
+        if (isCurrentRow) {
+          this.isSummarizing = false;
+        }
         if (response?.succeeded && response.result?.summary) {
-          this.aiSummary = response.result;
-          this.aiSummaryError = null;
+          this.summaryCache.set(layerResultID, response.result);
+          if (isCurrentRow) {
+            this.aiSummary = response.result;
+            this.aiSummaryError = null;
+          }
         } else {
           const message = response?.errors?.[0] || 'Failed to generate AI summary. Please try again.';
-          this.aiSummary = null;
-          this.aiSummaryError = message;
+          if (isCurrentRow) {
+            this.aiSummary = this.summaryCache.get(layerResultID) ?? null;
+            this.aiSummaryError = this.aiSummary ? null : message;
+          }
           this.toaster.showError(message);
         }
       },
       error: () => {
-        this.isSummarizing = false;
-        this.aiSummary = null;
-        this.aiSummaryError = 'Unable to reach the AI service. Please try again later.';
-        this.toaster.showError(this.aiSummaryError);
+         const isCurrentRow = this.selectedLayer?.layerResultID === layerResultID;
+        if (this.summarizingLayerId === layerResultID) {
+          this.summarizingLayerId = null;
+        }
+        if (isCurrentRow) {
+          this.isSummarizing = false;
+          this.aiSummary = this.summaryCache.get(layerResultID) ?? null;
+          this.aiSummaryError = this.aiSummary
+            ? null
+            : 'Unable to reach the AI service. Please try again later.';
+          if (this.aiSummaryError) {
+            this.toaster.showError(this.aiSummaryError);
+          }
+        } else {
+          this.toaster.showError('Unable to reach the AI service. Please try again later.');
+        }
       }
     });
   }
 
+  private restoreCachedSummary(): void {
+    const layerResultID = this.selectedLayer?.layerResultID;
+    this.aiSummaryError = null;
+    this.aiSummary = layerResultID != null ? this.summaryCache.get(layerResultID) ?? null : null;
+    this.isSummarizing = layerResultID != null && this.summarizingLayerId === layerResultID;
+  }
+
+  clearSummaryCache(): void {
+    this.summaryCache.clear();
+    this.summarizingLayerId = null;
+    this.aiSummary = null;
+    this.aiSummaryError = null;
+    this.isSummarizing = false;
+  }
 
   getAiConditionByid() {
     let condition = this.selectedLayer?.fiveLevelInterpretations?.find(x => x.interpretationID == this.selectedLayer?.aiInterpretationID)?.condition ?? 'NA';

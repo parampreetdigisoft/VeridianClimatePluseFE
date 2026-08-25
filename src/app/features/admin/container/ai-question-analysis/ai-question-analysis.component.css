@@ -33,6 +33,14 @@
     border: 1px solid #d6d6d6 !important;
 }
 
+.action_icons_view_details{
+    display: inline-block;
+    background-color: #164074 !important;
+    padding: 8px 10px;
+    white-space: nowrap;
+    color: #ffffff;
+    border-radius: 5px;
+}
 
 .input_flex select {
     flex: 1;

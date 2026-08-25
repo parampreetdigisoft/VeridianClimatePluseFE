@@ -179,6 +179,16 @@ export class KPIAnalysisComponent implements OnInit {
       '#FFB84D',
     ]
 
+    const allValues = [
+      ...aiSeries,
+      ...evaluatorSeries,
+      ...discrepancySeries
+    ].filter(v => v !== null && v !== undefined && !isNaN(Number(v))).map(v => Number(v));
+    const dataMin = allValues.length ? Math.min(...allValues) : 0;
+    const dataMax = allValues.length ? Math.max(...allValues) : 100;
+    const yMin = dataMin < 0 ? Math.floor(dataMin / 10) * 10 : 0;
+    const yMax = Math.max(100, Math.ceil(dataMax / 10) * 10);
+
     this.chartOptions = {
       series: [
         { name: 'AI Score', data: aiSeries },
@@ -268,15 +278,15 @@ export class KPIAnalysisComponent implements OnInit {
             fontWeight: 600
           }
         },
-        min: 0,
-        max: 100,
-        tickAmount: 5,
+        min: yMin,
+        max: yMax,
+        forceNiceScale: true,
         labels: {
           style: {
             colors: '#C9D6EA'
           },
           formatter: (val) => {
-            return val >= 0 ? `${Math.round(val)}` : '';
+            return val !== null && val !== undefined && !isNaN(val) ? `${Math.round(val)}` : '';
           }
         }
       },

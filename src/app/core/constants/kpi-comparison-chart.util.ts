@@ -92,6 +92,12 @@ export function buildKpiComparisonChartOptions(args: BuildArgs): Partial<KpiComp
     }
   });
 
+  const allValues = series.flatMap((s: any) => s.data ?? []).filter((v: any) => v !== null && v !== undefined && !isNaN(Number(v))).map((v: any) => Number(v));
+  const dataMin = allValues.length ? Math.min(...allValues) : 0;
+  const dataMax = allValues.length ? Math.max(...allValues) : 100;
+  const yMin = dataMin < 0 ? Math.floor(dataMin / 10) * 10 : 0;
+  const yMax = Math.max(100, Math.ceil(dataMax / 10) * 10);
+
   return {
     series,
     colors,
@@ -189,14 +195,13 @@ export function buildKpiComparisonChartOptions(args: BuildArgs): Partial<KpiComp
       axisTicks: { show: true, color: VCP_CHART.border },
     },
     yaxis: {
-      min: 0,
-      max: 100,
-      tickAmount: 10,
+      min: yMin,
+      max: yMax,
       forceNiceScale: true,
       decimalsInFloat: 0,
       labels: {
         show: true,
-        formatter: (val: number) => parseInt(val.toString(), 10).toString(),
+        formatter: (val: number) => (val != null && !isNaN(val) ? Math.round(val).toString() : ''),
         style: {
           fontSize: '12px',
           fontWeight: 500,

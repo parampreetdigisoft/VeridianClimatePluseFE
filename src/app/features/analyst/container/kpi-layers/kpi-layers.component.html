@@ -71,9 +71,9 @@
                     <td>
                         <div class="kpi_cat05 kpi_td_data">
                             <app-circular-score [value]="kpi.calValue5  ?? 0"
-                                [tooltipText]="'Evaluation : ' + (kpi.calText5 || '')"></app-circular-score>
+                                [tooltipText]="'Evaluation ' + (kpi.calText5 || '')"></app-circular-score>
                             <app-circular-score [value]="kpi.aiCalValue5  ?? 0"
-                                [tooltipText]="'Ai : ' + (kpi.calText5 || '')"></app-circular-score>
+                                [tooltipText]="'Ai ' + (kpi.calText5 || '')"></app-circular-score>
                         </div>
                     </td>
                     <td class="action_td">
@@ -104,6 +104,6 @@
 <!-- Bootstrap 5 Offcanvas Sidebar -->
 <div class="offcanvas offcanvas-end custom-sidebar kpi_sidebar" tabindex="-1" id="kpiLayerSidebar">
     <div class="offcanvas-body">
-        <app-view-kpi-layer [selectedLayer]="selectedKpi"></app-view-kpi-layer>
+        <app-view-kpi-layer [selectedLayer]="selectedKpi" [listPage]="currentPage"></app-view-kpi-layer>
     </div>
 </div>

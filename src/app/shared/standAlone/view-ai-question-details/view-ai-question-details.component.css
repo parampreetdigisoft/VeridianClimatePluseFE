@@ -202,7 +202,14 @@ button.btn-close:focus-visible {
 ::ng-deep .cus_table .table td a {
     color: var(--Accent-Blue, #3B9EFF);
     font-weight: 600;
+    text-decoration: none;
 }
+
+::ng-deep .cus_table .table td a:hover {
+    color: var(--Accent-Lime, #A8E063);
+    text-decoration: underline;
+}
+
 ::ng-deep .cross-pillar_outter .typing-text {
     font-size: 14px;
 }

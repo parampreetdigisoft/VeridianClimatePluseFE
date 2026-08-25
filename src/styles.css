@@ -850,23 +850,23 @@ body .content_area .inner_content_area {
 
 /* High = Green */
 .confidence-badge.high {
-    background: rgba(46, 204, 113, 0.15);
-    color: #2ecc71;
-    border: 1px solid rgba(46, 204, 113, 0.35);
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #75d69c !important;
 }
 
 /* Medium = Yellow/Orange */
 .confidence-badge.medium {
-    background: rgba(241, 196, 15, 0.15);
-    color: #f1c40f;
-    border: 1px solid rgba(241, 196, 15, 0.35);
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c !important;
 }
 
 /* Low = Red */
 .confidence-badge.low {
-    background-color: rgba(255, 77, 77, 0.16);
-    color: #ff8a80;
-    border: 1px solid rgba(255, 77, 77, 0.4) !important;
+  background-color: #ffcccc;
+  color: #b30000;
+  border: 1px solid #ff4d4d !important;
 }
 .program_img {
     background-color: var(--Primary-Color) !important;

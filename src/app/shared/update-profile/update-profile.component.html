@@ -51,10 +51,23 @@
               Phone number is required.
             </div>
           </div>
-          <div class="input_field">
-            <label>Choose Image</label>
-            <input type="file" (change)="onFileSelected($event)" formControlName="profileImage"
-              placeholder="select profile image" class="form-control" />
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input_field">
+                <label>Choose Image</label>
+                <input type="file" (change)="onFileSelected($event)" formControlName="profileImage"
+                  placeholder="select profile image" class="form-control" accept="image/*" />
+              </div>
+            </div>
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+              <div class="input_field">
+                <label>Preview Image</label>
+                <img
+                  [src]="selectedImage ? selectedImage : userinfo?.profileImagePath ? urlBase + userinfo?.profileImagePath : 'assets/images/default-profile.png'"
+                  class="pp_pic" (error)="onImgError($event)" [alt]="'Profile Image'" />
+              </div>
+            </div>
           </div>
           <div class="input_field">
             <div class="form-check form-switch mt-3">

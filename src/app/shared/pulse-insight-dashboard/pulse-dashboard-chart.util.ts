@@ -33,8 +33,8 @@ export const PULSE_THEME = {
   green: '#a8e063',
   teal: '#5CB8FF',
   cyan: '#4CAF50',
-  deepBlue: '#1D5D96',
-  navy: '#0A2240',
+  deepBlue: '#187dd6',
+  navy: '#2665b3',
   forest: '#2E7D32',
   sea: '#105675',
 } as const;

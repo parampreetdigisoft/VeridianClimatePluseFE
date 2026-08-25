@@ -363,3 +363,30 @@ p.btn_spinner {
     color: #ffffff;
     border-radius: 5px;
 }
+
+#chart {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+::ng-deep #chart .apexcharts-canvas,
+::ng-deep #chart .apexcharts-svg {
+    background: transparent !important;
+}
+
+::ng-deep #chart .apexcharts-tooltip {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+::ng-deep #chart .apexcharts-menu {
+    background: #0B1633 !important;
+    border: 1px solid rgba(92, 140, 200, 0.3) !important;
+    color: #E8EEF8 !important;
+}
+
+::ng-deep #chart .apexcharts-menu-item:hover {
+    background: rgba(59, 158, 255, 0.18) !important;
+    color: #ffffff !important;
+}
