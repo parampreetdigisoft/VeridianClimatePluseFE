@@ -65,7 +65,7 @@ export class ClientPulseDashboardComponent implements OnInit {
   aiPillars: ProgramPillarDashboardPillarValueDto[] = [];
   activeKpiTab: PulseKpiTab = 'ambitionDelivery';
   selectedKpi: PulseKpiCard | null = null;
-
+  aiProgress: number | null = null;
   summaryCards: PulseSummaryCard[] = [];
   kpiCards: PulseKpiCard[] = [];
   indexHero: PulseIndexHero | null = null;
@@ -83,7 +83,6 @@ export class ClientPulseDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.isPageLoader = true;
-    this.getProgramHistory();
     this.getClientPrograms();
   }
 
@@ -104,16 +103,6 @@ export class ClientPulseDashboardComponent implements OnInit {
       error: () => {
         this.isPageLoader = false;
         this.toaster.showError('Failed to load program list.');
-      },
-    });
-  }
-
-  getProgramHistory(): void {
-    this.clientService.getProgramHistory().subscribe({
-      next: (res) => {
-        this.programHistory = res.result;
-        this.buildSummaryCards();
-        this.radialChartOptions = this.buildPulseRadialChart(this.programHistory);
       },
     });
   }
@@ -140,6 +129,7 @@ export class ClientPulseDashboardComponent implements OnInit {
     this.clientService.getAIProgramPillars(request).subscribe({
       next: (res) => {
         const pillars: AiProgramPillarVM[] = res.result?.pillars ?? [];
+        this.aiProgress = res.result?.aiProgress ?? null;
         this.aiPillars = pillars.map((p, index) => ({
           pillarID: p.pillarID ?? index,
           pillarName: p.pillarName || `Pillar ${index + 1}`,
@@ -221,6 +211,7 @@ export class ClientPulseDashboardComponent implements OnInit {
       showManual: false,
       userRole: UserRole.ProgramUser,
     });
+     this.radialChartOptions = this.buildPulseRadialChart(this.aiProgress);
     this.buildIndexHero();
   }
 
@@ -349,16 +340,8 @@ export class ClientPulseDashboardComponent implements OnInit {
     }
   }
 
-  buildPulseRadialChart(history: ProgramHistoryDto | null): Partial<PulseRadialChartOptions> {
-    const pillarCount = this.aiPillars?.length ?? 0;
-    const avgFromPillars =
-      pillarCount > 0
-        ? this.aiPillars.reduce((sum, x) => sum + Number(x.aiValue ?? 0), 0) / pillarCount
-        : null;
-
-    const rawScore = Number(avgFromPillars ?? history?.overallVitalityScore ?? 0);
-    const score = Math.max(0, Math.min(100, Number(rawScore.toFixed(1))));
-
+  buildPulseRadialChart(aiProgress: number | null): Partial<PulseRadialChartOptions> {
+    const score = Math.max(0, Math.min(100, Number(aiProgress ?? 0)));
     return {
       series: [score],
       chart: {
