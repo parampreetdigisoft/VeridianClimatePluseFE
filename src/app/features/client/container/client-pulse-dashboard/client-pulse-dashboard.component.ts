@@ -221,7 +221,6 @@ export class ClientPulseDashboardComponent implements OnInit {
       showManual: false,
       userRole: UserRole.ProgramUser,
     });
-    this.radialChartOptions = this.buildPulseRadialChart(this.programHistory);
     this.buildIndexHero();
   }
 

@@ -10,7 +10,7 @@
                 <div class="program_card_img">
                     <img [src]="urlBase+program?.image " [alt]="'Profile Image'" (error)="onImgError($event)" />
                     <div class="score">
-                        Score : {{ program?.aiProgress?.toFixed(2) }}
+                        Score : {{ program?.aiProgress?.toFixed(2) ?? 'N/A' }}
                     </div>
                 </div>
                 <div class="program_card">
