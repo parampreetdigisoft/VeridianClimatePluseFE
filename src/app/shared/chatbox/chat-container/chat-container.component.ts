@@ -227,6 +227,19 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
           return;
         }
 
+        const pillars = data.program?.pillars ?? [];
+        const mapped = pillars
+          .map(p => ({
+            pillarID: p.pillarID,
+            pillarName: p.pillarName,
+            imagePath: p.imagePath ?? '',
+            pillarScore: p.pillarScore ?? 0,
+            displayOrder: p.displayOrder ?? 0,
+          }))
+          .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+
+        this.programPillarScores.set(mapped);
+
         const slidePillars = this.normalizeSlidePillars(data.program?.pillars);
         if (slidePillars.length && this.programSlide?.program) {
           this.programSlide = {
@@ -234,9 +247,10 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
             program: { ...this.programSlide.program, pillars: slidePillars },
           };
         }
+        this.cdr.markForCheck();
 
         if (climateProgramID > 0) {
-          this.loadProgramPillarScores(climateProgramID);
+         // this.loadProgramPillarScores(climateProgramID);
         }
 
         const headerProgramName = data.program?.programName ?? program?.programName ?? 'Program';
@@ -247,17 +261,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
           {
             title: headerProgramName,
             headerMeta: this.formatProgramHeaderMeta(headerLocation, headerYear),
-           },
-          // ...combinedRisks.map((x: any) => ({
-          //   title: 'Risk Overview',
-          //   subtitle: x.summary || x.description,
-          //   trend: "Risk"
-          // })),
-          // ...earlyWarnings.map((x: any) => ({
-          //   title: x.title || 'Early Warning',
-          //   subtitle: x.description || x.summary,
-          //   trend: "Early Warning"
-          // })),
+           }
         ];
 
         this.currentSlide = 0;
