@@ -48,3 +48,7 @@
 .details_transf #pills-home {
     margin-top: 20px;
 }
+
+::ng-deep .analyst_multi_select  .ng-select-container .ng-value-container {
+    padding-left: 20px !important;
+}

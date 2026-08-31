@@ -760,7 +760,6 @@ padding-right: 40px;
     border: 1px solid var(--Border-Color);
     border-radius: var(--Radius-Md);
     background: var(--Surface-Color);
-    min-height: 220px;
     position: relative;
 }
 .table_outer > .table > tbody > tr {
@@ -1153,4 +1152,22 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container {
   background: var(--Surface-Elevated, #102044) !important;
   border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
   color: var(--Text-Color, #E8EEF8) !important;
+}
+.apexcharts-menu-item:hover {
+    background: rgba(59, 158, 255, 0.2) !important;
+    border-radius: 2px;
+}
+
+body .action_td tr td {
+    background: #8d141400 !important;
+}
+
+.ng-select.ng-select-opened>.ng-select-container .ng-arrow {
+    top: 2px;
+    border-color: transparent transparent #999;
+    border-width: 5px 5px 2.5px;
+}
+
+body .cb__selector-inner .ng-select .ng-select-container .ng-arrow-wrapper {
+    padding-right: 5px !important;
 }
