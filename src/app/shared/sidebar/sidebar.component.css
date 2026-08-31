@@ -18,7 +18,7 @@
   height: 100%;
   overflow: auto;
   -ms-overflow-style: none;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scrollbar-color: rgba(168, 224, 99, 0.22) transparent;
   display: flex;
   flex-direction: column;

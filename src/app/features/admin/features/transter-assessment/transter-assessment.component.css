@@ -24,6 +24,12 @@
     margin-left: 5px;
     color: red;
 }
+.transfer_popup,
+.transfer_popup .modal-content,
+.transfer_popup .modal-body {
+    overflow: visible;
+}
+
 .transfer_popup .modal_head {
     margin-bottom: 20px;
 }

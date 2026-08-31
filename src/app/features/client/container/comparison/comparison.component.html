@@ -59,7 +59,7 @@
         <button
           *ngIf="selectedPrograms.length"
           [matTooltip]="'Export Program Comparison Details'"
-          class="common_button d-flex align-items-center"
+          class="common_button d-flex align-items-center export_btn"
           (click)="exportData()"
         >         
           <svg *ngIf="!downloadkpiSpinnerEnable"
@@ -75,8 +75,8 @@
           ></path>
         </svg>
 
-        <p *ngIf="downloadkpiSpinnerEnable" class="btn_spinner">
-          <span class="spinner-border spinner-border-sm ms-2"></span>
+        <p *ngIf="downloadkpiSpinnerEnable" class="btn_spinner p-0">
+          <span class="spinner-border spinner-border-sm ms-0"></span>
         </p>
         </button>
       </div>
