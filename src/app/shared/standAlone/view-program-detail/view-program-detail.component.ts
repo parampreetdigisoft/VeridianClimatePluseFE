@@ -1,18 +1,9 @@
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { AiProgramSummeryDto } from 'src/app/core/models/aiVm/AiProgramSummeryDto';
 import { environment } from 'src/environments/environment';
 
-import {
-  ApexNonAxisChartSeries,
-  ApexPlotOptions,
-  ApexChart,
-  ChartComponent,
-  ApexLegend
-} from "ng-apexcharts";
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/share.module';
-import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
-import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-score/sparkline-score.component';
 import { Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserService } from 'src/app/core/services/user.service';
@@ -22,16 +13,6 @@ import { AiComputationService } from 'src/app/core/services/ai-computation.servi
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserRole } from 'src/app/core/enums/UserRole';
 import { AiEditableFieldConfig, UpdateAIProgramScoreDto } from 'src/app/core/models/aiVm/UpdateAiScoreDtos';
-
-export type ChartOptions = {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  labels: string[];
-  colors: string[];
-  legend: ApexLegend;
-  plotOptions: ApexPlotOptions;
-
-};
 
 const PROGRAM_EVIDENCE_FIELDS: AiEditableFieldConfig[] = [
   { key: 'structuralEvidence', label: 'Structural Evidence', type: 'textarea', showInTable: true },
@@ -61,7 +42,7 @@ const PROGRAM_EVIDENCE_FIELDS: AiEditableFieldConfig[] = [
 @Component({
   selector: 'app-view-program-detail',
   standalone: true,
-  imports: [CommonModule, SharedModule, CircularScoreComponent, SparklineScoreComponent,MatTooltipModule, AiEditToolbarComponent,
+  imports: [CommonModule, SharedModule, MatTooltipModule, AiEditToolbarComponent,
     AiEditableFieldComponent],
   templateUrl: './view-program-detail.component.html',
   styleUrl: './view-program-detail.component.css'
@@ -71,8 +52,6 @@ export class ViewProgramDetailComponent implements OnChanges {
   @Output() closeSidebar?: boolean | null = null;
   @Output() dataSaved = new EventEmitter<void>();
   urlBase = environment.apiUrl;
-  @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions!: Partial<ChartOptions>;
   
   aiComputationService = inject(AiComputationService);
   router = inject(Router);
@@ -94,11 +73,6 @@ export class ViewProgramDetailComponent implements OnChanges {
       && this.program?.aiProgress !== undefined;
   }
 
-  get averageProgress(): number {
-    return (((this.getDraftNumber('aiProgress') ?? this.program?.aiProgress ?? 0) +
-      (this.getDraftNumber('evaluatorScore') ?? this.program?.evaluatorScore ?? 0)) / 2);
-  }
-
   get discrepancy(): number {
     const ai = this.getDraftNumber('aiProgress') ?? this.program?.aiProgress ?? 0;
     const evaluator = this.getDraftNumber('evaluatorScore') ?? this.program?.evaluatorScore ?? 0;
@@ -114,7 +88,6 @@ export class ViewProgramDetailComponent implements OnChanges {
       this.editMode = false;
       this.resetDraft();
     }
-    this.ApexGetPieOptions();
   }
 
   viewPillars() {
@@ -128,13 +101,11 @@ export class ViewProgramDetailComponent implements OnChanges {
     startEdit() {
     this.resetDraft();
     this.editMode = true;
-    this.ApexGetPieOptions();
   }
 
   cancelEdit() {
     this.editMode = false;
     this.resetDraft();
-    this.ApexGetPieOptions();
   }
 
   saveChanges() {
@@ -178,7 +149,6 @@ export class ViewProgramDetailComponent implements OnChanges {
         if (res.succeeded) {
           this.applyDraftToProgram();
           this.editMode = false;
-          this.ApexGetPieOptions();
           this.toaster.showSuccess(res.messages?.join(', ') || 'Changes saved successfully.');
           this.dataSaved.emit();
         } else {
@@ -223,9 +193,6 @@ export class ViewProgramDetailComponent implements OnChanges {
 
   setFieldValue(key: string, value: string | number | null) {
     this.draft[key] = value;
-    if (key === 'aiProgress' || key === 'evaluatorScore') {
-      this.ApexGetPieOptions();
-    }
   }
   getExecutiveSummery() {
     const evidenceSummary = this.getFieldValue('evidenceSummary');
@@ -284,96 +251,5 @@ export class ViewProgramDetailComponent implements OnChanges {
     }
     const parsed = Number(value);
     return Number.isNaN(parsed) ? null : parsed;
-  }
-
-  ApexGetPieOptions() {
-    const aiScore = this.program?.aiProgress ?? 0;
-    const evaluatorProgress = this.program?.evaluatorScore ?? 0;
-    const discrepancy = this.discrepancy ?? 0;
-    const avgProgress = (aiScore + evaluatorProgress) / 2;
-    this.chartOptions = {
-      series: [
-        aiScore,
-        evaluatorProgress,
-        discrepancy,
-        avgProgress
-      ],
-
-      chart: {
-        height: 380,
-        type: "radialBar",
-        toolbar: {
-          show: false
-        },
-      },
-      plotOptions: {
-        radialBar: {
-          startAngle: 20,
-          endAngle: 300,
-          offsetY: 80,
-          offsetX: 20,
-          hollow: {
-            margin: 0,
-            size: "40%",
-            background: "rgba(16, 32, 68, 0.55)",
-            image: undefined,
-            position: "front",
-          },
-          dataLabels: {
-            show: true,
-            name: {
-              show: true,
-              offsetY: -10,
-              color: '#C9D6EA',
-              fontSize: '13px',
-              fontWeight: 500,
-            },
-            value: {
-              show: true,
-              offsetY: 10,
-              color: '#E8EEF8',
-              fontSize: '15px',
-              fontWeight: 600,
-              formatter: (value: number) => {
-                const v = Number(value);
-                return isNaN(v) ? '0.00' : v.toFixed(2);
-              }
-            },
-            total: {
-              show: true,
-              label: "Avg Score",
-              color: '#C9D6EA',
-              fontSize: '13px',
-              fontWeight: 600,
-              formatter: () => `${avgProgress.toFixed(2)}`,
-            }
-          }
-        }
-      },
-      colors: ['#3B9EFF', '#A8E063', '#FFB84D', '#5CD6C8'],
-      labels: ["AI Score", "Evaluator Score", "Discrepancy", "Avg Score"],
-      legend: {
-        show: true,
-        floating: true,
-        fontSize: "14px",
-        position: "left",
-        offsetX: 10,
-        offsetY: -10,
-        onItemClick: {
-          toggleDataSeries: false,
-        },
-        labels: {
-          colors: '#E8EEF8',
-          useSeriesColors: false,
-        },
-        formatter: function (seriesName: any, opts: any) {
-          return seriesName + ":  " + `${((opts.w.globals.series[opts.seriesIndex])).toFixed(2)}`;
-        },
-        itemMargin: {
-          horizontal: 3
-        }
-      }
-
-    };
   }
 }

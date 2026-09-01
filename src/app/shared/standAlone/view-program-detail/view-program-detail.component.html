@@ -7,7 +7,7 @@
 		(edit)="startEdit()"
 		(cancel)="cancelEdit()"
 		(save)="saveChanges()"
-		title="AI-Powered Program Details">
+		title="Program Details">
 	</app-ai-edit-toolbar>
 	<button type="button"
 		class="btn-close text-reset"
@@ -21,7 +21,7 @@
                 <div class="program_card_img">
                     <img [src]="urlBase+program?.image " [alt]="'Profile Image'" (error)="onImgError($event)" />
                     <div class="score">
-                        AI Score : 
+                       Score : 
                         <ng-container >
 							{{ program?.aiProgress?.toFixed(2) ?? 'N/A' }}
 						</ng-container>	
@@ -45,7 +45,7 @@
                             </p>
                         </div>
                     </div>
-                    <div>Explore AI-Powered Insights Across All Pillars</div>
+                    <div>Explore Insights Across All Pillars</div>
                     <button type="button" [matTooltip]="'View detailed pillar insights'" class="common_button"
                         (click)="viewPillars()">
                         View Details
@@ -60,72 +60,6 @@
 
    <div [class.ai-edit-surface]="editMode" class="cross-pillar_outter">
 		<div class="integrate_outter">
-			<div class="integrate_list">
-				<table class="kpi_custom_table">
-					<tbody>
-						<tr class="last_data">
-							<td>
-								<div class="kpi_cat_name">AI Confidence Level</div>
-							</td>
-							<td style="text-align: center;">
-								<app-ai-editable-field [editMode]="editMode"
-									[showLabel]="false"
-									[value]="getFieldValue('confidenceLevel')"
-									(valueChange)="setFieldValue('confidenceLevel', $event)"
-									fieldType="confidence">
-								</app-ai-editable-field>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="kpi_cat_name">AI Score</div>
-							</td>
-							<td>								
-								<app-circular-score [value]="program?.aiProgress ?? 0"></app-circular-score>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="kpi_cat_name">Evaluator Score</div>
-							</td>
-							<td>
-								<app-circular-score [value]="program?.evaluatorScore ?? 0"></app-circular-score>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="kpi_cat_name">Discrepancy</div>
-							</td>
-							<td>
-								<app-sparkline-score [value]="editMode ? discrepancy : (program?.discrepancy ?? 0)"></app-sparkline-score>
-							</td>
-						</tr>
-						<tr class="last_data">
-							<td>
-								<div class="kpi_cat_name">Average Score</div>
-							</td>
-							<td>
-								<app-circular-score [value]="editMode ? averageProgress : (((program?.aiProgress ?? 0) + (program?.evaluatorScore ?? 0))/2)"></app-circular-score>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-           <div *ngIf="chartOptions?.series" class="outer_graph">
-				<div id="card">
-					<div id="chart">
-						<apx-chart [series]="chartOptions.series!"
-							[chart]="chartOptions.chart!"
-							[plotOptions]="chartOptions.plotOptions!"
-							[labels]="chartOptions.labels!"
-							[legend]="chartOptions.legend!"
-							[colors]="chartOptions.colors!">
-						</apx-chart>
-					</div>
-				</div>
-			</div>
-
             <div class="cross-pillar w-100">
                 <h5>Executive Summary</h5>
                 &nbsp;
