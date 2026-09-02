@@ -14,7 +14,8 @@ import {
   ApexFill,
   ApexStates,
   ChartComponent,
-  ApexDataLabels
+  ApexDataLabels,
+  ApexGrid
 } from 'ng-apexcharts';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AiProgramPillarResponseDto, AiProgramPillarVM } from 'src/app/core/models/aiVm/AiProgramPillarResponseDto';
@@ -32,6 +33,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { EvaluatorService } from '../../evaluator.service';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
 import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestPdfDto';
+import { buildAiKpiPillarTooltipHtml } from 'src/app/core/constants/ai-kpi-pillar-tooltip.util';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -45,6 +47,7 @@ export type ChartOptions = {
   fill: ApexFill;
   states: ApexStates;
   dataLabels: ApexDataLabels;
+  grid: ApexGrid;
 };
 
 @Component({
@@ -96,14 +99,16 @@ export class KPIAnalysisComponent implements OnInit {
   getAiAccessProgram() {
     this.evaluatorService.getAiAccessProgram(this.userService.userInfo?.userID ?? 0).subscribe({
       next: (p) => {
-
         this.programs = p.result || [];
         if (this.programs?.length && !this.selectedProgram) {
           this.selectedProgram = this.programs[0].climateProgramID;
           this.getAIProgramPillars();
         }
-        else {
+        else if (!this.programs?.length) {
           this.toaster.showWarning("You don't have access of AI data");
+        }
+        else if (this.selectedProgram) {
+          this.getAIProgramPillars();
         }
       },
       error: () => {
@@ -169,15 +174,25 @@ export class KPIAnalysisComponent implements OnInit {
     );
 
     let colors = [
-      "#728da7",
-      "#85c451",
-      "#2c547b",
+      '#3B9EFF',
+      '#A8E063',
+      '#FFB84D',
     ]
+
+    const allValues = [
+      ...aiSeries,
+      ...evaluatorSeries,
+      ...discrepancySeries
+    ].filter(v => v !== null && v !== undefined && !isNaN(Number(v))).map(v => Number(v));
+    const dataMin = allValues.length ? Math.min(...allValues) : 0;
+    const dataMax = allValues.length ? Math.max(...allValues) : 100;
+    const yMin = dataMin < 0 ? Math.floor(dataMin / 10) * 10 : 0;
+    const yMax = Math.max(100, Math.ceil(dataMax / 10) * 10);
 
     this.chartOptions = {
       series: [
         { name: 'AI Score', data: aiSeries },
-        { name: 'Evaluator Score', data: evaluatorSeries },
+        { name: 'Evaluation Score', data: evaluatorSeries },
         { name: 'Discrepancy', data: discrepancySeries }
       ],
 
@@ -243,39 +258,61 @@ export class KPIAnalysisComponent implements OnInit {
           rotate: -45,
           rotateAlways: false,
           style: {
-            fontSize: '11px'
+            fontSize: '11px',
+            colors: '#C9D6EA'
           }
+        },
+        axisBorder: {
+          color: 'rgba(92, 140, 200, 0.35)'
+        },
+        axisTicks: {
+          color: 'rgba(92, 140, 200, 0.35)'
         }
       },
 
       yaxis: {
-        title: { text: 'Score' },
-        min: 0,
-        max: 100, // Add padding at top so 100% labels don't get cut off
-        tickAmount: 5,
+        title: {
+          text: 'Score',
+          style: {
+            color: '#C9D6EA',
+            fontWeight: 600
+          }
+        },
+        min: yMin,
+        max: yMax,
+        forceNiceScale: true,
         labels: {
+          style: {
+            colors: '#C9D6EA'
+          },
           formatter: (val) => {
-            // Only show positive values
-            return val >= 0 ? `${Math.round(val)}` : '';
+            return val !== null && val !== undefined && !isNaN(val) ? `${Math.round(val)}` : '';
           }
         }
       },
 
-      // 🎨 Disabled color for locked pillars
+      grid: {
+        borderColor: 'rgba(92, 140, 200, 0.22)',
+        strokeDashArray: 4,
+        xaxis: {
+          lines: { show: false }
+        }
+      },
+
       fill: {
         type: 'gradient',
         gradient: {
-          shade: 'light',
+          shade: 'dark',
           type: 'vertical',
-          shadeIntensity: 0.3,
+          shadeIntensity: 0.15,
           gradientToColors: [
-          "#728da7", // AI lighter
-          "#85c451", // Evaluator lighter
-          "#2c547b", // Discrepancy lighter
-        ],
+            '#6CB8FF',
+            '#C5F066',
+            '#FFD080',
+          ],
           inverseColors: false,
           opacityFrom: 1,
-          opacityTo: 0.9,
+          opacityTo: 0.85,
           stops: [0, 100]
         }
       },
@@ -292,86 +329,19 @@ export class KPIAnalysisComponent implements OnInit {
       tooltip: {
         shared: true,
         intersect: false,
-        custom: ({ dataPointIndex }) => {
-          const pillar = data[dataPointIndex];
-
-          // 🔒 Locked pillar tooltip
-          if (!pillar.isAccess) {
-            return `
-            <div style="padding:10px; font-size:13px; color:#666; background: white; border: 1px solid #ddd; border-radius: 4px;">
-              <strong>${pillar.pillarName}</strong><br/>
-              🔒 Upgrade your plan to unlock real insights<br/>
-              
-            </div>
-          `;
-          }
-
-          // ✅ Accessible pillar tooltip
-          return `
-            <div style="
-              padding:12px 14px;
-              min-width:220px;
-              background:#ffffff;
-              border-radius:8px;
-              box-shadow:0 8px 24px rgba(0,0,0,0.12);
-              border:1px solid #e6e6e6;
-              font-family: Inter, system-ui, -apple-system, sans-serif;
-              font-size:13px;
-              transition: all .2s ease;
-            ">
-
-              <!-- Header -->
-              <div style="
-                font-weight:600;
-                font-size:14px;
-                color:#1f2937;
-                margin-bottom:8px;
-              ">
-                ${pillar.pillarName}
-              </div>
-
-              <!-- Metrics -->
-              <div style="display:grid; row-gap:6px;">
-
-                <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#FFFFFF;">AI Score</span>
-                  <span style="font-weight:600; color:#2d5e56;">
-                    ${pillar.aiProgress?.toFixed(2) ?? '0.00'}
-                  </span>
-                </div>
-
-                <div style="display:flex; justify-content:space-between;">
-                  <span style="color:#FFFFFF;">Evaluator</span>
-                  <span style="font-weight:600; color:#39539E;">
-                    ${pillar.evaluatorScore?.toFixed(2) ?? '0.00'}
-                  </span>
-                </div>
-
-                <div style="
-                  display:flex;
-                  justify-content:space-between;
-                  padding-top:6px;
-                  margin-top:6px;
-                  border-top:1px dashed #e5e7eb;
-                ">
-                  <span style="color:#FFFFFF;">Discrepancy</span>
-                  <span style="
-                    font-weight:600;
-                    color:${(pillar.discrepancy ?? 0) > 0 ? 'var(--Primary-Color)' : 'var(--Secondary-Color)'};
-                  ">
-                    ${pillar.discrepancy?.toFixed(2) ?? '0.00'}
-                  </span>
-                </div>
-
-              </div>
-            </div>
-          `;
-        }
+        theme: 'dark',
+        custom: ({ dataPointIndex }) => buildAiKpiPillarTooltipHtml(data[dataPointIndex]),
       },
       legend: {
         position: 'bottom',
         horizontalAlign: 'center',
-        offsetY: 0
+        offsetY: 0,
+        labels: {
+          colors: '#E8EEF8'
+        },
+        markers: {
+          strokeWidth: 0
+        }
       }
     };
   }

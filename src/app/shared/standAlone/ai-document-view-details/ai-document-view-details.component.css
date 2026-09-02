@@ -1,16 +1,16 @@
-.city_card_outter {
+.program_card_outter {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 20px;
     height: 100%;
 }
 
-.city_card {
+.program_card {
     flex: 1;
 }
 
 
-.city_cards_p {
+.program_cards_p {
     display: flex;
     align-items: center;
     font-weight: 600;
@@ -19,27 +19,27 @@
     margin-right: auto;
 }
 
-.city_cards_p path {
+.program_cards_p path {
     fill: rgb(48 74 67);
 }
 
-.city_cards_p svg {
+.program_cards_p svg {
     height: 22px;
     width: auto;
 }
 
-.city_card_outter img {
+.program_card_outter img {
     max-width: 400px;
     border-radius: 18px;
     height: 100%;
     object-fit: cover;
 }
 
-.city_card_inner {
+.program_card_inner {
     padding: 20px 0px;
 }
 
-.city_cards_h1 {
+.program_cards_h1 {
     font-size: 30px;
     line-height: normal;
     font-weight: 600;
@@ -170,7 +170,7 @@ button.btn-close:focus-visible {
   cursor: pointer;
     white-space: nowrap;
     border-radius: 5px !important;
-    background-color: var(--Primary-Color) !important;
+    background-color: #3d6391 !important;
     color: #ffffff !important;
     display: inline-block;
     padding: 8px 10px;
@@ -280,6 +280,8 @@ td.file_size {
     font-weight: 600;
     padding-left: 16px;
     border-radius: 50px;
+    background-color: transparent;
+    color: #ffffff;
 }
 .modal-header h3 {
     font-size: 20px;
@@ -294,4 +296,6 @@ td.file_size {
 } */
 .modal-box .input_field input.form-control {
     line-height: 200%;
+    border-radius: 100px;
+    padding-left: 12px;
 }

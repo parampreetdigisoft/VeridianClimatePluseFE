@@ -1,5 +1,5 @@
 <div class="offcanvas-header">
-    <h5 id="offcanvasLabel">Pillar Details</h5>
+    <h5 id="offcanvasLabel">Program Details</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
 </div>
 
@@ -10,7 +10,7 @@
                 <div class="program_card_img">
                     <img [src]="urlBase+program?.image " [alt]="'Profile Image'" (error)="onImgError($event)" />
                     <div class="score">
-                        Score : {{ program?.aiProgress?.toFixed(2) }}
+                        Score : {{ program?.aiProgress?.toFixed(2) ?? 'N/A' }}
                     </div>
                 </div>
                 <div class="program_card">
@@ -242,6 +242,26 @@
                         <td><span class="score_label_tab">Data Transparency Note</span></td>
                         <td *ngIf="program?.assessmentValueNote"> <app-typing-text [text]="program!.assessmentValueNote!"
                                 [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr *ngIf="program?.keyFindings">
+                        <td><span class="score_label_tab">Key Findings</span></td>
+                        <td>
+                            <app-typing-text
+                                [text]="program!.keyFindings!"
+                                [speed]="5"
+                                [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr *ngIf="program?.recommendations">
+                        <td><span class="score_label_tab">Recommendations</span></td>
+                        <td>
+                            <app-typing-text
+                                [text]="program!.recommendations!"
+                                [speed]="5"
+                                [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>
                     </tr>

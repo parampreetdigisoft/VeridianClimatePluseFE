@@ -49,6 +49,9 @@ export class ClientProgramViewComponent {
     }
 
     this.clientService.getPrograms(payload).subscribe(programs => {
+      if (programs?.data) {
+        programs.data = [...programs.data].sort((a, b) => Number(b.score ?? 0) - Number(a.score ?? 0));
+      }
       this.programsResponse = programs;
       this.totalRecords = programs.totalRecords;
       this.currentPage = currentPage;
@@ -88,7 +91,7 @@ export class ClientProgramViewComponent {
   }
   gotoComparision() {
     this.userDataService.compareProgram.set(this.selectedPrograms);
-    this.router.navigate(['/programuser/comparsion']);
+    this.router.navigate(['programuser/comparison']);
   }
 
 }

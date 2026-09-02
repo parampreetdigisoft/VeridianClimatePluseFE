@@ -29,9 +29,6 @@
     outline: none !important;
     box-shadow: none !important;
 }
-::ng-deep .analyst_multi_select  .ng-select-container .ng-value-container {
-    padding: 0 !important;
-}
  
 ::ng-deep .analyst_multi_select .ng-select-container .ng-value-container .ng-input > input {
   color: var(--Text-Color) !important;

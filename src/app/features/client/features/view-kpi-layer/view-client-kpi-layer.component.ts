@@ -17,6 +17,7 @@ import { AiComputationService } from 'src/app/core/services/ai-computation.servi
 import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from 'src/app/core/models/SummarizeKpiDto';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
 import { UserRole } from 'src/app/core/enums/UserRole';
+import { VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -37,6 +38,7 @@ export type ChartOptions = {
 export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
 
   @Input() selectedLayer?: GetAnalyticalLayerResultDto | null = null;
+  @Input() listPage?: number;
   urlBase = environment.apiUrl;
   get program() {
     return this.selectedLayer?.program;
@@ -49,6 +51,8 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
   isSummarizing = false;
   aiSummary: SummarizeKpiResponseDto | null = null;
   aiSummaryError: string | null = null;
+  summaryCache = new Map<number, SummarizeKpiResponseDto>();
+  summarizingLayerId: number | null = null;
 
   constructor(
     private userService: UserService,
@@ -58,10 +62,17 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
   
   ngOnInit(): void {
     this.updateAiSummaryVisibility();
+    this.clearSummaryCache();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.ApexGetPieOptions();
+    if (changes['listPage'] && !changes['listPage'].firstChange) {
+      this.clearSummaryCache();
+    } 
+    if (changes['selectedLayer']) {
+      this.restoreCachedSummary();
+    }
   }
 
   onImgError(event: Event) {
@@ -88,32 +99,70 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
     }
 
     this.isSummarizing = true;
+    this.summarizingLayerId = layerResultID;
     this.aiSummaryError = null;
 
     const payload: SummarizeKpiRequestDto = { layerResultID };
     this.aiComputationService.summarizeKpiPerformance(payload).subscribe({
       next: (res) => {
         const response = res as ResultResponseDto<SummarizeKpiResponseDto>;
-        this.isSummarizing = false;
+        const isCurrentRow = this.selectedLayer?.layerResultID === layerResultID;
+        if (this.summarizingLayerId === layerResultID) {
+          this.summarizingLayerId = null;
+        }
+        if (isCurrentRow) {
+          this.isSummarizing = false;
+        }
         if (response?.succeeded && response.result?.summary) {
-          this.aiSummary = response.result;
-          this.aiSummaryError = null;
+          this.summaryCache.set(layerResultID, response.result);
+          if (isCurrentRow) {
+            this.aiSummary = response.result;
+            this.aiSummaryError = null;
+          }
         } else {
           const message = response?.errors?.[0] || 'Failed to generate AI summary. Please try again.';
-          this.aiSummary = null;
-          this.aiSummaryError = message;
+          if (isCurrentRow) {
+            this.aiSummary = this.summaryCache.get(layerResultID) ?? null;
+            this.aiSummaryError = this.aiSummary ? null : message;
+          }
           this.toaster.showError(message);
         }
       },
       error: () => {
-        this.isSummarizing = false;
-        this.aiSummary = null;
-        this.aiSummaryError = 'Unable to reach the AI service. Please try again later.';
-        this.toaster.showError(this.aiSummaryError);
+         const isCurrentRow = this.selectedLayer?.layerResultID === layerResultID;
+        if (this.summarizingLayerId === layerResultID) {
+          this.summarizingLayerId = null;
+        }
+        if (isCurrentRow) {
+          this.isSummarizing = false;
+          this.aiSummary = this.summaryCache.get(layerResultID) ?? null;
+          this.aiSummaryError = this.aiSummary
+            ? null
+            : 'Unable to reach the AI service. Please try again later.';
+          if (this.aiSummaryError) {
+            this.toaster.showError(this.aiSummaryError);
+          }
+        } else {
+          this.toaster.showError('Unable to reach the AI service. Please try again later.');
+        }
       }
     });
   }
 
+  private restoreCachedSummary(): void {
+    const layerResultID = this.selectedLayer?.layerResultID;
+    this.aiSummaryError = null;
+    this.aiSummary = layerResultID != null ? this.summaryCache.get(layerResultID) ?? null : null;
+    this.isSummarizing = layerResultID != null && this.summarizingLayerId === layerResultID;
+  }
+
+  clearSummaryCache(): void {
+    this.summaryCache.clear();
+    this.summarizingLayerId = null;
+    this.aiSummary = null;
+    this.aiSummaryError = null;
+    this.isSummarizing = false;
+  }
 
   getAiConditionByid() {
     let condition = this.selectedLayer?.fiveLevelInterpretations?.find(x => x.interpretationID == this.selectedLayer?.aiInterpretationID)?.condition ?? 'NA';
@@ -145,90 +194,67 @@ export class ViewClientKpiLayerComponent implements OnInit, OnChanges {
     return aiValue !== undefined && aiValue !== null ? aiValue : '0';
   }
 
-  private getScoreColor(score: number): string {
-    if (score >= 75) return "#575c59";   // Green – strong
-    if (score >= 50) return "#f59e0b";   // Amber – moderate
-    return "#dc2626";                    // Red – weak
-  }
-
   ApexGetPieOptions() {
     const round = (val: number) =>
-    Math.round((val + Number.EPSILON) * 100) / 100;
+      Math.round((val + Number.EPSILON) * 100) / 100;
 
     const aiValue = this.selectedLayer?.aiCalValue5 ?? 0;
     const value = round(aiValue);
-    const scoreColor = this.getScoreColor(value);
+    const displayValue =
+      aiValue === 100 || aiValue === 0 ? aiValue.toFixed(0) : aiValue.toFixed(2);
 
     this.chartOptions = {
-      series: [value],
+      series: [Math.max(0, value)],
       chart: {
         height: 360,
-        type: "radialBar",
+        type: 'radialBar',
+        background: 'transparent',
         animations: {
           enabled: true,
-          easing: "easeinout",
-          speed: 900
+          easing: 'easeinout',
+          speed: 900,
         },
-        toolbar: { show: false }
+        toolbar: { show: false },
       },
-
       plotOptions: {
         radialBar: {
           startAngle: -135,
           endAngle: 225,
           hollow: {
             margin: 0,
-            size: "70%",
-            background: "#fff",
-            image: undefined,
-            position: "front",
-            dropShadow: {
-              enabled: true,
-              top: 3,
-              left: 0,
-              blur: 4,
-              opacity: 0.24
-            }
+            size: '70%',
+            background: 'transparent',
           },
           track: {
-            background: "#fff",
-            strokeWidth: "67%",
-            margin: 0, // margin is in pixels
-            dropShadow: {
-              enabled: true,
-              top: -3,
-              left: 0,
-              blur: 4,
-              opacity: 0.35
-            }
+            background: 'rgba(92, 140, 200, 0.12)',
+            strokeWidth: '67%',
+            margin: 0,
           },
           dataLabels: {
             show: true,
             name: {
               offsetY: -10,
               show: true,
-              color: "#888",
-              fontSize: "17px"
+              color: VCP_CHART.textMuted,
+              fontSize: '17px',
             },
             value: {
-              formatter: function (val) {
-                return val.toString();
-              },
-              color: "#111",
-              fontSize: "36px",
-              show: true
-            }
-          }
-        }
+              formatter: () => displayValue,
+              color: VCP_CHART.text,
+              fontSize: '36px',
+              show: true,
+            },
+          },
+        },
       },
       fill: {
-        type: "solid",
-        colors: ["var(--Secondary-Color)"]
+        type: 'solid',
+        colors: [VCP_CHART.primary],
       },
       stroke: {
-        lineCap: "round"
+        lineCap: 'round',
       },
-      labels: ["Score"]
+      labels: ['Score'],
     };
   }
 

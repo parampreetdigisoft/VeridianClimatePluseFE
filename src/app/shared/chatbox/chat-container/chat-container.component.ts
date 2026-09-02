@@ -227,6 +227,19 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
           return;
         }
 
+        const pillars = data.program?.pillars ?? [];
+        const mapped = pillars
+          .map(p => ({
+            pillarID: p.pillarID,
+            pillarName: p.pillarName,
+            imagePath: p.imagePath ?? '',
+            pillarScore: p.pillarScore ?? 0,
+            displayOrder: p.displayOrder ?? 0,
+          }))
+          .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+
+        this.programPillarScores.set(mapped);
+
         const slidePillars = this.normalizeSlidePillars(data.program?.pillars);
         if (slidePillars.length && this.programSlide?.program) {
           this.programSlide = {
@@ -234,9 +247,10 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
             program: { ...this.programSlide.program, pillars: slidePillars },
           };
         }
+        this.cdr.markForCheck();
 
         if (climateProgramID > 0) {
-          this.loadProgramPillarScores(climateProgramID);
+         // this.loadProgramPillarScores(climateProgramID);
         }
 
         const headerProgramName = data.program?.programName ?? program?.programName ?? 'Program';
@@ -247,17 +261,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
           {
             title: headerProgramName,
             headerMeta: this.formatProgramHeaderMeta(headerLocation, headerYear),
-           },
-          // ...combinedRisks.map((x: any) => ({
-          //   title: 'Risk Overview',
-          //   subtitle: x.summary || x.description,
-          //   trend: "Risk"
-          // })),
-          // ...earlyWarnings.map((x: any) => ({
-          //   title: x.title || 'Early Warning',
-          //   subtitle: x.description || x.summary,
-          //   trend: "Early Warning"
-          // })),
+           }
         ];
 
         this.currentSlide = 0;
@@ -299,7 +303,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
         this.programPillarScores.set(mapped);
 
         const existing = this.normalizeSlidePillars(this.programSlide?.program?.pillars);
-        const merged = mapped.length ? mapped : existing;
+        const merged = existing.length ? existing : mapped;
 
         if (merged.length && this.programSlide?.program) {
           this.programSlide = {
@@ -485,7 +489,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     if (fromScores.length) return fromScores;
 
     const global = this.chatService.pillars.value ?? [];
-    if (global.length && this.selectedProgram()) {
+    if (global.length) {
       return global.map(p => ({
         pillarID: p.pillarID,
         pillarName: p.pillarName,
@@ -551,16 +555,18 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     return Math.min(100, Math.max(0, Number(score)));
   }
 
-  truncatePillarName(name: string | null | undefined, maxWords = 3): string {
-    if (!name?.trim()) return '—';
-    const words = name.trim().split(/\s+/);
-    if (words.length <= maxWords) return name.trim();
-    return words.slice(0, maxWords).join(' ') + '…';
-  }
-
-  isPillarNameTruncated(name: string | null | undefined, maxWords = 4): boolean {
+  /** Show tooltip when label is shortened by word limit or likely clipped in the sidebar. */
+  shouldShowPillarNameTooltip(name: string | null | undefined, maxWords = 3): boolean {
     if (!name?.trim()) return false;
-    return name.trim().split(/\s+/).length > maxWords;
+    const trimmed = name.trim();
+    const words = trimmed.split(/\s+/).filter(Boolean);
+
+    if (words.length > maxWords) return true;
+
+    // Narrow KEY PILLARS column still clips multi-word names via line-clamp.
+    if (words.length >= 3) return true;
+
+    return trimmed.length > 24;
   }
 
   peaceLevelLabel(score: number | null | undefined): string {
@@ -595,11 +601,11 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   protected glanceScoreLabel(): string {
-    return this.selectedProgram() ? 'Health Score' : 'Global Score';
+    return this.selectedProgram() ? 'Health Score' : 'Average Score';
   }
 
   protected glanceRankLabel(): string {
-    return this.selectedProgram() ? 'Location Rank' : 'Global Rank';
+    return 'Location Rank';
   }
 
   formatGlanceScore(score: number | null | undefined): string {

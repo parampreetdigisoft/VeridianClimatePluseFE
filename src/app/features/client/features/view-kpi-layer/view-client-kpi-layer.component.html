@@ -10,8 +10,7 @@
                 <div class="program_card_img">
                     <img [src]="urlBase+program?.image " [alt]="'Profile Image'" (error)="onImgError($event)" />
                     <div class="score">
-                        Evaluation : {{ getEvaluationCalculatedValue }} , AI : {{ getAiCalculatedValue }}
-
+                        Score : {{ getAiCalculatedValue }}
                     </div>
                 </div>
                 <div class="program_card">
@@ -100,7 +99,7 @@
                             <div class="kpi_cat_name">Categories</div>
                         </th>
                         <th>
-                            <span class="bold_num"> Score </span>
+                            <span class="kpi_cat_name"> Score </span>
                         </th>
                     </tr>
 
@@ -149,7 +148,7 @@
                     </tr>
                     <tr class="last_data">
                         <td>
-                            <div class="kpi_cat_name">Interpretation Condition </div>
+                            <div class="kpi_cat_name">Interpretation Condition</div>
                         </td>
                         <td>
                             <span>{{getAiConditionByid()}}</span>

@@ -1,4 +1,6 @@
 /* Default Bootstrap width is 400px */
+@import url('../../../../shared/styles/ai-program-comparison.shared.css');
+
 .custom-sidebar {
     width: 775px !important;
     /* 👈 set your desired width */
@@ -153,7 +155,9 @@ app-comparision app-ag-bar:nth-child(3) {
     font-weight: 400;
     line-height: 20px;
     display: block;
-    width: 300px;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
 }
 
 .evaluater_design .mat-elevation-z8 > tbody tr td:first-child {
@@ -360,4 +364,31 @@ p.btn_spinner {
     white-space: nowrap;
     color: #ffffff;
     border-radius: 5px;
+}
+
+#chart {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+::ng-deep #chart .apexcharts-canvas,
+::ng-deep #chart .apexcharts-svg {
+    background: transparent !important;
+}
+
+::ng-deep #chart .apexcharts-tooltip {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+::ng-deep #chart .apexcharts-menu {
+    background: #0B1633 !important;
+    border: 1px solid rgba(92, 140, 200, 0.3) !important;
+    color: #E8EEF8 !important;
+}
+
+::ng-deep #chart .apexcharts-menu-item:hover {
+    background: rgba(59, 158, 255, 0.18) !important;
+    color: #ffffff !important;
 }

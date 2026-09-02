@@ -45,7 +45,7 @@
     <div class="col-md-auto">
       <div class="dropdown d-inline-block">
         <button [matTooltip]=" 'Export All Programs details'" style="cursor:pointer" class="dropdown-toggle"
-          data-bs-toggle="dropdown" aria-expanded="false" class="common_button" [disabled]="isExporting">
+          data-bs-toggle="dropdown" data-bs-popper-config='{"strategy":"fixed"}' aria-expanded="false" class="common_button" [disabled]="isExporting">
           Export
           <ng-container *ngIf="!isExporting">
             <div class="export-icon-wrapper">
@@ -90,7 +90,7 @@
       <div class="input_field justify-content-end input_flex" class="dropdown d-inline-block">
         <button [matTooltip]="'Export reports for the selected programs'"
           style="cursor:pointer" class="dropdown-toggle"
-          data-bs-toggle="dropdown" aria-expanded="false"
+          data-bs-toggle="dropdown" data-bs-popper-config='{"strategy":"fixed"}' aria-expanded="false"
           [disabled]="isReportExporting" 
           class="common_button">
           Report

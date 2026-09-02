@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Observable } from 'rxjs';
 import { EvaluatorService } from '../../evaluator.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -15,32 +14,21 @@ import {
   ProgramHistoryDto,
   UserProgramRequestDto,
 } from 'src/app/core/models/ProgramHistoryDto';
-import { DashboardModeResponseDto } from 'src/app/core/models/ProgramSignalDashboardDto';
-import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
+import { PulseSummaryCard } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard.models';
 import {
-  PulseIndexHero,
-  PulseKpiCard,
-  PulseKpiTab,
-  PulseSummaryCard,
-} from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard.models';
-import {
+  PULSE_THEME,
   PulseAreaChartOptions,
   PulseRadialChartOptions,
-  buildPulseEvaluatorBarChart,
-  buildPulseKpiCards,
   buildPulseRadialChart,
-  getSignalAiScore,
 } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard-chart.util';
 import {
-  PULSE_KPI_TABS,
-  closePulseKpiModal,
   formatPulseScore,
   isPulseGapScore,
-  openPulseKpiModal,
   pulseConditionClass,
   pulseProgramSearchFn,
   pulseScoreProgress,
 } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard-ui.util';
+import { ahiCompletionColor, ahiScoreColor, VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 
 @Component({
   selector: 'app-evaluator-pulse-dashboard',
@@ -51,7 +39,6 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class EvaluatorPulseDashboardComponent implements OnInit {
-  readonly kpiTabs = PULSE_KPI_TABS;
   readonly customSearchFn = pulseProgramSearchFn;
   readonly formatScore = formatPulseScore;
   readonly scoreProgress = pulseScoreProgress;
@@ -59,22 +46,14 @@ export class EvaluatorPulseDashboardComponent implements OnInit {
   readonly conditionClass = pulseConditionClass;
 
   isPageLoader = false;
-  isKpiLoader = false;
   programs: ProgramVM[] | null = [];
   selectedPrograms: number | '' | null = '';
   programHistory: ProgramHistoryDto | null = null;
   questionHistory: GetProgramQuestionHistoryResponseDto | null = null;
-  modeDashboard: DashboardModeResponseDto | null = null;
-  activeKpiTab: PulseKpiTab = 'ambitionDelivery';
-  selectedKpi: PulseKpiCard | null = null;
 
   summaryCards: PulseSummaryCard[] = [];
-  kpiCards: PulseKpiCard[] = [];
-  indexHero: PulseIndexHero | null = null;
   pillarChartOptions: Partial<PulseAreaChartOptions> | null = null;
   radialChartOptions: Partial<PulseRadialChartOptions> | null = null;
-
-  private readonly kpiModalId = 'evaluatorPulseKpiDetailModal';
 
   constructor(
     private evaluatorService: EvaluatorService,
@@ -125,76 +104,261 @@ export class EvaluatorPulseDashboardComponent implements OnInit {
     this.evaluatorService.getProgramQuestionHistory(request).subscribe({
       next: (res) => {
         this.questionHistory = res;
-        this.refreshDerivedViews();
-        this.loadModeDashboard(false);
+        this.buildPillarChartOptions(this.questionHistory);
+        this.isPageLoader = false;
       },
       error: () => {
+        this.pillarChartOptions = null;
         this.isPageLoader = false;
       },
     });
   }
 
   onProgramChange(): void {
-    this.activeKpiTab = 'ambitionDelivery';
     this.getProgramQuestionHistory();
   }
 
-  setKpiTab(tab: PulseKpiTab): void {
-    if (this.activeKpiTab === tab) return;
-    this.activeKpiTab = tab;
-    this.loadModeDashboard(true);
-  }
-
-  private loadModeDashboard(sectionOnly: boolean): void {
-    if (!this.selectedPrograms) {
-      this.isPageLoader = false;
-      this.isKpiLoader = false;
+  private buildPillarChartOptions(history: GetProgramQuestionHistoryResponseDto | null): void {
+    if (!history?.pillars?.length) {
+      this.pillarChartOptions = null;
       return;
     }
 
-    if (sectionOnly) {
-      this.isKpiLoader = true;
-    } else {
-      this.isPageLoader = true;
-    }
+    const rawMax = Math.max(0, ...history.pillars.map((p) => p.scoreProgress ?? 0));
+    const maxNumber = Math.max(10, Math.ceil(rawMax / 10) * 10);
 
-    this.getModeRequest(Number(this.selectedPrograms)).subscribe({
-      next: (res) => {
-        this.isPageLoader = false;
-        this.isKpiLoader = false;
-        this.modeDashboard = res.succeeded ? res.result : null;
-        this.kpiCards = buildPulseKpiCards(this.modeDashboard, {
-          showAi: true,
-          showManual: true,
-        });
-        this.buildIndexHero();
+    const data = history.pillars
+      .map((p) => ({
+        pillarID: p.pillarID,
+        pillarName: p.pillarName,
+        totalQuestion: p.totalQuestion,
+        ansQuestion: p.ansQuestion,
+        score: p.score,
+        scoreProgress: p.scoreProgress ?? 0,
+        completionRate: p.totalQuestion > 0 ? (p.ansQuestion / p.totalQuestion) * 100 : 0,
+      }))
+      .sort((a, b) => a.scoreProgress - b.scoreProgress);
+
+    const shortNames = this.generateUniqueShortNames(data.map((d) => d.pillarName));
+    const chartHeight = Math.max(280, data.length * 38);
+    const seriesData = data.map((d, index) => ({
+      x: shortNames[index],
+      y: d.scoreProgress,
+      fillColor: this.getBarColor(d.scoreProgress, maxNumber),
+      meta: {
+        ansQuestion: d.ansQuestion,
+        totalQuestion: d.totalQuestion,
+        completionRate: d.completionRate,
+        pillarName: d.pillarName,
+        pillarShortName: shortNames[index],
       },
-      error: () => {
-        this.isPageLoader = false;
-        this.isKpiLoader = false;
-        this.modeDashboard = null;
-        this.kpiCards = [];
-        this.buildIndexHero();
+    }));
+
+    this.pillarChartOptions = {
+      series: [
+        {
+          name: 'Manual Score',
+          data: seriesData,
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: chartHeight,
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+        background: 'transparent',
+        toolbar: { show: false },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 900,
+          animateGradually: { enabled: true, delay: 100 },
+          dynamicAnimation: { enabled: true, speed: 400 },
+        },
       },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          borderRadius: 5,
+          borderRadiusApplication: 'end',
+          barHeight: '70%',
+          distributed: true,
+          dataLabels: { position: 'center' },
+        },
+      },
+      colors: [...VCP_CHART.pillarBar],
+      dataLabels: {
+        enabled: true,
+        textAnchor: 'middle',
+        offsetX: 0,
+        style: {
+          fontSize: '14px',
+          fontWeight: 800,
+          colors: ['#ffffff'],
+        },
+        formatter: (val: number) => `${val.toFixed(val >= 100 ? 0 : 1)}`,
+        background: { enabled: false },
+      },
+      stroke: {
+        show: true,
+        width: 0,
+        colors: ['transparent'],
+      },
+      xaxis: {
+        categories: shortNames,
+        title: {
+          text: 'Score',
+          style: {
+            fontSize: '14px',
+            fontWeight: 700,
+            color: VCP_CHART.text,
+          },
+          offsetY: 0,
+        },
+        labels: {
+          style: {
+            fontSize: '12px',
+            fontWeight: 600,
+            colors: VCP_CHART.textMuted,
+          },
+          formatter: (value: string) => `${value}`,
+        },
+        axisBorder: {
+          show: true,
+          color: VCP_CHART.border,
+          offsetY: 0,
+        },
+        axisTicks: {
+          show: true,
+          color: VCP_CHART.grid,
+          height: 5,
+        },
+        min: 0,
+        max: maxNumber,
+        tickAmount: 5,
+      },
+      yaxis: {
+        labels: {
+          show: true,
+          align: 'right',
+          minWidth: 0,
+          maxWidth: 120,
+          style: {
+            fontSize: '11px',
+            fontWeight: 600,
+            colors: VCP_CHART.textMuted,
+          },
+          offsetX: -50,
+        },
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+      },
+      grid: {
+        show: true,
+        borderColor: VCP_CHART.grid,
+        strokeDashArray: 4,
+        position: 'back',
+        xaxis: { lines: { show: true } },
+        yaxis: { lines: { show: false } },
+        padding: { top: 5, right: 30, bottom: 10, left: 10 },
+      },
+      tooltip: {
+        enabled: true,
+        shared: false,
+        followCursor: true,
+        intersect: true,
+        inverseOrder: false,
+        theme: 'dark',
+        style: {
+          fontSize: '13px',
+          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+        },
+        onDatasetHover: { highlightDataSeries: true },
+        custom: ({ series, seriesIndex, dataPointIndex, w }: any) => {
+          const meta = w.config.series[0].data[dataPointIndex].meta;
+          const percentage = series[seriesIndex][dataPointIndex].toFixed(1);
+          const completion = meta.completionRate.toFixed(1);
+          const barColor = w.config.series[0].data[dataPointIndex].fillColor;
+          const completionColor = ahiCompletionColor(Number(completion));
+          const progressWidth = Math.min(completion, 100);
+
+          return `
+          <div style="background: ${PULSE_THEME.card}; border-radius: 12px; box-shadow: ${VCP_CHART.tooltipShadow}; overflow: hidden; border: 1px solid ${barColor}55; font-family: Poppins, sans-serif; min-width: 400px;">
+            <div style="background: linear-gradient(135deg, ${barColor}cc 0%, ${barColor}88 100%); padding: 16px 20px; position: relative; overflow: hidden; min-height: 60px;">
+              <div style="font-weight: 800; font-size: 15px; color: #ffffff; position: relative; z-index: 1; line-height: 1.5; word-wrap: break-word;">
+                ${meta.pillarName}
+              </div>
+            </div>
+            <div style="padding: 18px 20px; background: ${PULSE_THEME.card};">
+              <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 14px; padding: 12px; background: rgba(92, 140, 200, 0.08); border-radius: 8px; border: 1px solid ${VCP_CHART.border};">
+                <span style="color: ${VCP_CHART.textMuted}; font-weight: 600; font-size: 13px; flex-shrink: 0;">Score</span>
+                <span style="color: ${barColor}; font-weight: 900; font-size: 24px;">${percentage}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 12px; padding: 10px 12px; background: rgba(92, 140, 200, 0.06); border-left: 3px solid ${barColor}; border-radius: 6px;">
+                <span style="color: ${VCP_CHART.textMuted}; font-weight: 600; font-size: 12px; flex-shrink: 0; white-space: nowrap;">Questions Answered</span>
+                <span style="color: ${VCP_CHART.text}; font-weight: 700; font-size: 15px;">
+                  ${meta.ansQuestion} / ${meta.totalQuestion}
+                </span>
+              </div>
+              <div style="margin-top: 14px;">
+                <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 8px;">
+                  <span style="color: ${VCP_CHART.textMuted}; font-weight: 600; font-size: 12px; flex-shrink: 0; white-space: nowrap;">Completion Rate</span>
+                  <span style="color: ${completionColor}; font-weight: 800; font-size: 16px; flex-shrink: 0;">${completion}%</span>
+                </div>
+                <div style="width: 100%; height: 10px; background: rgba(92, 140, 200, 0.15); border-radius: 12px; overflow: hidden;">
+                  <div style="width: ${progressWidth}%; height: 100%; background: ${completionColor}; border-radius: 12px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        },
+      },
+      legend: { show: false },
+      fill: {
+        opacity: 0.95,
+        type: 'solid',
+      },
+      markers: { size: 0 },
+    };
+  }
+
+  private generateUniqueShortNames(pillarNames: string[]): string[] {
+    const maxLength = 8;
+    const shortNames: string[] = [];
+    const nameCount: Record<string, number> = {};
+    const usedNames: Record<string, number> = {};
+
+    pillarNames.forEach((name) => {
+      const words = name.split(/[\s,/&-]+/).filter((word) => word.length > 0);
+      const firstWord = words[0] || name;
+      const truncated = firstWord.length > maxLength ? firstWord.substring(0, maxLength) : firstWord;
+      nameCount[truncated] = (nameCount[truncated] || 0) + 1;
     });
+
+    pillarNames.forEach((name) => {
+      const words = name.split(/[\s,/&-]+/).filter((word) => word.length > 0);
+      const firstWord = words[0] || name;
+      let truncated = firstWord.length > maxLength ? firstWord.substring(0, maxLength) : firstWord;
+
+      if (nameCount[truncated] > 1) {
+        usedNames[truncated] = (usedNames[truncated] || 0) + 1;
+        const suffixWord = words[usedNames[truncated]] || words[1];
+        truncated = suffixWord ? `${truncated}...${suffixWord.charAt(0).toLowerCase()}` : `${truncated}...`;
+      } else if (firstWord.length > maxLength || words.length > 1) {
+        truncated = `${truncated}...`;
+      }
+
+      shortNames.push(truncated);
+    });
+
+    return shortNames;
   }
 
-  private getModeRequest(
-    climateProgramID: number
-  ): Observable<ResultResponseDto<DashboardModeResponseDto>> {
-    if (this.activeKpiTab === 'diplomaticRisk') {
-      return this.evaluatorService.getDiplomaticRiskDashboard(climateProgramID);
+  private getBarColor(scoreProgress: number, maxNumber: number): string {
+    if (scoreProgress === 0) {
+      return VCP_CHART.pillarBar[0];
     }
-    if (this.activeKpiTab === 'institutionalReadiness') {
-      return this.evaluatorService.getReadinessScorecardDashboard(climateProgramID);
-    }
-    return this.evaluatorService.getAmbitionDeliveryIndexDashboard(climateProgramID);
-  }
-
-  private refreshDerivedViews(): void {
-    const pillars = this.questionHistory?.pillars ?? [];
-    this.pillarChartOptions = buildPulseEvaluatorBarChart(pillars);
-    this.buildIndexHero();
+    const normalized = maxNumber > 0 ? (scoreProgress / maxNumber) * 100 : 0;
+    return ahiScoreColor(normalized);
   }
 
   private buildSummaryCards(): void {
@@ -231,63 +395,8 @@ export class EvaluatorPulseDashboardComponent implements OnInit {
     ];
   }
 
-  private buildIndexHero(): void {
-    const program = this.programs?.find((p) => p.climateProgramID === this.selectedPrograms);
-    const d = this.modeDashboard;
-    const pillars = this.questionHistory?.pillars ?? [];
-    const avgFromPillars =
-      pillars.length > 0
-        ? pillars.reduce((s, p) => s + Number(p.scoreProgress ?? 0), 0) / pillars.length
-        : 0;
-    const aiScore = d ? Number(d.aiProgramScore ?? 0) : avgFromPillars;
-    const manualScore = d ? Number(d.manualProgramScore ?? d.manualValue ?? 0) : avgFromPillars;
-    const aiCondition = d?.vcpCondition || (aiScore >= 70 ? 'Stable' : aiScore >= 40 ? 'Watch' : 'Critical');
-    const signals = d?.primarySignals?.length ? d.primarySignals : d?.signals ?? [];
-    const fallbackMode =
-      this.activeKpiTab === 'diplomaticRisk'
-        ? 'DIPLOMATIC RISK & TRUST INDEX'
-        : this.activeKpiTab === 'institutionalReadiness'
-          ? 'INSTITUTIONAL READINESS SCORECARD'
-          : 'AMBITION–DELIVERY INDEX';
-
-    this.indexHero = {
-      modeName: d?.modeName || fallbackMode,
-      programLabel: program
-        ? `${program.programName} · ${program.year || '—'} · ${program.location || '—'}`
-        : 'Select a program',
-      overallLabel: `AI ${aiScore.toFixed(1)}/100 · Manual ${manualScore.toFixed(1)}/100 · ${aiCondition}`,
-      stats: [
-        { label: 'AI Score', value: aiScore.toFixed(1) },
-        { label: 'Manual Score', value: manualScore.toFixed(1) },
-        {
-          label: signals[1]?.code || signals[1]?.layerCode || 'SIG',
-          value: signals[1] ? (getSignalAiScore(signals[1]) ?? 0).toFixed(1) : '0.0',
-        },
-        {
-          label: 'Manual',
-          value: d?.manualCondition || (manualScore >= 70 ? 'Stable' : manualScore >= 40 ? 'Watch' : 'Critical'),
-        },
-      ],
-    };
-  }
-
-  openKpiDetails(kpi: PulseKpiCard, event?: Event): void {
-    event?.stopPropagation();
-    this.selectedKpi = kpi;
-    openPulseKpiModal(this.kpiModalId);
-  }
-
-  closeKpiDetails(): void {
-    closePulseKpiModal(this.kpiModalId);
-    this.selectedKpi = null;
-  }
-
   trackByTitle(_: number, item: PulseSummaryCard): string {
     return item.title;
-  }
-
-  trackByKpi(_: number, item: PulseKpiCard): string | number {
-    return item.id;
   }
 
   exportProgramPillar(): void {

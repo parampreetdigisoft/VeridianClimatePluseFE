@@ -8,6 +8,7 @@ export const VCP_CHART = {
   primarySoft: '#5CB8FF',
   secondary: '#A8E063',
   accent: '#4CAF50',
+  discrepancy: '#FFB84D',
   deep: '#0A2240',
   text: '#E8EEF8',
   textMuted: '#9AADC4',
@@ -51,7 +52,7 @@ export const VCP_CHART = {
     '#A8E063',
     '#B8F26A',
     '#1D5D96',
-    '#0A2240',
+    '#4675af',
   ],
 
   /** Pillar bar chart (evaluator) — light to strong */
@@ -65,7 +66,7 @@ export const VCP_CHART = {
     '#A8E063',
     '#B8F26A',
     '#1D5D96',
-    '#0A2240',
+    '#396397',
   ],
 
   completionHigh: '#4CAF50',

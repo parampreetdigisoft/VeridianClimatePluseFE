@@ -91,6 +91,12 @@ export function buildPillarComparisonBarChartOptions(
     pillarCount
   );
 
+  const allValues = series.flatMap((s: any) => s.data ?? []).filter((v: any) => v !== null && v !== undefined && !isNaN(Number(v))).map((v: any) => Number(v));
+  const dataMin = allValues.length ? Math.min(...allValues) : 0;
+  const dataMax = allValues.length ? Math.max(...allValues) : 100;
+  const yMin = dataMin < 0 ? Math.floor(dataMin / 10) * 10 : 0;
+  const yMax = Math.max(100, Math.ceil(dataMax / 10) * 10);
+
   return {
     series,
     colors: hasData ? colors : ['#6b7c93'],
@@ -179,14 +185,15 @@ export function buildPillarComparisonBarChartOptions(
         },
       },
       labels: {
-        formatter: (val: number) => val.toFixed(0),
+        formatter: (val: number) => (val != null && !isNaN(val) ? val.toFixed(0) : ''),
         style: {
           fontSize: '12px',
           colors: [VCP_CHART.textMuted],
         },
       },
-      min: 0,
-      max: 100,
+      min: yMin,
+      max: yMax,
+      forceNiceScale: true,
     },
     tooltip: {
       shared: true,

@@ -15,7 +15,7 @@ import { AiProgramSummeryRequestPdfDto } from '../models/aiVm/AiProgramSummeryRe
 import { AITransferAssessmentRequestDto } from '../models/aiVm/AITransferAssessmentRequestDto';
 import { DownloadReportDto } from '../models/aiVm/DownloadReportDto';
 import { GetProgramDocumentResponseDto, GetProgramPillarDocumentResponseDto } from '../models/aiVm/GetProgramDocumentResponseDto';
-import { UpdateAIPillarScoreDto, UpdateAIProgramScoreDto } from '../models/aiVm/UpdateAiScoreDtos';
+import { UpdateAIPillarScoreDto, UpdateAIProgramScoreDto, UpdateAIEstimatedQuestionScoreDto } from '../models/aiVm/UpdateAiScoreDtos';
 import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from '../models/SummarizeKpiDto';
 
 @Injectable({
@@ -43,6 +43,10 @@ export class AiComputationService {
 
   public updateAIPillarScore(payload: UpdateAIPillarScoreDto) {
     return this.http.post(`AiComputation/updateAIPillarScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
+  }
+
+  public updateAIEstimatedQuestionScore(payload: UpdateAIEstimatedQuestionScoreDto) {
+    return this.http.post(`AiComputation/updateAIEstimatedQuestionScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
   }
 
   public getAIProgramPillars(request: AiProgramSummeryRequestPdfDto) {

@@ -6,12 +6,9 @@ import { PillarComponent } from "./container/pillar/pillar.component";
 import { QuestionComponent } from "./container/question/question.component";
 import { AssesmentComponent } from "./container/assesment/assesment.component";
 import { AnalystViewComponent } from "./container/analyst-view/analyst-view.component";
-import { AdminDashboardComponent } from "./container/admin-dashboard/admin-dashboard.component";
 import { AdminPulseDashboardComponent } from "./container/admin-pulse-dashboard/admin-pulse-dashboard.component";
 import { ComparisionComponent } from "./container/comparision/comparision.component";
-import { KpiLayersComponent } from "./container/kpi-layers/kpi-layers.component";
 import { EvaluatoinResponseViewComponent } from "./container/evaluatoin-response-view/evaluatoin-response-view.component";
-import { RealTimeOperationalStressComponent } from "./container/real-time-operational-stress/real-time-operational-stress.component";
 import { ProgramsComponent } from "./container/programs/programs.component";
 import { ClientViewComponent } from "./container/client-view/client-view.component";
 
@@ -22,8 +19,6 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
       { path: "dashboard", component: AdminPulseDashboardComponent },
-      { path: "dashboard-classic", component: AdminDashboardComponent },
-      { path: "rosew-dashboard", component: RealTimeOperationalStressComponent },
       { path: "programs", component: ProgramsComponent },
       { path: "analyst", component: AnalystViewComponent },
       { path: "client", component: ClientViewComponent },

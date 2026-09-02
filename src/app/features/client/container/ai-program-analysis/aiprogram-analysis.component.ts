@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ViewProgramDetailComponent } from '../../features/view-program-detail/view-program-detail.component';
+import { ViewProgramDetailComponent } from 'src/app/shared/standAlone/view-program-detail/view-program-detail.component';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { AiProgramSummeryRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
@@ -8,7 +8,6 @@ import { UserService } from 'src/app/core/services/user.service';
 import { AiProgramSummeryDto } from 'src/app/core/models/aiVm/AiProgramSummeryDto';
 import { environment } from 'src/environments/environment';
 import { CommonModule } from '@angular/common';
-import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
 import { ProgramVM } from 'src/app/core/models/ProgramVM';
 import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
 import { PaginationComponent } from 'src/app/shared/pagination/pagination.component';
@@ -19,12 +18,13 @@ import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgra
 import { CommonService } from 'src/app/core/services/common.service';
 import { DocumentFormat } from 'src/app/core/enums/documentFormat';
 import { ClientService } from '../../client.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var bootstrap: any; // 👈 use Bootstrap JS API
 @Component({
   selector: 'app-aiprogram-analysis',
   standalone: true,
-  imports: [TypingTextComponent, CommonModule,
+    imports: [CommonModule,
     ViewProgramDetailComponent, CircularScoreComponent, PaginationComponent, FormsModule, NgSelectModule,
     MatTooltipModule],
   templateUrl: './aiprogram-analysis.component.html',
@@ -44,17 +44,23 @@ export class AIProgramAnalysisComponent implements OnInit, OnDestroy {
   selectedIndex: number = -1;
 
   constructor(private aiComputationService: AiComputationService, private clientService: ClientService,
-    private toaster: ToasterService, private userService: UserService, private cdr: ChangeDetectorRef,public commonService: CommonService) { }
+    private toaster: ToasterService, private userService: UserService, private cdr: ChangeDetectorRef, public commonService: CommonService, private route: ActivatedRoute) { }
 
   ngOnDestroy(): void {
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
   }
 
-  ngOnInit(): void {
+   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params["climateProgramID"]) {
+        this.filterProgram = +params["climateProgramID"];
+      }
+    });
     this.getClientPrograms();
     this.getAIPrograms();
   }
+  
 
   getClientPrograms() {
     this.clientService.getClientPrograms().subscribe({
@@ -157,4 +163,8 @@ export class AIProgramAnalysisComponent implements OnInit, OnDestroy {
       item.programAliasName?.toLowerCase().includes(term)
     );
 }
+
+  onProgramDetailSaved() {
+    this.getAIPrograms(this.currentPage);
+  }
 }

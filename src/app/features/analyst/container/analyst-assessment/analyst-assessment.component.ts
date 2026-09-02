@@ -146,10 +146,6 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       this.toaster.showWarning("Please select program first");
       return;
     }
-    // if(this.selectedProgram?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
-    //   this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires administrator permission.");
-    //   return
-    // }
     this.isAssessementFinalized = false;
     if (pillar) {
       this.selectedPillar = pillar;

@@ -15,6 +15,7 @@ import { AiComputationService } from 'src/app/core/services/ai-computation.servi
 import { UserService } from 'src/app/core/services/user.service';
 import { UserRole } from 'src/app/core/enums/UserRole';
 import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from 'src/app/core/models/SummarizeKpiDto';
+import { VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -33,6 +34,7 @@ export type ChartOptions = {
 export class ViewKpiLayerComponent implements OnInit, OnChanges {
 
   @Input() selectedLayer?: GetAnalyticalLayerResultDto | null = null;
+  @Input() listPage?: number;
   urlBase = environment.apiUrl;
   get program() {
     return this.selectedLayer?.program;
@@ -43,6 +45,8 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
   isSummarizing = false;
   aiSummary: SummarizeKpiResponseDto | null = null;
   aiSummaryError: string | null = null;
+  private summaryCache = new Map<number, SummarizeKpiResponseDto>();
+  private summarizingLayerId: number | null = null;
 
   constructor(
     private userService: UserService,
@@ -51,14 +55,17 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    this.updateAiSummaryVisibility();
+    this.clearSummaryCache();
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.ApexGetPieOptions();
     this.updateAiSummaryVisibility();
+    if (changes['listPage'] && !changes['listPage'].firstChange) {
+      this.clearSummaryCache();
+    }
     if (changes['selectedLayer']) {
-      this.aiSummary = null;
-      this.aiSummaryError = null;
-      this.isSummarizing = false;
+      this.restoreCachedSummary();
     }
   }
   onImgError(event: Event) {
@@ -83,30 +90,69 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
     }
 
     this.isSummarizing = true;
+    this.summarizingLayerId = layerResultID;
     this.aiSummaryError = null;
 
     const payload: SummarizeKpiRequestDto = { layerResultID };
     this.aiComputationService.summarizeKpiPerformance(payload).subscribe({
       next: (res) => {
         const response = res as ResultResponseDto<SummarizeKpiResponseDto>;
-        this.isSummarizing = false;
+        const isCurrentRow = this.selectedLayer?.layerResultID === layerResultID;
+        if (this.summarizingLayerId === layerResultID) {
+          this.summarizingLayerId = null;
+        }
+        if (isCurrentRow) {
+          this.isSummarizing = false;
+        }
         if (response?.succeeded && response.result?.summary) {
-          this.aiSummary = response.result;
-          this.aiSummaryError = null;
+          this.summaryCache.set(layerResultID, response.result);
+          if (isCurrentRow) {
+            this.aiSummary = response.result;
+            this.aiSummaryError = null;
+          }
         } else {
           const message = response?.errors?.[0] || 'Failed to generate AI summary. Please try again.';
-          this.aiSummary = null;
-          this.aiSummaryError = message;
+          if (isCurrentRow) {
+            this.aiSummary = this.summaryCache.get(layerResultID) ?? null;
+            this.aiSummaryError = this.aiSummary ? null : message;
+          }
           this.toaster.showError(message);
         }
       },
       error: () => {
-        this.isSummarizing = false;
-        this.aiSummary = null;
-        this.aiSummaryError = 'Unable to reach the AI service. Please try again later.';
-        this.toaster.showError(this.aiSummaryError);
+        const isCurrentRow = this.selectedLayer?.layerResultID === layerResultID;
+        if (this.summarizingLayerId === layerResultID) {
+          this.summarizingLayerId = null;
+        }
+        if (isCurrentRow) {
+          this.isSummarizing = false;
+          this.aiSummary = this.summaryCache.get(layerResultID) ?? null;
+          this.aiSummaryError = this.aiSummary
+            ? null
+            : 'Unable to reach the AI service. Please try again later.';
+          if (this.aiSummaryError) {
+            this.toaster.showError(this.aiSummaryError);
+          }
+        } else {
+          this.toaster.showError('Unable to reach the AI service. Please try again later.');
+        }
       }
     });
+  }
+
+  private restoreCachedSummary(): void {
+    const layerResultID = this.selectedLayer?.layerResultID;
+    this.aiSummaryError = null;
+    this.aiSummary = layerResultID != null ? this.summaryCache.get(layerResultID) ?? null : null;
+    this.isSummarizing = layerResultID != null && this.summarizingLayerId === layerResultID;
+  }
+
+  clearSummaryCache(): void {
+    this.summaryCache.clear();
+    this.summarizingLayerId = null;
+    this.aiSummary = null;
+    this.aiSummaryError = null;
+    this.isSummarizing = false;
   }
 
   getConditionByid() {
@@ -163,6 +209,7 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
       chart: {
         height: 360,
         type: "radialBar",
+        background: 'transparent',
         toolbar: {
           show: false
         }
@@ -172,27 +219,29 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
           startAngle: -135,
           endAngle: 225,
           hollow: {
-            size: "55%"
+            size: "55%",
+            background: "transparent",
           },
           track: {
-            background: "#f2f2f2",
+            background: "rgba(92, 140, 200, 0.12)",
             strokeWidth: "100%"
           },
           dataLabels: {
             show: true,
             name: {
               fontSize: "14px",
-              color: "#666"
+              color: VCP_CHART.textMuted
             },
             value: {
               fontSize: "22px",
               fontWeight: 600,
-              color: "#111",
+              color: VCP_CHART.textMuted,
               formatter: (val: number) => `${val}`
             },
             total: {
               show: true,
               label: "Manual vs AI",
+              color: VCP_CHART.textMuted,
               formatter: () => `${manual} / ${ai}`
             }
           }
@@ -200,7 +249,7 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
       },
       fill: {
         type: "solid",
-        colors: ["var(--Primary-Color)", "#d6ebc4"] // Manual, AI
+        colors: [VCP_CHART.primaryMid, VCP_CHART.primary]
       },
       stroke: {
         lineCap: "round"

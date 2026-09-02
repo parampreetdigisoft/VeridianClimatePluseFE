@@ -20,7 +20,6 @@
 
     <section class="pulse-toolbar">
       <div class="pulse-toolbar-left">
-        <span class="pulse-role-badge">Admin</span>
         <div class="pulse-select-wrap">
           <label>Select Program</label>
           <ng-select
@@ -242,10 +241,6 @@
               <h6><i class="bi bi-info-circle"></i> Interpretation Condition</h6>
               <p>{{ kpi.aiInterpretation || 'No interpretation available.' }}</p>
             </div>
-            <div class="pulse-kpi-detail-block">
-              <h6><i class="bi bi-compass"></i> Strategic Action</h6>
-              <p>{{ kpi.aiStrategicAction || kpi.narrative || 'No strategic action available.' }}</p>
-            </div>
           </section>
 
           <section class="pulse-kpi-detail-column pulse-kpi-detail-column--manual">
@@ -265,10 +260,6 @@
             <div class="pulse-kpi-detail-block">
               <h6><i class="bi bi-info-circle"></i> Interpretation Condition</h6>
               <p>{{ kpi.manualInterpretation || 'No interpretation available.' }}</p>
-            </div>
-            <div class="pulse-kpi-detail-block">
-              <h6><i class="bi bi-compass"></i> Strategic Action</h6>
-              <p>{{ kpi.manualStrategicAction || 'No strategic action available.' }}</p>
             </div>
           </section>
         </div>

@@ -1,3 +1,4 @@
+<div class="vcp-program-comparison-root">
 <div class="heading_area">
 	<div class="row justify-content-between align-items-center">
 		<div class="col-md-auto">
@@ -5,7 +6,7 @@
 				<h3 class="page_head">
 					Cross-Program Performance Comparison
 				</h3>
-				<p style="font-size: 14px; color: #64748b;">
+				<p class="page-subtitle">
 					Compare multiple programs across all evaluation categories
 				</p>
 			</div>
@@ -81,8 +82,7 @@
 
 			</div>
 			<div *ngIf="showLimitMessage"
-				class="limit-exceed-message"
-				style="color: red; font-size: 14px; margin-top: 5px;">
+				class="limit-exceed-message limit-exceed-message--inline">
 				You can only select up to 5 programs. Please remove some programs to add more.
 			</div>
 		</div>
@@ -276,12 +276,12 @@
 					<th>Pillar Name</th>
 					<th *ngFor="let program of chartTableData">
 						<div class="program_pillar compare_piller">
-							<div class="position-relative city_card_outter">
-								<div class="city_card">
-									<div class="city_card_inner">
+							<div class="position-relative program_card_outter">
+								<div class="program_card">
+									<div class="program_card_inner">
 										<div class="melbourne-card-text">
 											<div class="card_title card_title--compact">
-												<h2 class="city_cards_h1 program_header_name">
+												<h2 class="program_cards_h1 program_header_name">
 													{{ program.programName }}
 												</h2>
 												<div class="header_Score">
@@ -327,7 +327,7 @@
 									<p>
 										{{ piller.pillarName }}
 									</p>
-									<div class="city_cards_p">
+									<div class="program_cards_p">
 										Avg Score:
 										<span>
 											{{ calculatePillarAvg(piller.pillarID) }}
@@ -358,4 +358,5 @@
 <div *ngIf="isLoader"
 	class="loader_main">
 	<div class="loader"></div>
+</div>
 </div>

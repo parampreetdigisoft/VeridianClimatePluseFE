@@ -27,6 +27,21 @@
     border: 1px solid #75d69c !important;
 }
 
+.indeterminate {
+    background-color: #e0e0e0 !important;
+    color: #6c757d !important;
+    border: 1px solid #d6d6d6 !important;
+}
+
+.action_icons_view_details{
+    display: inline-block;
+    background-color: #164074 !important;
+    padding: 8px 10px;
+    white-space: nowrap;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
 .input_flex select {
     flex: 1;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M0.765098 1.70703L4.97795 5.91988C5.47548 6.41741 6.28962 6.41741 6.78715 5.91988L11 1.70703' stroke='%23888888' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
@@ -74,19 +89,19 @@
     margin-top: 8px;
 }
 
-::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_img img {
+::ng-deep .kpi_sidebar app-view-city-detail .program_card_outter .program_card_img img {
     max-width: 300px;
 }
 
-::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_inner {
+::ng-deep .kpi_sidebar app-view-city-detail .program_card_outter .program_card_inner {
     padding: 10px 0px;
 }
 
-::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_inner .city_cards_h1 {
+::ng-deep .kpi_sidebar app-view-city-detail .program_card_outter .program_card_inner .program_cards_h1 {
     font-size: 24px;
 }
 
-::ng-deep .kpi_sidebar .city_cards_disc {
+::ng-deep .kpi_sidebar .program_cards_disc {
     margin: 10px 0 0px !important;
     font-size: 14px;
 }
@@ -141,6 +156,9 @@
   min-width: 500px;      /* adjust as needed */
   white-space: normal;   /* allow wrapping */
   word-break: break-word;
+}
+.compare_city_table table tr {
+    border-color: rgb(255 255 255 / 22%);
 }
 
 @media only screen and (max-width:1550px) {
@@ -240,6 +258,9 @@
 .research_date.old {
   background: linear-gradient(135deg, #ffe9e6, #ffd1cb);
   color: #912018;
+      margin: 0 auto;
+    display: block;
+    width: max-content;
 }
 .research_date.just-now {
   background: linear-gradient(135deg, #e8f0ff, #d9e6ff);

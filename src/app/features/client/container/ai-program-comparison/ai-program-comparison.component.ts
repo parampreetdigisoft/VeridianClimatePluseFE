@@ -38,7 +38,7 @@ export type ChartOptions = {
   standalone: true,
   imports: [CommonModule, SharedModule, CircularScoreComponent, UtcToLocalTooltipDirective],
   templateUrl: './ai-program-comparison.component.html',
-  styleUrls: ['../../../../shared/styles/ai-program-comparison.shared.css'],
+  styleUrls: ['./ai-program-comparison.component.css'],
 })
 export class AiProgramComparisonComponent implements OnInit {
   pillars: PillarsVM[] = [];

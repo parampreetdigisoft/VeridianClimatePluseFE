@@ -34,6 +34,7 @@ import {
   buildPulseProgressLineChart,
   buildPulseRadialChart,
   getSignalAiScore,
+  getSignalManualScore,
 } from 'src/app/shared/pulse-insight-dashboard/pulse-dashboard-chart.util';
 import {
   PULSE_KPI_TABS,
@@ -255,15 +256,25 @@ export class AnalystPulseDashboardComponent implements OnInit {
     const program = this.programs?.find((p) => p.climateProgramID === this.selectedPrograms);
     const d = this.modeDashboard;
     const pillars = this.pillarResponse?.pillars ?? [];
+    const vcpCard = this.kpiCards[0];
+    const adgCard = this.kpiCards[1];
     const avgFromPillars =
       pillars.length > 0
         ? pillars.reduce((s, p) => s + (Number(p.aiValue ?? 0) + Number(p.evaluationValue ?? 0)) / 2, 0) /
           pillars.length
         : 0;
-    const aiScore = d ? Number(d.aiProgramScore ?? 0) : avgFromPillars;
-    const manualScore = d ? Number(d.manualProgramScore ?? d.manualValue ?? 0) : avgFromPillars;
-    const aiCondition = d?.vcpCondition || (aiScore >= 70 ? 'Stable' : aiScore >= 40 ? 'Watch' : 'Critical');
+    const aiScore = vcpCard?.aiScore ?? (d ? Number(d.aiProgramScore ?? 0) : avgFromPillars);
+    const manualScore =
+      vcpCard?.manualScore ?? (d ? Number(d.manualProgramScore ?? d.manualValue ?? 0) : avgFromPillars);
+    const aiCondition =
+      d?.vcpCondition ||
+      vcpCard?.aiCondition ||
+      vcpCard?.condition ||
+      (Number(aiScore) >= 70 ? 'Stable' : Number(aiScore) >= 40 ? 'Watch' : 'Critical');
     const signals = d?.primarySignals?.length ? d.primarySignals : d?.signals ?? [];
+    const adgCode = adgCard?.code || signals[1]?.code || signals[1]?.layerCode || 'ADG';
+    const adgAiScore = adgCard?.aiScore ?? getSignalAiScore(signals[1]) ?? 0;
+    const adgManualScore = adgCard?.manualScore ?? getSignalManualScore(signals[1]) ?? 0;
     const fallbackMode =
       this.activeKpiTab === 'diplomaticRisk'
         ? 'DIPLOMATIC RISK & TRUST INDEX'
@@ -276,17 +287,17 @@ export class AnalystPulseDashboardComponent implements OnInit {
       programLabel: program
         ? `${program.programName} · ${program.year || '—'} · ${program.location || '—'}`
         : 'Select a program',
-      overallLabel: `AI ${aiScore.toFixed(1)}/100 · Manual ${manualScore.toFixed(1)}/100 · ${aiCondition}`,
+      overallLabel: `AI ${Number(aiScore).toFixed(1)}/100 · Manual ${Number(manualScore).toFixed(1)}/100 · ${aiCondition}`,
       stats: [
-        { label: 'AI Score', value: aiScore.toFixed(1) },
-        { label: 'Manual Score', value: manualScore.toFixed(1) },
+        { label: 'AI Score', value: Number(aiScore).toFixed(1) },
+        { label: 'Manual Score', value: Number(manualScore).toFixed(1) },
         {
-          label: signals[1]?.code || signals[1]?.layerCode || 'SIG',
-          value: signals[1] ? (getSignalAiScore(signals[1]) ?? 0).toFixed(1) : '0.0',
+          label: adgCode,
+          value: Number(adgAiScore).toFixed(1),
         },
         {
-          label: 'Manual',
-          value: d?.manualCondition || (manualScore >= 70 ? 'Stable' : manualScore >= 40 ? 'Watch' : 'Critical'),
+          label: `${adgCode} Manual`,
+          value: Number(adgManualScore).toFixed(1),
         },
       ],
     };
