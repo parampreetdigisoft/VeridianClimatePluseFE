@@ -29,7 +29,7 @@ import { DocumentFormat } from 'src/app/core/enums/documentFormat';
 import { DownloadReportDto } from 'src/app/core/models/aiVm/DownloadReportDto';
 import { ViewProgramDetailComponent } from 'src/app/shared/standAlone/view-program-detail/view-program-detail.component';
 
-declare var bootstrap: any; // 👈 use Bootstrap JS API
+declare var bootstrap: any; // use Bootstrap JS API
 @Component({
   selector: "app-aiprogram-analysis",
   standalone: true,
@@ -341,6 +341,10 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
+    this.getAIPrograms(this.currentPage);
+  }
+
+  onProgramDetailSaved() {
     this.getAIPrograms(this.currentPage);
   }
 

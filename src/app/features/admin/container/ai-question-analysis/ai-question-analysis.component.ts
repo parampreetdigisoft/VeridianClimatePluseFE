@@ -189,4 +189,8 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
   refresh() {
     this.getAIPillarQuestions(this.currentPage);
   }
+
+  onQuestionDetailSaved() {
+    this.getAIPillarQuestions(this.currentPage);
+  }
 }

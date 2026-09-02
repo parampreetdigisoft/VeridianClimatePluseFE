@@ -53,7 +53,7 @@
 
 .cross-pillar h5,
 h4.kpi_head_col,
-.city_cards_h1,
+.program_cards_h1,
 .program_cards_h1 {
   color: var(--Text-Color, #E8EEF8) !important;
 }
@@ -94,9 +94,9 @@ h4.kpi_head_col,
   border: 1px solid rgba(92, 140, 200, 0.16);
 }
 
-.city_cards_p,
-.city_cards_disc,
-.city_cards_p path {
+.program_cards_p,
+.program_cards_disc,
+.program_cards_p path {
   color: var(--Light-Text-Color, #9AADC4);
   fill: var(--Accent-Lime, #A8E063);
 }

@@ -18,15 +18,17 @@ import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-sco
 import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
 import { forkJoin } from 'rxjs';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
-import { ViewAiQuestionDetailsComponent } from '../../features/view-ai-question-details/view-ai-question-details.component';
-declare var bootstrap: any; // 👈 use Bootstrap JS API
+import { ViewAiQuestionDetailsComponent } from 'src/app/shared/standAlone/view-ai-question-details/view-ai-question-details.component';
+import { UtcToLocalTooltipDirective } from 'src/app/shared/directives/utc-to-local-tooltip.directive';
+import { CommonService } from 'src/app/core/services/common.service';
+declare var bootstrap: any;
 @Component({
   selector: 'app-ai-question-analysis',
   standalone: true,
   imports: [TypingTextComponent, CommonModule,
     ViewAiQuestionDetailsComponent, CircularScoreComponent, SparklineScoreComponent,
     PaginationComponent, FormsModule, NgSelectModule,
-    MatTooltipModule],
+    MatTooltipModule, UtcToLocalTooltipDirective],
   templateUrl: './ai-question-analysis.component.html',
   styleUrl: './ai-question-analysis.component.css'
 })
@@ -45,6 +47,7 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
   programUserService = inject(ClientService);
   headerTextValue: string | null = null;
   headerTextRepeatation: boolean = false;
+  commonService = inject(CommonService);
   constructor(private route: ActivatedRoute, private toaster: ToasterService, private aiComputationService: AiComputationService, private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -174,8 +177,15 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
       item.programAliasName?.toLowerCase().includes(term)
     );
 }
-refresh()
-{
-  this.ngOnInit(); 
+refresh() {
+  this.getAIPillarQuestions(this.currentPage);
 }
+
+  onQuestionDetailSaved() {
+    this.getAIPillarQuestions(this.currentPage);
+  }
+
+  discrepancy(question: AIEstimatedQuestionScoreDto): number {
+    return Math.abs((question?.evaluatorScore ?? 0) - (question?.aiScore ?? 0));
+  }
 }

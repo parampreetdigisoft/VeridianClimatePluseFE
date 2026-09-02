@@ -84,12 +84,12 @@ app-kpianalysis app-ag-bar:nth-child(3) {
   max-width: 100%;
 }
 
-.compare_table.table .city_cards_disc {
+.compare_table.table .program_cards_disc {
   font-weight: 400;
   color: #212529;
 }
 
-.compare_table.table .city_cards_h1 {
+.compare_table.table .program_cards_h1 {
   font-size: 24px;
   line-height: normal;
   font-weight: 600;
@@ -102,7 +102,7 @@ app-kpianalysis app-ag-bar:nth-child(3) {
   width: 200px;
 }
 
-.city_cards_p {
+.program_cards_p {
   font-size: 14px;
   background-color: var(--Secondary-Color);
   color: #ffffff;
@@ -259,6 +259,9 @@ p.btn_spinner {
 .research_date.old {
   background: linear-gradient(135deg, #ffe9e6, #ffd1cb);
   color: #912018;
+  margin: 0 auto;
+  display: block;
+  width: max-content;
 }
 .research_date.just-now {
   background: linear-gradient(135deg, #e8f0ff, #d9e6ff);
@@ -313,4 +316,20 @@ p.btn_spinner {
     .compare_table.table tr th:first-child {
       width: 330px;
   }
+}
+
+/* ApexCharts custom tooltip — inline HTML controls bg/text colors */
+:host ::ng-deep .apexcharts-tooltip,
+:host ::ng-deep .apexcharts-tooltip.apexcharts-theme-light,
+:host ::ng-deep .apexcharts-tooltip.apexcharts-theme-dark {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  color: inherit !important;
+}
+
+:host ::ng-deep .apexcharts-tooltip .apexcharts-tooltip-series-group,
+:host ::ng-deep .apexcharts-tooltip .apexcharts-tooltip-title {
+  display: none !important;
 }

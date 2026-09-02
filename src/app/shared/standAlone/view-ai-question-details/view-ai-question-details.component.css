@@ -162,24 +162,25 @@ span:empty, div:empty{
     border-radius: 15px;
 }
 .active_row td {
-    background-color: #087374;
-    color: #ffffff;
+    background-color: rgb(92, 184, 255);
+    color: #000000 !important;
 }
 .active_row td .score_label_tab {
     /* background-color: rgba(255,255,255,0.08) !important; */
 }
 .last_data td {
-    background-color: #087374;
-    color: #ffffff;
+    background-color: rgb(92, 184, 255);
+    color: #000000 !important;
     text-align: center;
 }
 .last_data td span {
     color: #ffffff;
-    background-color: var(--Primary-Color);
+    background-color: #193f72;
     white-space: nowrap;
     padding: 5px 8px;
     border-radius: 30px;
     border: none;
+    font-size: 12px;
 }
 
 button.btn-close:focus,
@@ -202,7 +203,14 @@ button.btn-close:focus-visible {
 ::ng-deep .cus_table .table td a {
     color: var(--Accent-Blue, #3B9EFF);
     font-weight: 600;
+    text-decoration: none;
 }
+
+::ng-deep .cus_table .table td a:hover {
+    color: var(--Accent-Lime, #A8E063);
+    text-decoration: underline;
+}
+
 ::ng-deep .cross-pillar_outter .typing-text {
     font-size: 14px;
 }
@@ -226,6 +234,60 @@ button.btn-close:focus-visible {
 }
 
 .high {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    border: 1px solid #75d69c !important;
+}
+
+.ai-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+}
+
+.ai-edit-surface {
+    border-color: var(--Primary-Color);
+    box-shadow: 0 0 0 1px rgba(59, 158, 255, 0.15);
+}
+
+.question-detail-content {
+    margin-bottom: 16px;
+}
+
+.question-source-table {
+    margin-top: 8px;
+}
+
+::ng-deep .question-detail-content .ai-editable-field__view,
+::ng-deep .question-source-table .ai-editable-field__view {
+    color: var(--Text-Color, #E8EEF8);
+}
+
+::ng-deep .kpi_custom_table .last_data app-ai-editable-field .confidence-badge {
+    margin: 0 auto;
+}
+
+::ng-deep .kpi_custom_table .confidence-badge.low {
+    background-color: #ffcccc !important;
+    color: #b30000 !important;
+    border: 1px solid #ff4d4d !important;
+}
+
+::ng-deep .kpi_custom_table .confidence-badge.indeterminate {
+    background-color: #e0e0e0 !important;
+    color: #6c757d !important;
+    border: 1px solid #d6d6d6 !important;
+}
+
+::ng-deep .kpi_custom_table .confidence-badge.medium {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+    border: 1px solid #ffe69c !important;
+}
+
+::ng-deep .kpi_custom_table .confidence-badge.high {
     background-color: #d4edda !important;
     color: #155724 !important;
     border: 1px solid #75d69c !important;

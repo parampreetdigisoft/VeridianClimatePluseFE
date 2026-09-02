@@ -492,7 +492,7 @@ export class ChatService {
   ProgramQuickQuestions = [
     {
       label: 'Program summary',
-      question: 'Summarize this climate program\'s overall AI score, confidence level, and recent performance trends.'
+      question: 'Summarize this climate program\'s overall score, confidence level, and recent performance trends.'
     },
     {
       label: 'Pillar performance',
@@ -508,7 +508,7 @@ export class ChatService {
     },
     {
       label: 'Mitigation & adaptation',
-      question: 'What does the AI assessment reveal about this program\'s mitigation ambition and adaptation readiness?'
+      question: 'What does the assessment of this program reveal about its mitigation ambition and adaptation readiness?'
     },
     {
       label: 'Recommendations',
@@ -524,11 +524,11 @@ export class ChatService {
   globalQuickQuestions = [
     {
       label: 'Portfolio overview',
-      question: 'Provide an overview of climate program performance and AI scores across all programs in the portfolio.'
+      question: 'Provide an overview of climate program performance and scores across all programs in the portfolio.'
     },
     {
       label: 'Top performers',
-      question: 'Which climate programs show the strongest overall AI scores and pillar performance recently?'
+      question: 'Which climate programs show the strongest overall scores and pillar performance recently?'
     },
     {
       label: 'At-risk programs',

@@ -189,7 +189,7 @@
               </span>
             </div>
 
-            <div class="compare_select kpi-select-wrap" #kpiSelectContainer>
+            <div class="compare_select kpi-select-wrap">
               <ng-select
                 *ngIf="kpiSelectReady"
                 [items]="filteredKpis"
@@ -201,10 +201,8 @@
                 [searchFn]="customSearchFn"
                 [closeOnSelect]="false"
                 [clearable]="!hasLockedKpis"
-                appendTo="body"
                 class="form-control analyst_multi_select pillar-kpi-select"
                 [placeholder]="'Search by KPIs'"
-                (open)="onKpiDropdownOpen()"
                 (change)="onKpiSelectionChange($event)"
               >
                 <ng-template ng-label-tmp let-item="item">

@@ -59,7 +59,7 @@
         <button
           *ngIf="selectedPrograms.length"
           [matTooltip]="'Export Program Comparison Details'"
-          class="common_button d-flex align-items-center"
+          class="common_button d-flex align-items-center export_btn"
           (click)="exportData()"
         >         
           <svg *ngIf="!downloadkpiSpinnerEnable"
@@ -75,8 +75,8 @@
           ></path>
         </svg>
 
-        <p *ngIf="downloadkpiSpinnerEnable" class="btn_spinner">
-          <span class="spinner-border spinner-border-sm ms-2"></span>
+        <p *ngIf="downloadkpiSpinnerEnable" class="btn_spinner p-0">
+          <span class="spinner-border spinner-border-sm ms-0"></span>
         </p>
         </button>
       </div>
@@ -94,6 +94,7 @@
       [markers]="chartOptions.markers!"
       [dataLabels]="chartOptions.dataLabels!"
       [legend]="chartOptions.legend!"
+      [colors]="chartOptions.colors!"
     >
     </apx-chart>
   </div>
@@ -117,22 +118,12 @@
           <th>KPI Name</th>
 
           <th *ngFor="let program of chartTableData[0].programValues">
-            <div class="program_piller compare_piller">
-              <div class="position-relative program_card_outter">
-                <div class="program_card">
-                  <div class="program_card_inner">
-                    <div class="melbourne-card-text">
-                      <div class="card_title">
-                        <h1 class="program_cards_h1">{{ program.programName }}</h1>
-                        <div class="header_Score">
-                          <p class="program_cards_p">
-                            Score : {{ getProgramScore(program.climateProgramID, true) }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div class="card_title">
+              <h1 class="program_cards_h1">{{ program.programName }}</h1>
+              <div class="header_Score">
+                <p class="program_cards_p">
+                  Score : {{ getProgramScore(program.climateProgramID, true) }}
+                </p>
               </div>
             </div>
           </th>

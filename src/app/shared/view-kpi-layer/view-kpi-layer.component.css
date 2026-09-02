@@ -1,21 +1,21 @@
-.city_card_outter {
+.program_card_outter {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 20px;
     height: 100%;
 }
 
-.city_card {
+.program_card {
     flex: 1;
 }
 
-.city_card_ul {
+.program_card_ul {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 5px;
 }
 
-.city_card_ul li {
+.program_card_ul li {
     background-color: rgb(48 74 67);
     padding: 3px 10px;
     border-radius: 5px;
@@ -23,7 +23,7 @@
     font-size: 14px;
 }
 
-.city_card_img .score {
+.program_card_img .score {
     background-color: #A8E063;
     color: #ffffff;
     display: inline-block;
@@ -35,33 +35,33 @@
     top: 10px;
 }
 
-.city_cards_p {
+.program_cards_p {
     display: flex;
     align-items: center;
     font-weight: 600;
     grid-gap: 3px;
 }
 
-.city_cards_p path {
+.program_cards_p path {
     fill: rgb(48 74 67);
 }
 
-.city_cards_disc {
+.program_cards_disc {
     margin: 10px 0 15px;
 }
 
-.city_card_outter img {
+.program_card_outter img {
     max-width: 400px;
     border-radius: 18px;
     height: 100%;
     object-fit: cover;
 }
 
-.city_card_inner {
+.program_card_inner {
     padding: 20px 0px;
 }
 
-.city_cards_h1 {
+.program_cards_h1 {
     font-size: 30px;
     line-height: normal;
     font-weight: 600;
@@ -75,7 +75,7 @@
     flex-wrap: wrap;
 }
 
-.city_card_img,
+.program_card_img,
 .table_col_one {
     position: relative;
 }
@@ -202,7 +202,22 @@ span:empty, div:empty{
 .integrate_outter .outer_graph {
     width: 300px;
     max-width: 100%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
 }
+
+.integrate_outter .outer_graph #card,
+.integrate_outter .outer_graph #chart {
+    background: transparent;
+}
+
+::ng-deep .integrate_outter .outer_graph .apexcharts-canvas,
+::ng-deep .integrate_outter .outer_graph .apexcharts-svg {
+    background: transparent !important;
+}
+
 ::ng-deep .integrate_outter .outer_graph ag-charts{
     height: 270px !important;
 }
@@ -277,24 +292,33 @@ span:empty, div:empty{
     border-radius: 15px;
     background: rgba(8, 18, 42, 0.45);
 }
-tr.active_row  {
-    background-color: #087374;
-    color: #ffffff;
+
+tr.active_row,
+tr.active_row td {
+    background-color: rgba(59, 158, 255, 0.22) !important;
+    color: #E8EEF8 !important;
 }
-.active_row td .score_label_tab {
-    /* background-color: rgba(255,255,255,0.08) !important; */
+
+tr.active_ai {
+    background-color: rgba(168, 224, 99, 0.14) !important;
 }
+
+tr.active_ai td {
+   background-color: rgba(168, 224, 99, 0.14) !important;
+}
+
 .last_data td {
-    background-color: #087374;
-    color: #ffffff;
+    background-color: rgb(92, 184, 255);
+    color: #000000 !important;
 }
 .last_data td span {
     color: #ffffff;
-    background-color: var(--Primary-Color);
+    background-color: #193f72;
     white-space: nowrap;
     padding: 5px 8px;
     border-radius: 30px;
     margin-right: 5px;
+    font-size: 12px;
 }
 
 button.btn-close:focus,
@@ -309,9 +333,6 @@ button.btn-close:focus-visible {
 ::ng-deep .kpi_sidebar .sidebar_table .bold_num {
     margin-top: 0;
 }
-.active_ai td {
-   background-color: rgba(9, 124, 231, 0.15) !important;
-}
 
 /* AI KPI Summary */
 .kpi-ai-summary {
@@ -322,25 +343,29 @@ button.btn-close:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    border: none;
+    border: 1px solid rgba(168, 224, 99, 0.3);
     border-radius: 999px;
-    padding: 0.55rem 1.1rem;
+    padding: 0.55rem 1.15rem;
     font-size: 13px;
     font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, #006D77 0%, #4CAF50 55%, #A8E063 100%);
-    box-shadow: 0 2px 10px rgba(0, 109, 119, 0.25);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    color: #ffffff;
+    background: var(--VCP-Gradient, linear-gradient(135deg, #1B5E3B 0%, #2E7D32 48%, #4CAF50 100%));
+    box-shadow: 0 3px 12px rgba(46, 125, 50, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+    cursor: pointer;
 }
 
 .kpi-ai-btn:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(0, 109, 119, 0.35);
+    background: var(--VCP-Gradient-Hover, linear-gradient(135deg, #4CAF50 0%, #2E7D32 52%, #1B5E3B 100%));
+    box-shadow: 0 5px 16px rgba(76, 175, 80, 0.36);
 }
 
 .kpi-ai-btn:disabled {
-    opacity: 0.7;
+    opacity: 0.65;
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 .kpi-ai-btn-icon {
@@ -356,11 +381,11 @@ button.btn-close:focus-visible {
 
 .kpi-ai-response {
     margin-top: 0.9rem;
-    padding: 1rem 1.1rem;
+    padding: 1.1rem 1.25rem;
     border-radius: 14px;
-    border: 1px solid #d9ebe4;
-    background: linear-gradient(180deg, #f7fbf8 0%, #84b382 100%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(92, 140, 200, 0.24);
+    background: linear-gradient(180deg, rgba(16, 32, 68, 0.85) 0%, rgba(8, 18, 42, 0.92) 100%);
+    box-shadow: inset 0 1px 0 rgba(92, 140, 200, 0.12), 0 8px 24px rgba(0, 0, 0, 0.28);
 }
 
 .kpi-ai-response-header {
@@ -374,19 +399,20 @@ button.btn-close:focus-visible {
 .kpi-ai-badge {
     display: inline-flex;
     align-items: center;
-    padding: 0.2rem 0.55rem;
+    padding: 0.25rem 0.6rem;
     border-radius: 999px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: #006D77;
-    background: rgba(168, 224, 99, 0.45);
+    color: var(--Accent-Lime, #A8E063);
+    background: rgba(168, 224, 99, 0.14);
+    border: 1px solid rgba(168, 224, 99, 0.3);
 }
 
 .kpi-ai-title {
     font-size: 14px;
-    font-weight: 700;
-    color: #003d44;
+    font-weight: 600;
+    color: var(--Text-Color, #E8EEF8);
 }
 
 .kpi-ai-loading,
@@ -395,13 +421,13 @@ button.btn-close:focus-visible {
     align-items: center;
     gap: 0.5rem;
     font-size: 13px;
-    color: #445;
+    color: var(--Light-Text-Color, #9AADC4);
 }
 
 .kpi-ai-error {
-    color: #b42318;
-    background: #fef3f2;
-    border: 1px solid #fecdca;
+    color: #fca5a5;
+    background: rgba(220, 38, 38, 0.14);
+    border: 1px solid rgba(248, 113, 113, 0.35);
     border-radius: 10px;
     padding: 0.65rem 0.8rem;
 }
@@ -412,7 +438,7 @@ button.btn-close:focus-visible {
     margin: 0 0 0.75rem;
     font-size: 13px;
     line-height: 1.55;
-    color: #1f2a2e;
+    color: #C9D6EA;
     white-space: pre-line;
 }
 
@@ -424,10 +450,10 @@ button.btn-close:focus-visible {
 .kpi-ai-takeaways li {
     font-size: 13px;
     line-height: 1.5;
-    color: #1f2a2e;
+    color: #C9D6EA;
     margin-bottom: 0.35rem;
 }
 
 .kpi-ai-outlook strong {
-    color: #006D77;
+    color: var(--Accent-Blue, #3B9EFF);
 }

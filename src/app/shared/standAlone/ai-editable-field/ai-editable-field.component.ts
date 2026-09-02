@@ -26,7 +26,7 @@ export class AiEditableFieldComponent {
   @Input() hideAfterWords = 7;
   @Input() showLabel = true;
   @Input() compact = false;
-  @Input() scoreList = [100,75,50,25,0];
+  @Input() scoreList = [-4,-3,-2,-1,0,1,2,3,4];
 
   @Output() valueChange = new EventEmitter<string | number | null>();
 

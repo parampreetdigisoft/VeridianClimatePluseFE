@@ -13,8 +13,6 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
-import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
-import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-score/sparkline-score.component';
 import { AiDocumentViewDetailsComponent } from 'src/app/shared/standAlone/ai-document-view-details/ai-document-view-details.component';
 import { GetProgramDocumentResponseDto, GetProgramPillarDocumentResponseDto } from 'src/app/core/models/aiVm/GetProgramDocumentResponseDto';
 import { AiProgramDocumentRequestDto, AiProgramPillarDocumentRequestDto, DeleteProgramDocumentRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
@@ -22,7 +20,7 @@ import { AiProgramDocumentRequestDto, AiProgramPillarDocumentRequestDto, DeleteP
 @Component({
   selector: 'app-ai-documents',
   standalone: true,
-  imports: [CommonModule, SharedModule, SparklineScoreComponent, CircularScoreComponent, AiDocumentViewDetailsComponent],
+  imports: [CommonModule, SharedModule, AiDocumentViewDetailsComponent],
   templateUrl: './ai-documents.component.html',
   styleUrl: './ai-documents.component.css'
 })

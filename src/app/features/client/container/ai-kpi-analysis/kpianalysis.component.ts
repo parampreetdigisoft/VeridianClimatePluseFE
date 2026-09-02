@@ -31,6 +31,8 @@ import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
 import { ViewAiPillarDetailsComponent } from '../../features/view-ai-pillar-details/view-ai-pillar-details.component';
 import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestPdfDto';
 import { CommonService } from 'src/app/core/services/common.service';
+import { buildAiKpiClientProgressTooltipHtml } from 'src/app/core/constants/ai-kpi-pillar-tooltip.util';
+import { ahiScoreColor, VCP_CHART } from 'src/app/core/constants/ahi-chart-theme';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -221,15 +223,24 @@ export class KPIAnalysisComponent implements OnInit {
       x.isAccess ? (x.aiProgress ?? 0) : getLockedScore(x.pillarID)
     );
 
+    const allValues = aiSeries.filter(v => v !== null && v !== undefined && !isNaN(Number(v))).map(v => Number(v));
+    const dataMin = allValues.length ? Math.min(...allValues) : 0;
+    const dataMax = allValues.length ? Math.max(...allValues) : 100;
+    const yMin = dataMin < 0 ? Math.floor(dataMin / 10) * 10 : 0;
+    const yMax = Math.max(100, Math.ceil(dataMax / 10) * 10);
+
     this.chartOptions = {
       series: [{
         name: 'Progress',
         data: aiSeries
       }],
 
+      colors: [VCP_CHART.primary],
+
       chart: {
         type: 'area',
         height: 420,
+        background: 'transparent',
         toolbar: { show: false },
         zoom: { enabled: false },
         animations: {
@@ -254,15 +265,15 @@ export class KPIAnalysisComponent implements OnInit {
         style: {
           fontSize: '11px',
           fontWeight: 700,
-          colors: ['#040e46']
+          colors: ['#E8EEF8']
         },
         background: {
           enabled: true,
-          foreColor: '#ffffff',
+          foreColor: '#E8EEF8',
           padding: 6,
-          borderRadius: 4,
+          borderRadius: 6,
           borderWidth: 1,
-          borderColor: '#7f8feb',
+          borderColor: 'rgba(92, 140, 200, 0.35)',
           opacity: 0.95
         }
       },
@@ -270,40 +281,28 @@ export class KPIAnalysisComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#040e46']
+        colors: ['#3B9EFF']
       },
 
       fill: {
         type: 'gradient',
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.2,
-          stops: [0, 90, 100],
+          opacityFrom: 0.55,
+          opacityTo: 0.06,
+          stops: [0, 85, 100],
           colorStops: [
-            {
-              offset: 0,
-              color: '#5975c2',
-              opacity: 0.8
-            },
-            {
-              offset: 50,
-              color: '#78bef7',
-              opacity: 0.5
-            },
-            {
-              offset: 100,
-              color: '#a5bef5',
-              opacity: 0.2
-            }
+            { offset: 0, color: VCP_CHART.primary, opacity: 0.65 },
+            { offset: 50, color: VCP_CHART.primaryMid, opacity: 0.3 },
+            { offset: 100, color: VCP_CHART.deep, opacity: 0.04 }
           ]
         }
       },
 
       markers: {
         size: data.map(p => p.isAccess ? 6 : 4),
-        colors: data.map(p => p.isAccess ? this.PillarColorByScore(p) : '#d3d3d3'),
-        strokeColors: '#fff',
+        colors: data.map(p => p.isAccess ? this.PillarColorByScore(p) : '#6b7c93'),
+        strokeColors: VCP_CHART.deep,
         strokeWidth: 2,
         hover: {
           size: 8,
@@ -318,16 +317,16 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '11px',
             fontWeight: 500,
-            colors: '#253658'
+            colors: '#C9D6EA'
           }
         },
         axisBorder: {
           show: true,
-          color: '#e5e7eb'
+          color: 'rgba(92, 140, 200, 0.35)'
         },
         axisTicks: {
           show: true,
-          color: '#e5e7eb'
+          color: 'rgba(92, 140, 200, 0.35)'
         }
       },
 
@@ -337,23 +336,23 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '13px',
             fontWeight: 600,
-            color: '#83b0ee'
+            color: '#C9D6EA'
           }
         },
-        min: 0,
-        max: 100,
-        tickAmount: 5,
+        min: yMin,
+        max: yMax,
+        forceNiceScale: true,
         labels: {
-          formatter: (val) => val >= 0 ? `${Math.round(val)}` : '',
+          formatter: (val) => val !== null && val !== undefined && !isNaN(val) ? `${Math.round(val)}` : '',
           style: {
             fontSize: '12px',
-            colors: '#3b5281'
+            colors: '#C9D6EA'
           }
         }
       },
 
       grid: {
-        borderColor: '#e5e7eb',
+        borderColor: 'rgba(92, 140, 200, 0.22)',
         strokeDashArray: 4,
         xaxis: {
           lines: { show: false }
@@ -365,309 +364,14 @@ export class KPIAnalysisComponent implements OnInit {
 
       tooltip: {
         enabled: true,
+        theme: 'dark',
         custom: ({ dataPointIndex }) => {
           const pillar = data[dataPointIndex];
-
-          if (!pillar.isAccess) {
-            return `
-            <div style="
-              padding: 18px 20px;
-              min-width: 280px;
-              background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
-              border-radius: 14px;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-              font-family: 'Inter', system-ui, sans-serif;
-              color: white;
-              border: 1px solid rgba(255, 255, 255, 0.1);
-              position: relative;
-              overflow: hidden;
-            ">
-              <!-- Animated Background Pattern -->
-              <div style="
-                position: absolute;
-                top: -50%;
-                right: -50%;
-                width: 200%;
-                height: 200%;
-                background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-                animation: pulse 3s ease-in-out infinite;
-              "></div>
-
-              <!-- Content -->
-              <div style="position: relative; z-index: 1;">
-                <!-- Icon & Title -->
-                <div style="
-                  display: flex;
-                  align-items: center;
-                  gap: 12px;
-                  margin-bottom: 16px;
-                ">
-                  <div style="
-                    width: 40px;
-                    height: 40px;
-                    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
-                    border-radius: 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 20px;
-                    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
-                  ">
-                    🔒
-                  </div>
-                  <div>
-                    <div style="
-                      font-weight: 700;
-                      font-size: 16px;
-                      margin-bottom: 2px;
-                    ">
-                      ${pillar.pillarName}
-                    </div>
-                    <div style="
-                      font-size: 11px;
-                      color: rgba(255, 255, 255, 0.6);
-                      text-transform: uppercase;
-                      letter-spacing: 1px;
-                    ">
-                      Premium Access Required
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Divider -->
-                <div style="
-                  height: 1px;
-                  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
-                  margin: 14px 0;
-                "></div>
-
-                <!-- Features List -->
-                <div style="
-                  margin-bottom: 16px;
-                  font-size: 13px;
-                  line-height: 1.8;
-                  color: rgba(255, 255, 255, 0.9);
-                ">
-                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                    <span style="color: #8b5cf6; font-size: 16px;">✓</span>
-                    <span>Detailed Analytics</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                    <span style="color: #8b5cf6; font-size: 16px;">✓</span>
-                    <span>Real-time Score Tracking</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #8b5cf6; font-size: 16px;">✓</span>
-                    <span>Advanced Insights & Reports</span>
-                  </div>
-                </div>
-
-                <!-- CTA Button -->
-                <button style="
-                  width: 100%;
-                  padding: 12px 20px;
-                  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
-                  color: white;
-                  border: none;
-                  border-radius: 10px;
-                  font-weight: 700;
-                  font-size: 14px;
-                  cursor: pointer;
-                  transition: all 0.3s ease;
-                  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
-                  text-transform: uppercase;
-                  letter-spacing: 0.5px;
-                ">
-                  🚀 Upgrade Now
-                </button>
-              </div>
-            </div>
-          `;
-          }
-
-          const progressColor = this.PillarColorByScore(pillar);
-          const progressPercent = pillar.aiProgress ?? 0;
-          const statusText = progressPercent >= 75 ? 'Excellent Performance' :
-            progressPercent >= 50 ? 'Strong Score' :
-              progressPercent >= 25 ? 'Steady Growth' : 'Early Stage';
-          const statusIcon = progressPercent >= 75 ? '🌟' :
-            progressPercent >= 50 ? '📈' :
-              progressPercent >= 25 ? '⚡' : '🌱';
-
-          return `
-          <div style="
-            padding: 18px 20px;
-            min-width: 300px;
-            background: #ffffff;
-            border-radius: 14px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            border-left: 4px solid ${progressColor};
-            font-family: 'Inter', system-ui, sans-serif;
-            position: relative;
-            overflow: hidden;
-          ">
-            <!-- Background Accent -->
-            <div style="
-              position: absolute;
-              top: -30px;
-              right: -30px;
-              width: 120px;
-              height: 120px;
-              background: ${progressColor};
-              opacity: 0.08;
-              border-radius: 50%;
-            "></div>
-
-            <!-- Content -->
-            <div style="position: relative; z-index: 1;">
-              <!-- Header -->
-              <div style="
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 16px;
-              ">
-                <div>
-                  <div style="
-                    font-weight: 700;
-                    font-size: 16px;
-                    color: #111827;
-                    margin-bottom: 6px;
-                  ">
-                    ${pillar.pillarName}
-                  </div>
-                  <div style="
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 6px;
-                    padding: 4px 10px;
-                    background: ${progressColor}15;
-                    border-radius: 12px;
-                    font-size: 11px;
-                    font-weight: 600;
-                    color: ${progressColor}; 
-                  ">
-                    ${statusIcon} ${statusText}
-                  </div>
-                </div>
-                <div style="
-                  font-size: 28px;
-                  font-weight: 800;
-                  color: ${progressColor};
-                  line-height: 1;
-                  margin-left:5px;
-                ">
-                  ${progressPercent.toFixed(0)}
-                </div>
-              </div>
-
-              <!-- Score Bar -->
-              <div style="margin-bottom: 14px;">
-                <div style="
-                  display: flex;
-                  justify-content: space-between;
-                  margin-bottom: 8px;
-                  font-size: 11px;
-                  text-transform: uppercase;
-                  letter-spacing: 0.8px;
-                  font-weight: 600;
-                  color: #FFFFFF;
-                ">
-                  <span>Progress</span>
-                  <span>${progressPercent.toFixed(1)}</span>
-                </div>
-                <div style="
-                  width: 100%;
-                  height: 10px;
-                  background: #e5e7eb;
-                  border-radius: 10px;
-                  overflow: hidden;
-                  position: relative;
-                ">
-                  <div style="
-                    width: ${progressPercent}%;
-                    height: 100%;
-                    background: linear-gradient(90deg, ${progressColor} 0%, ${progressColor}cc 100%);
-                    border-radius: 10px;
-                    position: relative;
-                    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-                  ">
-                    <div style="
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                      right: 0;
-                      bottom: 0;
-                      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-                      animation: shimmer 2s infinite;
-                    "></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stats Grid -->
-              <div style="
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-                margin-top: 14px;
-              ">
-                <div style="
-                  padding: 10px 12px;
-                  background: #f9fafb;
-                  border-radius: 8px;
-                  border: 1px solid #e5e7eb;
-                ">
-                  <div style="
-                    font-size: 11px;
-                    color: #FFFFFF;
-                    margin-bottom: 4px;
-                    font-weight: 600;
-                  ">
-                    Status
-                  </div>
-                  <div style="
-                    font-size: 13px;
-                    font-weight: 700;
-                    color: ${progressColor};
-                  ">
-                    Active
-                  </div>
-                </div>
-                <div style="
-                  padding: 10px 12px;
-                  background: #f9fafb;
-                  border-radius: 8px;
-                  border: 1px solid #e5e7eb;
-                ">
-                  <div style="
-                    font-size: 11px;
-                    color: #FFFFFF;
-                    margin-bottom: 4px;
-                    font-weight: 600;
-                  ">
-                    Score
-                  </div>
-                  <div style="
-                    font-size: 13px;
-                    font-weight: 700;
-                    color: #111827;
-                  ">
-                    ${progressPercent.toFixed(2)}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <style>
-            @keyframes shimmer {
-              0% { transform: translateX(-100%); }
-              100% { transform: translateX(100%); }
-            }
-          </style>
-        `;
-        }
+          return buildAiKpiClientProgressTooltipHtml(
+            pillar,
+            this.PillarColorByScore(pillar)
+          );
+        },
       },
 
       legend: {
@@ -677,27 +381,7 @@ export class KPIAnalysisComponent implements OnInit {
   }
 
   PillarColorByScore(pillar: any): string {
-    let score = pillar.aiProgress;
-    const colors = [
-      "#E3ECF7", // very light blue
-      "#C9DBF0",
-      "#AFC9E9",
-      "#95B8E2",
-      "#7BA6DB",
-      "#053168",
-      "#314e74",
-      "#28374e",
-      "#14213a",
-      "#030b13"  // deep navy (highest)
-    ];
-
-    if (score === null || score === undefined || isNaN(score)) {
-      return "#d3d3d3";
-    }
-
-    const safeScore = Math.min(Math.max(score, 0), 100);
-    const index = Math.min(Math.floor(safeScore / 10), colors.length - 1);
-    return colors[index];
+    return ahiScoreColor(pillar.aiProgress ?? 0);
   }
 
   buildUniqueCategories(data: { pillarName: string }[]): string[] {

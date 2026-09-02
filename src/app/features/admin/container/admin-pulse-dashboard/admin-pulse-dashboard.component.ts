@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AdminService } from '../../admin.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -94,7 +95,7 @@ export class AdminPulseDashboardComponent implements OnInit {
         this.programs = res.result;
         if (this.programs?.length) {
           this.selectedPrograms = this.programs[0].climateProgramID;
-          this.getProgramPillarHistory(true);
+          this.loadProgramData(true);
         } else {
           this.isPageLoader = false;
         }
@@ -117,7 +118,7 @@ export class AdminPulseDashboardComponent implements OnInit {
 
   onProgramChange(): void {
     this.activeKpiTab = 'ambitionDelivery';
-    this.getProgramPillarHistory(false);
+    this.loadProgramData(false);
   }
 
   setKpiTab(tab: PulseKpiTab): void {
@@ -126,7 +127,7 @@ export class AdminPulseDashboardComponent implements OnInit {
     this.loadModeDashboard(true);
   }
 
-  getProgramPillarHistory(isInitial: boolean = false): void {
+  loadProgramData(isInitial: boolean = false): void {
     if (!this.userService?.userInfo?.userID || !this.selectedPrograms) {
       if (isInitial) this.isPageLoader = false;
       return;
@@ -139,21 +140,36 @@ export class AdminPulseDashboardComponent implements OnInit {
       this.isKpiLoader = true;
     }
 
+    const programId = Number(this.selectedPrograms);
     const request: UserProgramRequestDto = {
       userID: this.userService.userInfo.userID,
-      climateProgramID: Number(this.selectedPrograms),
+      climateProgramID: programId,
     };
 
-    this.adminService.getProgramPillarHistory(request).subscribe({
-      next: (res) => {
-        this.pillarResponse = res.result;
+    forkJoin({
+      pillars: this.adminService.getProgramPillarHistory(request).pipe(
+        catchError(() => of(null as any))
+      ),
+      mode: this.getModeRequest(programId).pipe(
+        catchError(() => of(null as any))
+      ),
+    }).subscribe({
+      next: ({ pillars, mode }) => {
+        this.pillarResponse = pillars?.result ?? null;
+        this.modeDashboard = mode?.succeeded ? mode.result : null;
         this.refreshDerivedViews();
+        this.kpiCards = buildPulseKpiCards(this.modeDashboard, {
+          showAi: true,
+          showManual: true,
+        });
+        this.buildIndexHero();
+        this.isPageLoader = false;
         this.isPerformanceLoader = false;
-        this.loadModeDashboard(!isInitial);
+        this.isKpiLoader = false;
       },
       error: () => {
-        this.isPerformanceLoader = false;
         this.isPageLoader = false;
+        this.isPerformanceLoader = false;
         this.isKpiLoader = false;
       },
     });

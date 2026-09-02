@@ -26,9 +26,9 @@ import { UtcToLocalTooltipDirective } from 'src/app/shared/directives/utc-to-loc
 import { AiProgramSummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestPdfDto';
 import { RegenerateAiScoreAndAddViewerComponent } from 'src/app/shared/standAlone/regenerate-ai-score-and-add-viewer/regenerate-ai-score-and-add-viewer.component';
 import { ActivatedRoute } from '@angular/router';
-import { ViewProgramDetailComponent } from 'src/app/features/client/features/view-program-detail/view-program-detail.component';
+import { ViewProgramDetailComponent } from 'src/app/shared/standAlone/view-program-detail/view-program-detail.component';
 
-declare var bootstrap: any; // 👈 use Bootstrap JS API
+declare var bootstrap: any; //  use Bootstrap JS API
 @Component({
   selector: 'app-aiprogram-analysis',
   standalone: true,
@@ -287,5 +287,9 @@ refresh()
 {
     this.getaiPrograms(this.currentPage);
 }
+
+  onProgramDetailSaved() {
+    this.getaiPrograms(this.currentPage);
+  }
 
 }

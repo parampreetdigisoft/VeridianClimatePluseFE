@@ -44,10 +44,6 @@ export class ClientService {
     return this.http.get(`Client/getClientPrograms`).pipe(map(x => x as ResultResponseDto<ProgramVM[]>));
   }
 
-  public getProgramHistory() {
-    return this.http.get(`Client/getProgramHistory`).pipe(map(x => x as ResultResponseDto<ProgramHistoryDto>));
-  }
-
   public getProgramsProgressByUserId() {
     return this.http.get(`Client/getProgramsProgressByUserId`).pipe(map(x => x as ResultResponseDto<GetProgramsSubmitionHistoryResponseDto[]>));
   }

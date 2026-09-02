@@ -30,6 +30,7 @@ export type ChartOptions = {
   markers: ApexMarkers;
   legend: ApexLegend;
   grid: ApexGrid;
+  colors: string[];
 };
 
 @Component({
@@ -206,15 +207,22 @@ export class ComparisonComponent implements OnInit, OnDestroy {
       strokeDashArray.push(0); // Solid line
     });
 
+    const allValues = series.flatMap(s => s.data ?? []).filter(v => v !== null && v !== undefined && !isNaN(Number(v))).map(v => Number(v));
+    const dataMin = allValues.length ? Math.min(...allValues) : 0;
+    const dataMax = allValues.length ? Math.max(...allValues) : 100;
+    const yMin = dataMin < 0 ? Math.floor(dataMin / 10) * 10 : 0;
+    const yMax = Math.max(100, Math.ceil(dataMax / 10) * 10);
+
     let option: Partial<ChartOptions> = {
       series: series,
+      colors: colors,
       chart: {
         height: 400,
         type: "line",
-      background: 'transparent',
-      foreColor: VCP_CHART.textMuted,
-      fontFamily: 'Poppins, sans-serif',
-      zoom: { enabled: false, type: 'x' },
+        background: 'transparent',
+        foreColor: VCP_CHART.textMuted,
+        fontFamily: 'Poppins, sans-serif',
+        zoom: { enabled: false, type: 'x' },
         toolbar: {
           show: true,
           tools: {
@@ -230,7 +238,14 @@ export class ComparisonComponent implements OnInit, OnDestroy {
           enabled: true,
           easing: 'easeinout',
           speed: 800
-        } as any
+        } as any,
+        dropShadow: {
+          enabled: true,
+          top: 0,
+          left: 0,
+          blur: 4,
+          opacity: 0.25,
+        }
       },
       dataLabels: {
         enabled: false
@@ -243,6 +258,7 @@ export class ComparisonComponent implements OnInit, OnDestroy {
       markers: {
         size: 5,
         strokeWidth: 2,
+        strokeColors: VCP_CHART.deep,
         hover: {
           size: 7,
           sizeOffset: 3
@@ -254,6 +270,9 @@ export class ComparisonComponent implements OnInit, OnDestroy {
         horizontalAlign: 'center',
         fontSize: '13px',
         fontWeight: 500,
+        labels: {
+          colors: VCP_CHART.text
+        },
         markers: {
           width: 20,
           height: 3,
@@ -289,7 +308,8 @@ export class ComparisonComponent implements OnInit, OnDestroy {
           rotateAlways: true,
           style: {
             fontSize: '11px',
-            fontWeight: 500
+            fontWeight: 500,
+            colors: VCP_CHART.textMuted
           },
           trim: false
         },
@@ -298,25 +318,25 @@ export class ComparisonComponent implements OnInit, OnDestroy {
         },
         axisBorder: {
           show: true,
-          color: '#78909C'
+          color: VCP_CHART.border
         },
         axisTicks: {
           show: true,
-          color: '#78909C'
+          color: VCP_CHART.border
         }
       },
       yaxis: {
-        min: 0,
-        max: 100,
-        tickAmount: 10,
+        min: yMin,
+        max: yMax,
         forceNiceScale: true,
         decimalsInFloat: 0,
         labels: {
           show: true,
-          formatter: (val: number) => parseInt(val.toString(), 10).toString(),
+          formatter: (val: number) => (val != null && !isNaN(val) ? Math.round(val).toString() : ''),
           style: {
             fontSize: '12px',
-            fontWeight: 500
+            fontWeight: 500,
+            colors: [VCP_CHART.textMuted]
           }
         },
         title: {
@@ -324,25 +344,31 @@ export class ComparisonComponent implements OnInit, OnDestroy {
           style: {
             fontSize: '14px',
             fontWeight: 600,
-            color: '#263238'
+            color: VCP_CHART.text
           }
         },
         axisBorder: {
           show: true,
-          color: '#78909C'
+          color: VCP_CHART.border
         }
       },
       tooltip: {
         shared: true,
         intersect: false,
+        theme: 'dark',
+        style: {
+          fontSize: '12px',
+          fontFamily: 'Poppins, sans-serif'
+        },
         custom: ({ series, seriesIndex, dataPointIndex, w }) => {
           const layerCode = this.compareProgramResponseDto?.categories?.[dataPointIndex] ?? "";
           const layerName = kpiMap.get(layerCode) ?? "";
 
           let tooltipHtml = `
-          <div style="padding: 12px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 250px;">
-            <div style="font-weight: 600; margin-bottom: 10px; color: #333; font-size: 13px; border-bottom: 2px solid #e7e7e7; padding-bottom: 6px;">
-              ${layerCode} - ${layerName}
+          <div style="padding: 14px 16px; min-width: 260px; background: linear-gradient(160deg, #12243f 0%, #0d1a30 100%); border-radius: 12px; box-shadow: ${VCP_CHART.tooltipShadow}; border: 1px solid rgba(92, 140, 200, 0.35); font-family: Poppins, sans-serif; color: #f8fafc;">
+            <div style="font-weight: 700; margin-bottom: 10px; color: #ffffff; font-size: 13px; border-bottom: 1px solid rgba(92, 140, 200, 0.28); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+              <span style="width: 8px; height: 8px; background: linear-gradient(135deg, #3B9EFF, #A8E063); border-radius: 50%; display: inline-block;"></span>
+              ${layerCode}${layerName ? ' - ' + layerName : ''}
             </div>
         `;
 
@@ -357,16 +383,16 @@ export class ComparisonComponent implements OnInit, OnDestroy {
             const color = colorPalette[idx % colorPalette.length];
 
             tooltipHtml += `
-              <div style="margin: 8px 0; padding: 8px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 6px; border-left: 3px solid ${color};">
-                <div style="font-weight: 600; color: ${color}; margin-bottom: 6px; font-size: 12px;">
+              <div style="margin: 8px 0; padding: 10px 12px; background: rgba(255, 255, 255, 0.04); border-radius: 8px; border-left: 3px solid ${color}; border: 1px solid rgba(92, 140, 200, 0.18); border-left-width: 3px;">
+                <div style="font-weight: 600; color: ${color}; margin-bottom: 6px; font-size: 13px;">
                   ${program.name}
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
-                  <span style="color: #666;">📊 Score:</span>
-                  <span style="font-weight: 600; color: #333;">${aiValue.toFixed(2)}</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+                  <span style="color: #9AADC4;">Score</span>
+                  <span style="font-weight: 700; color: #E8EEF8; font-size: 13px;">${aiValue != null && !isNaN(aiValue) ? Number(aiValue).toFixed(2) : '0.00'}</span>
                 </div>
+              </div>
             `;
-            tooltipHtml += `</div>`;
           });
 
           tooltipHtml += '</div>';

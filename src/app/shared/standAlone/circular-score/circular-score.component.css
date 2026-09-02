@@ -5,6 +5,7 @@
       justify-content: center;
       cursor: pointer;
       transition: transform 0.2s ease;
+      width: fit-content;
     }
 
     .circular-score:hover {

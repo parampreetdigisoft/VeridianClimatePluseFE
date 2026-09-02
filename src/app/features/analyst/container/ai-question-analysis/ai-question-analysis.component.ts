@@ -185,4 +185,8 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     let discrepancy = Math.abs((question?.evaluatorScore ?? 0) - (question?.aiScore ?? 0));
     return discrepancy;
   }
+
+  onQuestionDetailSaved() {
+    this.getAIPillarQuestions(this.currentPage);
+  }
 }

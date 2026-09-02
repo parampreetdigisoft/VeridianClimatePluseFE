@@ -21,7 +21,7 @@
 .sidebar_area
 {
     width: 380px;
-    padding: 0 16px 12px 20px;
+    padding: 0 12px 12px 5px;
     flex-shrink: 0;
     min-height: 0;
     display: flex;
@@ -39,10 +39,11 @@
     overflow-x: hidden;
     overflow-y: auto;
     padding-bottom: 12px;
-    padding-right: 20px;
+    padding-right: 5px;
     width: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(168, 224, 99, 0.22) transparent;
+    margin-bottom: 12px;
 }
 
 .content_area > :not(router-outlet) {
@@ -81,7 +82,7 @@
 @media only screen and (max-width:1540px) {
   .sidebar_area{
       width: 330px;
-      padding: 0 10px 20px 12px;
+      padding: 0 5px 20px 12px;
   }
   .content_area {
       padding-right: 12px;

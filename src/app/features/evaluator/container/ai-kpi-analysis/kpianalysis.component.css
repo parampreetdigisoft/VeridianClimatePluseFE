@@ -21,6 +21,53 @@ app-kpianalysis app-ag-bar:nth-child(3) {
   flex: 1;
 }
 
+.kpi-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kpi-header-actions .compare_select {
+  min-width: 240px;
+}
+
+.kpi-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--Surface-Elevated, #102044);
+  border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22));
+  color: var(--Accent-Lime, #A8E063);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 0;
+}
+
+.kpi-refresh-btn:hover {
+  background: rgba(168, 224, 99, 0.15);
+  border-color: var(--Accent-Lime, #A8E063);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(168, 224, 99, 0.25);
+}
+
+.kpi-refresh-btn:hover svg {
+  transform: rotate(180deg);
+}
+
+.kpi-refresh-btn svg {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kpi-refresh-btn:active {
+  transform: translateY(0);
+}
+
 .input_field {
   margin-bottom: 0;
 }
@@ -101,12 +148,12 @@ app-kpianalysis app-ag-bar:nth-child(3) {
   font-size: 20px;
 }
 
-.compare_table.table .city_cards_disc {
+.compare_table.table .program_cards_disc {
   font-weight: 400;
   color: #212529;
 }
 
-.compare_table.table .city_cards_h1 {
+.compare_table.table .program_cards_h1 {
   font-size: 24px;
   line-height: normal;
   font-weight: 600;
@@ -120,7 +167,7 @@ app-kpianalysis app-ag-bar:nth-child(3) {
   width: 200px;
 }
 
-.city_cards_p {
+.program_cards_p {
   font-size: 14px;
   background-color: var(--Secondary-Color);
   color: #ffffff;
@@ -223,4 +270,20 @@ p.btn_spinner {
     white-space: nowrap;
     color: #ffffff;
     border-radius: 5px;
+}
+
+/* ApexCharts custom tooltip — inline HTML controls bg/text colors */
+:host ::ng-deep .apexcharts-tooltip,
+:host ::ng-deep .apexcharts-tooltip.apexcharts-theme-light,
+:host ::ng-deep .apexcharts-tooltip.apexcharts-theme-dark {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  color: inherit !important;
+}
+
+:host ::ng-deep .apexcharts-tooltip .apexcharts-tooltip-series-group,
+:host ::ng-deep .apexcharts-tooltip .apexcharts-tooltip-title {
+  display: none !important;
 }

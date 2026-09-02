@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-height: 0;
   height: 100%;
   overflow: hidden;
@@ -137,7 +137,7 @@
 .body_faq {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-height: 0;
   position: relative;
   padding: 12px;
@@ -150,12 +150,12 @@
 .body_faq_inner {
   display: flex;
   width: 100%;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-height: 0;
   flex-wrap: nowrap;
   align-items: stretch;
   gap: 16px;
-  overflow: hidden; /* avoid a 3rd nested scrollbar */
+  overflow: hidden;
   position: relative;
   z-index: 1;
 }
@@ -272,45 +272,48 @@
 }
 
 .faq_main_section {
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-width: 0;
   min-height: 0;
+  max-height: 100%;
   border-radius: 14px;
   border: 1px solid rgba(92, 140, 200, 0.16);
   background: rgba(8, 18, 42, 0.72);
   padding: 14px;
   position: relative;
+  overflow-x: hidden;
   overflow-y: auto;
-  height: auto;
   align-self: stretch;
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: rgba(92, 140, 200, 0.45) transparent;
+  scrollbar-color: rgba(168, 224, 99, 0.55) rgba(92, 140, 200, 0.12);
 }
 
-/* Slim dark scrollbars for pillar list + questions only (page scrollbar unchanged) */
+/* Slim scrollbars for pillar list + questions panel */
 .faq_sidebar::-webkit-scrollbar,
 .faq_main_section::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
 }
 
 .faq_sidebar::-webkit-scrollbar-track,
 .faq_main_section::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(92, 140, 200, 0.1);
+  border-radius: 999px;
   margin: 6px 0;
 }
 
 .faq_sidebar::-webkit-scrollbar-thumb,
 .faq_main_section::-webkit-scrollbar-thumb {
-  background: rgba(92, 140, 200, 0.38);
+  background: rgba(168, 224, 99, 0.55);
   border-radius: 999px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 .faq_sidebar::-webkit-scrollbar-thumb:hover,
 .faq_main_section::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 224, 99, 0.55);
+  background: rgba(168, 224, 99, 0.75);
 }
 
 .faq_sidebar::-webkit-scrollbar-corner,
@@ -654,8 +657,9 @@
   }
 
   .faq_main_section {
-    flex: 1 1 100%;
+    flex: 1 1 0%;
     min-height: 360px;
+    padding: 12px;
   }
 }
 

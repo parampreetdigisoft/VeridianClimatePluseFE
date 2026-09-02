@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "./app/shared/styles/detail-offcanvas.shared.css";
+@import "./app/shared/styles/ai-analysis-page.shared.css";
 @import "./app/shared/styles/vcp-dropdown.shared.css";
 @import "./app/shared/styles/vcp-modal.shared.css";
 
@@ -162,19 +163,20 @@ padding: 12px 15px;
 
 .table_outer .table td
 {
-color: #dedef3 !important;
+color: #ffffff !important;
 font-size: 14px;
 font-style: normal;
 font-weight: 400;
 line-height: 20px;
 padding: 12px 15px;
 border-bottom:0;
+border-color: rgb(255 255 255 / 22%) !important;
 }
 
 .action_icons {
     display: flex;
     align-items: center;
-    grid-gap: 15px;
+    grid-gap: 10px;
 }
 
 .table_outer .table tr th:first-child {
@@ -253,7 +255,7 @@ border-bottom:0;
 	padding: 16px;
 	border-radius: var(--Radius-Md);
     border: 1px solid var(--Border-Color);
-    margin: 10px 0;
+    margin: 0px 0;
 }
 
 .showing_data
@@ -432,10 +434,13 @@ padding-right: 40px;
     font-size: 16px;
 }
 .table_outer tbody tr:hover td {
-    background-color: rgba(59, 158, 255, 0.08);
-    border-color: rgba(92, 140, 200, 0.25);
+    /* background-color: rgba(59, 158, 255, 0.08); */
+    background-color: rgb(59 158 255 / 31%) !important;
+    /* border-color: rgba(92, 140, 200, 0.25); */
 }
-
+.table_outer tbody tr:hover td td {
+    background: transparent !important;
+}
 .compare_btn svg {
     width: 22px;
     height: auto;
@@ -549,28 +554,28 @@ padding-right: 40px;
 .inner_content_area:has(app-chat-container) {
     padding: 0 !important;
 }
-.city_card_outter {
+.program_card_outter {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 20px;
     height: 100%;
 }
-.city_card {
+.program_card {
     flex: 1;
 }
-.city_card_ul {
+.program_card_ul {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 5px;
 }
-.city_card_ul li {
+.program_card_ul li {
     background-color: var(--Primary-Color);
     padding: 3px 10px;
     border-radius: 5px;
     color: #fff;
     font-size: 14px;
 }
-.city_card_img .score {
+.program_card_img .score {
     background: var(--VCP-Gradient);
     color: #ffffff;
     display: inline-block;
@@ -581,30 +586,30 @@ padding-right: 40px;
     left: 10px;
     top: 10px;
 }
-.city_cards_p {
+.program_cards_p {
     display: flex;
     align-items: center;
     font-weight: 600;
     grid-gap: 3px;
 }
-.city_cards_p path {
+.program_cards_p path {
     fill: var(--Primary-Color);
 }
-.city_cards_disc {
+.program_cards_disc {
     margin: 10px 0 15px;
 }
-.city_card_outter img {
+.program_card_outter img {
     max-width: 400px;
     width: 100%;
     border-radius: 18px;
     height: 100%;
     object-fit: cover;
 }
-.city_card_inner {
+.program_card_inner {
     padding:0px;
 }
 
-.city_cards_h1 {
+.program_cards_h1 {
     font-size: 30px;
     line-height: normal;
     font-weight: 600;
@@ -616,7 +621,7 @@ padding-right: 40px;
     grid-gap: 10px;
     flex-wrap: wrap;
 }
-.city_card_img , .table_col_one{
+.program_card_img , .table_col_one{
     position: relative;
 }
 
@@ -739,7 +744,7 @@ padding-right: 40px;
 }
 
 .table_outer .table tr th{
-    border-bottom: 1px solid rgb(222, 226, 230);
+    border-bottom: 1px solid rgb(255 255 255 / 22%);
 }
 .vui_header:after {
     content: "";
@@ -759,7 +764,6 @@ padding-right: 40px;
     border: 1px solid var(--Border-Color);
     border-radius: var(--Radius-Md);
     background: var(--Surface-Color);
-    overflow: hidden;
     position: relative;
 }
 .table_outer > .table > tbody > tr {
@@ -837,8 +841,8 @@ body .content_area .inner_content_area {
 }
 
 .confidence-badge {
-    padding: 4px 12px;
-    border-radius: 8px;
+    padding: 2px 8px;
+    border-radius: 50px;
     font-size: 12px;
     font-weight: 600;
     text-transform: capitalize;
@@ -849,23 +853,23 @@ body .content_area .inner_content_area {
 
 /* High = Green */
 .confidence-badge.high {
-    background: rgba(46, 204, 113, 0.15);
-    color: #2ecc71;
-    border: 1px solid rgba(46, 204, 113, 0.35);
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #75d69c !important;
 }
 
 /* Medium = Yellow/Orange */
 .confidence-badge.medium {
-    background: rgba(241, 196, 15, 0.15);
-    color: #f1c40f;
-    border: 1px solid rgba(241, 196, 15, 0.35);
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c !important;
 }
 
 /* Low = Red */
 .confidence-badge.low {
-    background-color: rgba(255, 77, 77, 0.16);
-    color: #ff8a80;
-    border: 1px solid rgba(255, 77, 77, 0.4) !important;
+  background-color: #ffcccc;
+  color: #b30000;
+  border: 1px solid #ff4d4d !important;
 }
 .program_img {
     background-color: var(--Primary-Color) !important;
@@ -892,7 +896,7 @@ body .content_area .inner_content_area {
 }
 
 .content_area .inner_content_area:not(:has(app-chat-container)) {
-  padding: var(--Page-Pad-Y) 4px var(--Page-Pad-Y) 4px;
+  padding:  0px;
 }
 
 .page_head {
@@ -1126,7 +1130,7 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container {
 
 @media (min-width: 1400px) {
   :root {
-    --Page-Pad-X: 24px;
+    --Page-Pad-X: 12px;
     --Page-Pad-Y: 18px;
     --Content-Gap: 18px;
   }
@@ -1138,6 +1142,7 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container {
     --Page-Pad-Y: 20px;
   }
 }
+
 .icon-refresh svg path {
   fill: var(--Accent-Lime, #A8E063) !important;
   transition: fill 0.2s ease;
@@ -1171,3 +1176,22 @@ body .cb__selector-inner .ng-select .ng-select-container .ng-arrow-wrapper {
     padding-right: 5px !important;
 }
 
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-internal-autofill-selected {
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+ 
+  background-color: var(--Primary-Color) !important;
+  background-image: none !important;
+ 
+  -webkit-box-shadow: 0 0 0 1000px var(--Primary-Color) inset !important;
+  box-shadow: 0 0 0 1000px var(--Primary-Color) inset !important;
+ 
+  caret-color: #ffffff !important;
+ 
+  transition: background-color 99999s ease-in-out 0s !important;
+}

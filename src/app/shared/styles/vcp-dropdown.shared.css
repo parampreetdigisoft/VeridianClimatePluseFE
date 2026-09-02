@@ -126,7 +126,7 @@ ng-select.analyst_multi_select .ng-value-container .ng-value {
   border-radius: 8px !important;
   font-size: 12px !important;
   font-weight: 500 !important;
-  line-height: 1.35 !important;
+  line-height: normal!important;
   white-space: nowrap !important;
   max-width: 100% !important;
 }
@@ -180,6 +180,7 @@ ng-select.analyst_multi_select.ng-select-multiple .ng-select-container,
   min-height: 44px !important;
   /* max-height: 92px !important; */
   height: auto !important;
+  min-width: 190px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   align-items: flex-start !important;
@@ -329,6 +330,29 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   transition: background-color 0.16s ease, color 0.16s ease;
 }
 
+/* Scrollable modals: keep ng-select panel in DOM — do not use appendTo="body" */
+.modal_design .modal-body .ng-select,
+.pillar-modal-body .ng-select {
+  position: relative;
+}
+
+.modal_design .modal-body .ng-select.ng-select-opened,
+.pillar-modal-body .ng-select.ng-select-opened {
+  z-index: 20051;
+}
+
+.modal_design .modal-body .ng-select .ng-dropdown-panel,
+.pillar-modal-body .ng-select .ng-dropdown-panel {
+  z-index: 20050 !important;
+  animation: vcpDropdownIn 0.2s ease;
+  transform-origin: top center;
+}
+
+.modal_design .modal-body .ng-select .ng-dropdown-panel .ng-option,
+.pillar-modal-body .ng-select .ng-dropdown-panel .ng-option {
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
 /* ---- dashboard / filter shells ---- */
 .program_pillar .input_field .analyst_multi_select .ng-select-container,
 .program_pillar .input_field .form-control {
@@ -378,6 +402,13 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   color: var(--Text-Color, #E8EEF8) !important;
 }
 
+.input_flex ng-select.analyst_multi_select .ng-placeholder {
+    padding-bottom: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+    position: absolute;
+}
+
 /* ---- responsive widths ---- */
 @media only screen and (max-width: 991px) {
   .input_flex {
@@ -404,3 +435,45 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
     min-width: 0;
   }
 }
+
+/* ---- Bootstrap dropdown-menu dark theme across all feature screens ---- */
+.dropdown-menu {
+  background-color: var(--Surface-Elevated, #102044) !important;
+  border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 20px rgba(59, 158, 255, 0.15) !important;
+  color: var(--Text-Color, #E8EEF8) !important;
+  padding: 6px 0 !important;
+  z-index: 1060 !important;
+  min-width: 180px !important;
+}
+
+.dropdown-menu .dropdown-header {
+  color: var(--Accent-Lime, #A8E063) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  padding: 8px 16px 4px !important;
+}
+
+.dropdown-menu .dropdown-item {
+  color: var(--Text-Color, #E8EEF8) !important;
+  font-size: 13px !important;
+  padding: 8px 16px !important;
+  transition: background-color 0.18s ease, color 0.18s ease !important;
+  cursor: pointer !important;
+}
+
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background-color: rgba(59, 158, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.dropdown-menu .dropdown-divider {
+  border-top: 1px solid rgba(92, 140, 200, 0.18) !important;
+  margin: 4px 0 !important;
+  opacity: 1 !important;
+}
+

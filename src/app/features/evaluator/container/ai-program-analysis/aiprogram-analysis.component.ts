@@ -194,4 +194,8 @@ export class AIProgramAnalaysisComponent implements OnInit, OnDestroy {
     this.getAiPrograms(this.currentPage);
   }
 
+  onProgramDetailSaved() {
+    this.getAiPrograms(this.currentPage);
+  }
+
 }

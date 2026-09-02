@@ -1,5 +1,6 @@
 export interface AiProgramPillarResponseDto {
   pillars: AiProgramPillarVM[];
+  aiProgress: number | null;
 }
 
 export interface AiProgramPillarVM {

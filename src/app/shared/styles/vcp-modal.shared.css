@@ -21,6 +21,12 @@
   max-width: min(640px, calc(100vw - 32px));
 }
 
+/* Keep ng-select options in front of the table behind this compact modal */
+.modal_design .modal-dialog.transfer_popup .modal-content,
+.modal_design .modal-dialog.transfer_popup .modal-body {
+  overflow: visible;
+}
+
 /* Wide modals — pillar editor, signal intelligence brief */
 .modal_design .modal-dialog.pillar-modal-dialog,
 .modal_design.signal_detail_modal .modal-dialog {
@@ -103,7 +109,7 @@
 
 .modal_design .modal_tabs .input_field input[type="file"] {
   line-height: normal;
-  padding: 8px 12px;
+  padding: 4px 11px;
   font-size: 13px;
   max-width: 100%;
 }

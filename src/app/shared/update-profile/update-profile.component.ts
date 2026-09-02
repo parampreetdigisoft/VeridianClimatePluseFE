@@ -9,6 +9,7 @@ import {
 } from "@angular/core";
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { catchError, debounceTime, map, Observable, of, switchMap } from "rxjs";
+import { ElementRef, ViewChild } from "@angular/core";
 import { UserInfo } from "src/app/core/models/UserInfo";
 import { AdminService } from "src/app/features/admin/admin.service";
 import { environment } from "src/environments/environment";
@@ -23,13 +24,21 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
   @Input() loading: boolean = false;
   isSubmitted = false;
   @Input() userinfo: UserInfo | undefined | null = null;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('imageInput') imageInput!: ElementRef;
   @Output() updateUserEvent: any = new EventEmitter();
   @Output() closeModelEvent: any = new EventEmitter();
+  
+  selectedImage: string | ArrayBuffer | null = null;
   userForm: FormGroup<any> = this.fb.group({});
   urlBase = environment.apiUrl;
   constructor(private fb: FormBuilder, private adminService:AdminService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+    this.selectedImage = null;
     //this.initializeForm();
   }
 
@@ -101,7 +110,23 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+    if (!file.type.startsWith('image/')) {
+      return;
+    }
+
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedImage = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   closeModel() {
