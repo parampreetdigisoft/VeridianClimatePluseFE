@@ -162,24 +162,25 @@ span:empty, div:empty{
     border-radius: 15px;
 }
 .active_row td {
-    background-color: #087374;
-    color: #ffffff;
+    background-color: rgb(92, 184, 255);
+    color: #000000 !important;
 }
 .active_row td .score_label_tab {
     /* background-color: rgba(255,255,255,0.08) !important; */
 }
 .last_data td {
-    background-color: #087374;
-    color: #ffffff;
+    background-color: rgb(92, 184, 255);
+    color: #000000 !important;
     text-align: center;
 }
 .last_data td span {
     color: #ffffff;
-    background-color: var(--Primary-Color);
+    background-color: #193f72;
     white-space: nowrap;
     padding: 5px 8px;
     border-radius: 30px;
     border: none;
+    font-size: 12px;
 }
 
 button.btn-close:focus,

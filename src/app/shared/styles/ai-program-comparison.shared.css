@@ -97,7 +97,7 @@
 }
 
 .compare_table.table tr th:first-child {
-  width: 350px;
+  width: 420px;
   min-width: 280px;
   max-width: 100%;
   font-size: 18px;
@@ -225,6 +225,7 @@ span.selexted_piller {
 
 .kpi_city.kpi_td_data {
   display: flex;
+  /* justify-content: center; */
 }
 
 .header_Score {
@@ -234,6 +235,7 @@ span.selexted_piller {
   gap: 5px;
   margin: 0;
   width: 100%;
+  /* justify-content: center; */
 }
 
 .header_score_chip {
@@ -241,7 +243,7 @@ span.selexted_piller {
   align-items: center;
   gap: 4px;
   padding: 2px 8px;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.2;
   font-weight: 500;
   color: #fff;
@@ -253,7 +255,7 @@ span.selexted_piller {
 
 .header_score_chip strong {
   font-weight: 700;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .header_Score .research_date {
@@ -261,7 +263,7 @@ span.selexted_piller {
   align-items: center;
   justify-content: center;
   padding: 2px 8px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
   border-radius: 4px;
@@ -428,7 +430,7 @@ tr.pillar_disabled {
 }
 
 h6.city_pile {
-  font-size: 12px;
+  font-size: 14px;
   background-color: rgba(76, 175, 80, 0.22);
   border: 1px solid rgba(168, 224, 99, 0.35);
   padding: 2px 10px;
@@ -507,6 +509,9 @@ h6.city_pile {
 
 .limit-exceed-message {
   color: #FF8A65 !important;
+}
+.program_pillar .card_title {
+    /* align-items: center !important; */
 }
 
 @media only screen and (max-width: 1099px) {

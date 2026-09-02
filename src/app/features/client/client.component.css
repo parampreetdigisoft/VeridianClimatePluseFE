@@ -1,6 +1,6 @@
 .footer_tagline {
     text-align: center;
-    padding-top: 30px;
+    padding-top: 0px;
     font-size: 14px;
     font-weight: 600;
     color: #304a43;
@@ -35,6 +35,8 @@
 }
 
 .footer_tagline p {
-    padding-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid #304a431f;
+    color: rgb(255 255 255 / 40%);
+    font-weight: 400;
 }

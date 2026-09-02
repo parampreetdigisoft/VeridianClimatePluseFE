@@ -101,8 +101,8 @@
 }
 
 .last_data td {
-    background-color: #087374;
-    color: #ffffff;
+   background-color: rgb(92, 184, 255);
+    color: #000000 !important;
 }
 
 .kpi-metric-cell {

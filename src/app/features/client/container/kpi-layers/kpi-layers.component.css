@@ -74,12 +74,15 @@
 
 .compare_city_table tbody td.action_td table .action_icons a.mat-mdc-tooltip-trigger span {
   display: inline-block;
-  background-color: rgba(76, 175, 80, 0.22);
+  /* background-color: rgba(76, 175, 80, 0.22); */
   padding: 8px 10px;
   white-space: nowrap;
-  color: var(--Accent-Lime, #A8E063);
+  /* color: var(--Accent-Lime, #A8E063); */
   border-radius: 5px;
-  border: 1px solid rgba(168, 224, 99, 0.35);
+  /* border: 1px solid rgba(168, 224, 99, 0.35); */
+  color: rgb(59 158 255);
+    border: 1px solid rgba(59, 158, 255, 0.55);
+    background: rgba(59, 158, 255, 0.08);
 }
 
 .compare_city_table .action_td td {

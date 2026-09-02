@@ -45,7 +45,7 @@
   width: 44px;
   height: 36px;
   border-radius: 12px;
-  border: 1px solid var(--Border-Color);
+  border: 1px solid rgb(255 255 255 / 22%);
   background: var(--Surface-Elevated);
   flex-shrink: 0;
   transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -60,9 +60,9 @@
 /* Table polish */
 .compare_city_table.ai-analysis-table .table thead th {
   vertical-align: middle;
-  text-align: center;
+  /* text-align: center; */
   white-space: nowrap;
-  border-right: 1px solid var(--Border-Color);
+  border-right: 1px solid rgb(255 255 255 / 22%);
   padding: 14px 12px;
 }
 
@@ -73,7 +73,7 @@
 .compare_city_table.ai-analysis-table .table tbody td {
   text-align: center;
   vertical-align: middle;
-  border-right: 1px solid rgba(92, 140, 200, 0.12);
+  border-right: 1px solid rgb(255 255 255 / 22%);
 }
 
 .compare_city_table.ai-analysis-table .table tbody td:last-child {
@@ -109,7 +109,9 @@
 .compare_city_table.ai-analysis-table .action_td .dropdown {
   position: relative;
 }
-
+.compare_city_table.ai-analysis-table .table thead th.program-col {
+    border-left: 1px solid rgb(255 255 255 / 22%);
+}
 
 @media (max-width: 991px) {
   .ai-analysis-toolbar__filters {

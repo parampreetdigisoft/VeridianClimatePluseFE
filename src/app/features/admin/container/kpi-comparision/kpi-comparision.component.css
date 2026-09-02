@@ -151,6 +151,7 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
 
 .kpi_city.kpi_td_data {
   display: flex;
+  /* justify-content: center; */
 }
 
 .header_Score {

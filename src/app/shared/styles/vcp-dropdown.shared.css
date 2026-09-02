@@ -126,7 +126,7 @@ ng-select.analyst_multi_select .ng-value-container .ng-value {
   border-radius: 8px !important;
   font-size: 12px !important;
   font-weight: 500 !important;
-  line-height: 1.35 !important;
+  line-height: normal!important;
   white-space: nowrap !important;
   max-width: 100% !important;
 }
@@ -400,6 +400,13 @@ body > .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   background: var(--Surface-Elevated, #102044) !important;
   border: 1px solid var(--Border-Color, rgba(92, 140, 200, 0.22)) !important;
   color: var(--Text-Color, #E8EEF8) !important;
+}
+
+.input_flex ng-select.analyst_multi_select .ng-placeholder {
+    padding-bottom: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+    position: absolute;
 }
 
 /* ---- responsive widths ---- */

@@ -170,12 +170,13 @@ font-weight: 400;
 line-height: 20px;
 padding: 12px 15px;
 border-bottom:0;
+border-color: rgb(255 255 255 / 22%) !important;
 }
 
 .action_icons {
     display: flex;
     align-items: center;
-    grid-gap: 15px;
+    grid-gap: 10px;
 }
 
 .table_outer .table tr th:first-child {
@@ -433,10 +434,13 @@ padding-right: 40px;
     font-size: 16px;
 }
 .table_outer tbody tr:hover td {
-    background-color: rgba(59, 158, 255, 0.08);
-    border-color: rgba(92, 140, 200, 0.25);
+    /* background-color: rgba(59, 158, 255, 0.08); */
+    background-color: rgb(59 158 255 / 31%) !important;
+    /* border-color: rgba(92, 140, 200, 0.25); */
 }
-
+.table_outer tbody tr:hover td td {
+    background: transparent !important;
+}
 .compare_btn svg {
     width: 22px;
     height: auto;
@@ -740,7 +744,7 @@ padding-right: 40px;
 }
 
 .table_outer .table tr th{
-    border-bottom: 1px solid rgb(222, 226, 230);
+    border-bottom: 1px solid rgb(255 255 255 / 22%);
 }
 .vui_header:after {
     content: "";
@@ -837,8 +841,8 @@ body .content_area .inner_content_area {
 }
 
 .confidence-badge {
-    padding: 4px 12px;
-    border-radius: 8px;
+    padding: 2px 8px;
+    border-radius: 50px;
     font-size: 12px;
     font-weight: 600;
     text-transform: capitalize;
@@ -1170,4 +1174,24 @@ body .action_td tr td {
 
 body .cb__selector-inner .ng-select .ng-select-container .ng-arrow-wrapper {
     padding-right: 5px !important;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-internal-autofill-selected {
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+ 
+  background-color: var(--Primary-Color) !important;
+  background-image: none !important;
+ 
+  -webkit-box-shadow: 0 0 0 1000px var(--Primary-Color) inset !important;
+  box-shadow: 0 0 0 1000px var(--Primary-Color) inset !important;
+ 
+  caret-color: #ffffff !important;
+ 
+  transition: background-color 99999s ease-in-out 0s !important;
 }

@@ -28,6 +28,7 @@
   align-self: flex-start;
   border: 1px solid var(--Border-Color);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.3);
+  width: 100%;
 }
 
 .inner_sidebar::-webkit-scrollbar {
@@ -83,11 +84,11 @@
 .nav_links:hover {
   color: #ffffff;
   background: rgba(59, 158, 255, 0.14);
-  transform: translateX(3px);
+  /* transform: translateX(3px); */
 }
 
 .nav_links:hover svg {
-  transform: scale(1.06);
+  /* transform: scale(1.06); */
   filter: drop-shadow(0 0 6px rgba(168, 224, 99, 0.35));
 }
 
@@ -170,7 +171,7 @@
   background: var(--VCP-Gradient-Hover);
   border-color: transparent;
   box-shadow: 0 6px 18px rgba(76, 175, 80, 0.28);
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
 }
 
 .sub_menu .nav_links.active {
@@ -196,7 +197,7 @@
 
 .vui_child_menu[data-bs-toggle="collapse"] {
   position: relative;
-  padding-right: 42px;
+  padding-right: 34px;
 }
 
 .vui_child_menu[data-bs-toggle="collapse"]::after {
