@@ -155,7 +155,9 @@ app-comparision app-ag-bar:nth-child(3) {
     font-weight: 400;
     line-height: 20px;
     display: block;
-    width: 300px;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
 }
 
 .evaluater_design .mat-elevation-z8 > tbody tr td:first-child {

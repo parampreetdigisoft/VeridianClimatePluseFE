@@ -212,6 +212,13 @@ p.btn_spinner {
   width: 100%;
   min-width: 0;
 }
+.table_outer {
+    border: 0px;
+    border-color: rgb(255 255 255 / 22%) !important;
+}
+.table_outer table.table.table-striped {
+    border-color: rgb(255 255 255 / 22%) !important;
+}
 
 @media only screen and (max-width:1750px) {
     .compare_city_table .city-col{

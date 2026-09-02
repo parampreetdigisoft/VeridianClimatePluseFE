@@ -280,6 +280,8 @@ td.file_size {
     font-weight: 600;
     padding-left: 16px;
     border-radius: 50px;
+    background-color: transparent;
+    color: #ffffff;
 }
 .modal-header h3 {
     font-size: 20px;
@@ -294,4 +296,6 @@ td.file_size {
 } */
 .modal-box .input_field input.form-control {
     line-height: 200%;
+    border-radius: 100px;
+    padding-left: 12px;
 }

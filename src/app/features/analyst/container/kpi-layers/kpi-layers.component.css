@@ -77,6 +77,9 @@
     white-space: nowrap;
     color: #ffffff;
     border-radius: 5px;
+    color: rgb(59 158 255);
+    border: 1px solid rgba(59, 158, 255, 0.55);
+    background: rgba(59, 158, 255, 0.08);
 }
 
 .compare_city_table .action_td td {

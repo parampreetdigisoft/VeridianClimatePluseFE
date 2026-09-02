@@ -259,6 +259,9 @@ p.btn_spinner {
 .research_date.old {
   background: linear-gradient(135deg, #ffe9e6, #ffd1cb);
   color: #912018;
+  margin: 0 auto;
+  display: block;
+  width: max-content;
 }
 .research_date.just-now {
   background: linear-gradient(135deg, #e8f0ff, #d9e6ff);

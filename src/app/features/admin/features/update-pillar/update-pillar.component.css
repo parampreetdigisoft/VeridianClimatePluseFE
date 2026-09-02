@@ -877,6 +877,13 @@
   color: var(--Text-Color, #E8EEF8);
 }
 
+::ng-deep .compare_select .pillar-kpi-select .ng-placeholder {
+    position: absolute;
+    padding-bottom: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+}
+
 @media (max-width: 992px) {
   .kpi-details-grid {
     grid-template-columns: 1fr;

@@ -148,7 +148,7 @@
   width: 360px;
 }
 ::ng-deep .compare_city_table .city-col .typing-text {
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
     display: block;
 }
@@ -161,6 +161,9 @@
 }
 .action_icons a svg g path {
     fill: #ffffff !important;
+}
+.compare_city_table table tr {
+    border-color: rgb(255 255 255 / 22%);
 }
 
 @media only screen and (max-width:1550px) {

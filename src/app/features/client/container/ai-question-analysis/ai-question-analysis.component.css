@@ -148,6 +148,10 @@
   white-space: normal;   /* allow wrapping */
   word-break: break-word;
 }
+.compare_city_table table tr {
+    border-color: rgb(255 255 255 / 22%);
+}
+
 
 @media only screen and (max-width:1550px) {
     .table_outer .table th {

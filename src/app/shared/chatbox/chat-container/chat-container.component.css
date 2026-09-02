@@ -803,7 +803,7 @@
 }
 
 .cb__session-btn {
-  border-radius: 20px !important;
+  border-radius: 10px !important;
   background: var(--VCP-Gradient, linear-gradient(135deg, var(--Primary-Color) 0%, #4CAF50 52%, #A8E063 100%));
   padding: 9px 20px;
   text-align: center;
@@ -2923,7 +2923,7 @@ aside.vcp-sidebar {
 }
 
 .sidebar-card {
-  padding-bottom: 20px;
+  padding-bottom: 12px;
 }
 
 .stats-card .stat-row.no-border {
@@ -4601,7 +4601,7 @@ aside.vcp-sidebar {
 
 @media (min-width: 1440px) {
   .workspace-empty__headline {
-    font-size: 30px;
+    font-size: 28px;
   }
 
   .chat-messages {

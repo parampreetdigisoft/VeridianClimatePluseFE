@@ -131,7 +131,7 @@
   width: 360px;
 }
 ::ng-deep .compare_city_table .city-col .typing-text {
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
     display: block;
 }
@@ -194,6 +194,9 @@ p.btn_spinner {
 .research_date.old {
   background: linear-gradient(135deg, #ffe9e6, #ffd1cb);
   color: #912018;
+      margin: 0 auto;
+    display: block;
+    width: max-content;
 }
 .research_date.just-now {
   background: linear-gradient(135deg, #e8f0ff, #d9e6ff);
@@ -222,6 +225,9 @@ p.btn_spinner {
 
 .compare_city_table tbody td.action_td table .action_icons span svg path {
     fill: #ffffff !important;
+}
+.compare_city_table table tr {
+    border-color: rgb(255 255 255 / 22%);
 }
 
 @media only screen and (max-width:1750px) {

@@ -151,6 +151,7 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
 
 .kpi_city.kpi_td_data {
   display: flex;
+  /* justify-content: center; */
 }
 
 .header_Score {
@@ -198,6 +199,13 @@ p.btn_spinner {
     border-radius: 5px;
 }
 
+::ng-deep .compare_select .analyst_multi_select .ng-select-container .ng-placeholder{
+    top: 50%;
+    padding-bottom: 0;
+    padding-left: 3px;
+    transform: translateY(-50%);
+}
+
 @media only screen and (max-width: 1540px) {
     ::ng-deep .inner_content_area .heading_area .page_head {
         font-size: 20px;
@@ -212,5 +220,14 @@ p.btn_spinner {
   }
   ::ng-deep .toggle-labels {
       font-size: 11px;
+  }
+  
+
+}
+
+@media only screen and (max-width: 1199.5px) {
+  .inner_content_area .heading_area .page_head {
+      font-size: 16px;
+      max-width: 230px;
   }
 }
