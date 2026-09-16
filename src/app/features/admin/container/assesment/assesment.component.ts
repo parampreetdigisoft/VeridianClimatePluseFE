@@ -26,7 +26,7 @@ export class AssesmentComponent implements OnInit {
   isLoader: boolean = false;
   isOpendialog = false;
   selectedclimateProgramID: number | any = "";
-  selectedRoleID: UserRoleValue | any = "";
+  selectedRoleID: UserRoleValue | null = null;
   selectedAssessment: GetAssessmentResponse | any = "";
   changeAssessment: ChangeAssessmentStatusRequestDto | any = "";
   assessmentsResponse: PaginationResponse<GetAssessmentResponse> | undefined;
@@ -59,7 +59,7 @@ export class AssesmentComponent implements OnInit {
       let rid = params.get("roleID");
       let cid = params.get("climateProgramID");
       if (rid && cid) {
-        this.selectedRoleID = rid;
+        this.selectedRoleID = Number(rid) as UserRoleValue;
         this.selectedclimateProgramID = cid;
       }
     });

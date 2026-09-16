@@ -250,6 +250,10 @@ ng-select.pillar-kpi-select.ng-select-multiple .ng-value-container .ng-value {
 /* ---- ng-select host wrappers ---- */
 
 /* ---- native selects ---- */
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 240px !important;
+}
+
 .input_flex select.form-control,
 .input_field select.form-control,
 .input_flex select,
@@ -268,6 +272,7 @@ ng-select.pillar-kpi-select.ng-select-multiple .ng-value-container .ng-value {
   font-family: "Poppins", sans-serif !important;
   font-size: 13px !important;
   appearance: none !important;
+  color-scheme: dark;
   transition:
     border-color 0.22s ease,
     box-shadow 0.22s ease,
@@ -294,6 +299,20 @@ ng-select.pillar-kpi-select.ng-select-multiple .ng-value-container .ng-value {
 .heading_area select option {
   background: var(--Surface-Color, #0B1633);
   color: var(--Text-Color, #E8EEF8);
+}
+
+.heading_area .input_field ng-select.form-control,
+.heading_area ng-select.analyst_multi_select.form-control,
+.heading_area .compare_select ng-select.form-control {
+  min-width: 240px !important;
+}
+
+.heading_area:has(.ng-select-opened),
+.compare_select:has(.ng-select-opened),
+.input_flex:has(.ng-select-opened),
+.input_field:has(.ng-select-opened) {
+  position: relative;
+  z-index: 30;
 }
 
 /* ---- dropdown panel options (global panels) ---- */

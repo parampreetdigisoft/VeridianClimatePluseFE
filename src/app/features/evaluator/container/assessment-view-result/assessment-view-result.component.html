@@ -4,14 +4,13 @@
       <h3 class="page_head">Assessment Results > <span class="user_name_active">{{userName}}</span></h3>
     </div>
     <div class="col-md-6">
-      <div class="input_field">
-        <select [(ngModel)]="selectedPillarId" name="pillarID" class="form-control ms-auto"
+      <div class="compare_select input_field">
+        <ng-select [items]="pillers" bindValue="pillarID" bindLabel="pillarName" [searchable]="true" [clearable]="true"
+          class="form-control analyst_multi_select ms-auto" placeholder="Select Pillar" [(ngModel)]="selectedPillarId"
           (change)="getAssessmentQuestions()">
-          <option value="">Select Pillar</option>
-          <option *ngFor="let pillar of pillers" [value]="pillar.pillarID">
-            {{ pillar.pillarName }}
-          </option>
-        </select>
+          <ng-template ng-label-tmp let-item="item">{{ item.pillarName }}</ng-template>
+          <ng-template ng-option-tmp let-item="item">{{ item.pillarName }}</ng-template>
+        </ng-select>
       </div>
     </div>
   </div>

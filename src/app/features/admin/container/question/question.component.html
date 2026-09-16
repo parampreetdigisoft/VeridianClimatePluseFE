@@ -5,18 +5,21 @@
     </div>
     <div class="col-md-auto">
       <div class="inner_div d-flex align-items-center justify-content-center">
-        <div class="input_field m-0">
-          <select
+        <div class="compare_select input_field m-0">
+          <ng-select
+            [items]="pillars"
+            bindValue="pillarID"
+            bindLabel="pillarName"
+            [searchable]="true"
+            [clearable]="true"
+            class="form-control analyst_multi_select"
+            placeholder="Select Pillar"
             [(ngModel)]="selectedPillarId"
-            name="pillarID"
-            class="form-control"
             (change)="onPillarChange()"
           >
-            <option value="">Select Pillar</option>
-            <option *ngFor="let pillar of pillars" [value]="pillar.pillarID">
-              {{ pillar.pillarName }}
-            </option>
-          </select>
+            <ng-template ng-label-tmp let-item="item">{{ item.pillarName }}</ng-template>
+            <ng-template ng-option-tmp let-item="item">{{ item.pillarName }}</ng-template>
+          </ng-select>
         </div>
         <a
           (click)="editQuestion(null)"

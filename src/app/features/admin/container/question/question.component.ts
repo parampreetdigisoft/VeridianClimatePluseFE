@@ -20,7 +20,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   pageSize: number = 10;
   currentPage: number = 1
   questions: GetQuestionResponse[] = [];
-  selectedPillarId: number | any = "";
+  selectedPillarId: number | null = null;
   loading: boolean = false;
   isLoader: boolean = false;
   isOpendialog: boolean = false;
@@ -46,7 +46,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       pageNumber: currentPage,
       pageSize: this.pageSize
     }
-    if (this.selectedPillarId != "") {
+    if (this.selectedPillarId) {
       payload.pillarID = this.selectedPillarId;
     }
 

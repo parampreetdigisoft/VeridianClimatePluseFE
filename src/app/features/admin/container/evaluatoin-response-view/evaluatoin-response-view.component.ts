@@ -17,7 +17,7 @@ import { AdminService } from '../../admin.service';
 export class EvaluatoinResponseViewComponent implements OnInit {
   selectedPiller: PillarsVM | null = null;
   pillers: PillarsVM[] = [];
-  selectedPillarId: number | any = '';
+  selectedPillarId: number | null = null;
   userName: string | any = "";
   assessmentID: number | any = 0;
   questionResponse: PaginationResponse<GetAssessmentQuestionResponseDto> | undefined;

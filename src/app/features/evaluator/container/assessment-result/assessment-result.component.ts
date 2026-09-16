@@ -20,7 +20,7 @@ import { SendRequestMailToUpdateProgram } from "src/app/core/models/AnalystVM";
 })
 export class AssessmentResultComponent implements OnInit {
 
-  selectedclimateProgramID: number | any = "";
+  selectedclimateProgramID: number | null = null;
   assessmentsResponse: PaginationResponse<GetAssessmentResponse> | undefined;
   totalRecords: number = 0;
   pageSize: number = 10;

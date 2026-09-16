@@ -77,6 +77,11 @@
   overflow: hidden;
 }
 
+.modal_design .modal-content:has(.ng-select-opened),
+.modal_design .modal-body:has(.ng-select-opened) {
+  overflow: visible;
+}
+
 .modal_design .modal-body {
   padding: 32px 36px 36px;
 }

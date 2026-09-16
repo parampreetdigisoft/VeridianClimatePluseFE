@@ -17,7 +17,7 @@ import { AnalystService } from '../../analyst.service';
 export class EvaluatorResponseViewComponent implements OnInit, OnDestroy {
   selectedPiller: PillarsVM | null = null;
   pillers: PillarsVM[] = [];
-  selectedPillarId: number | any = '';
+  selectedPillarId: number | null = null;
   userName: string | any = "";
   assessmentID: number | any = 0;
   questionResponse: PaginationResponse<GetAssessmentQuestionResponseDto> | undefined;

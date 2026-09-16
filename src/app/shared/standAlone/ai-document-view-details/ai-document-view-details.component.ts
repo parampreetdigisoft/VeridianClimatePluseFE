@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { GetProgramDocumentResponseDto, GetProgramPillarDocumentResponseDto } from 'src/app/core/models/aiVm/GetProgramDocumentResponseDto';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { DeleteProgramDocumentRequestDto } from 'src/app/core/models/aiVm/AiProgramSummeryRequestDto';
 import { PromptComponent } from '../../prompt/prompt.component';
 
@@ -16,7 +17,7 @@ export interface SelectedFileModel {
 @Component({
   selector: 'app-ai-document-view-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, PromptComponent],
+  imports: [CommonModule, FormsModule, NgSelectModule, PromptComponent],
   templateUrl: './ai-document-view-details.component.html',
   styleUrl: './ai-document-view-details.component.css'
 })
@@ -31,6 +32,16 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
   isUploadModalOpen = false;
   selectedFiles = signal<SelectedFileModel[]>([]);
   selectedPillarID?: number;
+  programSelectItems = computed(() => {
+    const program = this.selectedProgram();
+    const items: { id: number | string; name: string }[] = [
+      { id: 'global', name: 'Mark as Global' }
+    ];
+    if (program?.climateProgramID != null && program.programName) {
+      items.push({ id: program.climateProgramID, name: program.programName });
+    }
+    return items;
+  });
   @Output() uploadedDocuments = new EventEmitter<FormData>();
   @Output() deleteDocument = new EventEmitter<DeleteProgramDocumentRequestDto>();
   @Output() downloadDocument = new EventEmitter<GetProgramPillarDocumentResponseDto>();
@@ -102,7 +113,7 @@ export class AiDocumentViewDetailsComponent implements OnInit, OnChanges {
 
   uploadDocuments() {
     const formData = new FormData();
-    if (this.selectProgramDocument && this.selectProgramDocument != undefined && this.selectProgramDocument != "undefined") {
+    if (this.selectProgramDocument && this.selectProgramDocument !== 'global') {
       formData.append('climateProgramID', this.selectProgramDocument.toString());
     }
     this.selectedFiles().forEach((item, index) => {

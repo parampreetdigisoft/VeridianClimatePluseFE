@@ -93,10 +93,10 @@
 											<a (click)="viewDetails(document,i); $event.preventDefault()"
 												style="cursor:viewDetails pointer"
 												matTooltip="View">
-												<span *ngIf="sidebarLoader.index!=i"
+												<button *ngIf="sidebarLoader.index!=i"
 													style="display: inline-block">
 													View Details
-												</span>
+												</button>
 												<p *ngIf="sidebarLoader.index==i && sidebarLoader.loader"
 													class="btn_spinner">
 													<span class="spinner-border spinner-border-sm"></span>

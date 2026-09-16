@@ -46,7 +46,7 @@ export class ComparisionComponent implements OnInit {
   questionsByUserPillars: QuestionsByUserPillarsResponsetDto[] = [];
   programs: ProgramVM[] | null = [];
   selectedPrograms: number | any = "";
-  selectedPillarID: number | any = "";
+  selectedPillarID: number | null = null;
   isLoader: boolean = false;
   isPillarHistoryDownloading: boolean = false;
   dataSource = new MatTableDataSource<PillarsTableRow>([]);
@@ -131,7 +131,7 @@ export class ComparisionComponent implements OnInit {
       pillarID:
         this.selectedPillarID && this.selectedPillarID > 0
           ? this.selectedPillarID
-          : null,
+          : undefined,
       pageNumber: this.currentPage,
       pageSize:this.pageSize
     }

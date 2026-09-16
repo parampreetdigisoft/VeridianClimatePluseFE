@@ -38,8 +38,10 @@
   grid-gap: 10px;
 }
 
-.input_flex select {
+.input_flex select,
+.input_flex ng-select {
   flex: 1;
+  min-width: 200px;
 }
 
 .expand-toggle {

@@ -20,7 +20,7 @@ import { SortDirection } from 'src/app/core/enums/SortDirection';
 export class AssessmentViewResultComponent implements OnInit {
   selectedPiller: PillarsVM | null = null;
   pillers: PillarsVM[] = [];
-  selectedPillarId: number | any = '';
+  selectedPillarId: number | null = null;
   userName: string | any = "";
   assessmentID: number | any = 0;
   questionResponse: PaginationResponse<GetAssessmentQuestionResponseDto> | undefined;

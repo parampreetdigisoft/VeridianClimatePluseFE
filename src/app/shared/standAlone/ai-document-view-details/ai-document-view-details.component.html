@@ -123,42 +123,62 @@
 
 		<div class="modal-header">
 			<h3>Upload Documents</h3>
-			<button (click)="closeUploadModal()"
-				class="close-btn">
-				✖
-			</button>
+			<button type="button"
+				(click)="closeUploadModal()"
+				class="btn-close"
+				aria-label="Close"></button>
 		</div>
 		<div class="modal-body">
 
-			<label> If the document is not related to any specific program, you can select the Global option to upload it as a platform-level document.</label>
-			<select [(ngModel)]="selectProgramDocument"
-				class="form-control">
-				<option [value]="undefined">Mark as Global</option>
-				<option [value]="this.selectedProgram()?.climateProgramID">
-					{{this.selectedProgram()?.programName}}
-				</option>
-			</select>
+			<div class="input_field">
+				<label> If the document is not related to any specific program, you can select the Global option to upload it as a platform-level document.</label>
+				<ng-select [(ngModel)]="selectProgramDocument"
+					class="form-control analyst_multi_select"
+					[clearable]="false"
+					[searchable]="false"
+					[items]="programSelectItems()"
+					bindValue="id"
+					bindLabel="name">
+					<ng-template ng-label-tmp
+						let-item="item">
+						{{ item.name }}
+					</ng-template>
+					<ng-template ng-option-tmp
+						let-item="item">
+						{{ item.name }}
+					</ng-template>
+				</ng-select>
+			</div>
 
-			<label>
-				Choose a pillar if applicable, otherwise leave blank to upload as program-level documents.
-			</label>
-			<select [(ngModel)]="selectedPillarID"
-				class="form-control">
-				<option [ngValue]="undefined">-- Select Pillar --</option>
-				<option *ngFor="let p of pillars()"
-					[value]="p.pillarID">
-					{{p.pillarName}}
-				</option>
-			</select>
+			<div class="input_field">
+				<label>
+					Choose a pillar if applicable, otherwise leave blank to upload as program-level documents.
+				</label>
+				<ng-select [(ngModel)]="selectedPillarID"
+					class="form-control analyst_multi_select"
+					[items]="pillars()"
+					bindValue="pillarID"
+					bindLabel="pillarName"
+					placeholder="-- Select Pillar --"
+					[clearable]="true"
+					[searchable]="true">
+					<ng-template ng-label-tmp
+						let-item="item">
+						{{ item.pillarName }}
+					</ng-template>
+					<ng-template ng-option-tmp
+						let-item="item">
+						{{ item.pillarName }}
+					</ng-template>
+				</ng-select>
+			</div>
 
 			<div class="row">                
                 <div class="col">
                   <div class="input_field">
                     <label>Upload Image </label>
-                    <input #imageInput type="file" 
-					(change)="onFileSelected($event)" class="form-control"
-					 accept=".pdf,.doc,.docx"/>
-                    
+                   <input #imageInput type="file" (change)="onFileSelected($event)" class="form-control" accept=".pdf,.doc,.docx"
+                    />
                   </div>
                 </div>
               </div>

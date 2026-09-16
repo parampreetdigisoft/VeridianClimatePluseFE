@@ -37,12 +37,12 @@
                                 <div class="col-md-6">
                                     <div class="input_field">
                                         <label>Pillar *</label>
-                                        <select formControlName="pillarID" class="form-control">
-                                            <option [ngValue]="null">Select Pillar</option>
-                                            <option *ngFor="let pillar of pillars" [ngValue]="pillar.pillarID">
-                                                 {{ pillar.pillarName }}
-                                                </option>
-                                            </select>
+                                        <ng-select formControlName="pillarID" [items]="pillars" bindValue="pillarID"
+                                            bindLabel="pillarName" class="form-control analyst_multi_select"
+                                            placeholder="Select Pillar" [searchable]="true" [clearable]="true">
+                                            <ng-template ng-label-tmp let-item="item">{{ item.pillarName }}</ng-template>
+                                            <ng-template ng-option-tmp let-item="item">{{ item.pillarName }}</ng-template>
+                                        </ng-select>
                                             <div class="error-msg" *ngIf="questionForm.get('pillarID')?.invalid && (questionForm.get('pillarID')?.touched || isSubmitted)">
                                                  Pillar is required.
                                                 </div>

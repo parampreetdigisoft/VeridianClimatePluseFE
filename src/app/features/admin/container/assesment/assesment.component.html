@@ -18,12 +18,12 @@
             }})
           </ng-template>
         </ng-select>
-        <select [(ngModel)]="selectedRoleID" name="role" class="form-control" (change)="getAssessments()">
-          <option value="">Search by Role</option>
-          <option *ngFor="let role of rolesList" [value]="role.role">
-            {{ role.name }}
-          </option>
-        </select>
+        <ng-select [items]="rolesList" [searchable]="true" [clearable]="true"
+          placeholder="Search by Role" [(ngModel)]="selectedRoleID" (change)="getAssessments()"
+          bindValue="role" bindLabel="name" class="form-control analyst_multi_select">
+          <ng-template ng-label-tmp let-item="item">{{ item.name }}</ng-template>
+          <ng-template ng-option-tmp let-item="item">{{ item.name }}</ng-template>
+        </ng-select>
       </div>
     </div>
   </div>

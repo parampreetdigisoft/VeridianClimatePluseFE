@@ -5,12 +5,14 @@
     </div>
     <div class="col-md">
       <div class="input_field input_flex">
-        <select [(ngModel)]="selectedclimateProgramID" name="climateProgramID" class="form-control" (change)="getAssessments()">
-          <option value="">Select Program</option>
-          <option *ngFor="let program of programs" [value]="program.climateProgramID">
-            {{ program.programName }}
-          </option>
-        </select>
+        <ng-select [items]="programs || []" [searchable]="true" [clearable]="true"
+          placeholder="Select Program" [(ngModel)]="selectedclimateProgramID" (change)="getAssessments()"
+          bindValue="climateProgramID" bindLabel="programName" class="form-control analyst_multi_select">
+          <ng-template ng-label-tmp let-item="item">{{ item.programName }}</ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.programName }}, {{ item.location }}
+          </ng-template>
+        </ng-select>
       </div>
     </div>
 

@@ -6,12 +6,12 @@
       </div>
       <div class="col-md-6">
         <div class="input_field input_flex">
-          <select [(ngModel)]="selectedPillarID" name="piller" class="form-control" (change)="getResponsesByUserId()">
-            <option value="">All Pillars</option>
-            <option *ngFor="let piller of pillers" [value]="piller.pillarID">
-              {{ piller.pillarName }}
-            </option>
-          </select>
+          <ng-select [items]="pillers" [searchable]="true" [clearable]="true"
+            [placeholder]="'All Pillars'" [(ngModel)]="selectedPillarID" (change)="getResponsesByUserId()"
+            bindValue="pillarID" bindLabel="pillarName" class="form-control analyst_multi_select">
+            <ng-template ng-label-tmp let-item="item">{{ item.pillarName }}</ng-template>
+            <ng-template ng-option-tmp let-item="item">{{ item.pillarName }}</ng-template>
+          </ng-select>
           <ng-select [items]="programs" [searchable]="true" [searchFn]="customSearchFn"
           [placeholder]="filterProgram > 0 ? '' : 'Search Program..'" [(ngModel)]="filterProgram" (change)="getResponsesByUserId()"
           bindValue="climateProgramID" bindLabel="programName" class="form-control">
