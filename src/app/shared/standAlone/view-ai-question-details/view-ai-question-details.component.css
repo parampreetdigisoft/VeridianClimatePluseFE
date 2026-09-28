@@ -169,7 +169,7 @@ span:empty, div:empty{
     /* background-color: rgba(255,255,255,0.08) !important; */
 }
 .last_data td {
-    background-color: rgb(92, 184, 255);
+    background-color:#0d4976 !important;
     color: #000000 !important;
     text-align: center;
 }

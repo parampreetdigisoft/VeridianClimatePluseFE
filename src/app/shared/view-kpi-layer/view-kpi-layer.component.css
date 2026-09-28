@@ -308,7 +308,7 @@ tr.active_ai td {
 }
 
 .last_data td {
-    background-color: rgb(92, 184, 255);
+    background-color: #0d4976 !important;
     color: #000000 !important;
 }
 .last_data td span {

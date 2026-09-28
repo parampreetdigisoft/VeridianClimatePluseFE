@@ -8,7 +8,7 @@
             <p class="before_login_card_desc text-center">{{role =='3' ? 'Your climate pulse copilot for national insights.' : 'Log in to your account.'}}</p>
             <div class="input_field">
                 <label for="">Email *</label>
-                <input type="text" formControlName="email" placeholder="Enter Username" class="form-control">
+                <input type="text" formControlName="email" placeholder="Enter Email" class="form-control">
                 <div *ngIf="(email?.touched || (email?.invalid && isSubmitted))  " class="error-msg">
                     <div *ngIf="email?.errors?.['required']">
                         Email is required.

@@ -152,7 +152,7 @@ tr.active_row{
 
 
 .last_data td {
-    background-color: rgb(92, 184, 255);
+    background-color: #0d4976;
     color: #000000 !important;
 }
 .last_data td span {
